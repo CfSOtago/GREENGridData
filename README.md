@@ -7,7 +7,7 @@ The code in this repo does two things:
 
  * processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data)
  * produces original data processing reports (code will only work if you have the original data)
- * produces cleaned data reports (code will work on the archived 'safe' data)
+ * produces cleaned 'safe' data reports (code will work on the archived 'safe' data)
 
 # Data Access
 
@@ -32,10 +32,10 @@ If you want to re-use the code in your own work, please read the [License](LICEN
 Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV)
 
 ## Comments & suggestions:
-Please use git [issues](./issues) to make a comment or point out an error. We also use issues to manage our 'to do' list so please check your comment is not already open :-)
+Please use git [issues](https://github.com/dataknut/nzGREENGridDataR/issues) to make a comment or point out an error. We also use issues to manage our 'to do' list so please check your comment is not already open :-)
  
 ## Contributing code
-Feel free to [fork](https://help.github.com/articles/fork-a-repo/) the repository (or a [branch](https://help.github.com/articles/about-branches/) if you are a collaborator with write access to this repo) and contribute your own additions through the normal git [merge request](./pulls) process (ideally R or [RMarkdown](http://rmarkdown.rstudio.com/) please!). If you haven't used github before, now is a good time to [learn](https://guides.github.com/) - it works for any codebase, not just R. For R, we recommend using [RStudio](http://www.rstudio.com)'s integrated github features.
+Feel free to [fork](https://help.github.com/articles/fork-a-repo/) the repository (or a [branch](https://help.github.com/articles/about-branches/) if you are a collaborator with write access to this repo) and contribute your own additions through the normal git [pull request](https://github.com/dataknut/nzGREENGridDataR/pulls) process (ideally R or [RMarkdown](http://rmarkdown.rstudio.com/) please!). If you haven't used github before, now is a good time to [learn](https://guides.github.com/) - it works for any codebase, not just R. For R, we recommend using [RStudio](http://www.rstudio.com)'s integrated github features.
 
 If you make a substantive addition to any of the exisiting RMarkdown reports please add yourself as an author. Your contributions will, in any case, be [tracked by github](https://help.github.com/articles/tracing-changes-in-a-file/) and so fully visible to the world in perpetuity :-)
 
