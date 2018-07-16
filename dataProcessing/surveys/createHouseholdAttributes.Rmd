@@ -1,0 +1,198 @@
+---
+params:
+ title: "GREEN Grid Data Processing"
+ subtitle: "Create Household Attributes File"
+title: '`r params$title`'
+subtitle: '`r params$subtitle`'
+author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::pdf_document2: default
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+bibliography: '`r paste0(nzGREENGrid::findParentDirectory("nzGREENGrid"), "/bibliography.bib")`'
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
+```
+
+```{r codeSetup, include=FALSE}
+#rm(list=ls(all=TRUE)) # remove all objects from workspace # <- don't do this - rmeoves params set in yaml!
+
+# Set start time ----
+startTime <- proc.time()
+
+library(nzGREENGrid)
+
+# Packages needed in this .Rmd file ----
+rmdLibs <- c("data.table", # data munching
+             "dplyr", # data munching
+             "ggplot2", # for fancy graphs
+             "lubridate", # date & time processing
+             "readr", # writing to files
+             "Hmisc", # for describe
+             "knitr" # for kable
+)
+# load them
+nzGREENGrid::loadLibraries(rmdLibs)
+
+# run gg set up
+nzGREENGrid::setup() # sets a load of parameters which are then accessible via ggParams$xxx
+
+# Local paramaters
+ggParams$outPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/survey/"
+```
+
+\newpage
+
+# Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggParams$pubLoc`.
+
+This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton.
+
+\newpage
+
+# About
+
+## Circulation
+
+```{r generic circulation, child=ggParams$circulationGenericRmd}
+```
+
+## History
+
+```{r includeHistory, child=ggParams$historyGenericRmd}
+```
+ 
+Specific history of this code:
+
+ * https://git.soton.ac.uk/ba1e12/nzGREENGrid/tree/master/analysis/ev
+
+## Support
+
+```{r includeSupport, child=ggParams$supportGenericRmd}
+```
+
+\newpage
+
+# Introduction
+
+The prupose of this report is to: 
+
+ * create a household attribute file that can be linked to the project power monitoring data
+
+The resulting cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
+
+The data contains a unique household id which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
+
+# Requirements:
+
+ * GREEN Grid household suveys and metadata files
+
+# Load data
+
+In this section we load metadata from `r ggParams$gsMasterFile`.
+
+```{r load metadata}
+metaDT <- nzGREENGrid::getMetaData(ggParams$gsMasterFile)
+with(metaDT, table(Location, useNA = "always"))
+```
+
+In total we have `r nrow(metaDT)` households in two sample areas.
+
+## Data description
+
+```{r summarise metadata}
+Hmisc::describe(metaDT)
+```
+
+
+# Describe data
+
+NA usually means not known.
+
+## Number of adults
+
+```{r nAdults}
+t <- with(metaDT, table(nAdults, Location, useNA = "always"))
+knitr::kable(caption = "Number of adults in household by location", t)
+```
+
+## Number of teenagers
+
+```{r nTeens}
+t <- with(metaDT, table(nTeenagers13_18, Location, useNA = "always"))
+knitr::kable(caption = "Number of teenagers in household by location", t)
+```
+
+## Number of children
+
+```{r nChildren}
+t <- with(metaDT, table(nChildren0_12, Location, useNA = "always"))
+knitr::kable(caption = "Number of children in household by location", t)
+```
+
+## Outlier flag
+
+These may have been set for any number of reasons and mean the monitoring data should be used with caution.
+
+```{r outliers}
+t <- with(metaDT, table(outlierFlag, Location, useNA = "always"))
+knitr::kable(caption = "Outlier flags by location", t)
+```
+
+# Summary
+
+```{r saveData}
+ofile <- paste0(ggParams$outPath, "ggHouseholdAttributes.csv")
+readr::write_csv(metaDT, ofile)
+```
+
+The cleaned data for the `r nrow(metaDT)` households has been saved as a .csv file to:
+
+ * `r ggParams$outPath` 
+
+The following table shows the first few rows of the household attributes file:
+
+```{r data header}
+kable(caption = "Example data rows", head(metaDT))
+```
+
+The data can be linked to the gridSpy data using hhID and/or newID.
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used:
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * readr - for csv reading/writing [@readr]
+ * Hmisc - for describe [@Hmisc]
+ * knitr - to create this document & neat tables [@knitr]
+ * nzGREENGrid - for local NZ GREEN Grid project utilities
+
+Session info:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References

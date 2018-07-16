@@ -1,0 +1,393 @@
+---
+title: 'Processing, cleaning and saving NZ GREEN Grid project time use diary data'
+author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+date: 'Last run at: `r Sys.time()`'
+output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  html_document:
+    code_folding: hide
+    fig_caption: true
+    keep_md: true
+    number_sections: true
+    self_contained: no
+    toc: true
+    toc_float: true
+    toc_depth: 2
+bibliography: '`r path.expand("~/bibliography.bib")`'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # do not echo code by default
+```
+
+```{r codeSetup, include=FALSE}
+# Housekeeping ----
+rm(list=ls(all=TRUE)) # remove all objects from workspace
+
+# Set start time ----
+startTime <- proc.time()
+
+# Local parameters ----
+
+dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HPS
+diaryPath <- paste0(dPath,"_RAW DATA/Time Use Diaries/") # location of data
+outPath <- paste0(dPath, "Clean_data/safe/TUD/") # place to save them 
+
+powerCoPath <- paste0(diaryPath, "Powerco/Powerco Annexes/")
+unisonPath <- paste0(diaryPath, "Unison/Unison Raw Data/Raw data with paper diaries included/Cleaned excel data files/")
+
+linkLUT <- paste0(dPath, "_RAW DATA/TUD_2_GridSpyLookup.xlsx")
+
+# Load greenGrid package ----
+library(nzGREENGrid) # local utilities
+
+# Other packages ----
+reqLibs <- c("data.table", # for data munching
+             "lubridate", # for date/time munching
+             "ggplot2", # for fancy graphs
+             "readr", # for read/write_csv
+             "dplyr", # for select columns
+             "readxl",  #loading xl(s)
+             #"dtplyr", # if needed
+             "knitr" # for kable
+)
+
+nzGREENGrid::loadLibraries(reqLibs)
+
+# Local functions ----
+
+
+```
+
+\newpage
+
+# Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing, cleaning and saving NZ GREEN Grid project time use diary data, University of Otago: Dunedin, NZ.
+
+\newpage
+
+# Introduction
+
+Report circulation:
+
+ * Restricted to: [NZ GREEn Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project partners and contractors.
+
+## Purpose
+
+This report is intended to: 
+
+ * load and clean the two time use survey datasets
+ * save the cleaned data out to `r outPath` as two seperate files, one for each survey
+ * produce summary data quality statistics
+
+## Requirements:
+
+Time use survey data held in `r diaryPath`:
+
+ * PowerCo
+ * Unison
+
+A lookup table to correct mis-coding of household IDs (`r linkLUT`).
+
+## History
+
+Generally tracked via our git.soton [repo](https://git.soton.ac.uk/ba1e12/nzGREENGrid):
+
+ * [history](https://git.soton.ac.uk/ba1e12/nzGREENGrid/commits/master)
+ * [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues)
+ 
+## Support
+
+This work was supported by:
+
+ * The [University of Otago](https://www.otago.ac.nz/)
+ * The New Zealand [Ministry of Business, Innovation and Employment (MBIE)](http://www.mbie.govt.nz/)
+ * [SPATIALEC](http://www.energy.soton.ac.uk/tag/spatialec/) - a [Marie Skłodowska-Curie Global Fellowship](http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm) based at the University of Otago’s [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html) (2017-2019) & the University of Southampton's Sustainable Energy Research Group (2019-202).
+ 
+This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton.
+
+We do not 'support' the code but if you have a problem check the [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues) on our [repo](https://git.soton.ac.uk/ba1e12/nzGREENGrid) and if it doesn't already exist, open one. We might be able to fix it :-)
+
+# PowerCo
+
+This consists of 1 file found in `r powerCoPath`:
+
+ * TUD (Merged data)_BA.csv
+
+This is a version of TUD (Merged data).csv with:
+
+ * small edits to correct dates
+ * redundant rows removed from file header
+
+## Load & process
+
+```{r getTUDPowerco}
+
+tudPowerCoDT <- fread(paste0(powerCoPath, "TUD (Merged data)_BA.csv"))
+
+nRows <- nrow(tudPowerCoDT)
+print(paste0("Found ", tidyNum(nRows), " rows of data"))
+```
+
+```{r processPowerCo}
+# Remove identifying data ----
+unsafe <- c("RowNum", "Name","EmailAddress")
+print(paste0("Removing unsafe vars: ", unsafe))
+tudPowerCoDT <- tudPowerCoDT[, eval(unsafe) := NULL]
+
+# Fix names of variables ----
+print(paste0("Fixing variable names"))
+tudPowerCoDT <- data.table::setnames(tudPowerCoDT, 
+                                    c("Family size", "Choose the date of your diary / entry:"), 
+                                    c("ba_nPeople", "diaryDate")
+)
+
+# Fix dates ----
+print(paste0("Fixing dates"))
+tudPowerCoDT <- tudPowerCoDT[, r_diaryDate := lubridate::mdy(diaryDate)]
+
+# Fix the hhid
+print(paste0("Fixing hhID"))
+tudPowerCoDT <- tudPowerCoDT[, hhID := paste0("rf_", HHCODE)]
+tudPowerCoDT <- tudPowerCoDT[, hhID := ifelse(as.integer(HHCODE) < 10, 
+                                              paste0("rf_0", HHCODE), # single digit so needs '0'
+                                                     hhID)]
+```
+
+The following table summarises the PowerCo cleaned diary data. In theory we should have 1 diary per day per person - so a 1 person household should have produced 7 diaries... A 3 person household would produce 14 if there were two adults and 1 child (for example).
+
+> What was the age cut off for diary completion?
+
+```{r powerco summary table}
+# Summary table ----
+t <- tudPowerCoDT[, .(nDiaries = .N,
+                      familySize = mean(ba_nPeople, na.rm = TRUE),
+                      minDiaryDate = min(r_diaryDate),
+                      maxDiaryDate = max(r_diaryDate)), keyby = .(hhID)]
+
+knitr::kable(caption = "Summary of PowerCo diaries by household", t)
+
+# save out safe file ----
+ofile <- paste0(outPath, "powerCoTUDsafe.csv")
+print(paste0("Saving PowerCo cleaned time use diary to ", ofile))
+write.csv(tudPowerCoDT, ofile)
+print("Done")
+```
+
+## Tests
+
+Should all be in August 2014...
+
+```{r powerCoDiaryPlot}
+myCaption <- paste0("Data source: ", powerCoPath)
+
+plotDT <- tudPowerCoDT[, .(nDiaries = .N), keyby = .(r_diaryDate)]
+ggplot2::ggplot(plotDT, aes(x = r_diaryDate, y = nDiaries)) +
+  geom_point() +
+    scale_x_date(date_labels = "%a %d %b %Y", date_breaks = "1 day") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "Number of PowerCo diaries per day",
+       caption = paste0(myCaption),
+       x = "Date",
+       y = "Total number of diaries"
+    
+  )
+ggplot2::ggsave(paste0(outPath, "powerCoTUDdates.png"))
+
+```
+
+In total we have `r nrow(tudPowerCoDT)` diaries from `r uniqueN(tudPowerCoDT$hhID)` PowerCo households.
+
+# Unison
+
+This consists of 5 files found in `r unisonPath`:
+
+ * TUDAdult_ONE_Child_Unison_forSAS_BA.xlsx
+ * TUDAdult_TWO_Children_Unison_forSAS_BA.xlsx
+ * TUDAdult-THREE-Children-Unison_forSAS_BA.xlsx
+ * TUDAdult-Unison-forSAS_BA.xlsx
+ * TUDTeenagerorChild-Unison_forSAS_BA.xlsx
+ 
+As before these are copies of the original versions with slight editing to correct dates and for ease of processing. The relationship between them is currently unclear!
+
+## Load & process
+
+```{r getTUDUnison`}
+
+#fList <- c("TUDAdult_ONE_Child_Unison_forSAS_BA.xlsx", "TUDAdult_TWO_Children_Unison_forSAS_BA.xlsx",
+#           "TUDAdult-THREE-Children-Unison_forSAS_BA.xlsx", "TUDAdult-Unison-forSAS_BA.xlsx", "TUDTeenagerorChild-Unison_forSAS_BA.xlsx")
+
+# load and add sourceFile for easy tracking of errors
+tudUnison1chDT <- data.table::as.data.table(read_xlsx(paste0(unisonPath, "TUDAdult_ONE_Child_Unison_forSAS_BA.xlsx")))
+tudUnison1chDT$sourceFile <- "TUDAdult_ONE_Child_Unison_forSAS_BA.xlsx"
+tudUnison2chDT <- data.table::as.data.table(read_xlsx(paste0(unisonPath, "TUDAdult_TWO_Children_Unison_forSAS_BA.xlsx")))
+tudUnison2chDT$sourceFile <- "TUDAdult_TWO_Children_Unison_forSAS_BA.xlsx"
+tudUnison3chDT <- data.table::as.data.table(read_xlsx(paste0(unisonPath, "TUDAdult-THREE-Children-Unison_forSAS_BA.xlsx")))
+tudUnison3chDT$sourceFile <- "TUDAdult-THREE-Children-Unison_forSAS_BA.xlsx"
+tudUnisonAdultDT <- data.table::as.data.table(read_xlsx(paste0(unisonPath, "TUDAdult-Unison-forSAS_BA.xlsx")))
+tudUnisonAdultDT$sourceFile <- "TUDAdult-Unison-forSAS_BA.xlsx"
+tudUnisonTeenChDT <- data.table::as.data.table(read_xlsx(paste0(unisonPath, "TUDTeenagerorChild-Unison_forSAS_BA.xlsx")))
+tudUnisonTeenChDT$sourceFile <- "TUDTeenagerorChild-Unison_forSAS_BA.xlsx"
+
+# Join the various Unison files them together ----
+# produces column name explosion
+l <- list(tudUnison1chDT,tudUnison2chDT,tudUnison3chDT,tudUnisonAdultDT,tudUnisonTeenChDT)
+tudUnisonAllDT <- data.table::rbindlist(l, fill = TRUE)
+
+print(paste0("Found ", tidyNum(nrow(tudUnisonAllDT)), " rows in total"))
+```
+
+```{r clean unison data}
+# Remove identifying data ----
+unsafe <- c("Name","EmailAddress","IPAddress")
+print(paste0("Removing unsafe vars: ", unsafe))
+tudUnisonAllDT <- tudUnisonAllDT[, eval(unsafe) := NULL]
+
+# do not rename as it's then hard to trace errors
+print(paste0("Fixing variable names"))
+tudUnisonAllDT <- tudUnisonAllDT[, r_diaryDate := `Choose the date of your diary / entry:`]
+tudUnisonAllDT <- tudUnisonAllDT[, code := `Please enter your designated / CODE`]
+
+# Fix dates ----
+#dt <- dt[, r_diaryDate := lubridate::dmy(diaryDate)] # not needed as read_xls gets it right :-)
+#dt <- dt[, r_surveyStart := lubridate::dmy_hms(StartDate)]
+#dt <- dt[, r_surveyEnd := lubridate::dmy_hms(EndDate)]
+
+# Fix hhID ----
+print(paste0("Fixing hhID"))
+tudUnisonAllDT <- tudUnisonAllDT[, tudCode := substr(code, 0, 2)] # extracts char 1
+```
+
+The following table lists rows where the diary date did not parse (for error checking).
+
+```{r check Unison dates}
+# Check for non-parsed diary dates
+t <- head(tudUnisonAllDT[is.na(r_diaryDate),.(ResponseID,r_diaryDate, code, tudCode, StartDate, EndDate)])
+knitr::kable(caption = "Test diaryDates that did not parse", t)
+```
+
+The following table reports any diaries where the dates were manually edited before loading.
+
+```{r report edited dates}
+# report edited diary dates (done in .xlsx)
+t <- tudUnisonAllDT[!is.na(dateNote),.(r_diaryDate, tudCode, dateNote, sourceFile)]
+knitr::kable(caption = "Report diaries with edited diary dates (done in .xlsx before loading)", t)
+```
+
+The following table summarises the Unison diary data.
+
+```{r unison diaries summary table}
+# Summary table ----
+t <- tudUnisonAllDT[, .(nDiaries = .N,
+                      minDiaryDate = min(r_diaryDate),
+                      maxDiaryDate = max(r_diaryDate)), keyby = .(tudCode)]
+
+knitr::kable(caption = "Summary of Unison diaries by household", t)
+```
+
+Note thaty the tudCodes found in the .csv files are _not_ the gridSpy household ids, we need to create these from the unison sheet in `r linkLUT`.
+
+```{r fixLinkIDs}
+unisonLinkLUTDT <- data.table::as.data.table(read_xlsx(paste0(linkLUT), sheet = "unison"))
+
+knitr::kable(caption = "Unison linking table", unisonLinkLUTDT)
+
+tudUnisonAllDT <- tudUnisonAllDT[, linkCode := as.character(tudCode)]
+setkey(tudUnisonAllDT, linkCode)
+unisonLinkLUTDT <- unisonLinkLUTDT[, linkCode := as.character(CODE)]
+setkey(unisonLinkLUTDT, linkCode)
+
+tudUnisonAllDT <- tudUnisonAllDT[unisonLinkLUTDT] # link them
+
+tudUnisonAllDT <- tudUnisonAllDT[, hhID := tag_gridSpy_Hhid]
+
+# check
+
+t <- tudUnisonAllDT[, .(nDiaries = .N), keyby = .(linkCode, hhID)]
+knitr::kable(caption = "Check linkage: there should be n * 7 diaries for each combination", t)
+```
+
+In total we have `r nrow(tudUnisonAllDT)` diaries from `r uniqueN(tudUnisonAllDT$hhID)` Unison households.
+
+```{r saveUnison}
+# save out safe file ----
+ofile <- paste0(outPath, "unisonTUDsafe.csv")
+print(paste0("Saving Unison cleaned time use diary to ", ofile))
+write.csv(tudUnisonAllDT, ofile)
+print("Done")
+```
+
+## Tests
+
+All of the diaries should be in July/August 2015...
+
+```{r unisonDiaryPLot}
+myCaption <- paste0("Data source: ", unisonPath)
+
+plotDT <- tudUnisonAllDT[, .(nDiaries = .N), keyby = .(r_diaryDate)]
+ggplot2::ggplot(plotDT, aes(x = as.Date(r_diaryDate), y = nDiaries)) +
+  geom_point() +
+    scale_x_date(date_labels = "%a %d %b %Y", date_breaks = "1 day") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "Number of Unison diaries per day",
+       caption = myCaption,
+       x = "Date",
+       y = "Total number of diaries"
+    
+  )
+ggplot2::ggsave(paste0(outPath, "unisonTUDdates.png"))
+
+```
+
+If any of them are earlier than July 2015 they are flagged below for ease of fixing.
+
+```{r listPossibleDateErrors}
+t <- tudUnisonAllDT[r_diaryDate < "2015-07-01", .(nDiaries = .N), keyby = .(r_diaryDate, code, tudCode, sourceFile)]
+cap <- paste0("Households with potential diary date errors")
+knitr::kable(caption = cap, t)
+```
+
+# Summary
+
+Total responses:
+
+ * PowerCo - `r nrow(tudPowerCoDT)` diaries from `r uniqueN(tudPowerCoDT$hhID)` households for the period `r min(tudPowerCoDT$r_diaryDate)` to `r max(tudPowerCoDT$r_diaryDate)`.
+ * Unison - `r nrow(tudUnisonAllDT)` diaries from `r uniqueN(tudUnisonAllDT$hhID)` households for the period `r min(tudUnisonAllDT$r_diaryDate)` to `r max(tudUnisonAllDT$r_diaryDate)`.
+
+# Runtime
+
+
+```{r check runtime}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r elapsed` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used: `r reqLibs`
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * lubridate - date manipulation [@lubridate]
+ * ggplot2 - for slick graphics [@ggplot2]
+ * readr - for csv reading/writing [@readr]
+ * dplyr - for select and contains [@dplyr]
+ * knitr - to create this document [@knitr]
+ * nzGREENGrid - for local NZ GREEN Grid utilities
+ 
+```{r sessionInfo}
+sessionInfo()
+```
+
+# References
