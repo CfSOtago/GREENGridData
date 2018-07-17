@@ -3,8 +3,10 @@
 #
 # Can be run here without .Rmd output
 
-# set up packages & parameters
+# Set up packages & parameters ----
 source("dataProcessing/gridSpy/setup.R")
+
+# Local parameters ----
 
 # Code ----
 
@@ -18,7 +20,7 @@ print(msg1)
 
 
 if(refreshData){
-  msg2 <- paste0("\nrefreshData = ", refreshData, " so rebuilding entire fileset. Be patient.")
+  msg2 <- paste0("\nrefreshData = ", refreshData, " so rebuilding entire fileset. May take a while.")
 } else {
   msg2 <- paste0("\nrefreshData = ", refreshData, " so re-using previous output. Should be relatively quick.")
 }
@@ -29,7 +31,7 @@ print(msg2)
 
 if(refreshData){
   print("Rebuilding filelist")
-  fListCompleteDT <- nzGREENGrid::getGridSpyFileList(fpath, pattern, fListInterim)
+  fListCompleteDT <- nzGREENGridDataR::getGridSpyFileList(fpath, pattern, fListInterim)
 } else {
   print("Re-using filelist")
   fListCompleteDT <- fread(paste0(outPath,fListInterim))
@@ -42,7 +44,7 @@ nFiles <- nrow(fListCompleteDT)
 nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "unknown"])
 
 # fix ambiguous dates in meta data derived from file listing ----
-fListCompleteDT <- nzGREENGrid::fixAmbiguousDates(fListCompleteDT)
+fListCompleteDT <- nzGREENGridDataR::fixAmbiguousDates(fListCompleteDT)
 
 # load and save gridSpy data ----
 # process the data & update the fListCompleteDT
@@ -54,7 +56,7 @@ if(refreshData){
   # returns the updated file list into fListCompleteDT
   # creates hhStatDT (used below)
   # puts top 6 rows of last file into lastOfHeadDT
-  fListCompleteDT <- nzGREENGrid::processGridSpyDataFiles(fListCompleteDT, fListFinal)
+  fListCompleteDT <- nzGREENGridDataR::processGridSpyDataFiles(fListCompleteDT, fListFinal)
 } else {
   print(paste0("'refreshData' = ", refreshData, " so re-using filelist"))
   fListCompleteDT <- fread(paste0(outPath,fListFinal))
@@ -76,7 +78,7 @@ print("Example data rows")
 print(lastOfHeadDT)
 
 # load household data ----
-hhInfoDT <- nzGREENGrid::getMetaData(gsMasterFile)
+hhInfoDT <- nzGREENGridDataR::getMetaData(gsMasterFile)
 
 # add survey data ----
 setkey(fListCompleteDT, hhID)
