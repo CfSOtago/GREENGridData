@@ -132,7 +132,7 @@ getGridSpyFileList <- function(fpath, pattern, mf){
     # Then no files were found - should have been caught previously but...
     stop(paste0("No matching data files found, please check your path (", fpath, ") or your search pattern (", pattern1Min, "). If using /hum-csafe/ are you connected to it?!"))
   } else {
-    print(paste0("Processing file list and getting file meta-data. Please be patient)"))
+    print(paste0("Processing file list and getting file meta-data including checking date formats."))
     dt <- dt[, c("hhID","fileName") := data.table::tstrsplit(fList, "/")]
     dt <- dt[, fullPath := paste0(fpath, hhID,"/",fileName)]
     loopCount <- 1
@@ -237,12 +237,12 @@ processGridSpyDataFiles <- function(dt, mf){
   hhIDs <- unique(dt$hhID) # list of household ids
   hhStatDT <- data.table::data.table() # stats collector
 
-  for(hh in hhIDs){ #> start of household loop ----
+  for(hh in hhIDs){ # X > start of per household loop ----
     tempHhDT <- data.table::data.table() # hh data collector
     print(paste0("Loading: ", hh))
     filesToLoad <- filesToLoadDT[hhID == hh, fullPath]
     pbF <- progress::progress_bar$new(total = length(filesToLoad))
-    for(f in filesToLoad){ # >> start of per-file loop ----
+    for(f in filesToLoad){ # XX >> start of per-file loop ----
       if(fullFb){print(paste0("File size (", f, ") = ",
                               dt[fullPath == f, fSize],
                               " so probably OK"))} # files under 3kb are probably empty
@@ -279,30 +279,30 @@ processGridSpyDataFiles <- function(dt, mf){
       # Large files which seem to have been manually downloaded use 'date NZ' and this
       # appears to be local (lived) time with/without DST as appropriate
 
-      # The small daily files which DE has set to auto-download have 'date UTC' as a column name
+      # The small daily files which were set to auto-download have 'date UTC' as a column name
       # and do indeed appear to be UTC. Where this has DST change, no hours are repeated (as the time is UTC)
       # See e.g. rf_06 1Apr2018-2Apr2018at1.csv (DST @ 02:00 1st April 2018 Pacific/Auckland)
 
       # We need to harmonise these to the correct (lived) 'time'. Somehow
 
       # Using the pre-inferred dateFormat
+      # Sets timezone to default (UTC) - sort this out later
       tempDT <- tempDT[, dateFormat := dt[fullPath == f, dateFormat]]
-      tempDT <- tempDT[dateFormat %like% "mdy" & dateColName %like% "NZ",
-                       r_dateTime := lubridate::mdy_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "dmy" & dateColName %like% "NZ",
-                       r_dateTime := lubridate::dmy_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "ydm" & dateColName %like% "NZ",
-                       r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "ymd" & dateColName %like% "NZ",
-                       r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "mdy" & dateColName %like% "UTC",
-                       r_dateTime := lubridate::mdy_hm(dateTime_char, tz = "UTC")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "dmy" & dateColName %like% "UTC",
-                       r_dateTime := lubridate::dmy_hm(dateTime_char, tz = "UTC")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "ydm" & dateColName %like% "UTC",
-                       r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "UTC")] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "ymd" & dateColName %like% "UTC",
-                       r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "UTC")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "mdy",
+                       r_dateTimeUTC := lubridate::mdy_hm(dateTime_char)] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "dmy",
+                       r_dateTimeUTC := lubridate::dmy_hm(dateTime_char)] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "ydm",
+                       r_dateTimeUTC := lubridate::ymd_hm(dateTime_char)] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "ymd",
+                       r_dateTimeUTC := lubridate::ymd_hm(dateTime_char)] # requires lubridate
+      
+      
+      # set correct local dateTime
+      tempDT <- tempDT[dateColName %like% "UTC",
+                       r_dateTime := lubridate::force_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")] # requires lubridate
+      tempDT <- tempDT[dateColName %like% "NZ",
+                       r_dateTime := r_dateTimeUTC] # it wasn't actually UTC
       if(fullFb){
         print(head(tempDT))
         print(summary(tempDT))
@@ -370,19 +370,20 @@ processGridSpyDataFiles <- function(dt, mf){
 
       # >> rbind file to hh data collector ----
       tempHhDT <- rbind(tempHhDT, tempDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
-    }
+    } # XX >> end of per-file loop ----
+    
     # > Remove duplicates caused by over-lapping files and dates etc ----
     # Need to remove all uneccessary vars for this to work
     # Any remaining duplicates will probably be due to over-lapping files which have different circuit labels - see table below
-    try(tempHhDT$dateColName <- NULL)
-    try(tempHhDT$dateFormat <- NULL)
-    try(tempHhDT$dateTime_char <- NULL) # if we leave this one in then we get duplicates where we have date NZ & date UTC for the same timestamp due to overlapping file downloads
+    #try(tempHhDT$dateColName <- NULL)
+    #try(tempHhDT$dateFormat <- NULL)
+    #try(tempHhDT$dateTime_char <- NULL) # if we leave this one in then we get duplicates where we have date NZ & date UTC for the same timestamp due to overlapping file downloads
 
-    nObs <- nrow(tempHhDT)
-    if(fullFb){print(paste0("N rows before removal of duplicates: ", nObs))}
-    tempHhDT <- unique(tempHhDT)
-    nObs <- nrow(tempHhDT)
-    if(fullFb){print(paste0("N rows after removal of duplicates: ", nObs))}
+    # nObs <- nrow(tempHhDT)
+    # if(fullFb){print(paste0("N rows before removal of duplicates: ", nObs))}
+    # tempHhDT <- unique(tempHhDT)
+    # nObs <- nrow(tempHhDT)
+    # if(fullFb){print(paste0("N rows after removal of duplicates: ", nObs))}
 
     hhStatTempDT <- tempHhDT[, .(nObs = .N,
                                  nDataColumns = ncol(select(tempDT, contains("$")))), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
@@ -430,8 +431,8 @@ processGridSpyDataFiles <- function(dt, mf){
       print("Col names: ")
       print(names(tempHhLongDT))
     }
-    tempHhDT <- NULL # just in case
-  }
+    #tempHhDT <- NULL # just in case
+  } # X > end of per household loop ----
 
   #> Save observed data stats for all files loaded ----
   ofile <- paste0(outPath, "hhDailyObservationsStats.csv")
