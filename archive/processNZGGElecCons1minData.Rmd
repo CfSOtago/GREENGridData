@@ -1,0 +1,795 @@
+---
+title: 'Processing, cleaning and saving NZ GREEN Grid project 1 minute electricity
+  power data'
+author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+date: 'Last run at: `r Sys.time()`'
+output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  html_document:
+    code_folding: hide
+    fig_caption: true
+    keep_md: true
+    number_sections: true
+    self_contained: no
+    toc: true
+    toc_float: true
+    toc_depth: 2
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r codeSetup, include=FALSE}
+# Housekeeping ----
+rm(list=ls(all=TRUE)) # remove all objects from workspace
+
+# Set start time ----
+startTime <- proc.time()
+
+# Local parameters ----
+fullFb <- 0 # switch on (1) or off (0) full feedback
+baTest <- 1 # test (1) or full (0) run?
+
+b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
+b2Mb <- 1048576
+
+if(baTest == 1){
+  # Local test
+  dPath <- "~/Data/NZGreenGrid/gridspy/" # BA laptop test set
+  fpath <- paste0(dPath,"1min_orig/") # location of data
+  outPath <- paste0(dPath, "consolidated/1min/") # place to save them 
+} else {
+  # full monty
+  dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HPS
+  fpath <- paste0(dPath,"_RAW DATA/GridSpyData/") # location of data
+  outPath <- paste0(dPath, "Clean_data/safe/gridSpy/1min/") # place to save them 
+}
+
+pattern1Min <- "*at1.csv$" # e.g. *at1.csv$ filters only 1 min data
+fListInterim <- "fListCompleteDT_interim.csv" # place to store the complete file list with interim meta-data
+fListFinal <- "fListCompleteDT_final.csv" # place to store the final complete file list with all meta-data
+dataThreshold <- 3000 # assume any files smaller than this (bytes) = no data or some mangled xml/html. Really, we should check the contents of each file.
+
+# Load greenGrid package ----
+library(greenGridr) # local utilities
+
+# Other packages ----
+reqLibs <- c("data.table", # for data munching
+             "lubridate", # for date/time munching
+             "ggplot2", # for fancy graphs
+             "readr", # for read/write_csv
+             "dplyr", # for select columns
+             #"dtplyr", # if needed
+             "knitr" # for kable
+)
+
+greenGridr::loadLibraries(reqLibs)
+
+# Local functions ----
+# move to package?
+gs_checkDates <- function(dt) {
+  # Check the date format as it could be y-m-d or d/m/y or m/d/y :-(
+  dt <- dt[, c("date_char1","date_char2", "date_char3") := data.table::tstrsplit(date_char, "/")]
+  # if this split failed then tstrsplit puts the dateVar in each one so we can check
+  # this assumes we never have 9-9-9 10-10-10 or 11-11-11 or 12-12-12 !
+  # would be better if data.table::tstrsplit returned an error if the split failed? We could then check for NA?
+  dt <- dt[, splitFailed := ifelse(date_char1 == date_char2 & date_char1 == date_char3, TRUE, FALSE)]
+  # and then split on / instead
+  dt <- dt[splitFailed == TRUE, c("date_char1","date_char2", "date_char3") := data.table::tstrsplit(date_char, "-")] # requires data.table
+  
+  dt$dateFormat <- "ambiguous" # default
+  # Days: 1-31
+  # Months: 1 - 12
+  # Years: could be 2 digit 15 - 18 or 4 digit 2015 - 2018 (+)
+  max1 <- max(as.integer(dt$date_char1))
+  #print(paste0("max1 = " , max1))
+  max2 <- max(as.integer(dt$date_char2))
+  #print(paste0("max2 = " , max2))
+  max3 <- max(as.integer(dt$date_char3))
+  #print(paste0("max3 = " , max3))
+  
+  if(max1 > 31){
+    # char 1 = year so default is ymd
+    dt$dateFormat <- "ymd - default (but day/month value <= 12)"
+    if(max2 > 12){
+      # char 2 = day - very unlikely
+      dt$dateFormat <- "ydm"
+    }
+    if(max3 > 12){
+      # char 3 = day
+      dt$dateFormat <- "ymd - definite"
+    }
+  }
+  if(max2 > 31){
+    # char 2 is year - this is very unlikely
+    if(max1 > 12){
+      # char 1 = day
+      dt$dateFormat <- "dym"
+    }
+    if(max3 > 12){
+      # char 3 = day
+      dt$dateFormat <- "myd"
+    }
+  }
+  if(max3 > 31){
+    # char 3 is year so default is dmy
+    dt$dateFormat <- "dmy - default (but day/month value <= 12)"
+    if(max1 > 12){
+      # char 1 = day so char 2 = month
+      dt$dateFormat <- "dmy - definite"
+    }
+    if(max2 > 12){
+      # char 2 = day so char 1 = month
+      dt$dateFormat <- "mdy - definite"
+    }
+  }
+  
+  
+  return(dt)
+}
+
+```
+
+\newpage
+
+# Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing, cleaning and saving NZ GREEN Grid project 1 minute electricity power data, University of Otago: Dunedin, NZ.
+
+\newpage
+
+# Introduction
+
+Report circulation:
+
+ * Restricted to: [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project partners and contractors.
+
+## Purpose
+
+This report is intended to: 
+
+ * load and clean the project electricity power data (Grid Spy)
+ * save the cleaned data out as a single file per household
+ * produce summary data quality statistics
+
+The resulting cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
+
+The data contains a unique household id which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
+
+## Requirements:
+
+ * grid spy 1 minute data downloads
+
+## History
+
+Generally tracked via our git.soton [repo](https://git.soton.ac.uk/ba1e12/nzGREENGrid):
+
+ * [history](https://git.soton.ac.uk/ba1e12/nzGREENGrid/commits/master)
+ * [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues)
+ 
+## Support
+
+This work was supported by:
+
+ * The [University of Otago](https://www.otago.ac.nz/)
+ * The New Zealand [Ministry of Business, Innovation and Employment (MBIE)](http://www.mbie.govt.nz/)
+ * [SPATIALEC](http://www.energy.soton.ac.uk/tag/spatialec/) - a [Marie Skłodowska-Curie Global Fellowship](http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm) based at the University of Otago’s [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html) (2017-2019) & the University of Southampton's Sustainable Energy Research Group (2019-202).
+ 
+This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton.
+
+We do not 'support' the code but if you have a problem check the [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues) on our [repo](https://git.soton.ac.uk/ba1e12/nzGREENGrid) and if it doesn't already exist, open one. We might be able to fix it :-)
+
+# Obtain listing of files
+
+In this section we generate a listing of all 1 minute data files that we have received. If we are running over the complete dataset then we will be using data from:
+
+ * /hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/
+ 
+In this run we are using data from:
+
+ * `r fpath`
+
+If these do not match then this may be a test run.
+
+```{r getCompleteFileList}
+
+print(paste0("Looking for 1 minute data using pattern = ", pattern1Min, " in ", fpath, " - could take a while..."))
+# get the file list and convert to a data.table
+system.time(fListCompleteDT <- data.table::as.data.table(getGridSpyFileList(fpath, pattern1Min)))
+
+nFiles <- nrow(fListCompleteDT)
+print(paste0("Found ", tidyNum(nFiles), " files"))
+```
+
+```{r processCompleteFileList}
+if(nrow(fListCompleteDT) == 0){
+  stop(paste0("No matching data files found, please check your path (", fpath, ") or your search pattern (", pattern1Min, ")"))
+} else {
+  print(paste0("Processing file list and getting file meta-data (please be patient)"))
+  fListCompleteDT <- fListCompleteDT[, c("hhID","fileName") := data.table::tstrsplit(V1, "/")]
+  fListCompleteDT <- fListCompleteDT[, fullPath := paste0(fpath, hhID,"/",fileName)]
+  loopCount <- 1
+  # now loop over the files and collect metadata
+  for(f in fListCompleteDT[,fullPath]){
+    rf <- path.expand(f) # just in case of ~ etc
+    fsize <- file.size(rf)
+    fmtime <- lubridate::ymd_hms(file.mtime(rf), tz = "Pacific/Auckland") # requires lubridate
+    fListCompleteDT <- fListCompleteDT[fullPath == f, fSize := fsize]
+    fListCompleteDT <- fListCompleteDT[fullPath == f, fMTime := fmtime]
+    fListCompleteDT <- fListCompleteDT[fullPath == f, fMDate := as.Date(fmtime)]
+    fListCompleteDT <- fListCompleteDT[fullPath == f, dateColName := paste0("unknown - file not loaded (fsize = ", fsize, ")")]
+    # only try to read files where we think there might be data
+    loadThis <- ifelse(fsize > dataThreshold, "Loading (fsize > threshold)", "Skipping (fsize < threshold)")
+    if(fullFb){print(paste0("Checking file ", loopCount, " of ", nFiles ,
+                            " (", round(100*(loopCount/nFiles),2), "% checked): ", loadThis))}
+    if(fsize > dataThreshold){
+      if(fullFb){print(paste0("fSize (", fsize, ") > threshold (", dataThreshold, ") -> loading ", f))}
+      row1DT <- fread(f, nrows = 1)
+      # what is the date column called?
+      fListCompleteDT <- fListCompleteDT[fullPath == f, dateColName := "unknown - can't tell"]
+      if(nrow(dplyr::select(row1DT, dplyr::contains("NZ"))) > 0){ # requires dplyr
+        setnames(row1DT, 'date NZ', "dateTime_char")
+        row1DT <- row1DT[, dateColName := "date NZ"]
+        fListCompleteDT <- fListCompleteDT[fullPath == f, dateColName := "date NZ"]
+      } 
+      if(nrow(dplyr::select(row1DT, dplyr::contains("UTC"))) > 0){ # requires dplyr
+        setnames(row1DT, 'date UTC', "dateTime_char")
+        row1DT <- row1DT[, dateColName := "date UTC"]
+        fListCompleteDT <- fListCompleteDT[fullPath == f, dateColName := "date UTC"]
+      }
+      # split dateTime
+      row1DT <- row1DT[, c("date_char", "time_char") := data.table::tstrsplit(dateTime_char, " ")]
+      # add example of date to metadata - presumably they are the same in each file?!
+      fListCompleteDT <- fListCompleteDT[fullPath == f, dateExample := row1DT[1, date_char]]
+      
+      if(fullFb){print(paste0("Checking date formats in ", f))}
+      dt <- gs_checkDates(row1DT)
+      fListCompleteDT <- fListCompleteDT[fullPath == f, dateFormat := dt[1, dateFormat]]
+      fListCompleteDT <- fListCompleteDT[fullPath == f, dateFormat := dt[1, dateFormat]]
+      if(fullFb){print(paste0("Done ", f))}
+    }
+    loopCount <- loopCount + 1
+  }
+  print("All files checked")
+  
+  # any date formats are still ambiguous need a deeper inspection using the full file - could be slow
+  fAmbig <- fListCompleteDT[dateFormat == "ambiguous", fullPath]
+  
+  for(fa in fAmbig){
+    if(baTest | fullFb){print(paste0("Checking ambiguous date formats in ", fa))}
+    ambDT <- fread(fa)
+    if(nrow(dplyr::select(ambDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
+      setnames(ambDT, 'date NZ', "dateTime_char")
+    } 
+    if(nrow(dplyr::select(ambDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
+      setnames(ambDT, 'date UTC', "dateTime_char")
+    }
+    ambDT <- ambDT[, c("date_char", "time_char") := data.table::tstrsplit(dateTime_char, " ")]
+    ambDT <- gs_checkDates(ambDT)
+    # set what we now know (or guess!)
+    fListCompleteDT <- fListCompleteDT[fullPath == fa, dateFormat := ambDT[1,dateFormat]]
+  }
+  fListCompleteDT <- setnames(fListCompleteDT, "V1", "file")
+  
+  ofile <- paste0(outPath, fListInterim)
+  print(paste0("Saving 1 minute data files interim metadata to ", ofile))
+  write.csv(fListCompleteDT, ofile)
+  print("Done")
+}
+
+print(paste0("Overall we have ", nrow(fListCompleteDT), " files from ", uniqueN(fListCompleteDT$hhID), " households."))
+
+# for use below
+nFiles <- nrow(fListCompleteDT)
+nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "unknown"])
+```
+
+Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were _not_ loaded/checked as their file sizes indicated that they contained no data.
+
+## Date format checks
+
+We now need to check how many of the loaded files have an ambiguous or default date - these could introduce errors.
+
+```{r initialDateFormatTable}
+
+# short cut if interim file list already saved ----
+#ifile <- paste0(outPath, fListInterim)
+#print(paste0("Loading 1 minute data files interim metadata to ", ifile))
+#fListCompleteDT <- fread(ifile)
+  
+  
+t <- fListCompleteDT[, .(nFiles = .N, 
+                         minDate = min(dateExample), # may not make much sense
+                         maxDate = max(dateExample)), keyby = .(dateColName, dateFormat)]
+
+knitr::kable(caption = "Number of files & min/max date (as char) with given date column names by inferred date format", t)
+```
+
+Results to note:
+
+ * There are `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` ambiguous files
+ * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
+ 
+We now inspect the ambiguous and (some of) the default files.
+
+To help with data cleaning the following table lists files that have ambiguous dates.
+
+```{r listAmbigFiles}
+# list ambigious files
+aList <- fListCompleteDT[dateFormat == "ambiguous", .(file, dateColName, dateExample, dateFormat)]
+
+cap <- paste0("All ", nrow(aList), " files with an ambiguous dateFormat")
+
+knitr::kable(caption = cap, aList)
+
+```
+
+Check against file names to see what is reasonable and then fix them.
+
+```{r setAmbiguous}
+# Setting to dmy seems OK
+fListCompleteDT <- fListCompleteDT[dateFormat == "ambiguous", dateFormat := "dmy - inferred"]
+
+paste0("Fixed ", nrow(aList), " files with an ambiguous dateFormat")
+```
+
+
+The following table lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
+
+```{r listDefaultDateFilesNZT}
+# list default files
+aList <- fListCompleteDT[dateColName == "date NZ" & dateFormat %like% "default", .(file, fSize, dateColName, dateExample, dateFormat)]
+
+cap <- paste0("First 10 (max) of ", nrow(aList), " files with dateColName = 'date NZ' and default dateFormat")
+
+knitr::kable(caption = cap, head(aList))
+
+```
+
+
+
+The following table lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
+
+```{r listDefaultDateFilesUTC}
+# list default files
+aList <- fListCompleteDT[dateColName == "date UTC" & dateFormat %like% "default", .(file, fSize, dateColName, dateExample, dateFormat)]
+
+cap <- paste0("First 10 (max) of ", nrow(aList), " files with dateColName = 'date UTC' and default dateFormat")
+
+knitr::kable(caption = cap, head(aList, 10))
+
+
+```
+
+Check final date formats:
+
+```{r finalDateFormatTable}
+t <- fListCompleteDT[, .(nFiles = .N, 
+                         minDate = min(dateExample), # may not make much sense
+                         maxDate = max(dateExample)), keyby = .(dateColName, dateFormat)]
+
+knitr::kable(caption = "Number of files & min/max dates (as char) with given date column names by final imputed date format", t)
+```
+
+## Data file quality checks
+
+The following chart shows the distribution of these files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
+
+```{r allFileSizesPlot}
+myCaption <- paste0("Data source: ", fpath,
+                    "\nUsing data received up to ", Sys.Date())
+
+plotDT <- fListCompleteDT[, .(nFiles = .N,
+                              meanfSize = mean(fSize)), 
+                          keyby = .(hhID, date = as.Date(fMDate))]
+
+ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "black") + 
+  scale_x_date(date_labels = "%Y %b", date_breaks = "1 month") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "Mean file size of all grid spy data files received per day",
+       caption = paste0(myCaption, 
+                        "\nLog file size used as some files are full year data")
+    
+  )
+ggplot2::ggsave(paste0(outPath, "gridSpyAllFileListSizeTilePlot.png"))
+```
+
+
+The following chart shows the same chart but only for files which we think contain data.
+
+```{r loadedFileSizesPlot}
+myCaption <- paste0("Data source: ", fpath,
+                    "\nUsing data received up to ", Sys.Date())
+
+plotDT <- fListCompleteDT[!is.na(dateFormat), .(nFiles = .N,
+                              meanfSize = mean(fSize)), 
+                          keyby = .(hhID, date = as.Date(fMDate))]
+
+ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "black") + 
+  scale_x_date(date_labels = "%Y %b", date_breaks = "1 month") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "Mean file size of loaded grid spy data files received per day",
+       caption = paste0(myCaption, 
+                        "\nLog file size used as some files are full year data",
+                        "\nFiles loaded if fsize > ", dataThreshold, " bytes")
+    
+  )
+ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileListSizeTilePlot.png"))
+```
+
+# Load data files
+
+In this section we load the data files that have a file size > `r dataThreshold` bytes. Things to note:
+
+ * We assume that any files smaller than this value have no observations. This is based on:
+     * Manual inspection of several small files
+     * The identical (small) file sizes involved
+     * _But_ we should probably test the first few lines to double check...
+ * We have to deal with quite a lot of duplication some of which has caused the different date formats. See our [repo issues list](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues?scope=all&utf8=%E2%9C%93&state=all).
+ 
+The following table shows the number of files per household that we willl load.
+
+```{r filesToLoadTable}
+filesToLoadDT <- fListCompleteDT[!is.na(dateFormat)]
+
+t <- filesToLoadDT[, .(nFiles = .N,
+                       meanSize = mean(fSize),
+                       minFileDate = min(fMDate),
+                       maxFileDate = max(fMDate)), keyby = .(hhID)]
+
+knitr::kable(caption = "Summary of household files to load", t)
+```
+
+
+```{r loadValidFiles}
+# > Load, process & save the ones which probably have data ----
+fListCompleteDT <- fListCompleteDT[, fileLoaded := "No"] # set default
+hhIDs <- unique(filesToLoadDT$hhID) # list of household ids
+hhStatDT <- data.table::data.table() # stats collector
+
+for(hh in hhIDs){ #> start of household loop ----
+  tempHhDT <- data.table::data.table() # hh data collector
+  print(paste0("Loading: ", hh))
+  filesToLoad <- filesToLoadDT[hhID == hh, fullPath]
+  for(f in filesToLoad){ # >> start of per-file loop ----
+    if(fullFb){print(paste0("File size (", f, ") = ", 
+                            filesToLoadDT[fullPath == f, fSize], 
+                            " so probably OK"))} # files under 3kb are probably empty
+    # attempt to load the file
+    tempDT <- data.table::fread(f)
+    if(fullFb){print("File loaded")}
+    # set some file stats
+    fListCompleteDT <- fListCompleteDT[fullPath == f, fileLoaded := "Yes"]
+    fListCompleteDT <- fListCompleteDT[fullPath == f, nObs := nrow(tempDT)] # could include duplicates
+    
+    # what is the date column called?
+      if(nrow(dplyr::select(tempDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
+        setnames(tempDT, 'date NZ', "dateTime_char")
+        tempDT <- tempDT[, dateColName := "date NZ"]
+      } 
+      if(nrow(dplyr::select(tempDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
+        setnames(tempDT, 'date UTC', "dateTime_char")
+        tempDT <- tempDT[, dateColName := "date UTC"]
+      }
+      
+    # >> Fix dates ----
+    # Using the pre-inferred dateFormat
+      tempDT <- tempDT[, dateFormat := filesToLoadDT[fullPath == f, dateFormat]]
+      tempDT <- tempDT[dateFormat %like% "mdy" & dateColName %like% "NZ", r_dateTime := lubridate::mdy_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "dmy" & dateColName %like% "NZ", r_dateTime := lubridate::dmy_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "ydm" & dateColName %like% "NZ", r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "ymd" & dateColName %like% "NZ", r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "Pacific/Auckland")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "mdy" & dateColName %like% "UTC", r_dateTime := lubridate::mdy_hm(dateTime_char, tz = "UTC")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "dmy" & dateColName %like% "UTC", r_dateTime := lubridate::dmy_hm(dateTime_char, tz = "UTC")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "ydm" & dateColName %like% "UTC", r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "UTC")] # requires lubridate
+      tempDT <- tempDT[dateFormat %like% "ymd" & dateColName %like% "UTC", r_dateTime := lubridate::ymd_hm(dateTime_char, tz = "UTC")] # requires lubridate
+      if(fullFb){
+        print(head(tempDT))
+        print(summary(tempDT))
+        #print(table(tempDT$dateFormat))
+        }
+    
+    fListCompleteDT <- fListCompleteDT[fullPath == f, obsStartDate := min(as.Date(tempDT$r_dateTime))] # should be a sensible number and not NA
+    fListCompleteDT <- fListCompleteDT[fullPath == f, obsEndDate := max(as.Date(tempDT$r_dateTime))] # should be a sensible number and not NA
+    fListCompleteDT <- fListCompleteDT[fullPath == f, nObs := nrow(tempDT)]
+    
+    # >> Fix circuit labels where we have noticed errors ----
+    # rf_24 has an additional circuit in some files but value is always NA
+    # rf_46 has 3 different versions of the circuit labels:
+    # 1: Heat Pumps (2x) & Power$4232, Heat Pumps (2x) & Power$4399, Hot Water - Controlled$4231, Hot Water - Controlled$4400, Incomer - Uncontrolled$4230, Incomer - Uncontrolled$4401, Incomer Voltage$4405, Kitchen & Bedrooms$4229, Kitchen & Bedrooms$4402, Laundry & Bedrooms$4228, Laundry & Bedrooms$4403, Lighting$4233, Lighting$4404
+    # 2: Heat Pumps (2x) & Power1$4232, Heat Pumps (2x) & Power2$4399, Hot Water - Controlled1$4231, Hot Water - Controlled2$4400, Incomer - Uncontrolled1$4230, Incomer - Uncontrolled2$4401, Incomer Voltage$4405, Kitchen & Bedrooms1$4229, Kitchen & Bedrooms2$4402, Laundry & Bedrooms1$4228, Laundry & Bedrooms2$4403, Lighting1$4233, Lighting2$4404
+    # 3: Heat Pumps (2x) & Power_Imag$4399, Heat Pumps (2x) & Power$4232, Hot Water - Controlled_Imag$4400, Hot Water - Controlled$4231, Incomer - Uncontrolled_Imag$4401, Incomer - Uncontrolled$4230, Incomer Voltage$4405, Kitchen & Bedrooms_Imag$4402, Kitchen & Bedrooms$4229, Laundry & Bedrooms_Imag$4403, Laundry & Bedrooms$4228, Lighting_Imag$4404, Lighting$4233
+    # Fix to just the first (might also fix duplication of observations)
+    if(hh == "rf_46"){
+      if(fullFb){print("Checking circuit labels for rf_46")}
+      # check if we have the second form of labels - they have 'Power1$4232' in one col label
+      checkCols2 <- ncol(dplyr::select(tempDT,dplyr::contains("Power1$4232")))
+      if(checkCols2 == 1){
+        # we got label set 2
+        if(fullFb){print(paste0("Found circuit labels set 2 in ", f))}
+        setnames(tempDT, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399", 
+                           "Hot Water - Controlled1$4231", "Hot Water - Controlled2$4400", 
+                           "Incomer - Uncontrolled1$4230", "Incomer - Uncontrolled2$4401", 
+                           "Incomer Voltage$4405", "Kitchen & Bedrooms1$4229", 
+                           "Kitchen & Bedrooms2$4402","Laundry & Bedrooms1$4228", 
+                           "Laundry & Bedrooms2$4403", "Lighting1$4233", "Lighting2$4404"), 
+                 c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399", "Hot Water - Controlled$4231",
+                   "Hot Water - Controlled$4400", "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401",
+                   "Incomer Voltage$4405", "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402", 
+                   "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403", "Lighting$4233", "Lighting$4404"))
+      }
+      # check if we have the third form of labels - they have 'Power_Imag$4399' in one col label
+      checkCols3 <- ncol(dplyr::select(tempDT,dplyr::contains("Power_Imag$4399")))
+      if(checkCols3 == 1){
+        # we got label set 3
+        if(fullFb){print(paste0("Found circuit labels set 3 in ", f))}
+        # be careful to get this order correct so that it matches the label 1 order
+        setnames(tempDT, c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power_Imag$4399",
+                           "Hot Water - Controlled$4231", "Hot Water - Controlled_Imag$4400", 
+                           "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled_Imag$4401", "Incomer Voltage$4405",
+                           "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms_Imag$4402", 
+                           "Laundry & Bedrooms$4228", "Laundry & Bedrooms_Imag$4403", 
+                           "Lighting$4233", "Lighting_Imag$4404"), 
+                 c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399", 
+                   "Hot Water - Controlled$4231", "Hot Water - Controlled$4400", 
+                   "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401", "Incomer Voltage$4405", 
+                   "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402", 
+                   "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403",
+                   "Lighting$4233", "Lighting$4404"))
+      }
+    }
+    # >> Check circuit labels to see if any remaining errors ----
+    # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them - this is the only way we have to check if data from different households has been placed in the wrong folder.
+    fListCompleteDT <- fListCompleteDT[fullPath == f, 
+                                       circuitLabels := toString(sort(colnames(dplyr::select(tempDT,
+                                                                                             dplyr::contains("$")))))] 
+    # check for the number of circuits - all seem to contain "$"
+    fListCompleteDT <- fListCompleteDT[fullPath == f, nCircuits := ncol(dplyr::select(tempDT, 
+                                                                                      dplyr::contains("$")))] 
+    #tempDT <- tempDT[, sourceFile := f] # record for later checks - don't as it breaks de-duplication code
+    
+    # >> rbind file to hh data collector ----
+    tempHhDT <- rbind(tempHhDT, tempDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
+  }
+  
+  # > Remove duplicates caused by over-lapping files and dates etc ----
+  # Need to remove all uneccessary vars for this to work
+  # Any remaining duplicates will probably be due to over-lapping files which have different circuit labels - see table below
+  try(tempHhDT$dateColName <- NULL)
+  try(tempHhDT$dateFormat <- NULL)
+  try(tempHhDT$dateTime_char <- NULL) # if we leave this one in then we get duplicates where we have date NZ & date UTC for the same timestamp due to overlapping file downloads
+  
+  nObs <- nrow(tempHhDT)
+  if(fullFb){print(paste0("N rows before removal of duplicates: ", nObs))}
+  tempHhDT <- unique(tempHhDT)
+  nObs <- nrow(tempHhDT)
+  if(fullFb){print(paste0("N rows after removal of duplicates: ", nObs))}
+  
+  hhStatTempDT <- tempHhDT[, .(nObs = .N,
+                           nDataColumns = ncol(select(tempDT, contains("$")))), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
+                           keyby = (date = as.Date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
+  # add hhID
+  hhStatTempDT <- hhStatTempDT[, hhID := hh]
+  
+  hhStatDT <- rbind(hhStatDT,hhStatTempDT) # add to the collector
+  
+  # > Save hh file ----
+  # add hhid for ease of future loading etc
+  tempHhDT <- tempHhDT[, hhID := hh]
+  ofile <- paste0(outPath, "data/", hh,"_all_1min_data.csv")
+  print(paste0("Saving ", ofile, "..."))
+  write_csv(tempHhDT, ofile)
+  print(paste0("Saved ", ofile, ", gzipping..."))
+  
+  cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
+  try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
+  print(paste0("Gzipped ", ofile))
+  
+    if(fullFb){
+    print("Col names: ")
+    print(names(tempHhDT))
+    }
+  
+  tempHhDT <- NULL # just in case
+}
+
+#> Save observed data stats for all files loaded ----
+ofile <- paste0(outPath, "hhDailyObservationsStats.csv")
+print(paste0("Saving daily observations stats by hhid to ", ofile)) # write out version with file stats
+write.csv(hhStatDT, ofile)
+print("Done")
+
+ofile <- paste0(outPath, fListFinal)
+print(paste0("Saving 1 minute data files final metadata to ", ofile))
+write.csv(fListCompleteDT, ofile)
+print("Done")
+```
+
+# Data quality analysis
+
+Now produce some data quality plots & tables.
+
+## Circuit label checks
+
+The following table shows the number of data files with different circuit labels by household. In theory there should only be one unique list per household and it should be present in every data file. 
+
+```{r circuitLabelCheck}
+# short cut if exists already
+#ifile <- paste0(outPath, fListFinal)
+#fListCompleteDT <- fread(ifile)
+t <- table(fListCompleteDT$hhID,fListCompleteDT$circuitLabels)
+knitr::kable(caption = "Circuit labels list by household", t)
+
+```
+
+If this is not the case then this implies that:
+
+ * some of the circuit labels for these households may have been changed during the data collection process;
+ * some of the circuit labels may have character conversion errors which have changed the labels during the data collection process;
+ * at least one file from one household has been saved to a folder containing data from a different household (unfortunately the raw data files do _not_ contain household IDs in the data or the file names which would enable checking/preventative filtering). This will be visible in the table if two households appear to share _exactly_ the same list of circuit labels.
+
+Some or all of these may be true at any given time!
+
+Errors are easy to spot in the following plot where a hhID spans 2 or more circuit labels.
+
+```{r plotCircuitLabelIssuesAsTile, fig.height=8}
+t <- fListCompleteDT[!is.na(circuitLabels), .(nFiles = .N,
+                                              minObsDate = min(obsStartDate), # helps locate issues in data
+                                              maxObsDate = max(obsEndDate),
+                                              minFileDate = min(fMDate), # helps locate issues in files
+                                              maxFileDate = max(fMDate),
+                                              nObs = sum(nObs)),
+                     keyby = .(circuitLabels, hhID)] # ignore NA - it is files not loaded due to size thresholds
+
+ggplot2::ggplot(t, aes(y = hhID, x = circuitLabels, fill = nObs)) +
+  geom_tile() +
+  #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "Circuit label counts for all loaded grid spy data",
+       caption = paste0(myCaption,
+                        "\nOnly files of size > ", dataThreshold, " bytes loaded")
+       
+  )
+ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileCircuitLabelsPlot.png"))
+```
+
+The following table provides more detail to aid error checking. Check for:
+
+ * 2+ adjacent rows which have exactly the same circuit labels but different hh_ids. This implies some data from one household has been saved in the wrong folder;
+ * 2+ adjacent rows which have different circuit labels but identical hh_ids. This could imply the same thing but is more likely to be errors/changes to the circuit labelling. 
+ 
+If the above plot and this table flag a lot of errors then some re-naming of the circuit labels (column names) may be necessary. 
+
+```{r circuitLabelMetaDataCheck}
+knitr::kable(caption = "Circuit labels by household with addiitonal meta-data", t)
+```
+
+Things to note:
+
+ * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA
+ 
+## Observations
+
+The following plots show the number of observations per day per household. In theory we should not see:
+
+ * dates before 2014 or in to the future. These may indicate:
+    * date conversion errors;
+ * more than 1440 observations per day. These may indicate:
+    * duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels;
+    * observations from files that are in the 'wrong' rf_XX folder and so are included in the 'wrong' household as 'duplicate' time stamps.
+
+If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it's consolidated household dataset (a _within household absolute duplicate_ check).
+
+```{r loadedFilesObsPlots}
+# short cut if already generated
+# hhStatDT <- as.data.table(read_csv(ofile)) # parses dates
+
+# tile plot ----
+ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, fill = nObs)) +
+  geom_tile() +
+  scale_fill_gradient(low = "red", high = "green") +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "N observations per household per day for all loaded grid spy data",
+       caption = paste0(myCaption,
+                        "\nOnly files of size > ", dataThreshold, " bytes loaded")
+       
+  )
+ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileNobsTilePlot.png"))
+
+# point plot ----
+ggplot2::ggplot(hhStatDT, aes( x = date, y = nObs, colour = hhID)) +
+  geom_point() +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "N observations per household per day for all loaded grid spy data",
+       caption = paste0(myCaption,
+                        "\nOnly files of size > ", dataThreshold, " bytes loaded")
+       
+  )
+ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileNobsPointPlot.png"))
+```
+
+The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
+
+ * dates before 2014 or in to the future (indicates date conversion errors)
+ * more than 1440 observations per day (indicates potentially duplicate observations)
+ * non-integer counts of circuits as it suggests some column errors
+ 
+ We should also not see NA in any row (indicates date conversion errors). 
+ 
+ If we do see any of these then we still have data cleaning work to do!
+
+```{r summaryTable}
+# Stats table (so we can pick out the dateTime errors)
+t <- hhStatDT[, .(minObs = min(nObs),
+             maxObs = max(nObs), # should not be more than 1440, if so suggests duplicates
+             meanNDataColumns =mean(nDataColumns), #i.e. n circuits
+             minDate = min(date),
+             maxDate = max(date)),
+         keyby = .(hhID)]
+
+knitr::kable(caption = "Summary observation stats by hhID", t)
+```
+
+
+Finally we show the total number of households which we think are still sending data.
+
+```{r liveDataHouseholds}
+plotDT <- hhStatDT[, .(nHH = uniqueN(hhID)), keyby = .(date)]
+
+# point plot ----
+ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
+  geom_point() +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "N live households per day for all loaded grid spy data",
+       caption = paste0(myCaption,
+                        "\nOnly files of size > ", dataThreshold, " bytes loaded")
+       
+  )
+ggplot2::ggsave(paste0(outPath, "gridSpyLiveHouseholdsToDate.png"))
+
+```
+
+# Runtime
+
+
+```{r check runtime}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r elapsed` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used: `r reqLibs`
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * lubridate - date manipulation [@lubridate]
+ * ggplot2 - for slick graphics [@ggplot2]
+ * readr - for csv reading/writing [@readr]
+ * dplyr - for select and contains [@dplyr]
+ * knitr - to create this document [@knitr]
+ * greenGridr - for local NZ GREEN Grid utilities
+ 
+```{r sessionInfo}
+sessionInfo()
+```
+
+# References

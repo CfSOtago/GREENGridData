@@ -9,9 +9,13 @@ The code in this repo does two things:
  * produces original data processing reports (code will only work if you have the original data)
  * produces cleaned 'safe' data reports (code will work on the archived 'safe' data)
 
+NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
+
 # Data Access
 
-A link to the archived 'safe' version of the data will appear here. Access to the original data is restricted.
+A link to the archived 'safe' version of the data will appear here soon. 
+
+Access to the original data which is stored on the University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html) is restricted.
 
 # Using the code
 This repo is intentionally structured as an R package so you can install it and re-use the code. 

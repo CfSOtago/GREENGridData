@@ -5,11 +5,11 @@
  * Occupant time-use diaries (focused on energy use)
  * Dwelling & appliance surveys
 
-_None_ of the code here will work unless you also have access to the data. While we have plans to deposit anonymised versions of the data with a suitable data archive (any offers?!), the data is currently held on the University of Otago High Performance Storage filestore and access is controlled by the [NZ GREEN Grid project administrator](mailto:jane.wilcox@otago.ac.nz?subject=Access to GREEN Grid data (via github readme)).
+NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data.
 
 ## Time Use Diaries
 
-Two time-use diaries were conducted, one for each of the two samples (Unison & PowerCo). The code in the [tud](tud) folder:
+Two time-use diaries were conducted, one for each of the two samples (Unison & PowerCo). The code:
 
  * Loads and checks each diary
  * Removes any identifying (potentially disclosive) variables
@@ -19,6 +19,4 @@ Each file has multiple rows per household representing different people's diarie
 
 See html/pdf for latest run but check creation date to ensure most recent.
 
-The .R code to do most of this can be found in the .Rmd file in [tud](tud) which runs the processing and produces a report on the data processing.
-
->Track outstanding [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues?label_name%5B%5D=TUD).
+> Track outstanding [issues](https://github.com/dataknut/nzGREENGridDataR/labels/TUD).
