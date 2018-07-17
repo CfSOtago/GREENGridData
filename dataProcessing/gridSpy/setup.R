@@ -4,13 +4,13 @@
 rm(list=ls(all=TRUE)) # remove all objects from workspace
 
 # Load nzGREENGrid package ----
-library(nzGREENGrid) # local utilities
+library(nzGREENGridDataR) # local utilities
 
 # Set start time ----
 startTime <- proc.time()
 
 # Local parameters ----
-fullFb <- 1 # switch on (1) or off (0) full feedback
+fullFb <- 0 # switch on (1) or off (0) full feedback
 baTest <- 1 # test (1) or full (0) run?
 refreshData <- 1 # re-build entire fileset? 0 = no
 
@@ -32,16 +32,19 @@ if(baTest == 1){
 pattern <- "*at1.csv$" # e.g. *at1.csv$ filters only 1 min data
 fListInterim <- "fListCompleteDT_interim.csv" # place to store the interim file list with initial meta-data
 fListFinal <- "fListCompleteDT_final.csv" # place to store the final complete file list with all meta-data
-gsMasterFile <- path.expand("~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx")
+gsMasterFile <- "~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx"
 
 dataThreshold <- 3000 # assume any files smaller than this (bytes) = no data or some mangled xml/html. Really, we should check the contents of each file.
 
-projLoc <- nzGREENGrid::findParentDirectory("nzGREENGrid")
+projLoc <- nzGREENGridDataR::findParentDirectory("nzGREENGridDataR")
 
 # Packages needed in this .Rmd file ----
-rmdLibs <- c("data.table" # data munching
+rmdLibs <- c("data.table", # data munching
+             "dplyr", # select
+             "lubridate", # dates and times
+             "hms" # times
 )
 # load them
-nzGREENGrid::loadLibraries(rmdLibs)
+nzGREENGridDataR::loadLibraries(rmdLibs)
 
 # Local functions ----
