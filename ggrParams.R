@@ -1,16 +1,16 @@
 ggrParams <<- list() # params holder
 
 # Location of original data
-ggrParams$projLoc <- findParentDirectory("nzGREENGrid")
+ggrParams$projLoc <- findParentDirectory("nzGREENGridDataR")
 ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HPS by default
 
 # Location of basic household data
 ggrParams$gsHHMasterFile <- path.expand("~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx")
 
 # Rmd includes
-ggrParams$historyGenericRmd <- paste0(ggParams$projLoc, "/includes/historyGeneric.Rmd")
-ggrParams$supportGenericRmd <- paste0(ggParams$projLoc, "/includes/supportGeneric.Rmd")
-ggrParams$circulationGenericRmd <- paste0(ggParams$projLoc, "/includes/circulationGeneric.Rmd")
+ggrParams$historyGenericRmd <- paste0(ggrParams$projLoc, "/includes/historyGeneric.Rmd")
+ggrParams$supportGenericRmd <- paste0(ggrParams$projLoc, "/includes/supportGeneric.Rmd")
+ggrParams$circulationGenericRmd <- paste0(ggrParams$projLoc, "/includes/circulationGeneric.Rmd")
 
 # Vars for Rmd
 ggrParams$pubLoc <- "[Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin"
