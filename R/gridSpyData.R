@@ -101,6 +101,7 @@ fixAmbiguousDates <- function(dt){
 #'
 #' @param fpath where to look (recursively)
 #' @param pattern the pattern to match
+#' @param dataThreshold the file size threshold (files smaller than this will be ignored as we assume they have no data)
 #' @param mf name of file to save interim file list and meta data to
 #'
 #' @import dplyr
@@ -111,7 +112,7 @@ fixAmbiguousDates <- function(dt){
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
 #' @export
 #'
-getGridSpyFileList <- function(fpath, pattern, mf){
+getGridSpyFileList <- function(fpath, pattern, dataThreshold){
   print(paste0("Looking for data using pattern = ", pattern, " in ", fpath, " - could take a while..."))
   # > Get the file list as a data.table ----
   fList <- list.files(path = fpath, pattern = pattern, # use to filter e.g. 1m from 30s files
@@ -146,13 +147,14 @@ getGridSpyFileList <- function(fpath, pattern, mf){
       dt <- dt[fullPath == f, fSize := fsize]
       dt <- dt[fullPath == f, fMTime := fmtime]
       dt <- dt[fullPath == f, fMDate := as.Date(fmtime)]
-      dt <- dt[fullPath == f, dateColName := paste0("unknown - do not load (fsize = ", fsize, ")")]
+      dt <- dt[fullPath == f, dateColName := paste0("Unknown - ignore as fsize ( ", 
+                                                    fsize, " ) < dataThreshold ( ", dataThreshold, " )")]
       # only try to read files where we think there might be data
       loadThis <- ifelse(fsize > dataThreshold, "Loading (fsize > threshold)", "Skipping (fsize < threshold)")
-      if(fullFb){print(paste0("Checking file ", loopCount, " of ", nFiles ,
+      if(gSpyParams$fullFb){print(paste0("Checking file ", loopCount, " of ", nFiles ,
                               " (", round(100*(loopCount/nFiles),2), "% checked): ", loadThis))}
       if(fsize > dataThreshold){
-        if(fullFb){print(paste0("fSize (", fsize, ") > threshold (", dataThreshold, ") -> loading ", f))}
+        if(gSpyParams$fullFb){print(paste0("fSize (", fsize, ") > threshold (", dataThreshold, ") -> loading ", f))}
         row1DT <- fread(f, nrows = 1)
         # what is the date column called?
         dt <- dt[fullPath == f, dateColName := "unknown - can't tell"]
@@ -171,11 +173,11 @@ getGridSpyFileList <- function(fpath, pattern, mf){
         # add example of date to metadata - presumably they are the same in each file?!
         dt <- dt[fullPath == f, dateExample := row1DT[1, date_char]]
 
-        if(fullFb){print(paste0("Checking date formats in ", f))}
+        if(gSpyParams$fullFb){print(paste0("Checking date formats in ", f))}
         testDT <- checkDates(row1DT)
         dt <- dt[fullPath == f, dateFormat := testDT[1, dateFormat]]
         dt <- dt[fullPath == f, dateFormat := testDT[1, dateFormat]]
-        if(fullFb){print(paste0("Done ", f))}
+        if(gSpyParams$fullFb){print(paste0("Done ", f))}
       }
       loopCount <- loopCount + 1
     }
@@ -186,7 +188,7 @@ getGridSpyFileList <- function(fpath, pattern, mf){
     if(length(fAmbig) > 0){ # there were some
       pbA <- progress::progress_bar$new(total = length(fAmbig))
       for(fa in fAmbig){
-        if(baTest | fullFb){print(paste0("Checking ambiguous date formats in ", fa))}
+        if(gSpyParams$localTest | gSpyParams$fullFb){print(paste0("Checking ambiguous date formats in ", fa))}
         ambDT <- fread(fa)
         pbA$tick()
         if(nrow(dplyr::select(ambDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
@@ -202,13 +204,32 @@ getGridSpyFileList <- function(fpath, pattern, mf){
       }
     }
     dt <- setnames(dt, "fList", "file")
-
-    ofile <- paste0(outPath, mf) # outPath set in global
-    print(paste0("Saving 1 minute data files interim metadata to ", ofile))
-    data.table::fwrite(dt, ofile)
     print("Done")
   }
   return(dt)
+}
+
+#' Loads and processes a list of gridSpy data files for a given household
+#'
+#' \code{getHhGridSpyData} takes a file list and loads & processes data before saving out 1 file. 
+#'    It assumes all data is for one household (can only be detected from input file names)
+#'
+#'    Updates the per input file metadata and the per household per day summary stats file
+#'    
+#' @param hh the household id
+#' @param fileList list of files to load
+#'
+#' @import dplyr
+#' @import data.table
+#' @import lubridate
+#' @import progress
+#' @import reshape2
+#'
+#' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
+#' @export
+#'
+getHhGridSpyData <- function(hh, fileList){
+  print(paste0("Running getHhGridSpyData from package functions to load files for ", hh))
 }
 
 #' Loads and processes a list of gridSpy data files
@@ -238,33 +259,33 @@ processGridSpyDataFiles <- function(dt, mf){
   hhStatDT <- data.table::data.table() # stats collector
 
   for(hh in hhIDs){ # X > start of per household loop ----
-    tempHhDT <- data.table::data.table() # hh data collector
+    tempHhLongDT <- data.table::data.table() # hh data collector
     print(paste0("Loading: ", hh))
     filesToLoad <- filesToLoadDT[hhID == hh, fullPath]
     pbF <- progress::progress_bar$new(total = length(filesToLoad))
     for(f in filesToLoad){ # XX >> start of per-file loop ----
-      if(fullFb){print(paste0("File size (", f, ") = ",
+      if(gSpyParams$fullFb){print(paste0("File size (", f, ") = ",
                               dt[fullPath == f, fSize],
                               " so probably OK"))} # files under 3kb are probably empty
       # attempt to load the file
-      tempDT <- data.table::fread(f)
+      fDT <- data.table::fread(f)
       pbF$tick()
-      if(fullFb){print("File loaded")}
+      if(gSpyParams$fullFb){print("File loaded")}
       # set some file stats
       dt <- dt[fullPath == f, fileLoaded := "Yes"]
-      dt <- dt[fullPath == f, nObs := nrow(tempDT)] # could include duplicates
+      dt <- dt[fullPath == f, nObs := nrow(fDT)] # could include duplicates
 
       # what is the date column called?
       # Use this to work out which TZ is being applied
-      if(nrow(dplyr::select(tempDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
+      if(nrow(dplyr::select(fDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
         # if we have > 1 row with col name containing 'NZ'
-        setnames(tempDT, 'date NZ', "dateTime_char")
-        tempDT <- tempDT[, dateColName := "date NZ"]
+        setnames(fDT, 'date NZ', "dateTime_char")
+        fDT <- fDT[, dateColName := "date NZ"]
       }
-      if(nrow(dplyr::select(tempDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
+      if(nrow(dplyr::select(fDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
         # if we have > 1 row with col name containing 'UTC'
-        setnames(tempDT, 'date UTC', "dateTime_char")
-        tempDT <- tempDT[, dateColName := "date UTC"]
+        setnames(fDT, 'date UTC', "dateTime_char")
+        fDT <- fDT[, dateColName := "date UTC"]
       }
 
       # >> Fix dates ----
@@ -287,31 +308,25 @@ processGridSpyDataFiles <- function(dt, mf){
 
       # Using the pre-inferred dateFormat
       # Sets timezone to default (UTC) - sort this out later
-      tempDT <- tempDT[, dateFormat := dt[fullPath == f, dateFormat]]
-      tempDT <- tempDT[dateFormat %like% "mdy",
+      fDT <- fDT[, dateFormat := dt[fullPath == f, dateFormat]]
+      fDT <- fDT[dateFormat %like% "mdy",
                        r_dateTimeUTC := lubridate::mdy_hm(dateTime_char)] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "dmy",
+      fDT <- fDT[dateFormat %like% "dmy",
                        r_dateTimeUTC := lubridate::dmy_hm(dateTime_char)] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "ydm",
+      fDT <- fDT[dateFormat %like% "ydm",
                        r_dateTimeUTC := lubridate::ymd_hm(dateTime_char)] # requires lubridate
-      tempDT <- tempDT[dateFormat %like% "ymd",
+      fDT <- fDT[dateFormat %like% "ymd",
                        r_dateTimeUTC := lubridate::ymd_hm(dateTime_char)] # requires lubridate
-      
-      
-      # set correct local dateTime
-      tempDT <- tempDT[dateColName %like% "UTC",
-                       r_dateTime := lubridate::force_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")] # requires lubridate
-      tempDT <- tempDT[dateColName %like% "NZ",
-                       r_dateTime := r_dateTimeUTC] # it wasn't actually UTC
-      if(fullFb){
-        print(head(tempDT))
-        print(summary(tempDT))
-        #print(table(tempDT$dateFormat))
+      fDT$dateFormat <- NULL # no longer needed
+      if(gSpyParams$fullFb){
+        print(head(fDT))
+        print(summary(fDT))
+        #print(table(fDT$dateFormat))
       }
 
-      dt <- dt[fullPath == f, obsStartDate := min(as.Date(tempDT$r_dateTime))] # should be a sensible number and not NA
-      dt <- dt[fullPath == f, obsEndDate := max(as.Date(tempDT$r_dateTime))] # should be a sensible number and not NA
-      dt <- dt[fullPath == f, nObs := nrow(tempDT)]
+      dt <- dt[fullPath == f, obsStartDate := min(as.Date(fDT$r_dateTime))] # should be a sensible number and not NA
+      dt <- dt[fullPath == f, obsEndDate := max(as.Date(fDT$r_dateTime))] # should be a sensible number and not NA
+      dt <- dt[fullPath == f, nObs := nrow(fDT)]
 
       # >> Fix circuit labels where we have noticed errors ----
       # rf_24 has an additional circuit in some files but value is always NA
@@ -321,13 +336,13 @@ processGridSpyDataFiles <- function(dt, mf){
       # 3: Heat Pumps (2x) & Power_Imag$4399, Heat Pumps (2x) & Power$4232, Hot Water - Controlled_Imag$4400, Hot Water - Controlled$4231, Incomer - Uncontrolled_Imag$4401, Incomer - Uncontrolled$4230, Incomer Voltage$4405, Kitchen & Bedrooms_Imag$4402, Kitchen & Bedrooms$4229, Laundry & Bedrooms_Imag$4403, Laundry & Bedrooms$4228, Lighting_Imag$4404, Lighting$4233
       # Fix to just the first (might also fix duplication of observations)
       if(hh == "rf_46"){
-        if(fullFb){print("Checking circuit labels for rf_46")}
+        if(gSpyParams$fullFb){print("Checking circuit labels for rf_46")}
         # check if we have the second form of labels - they have 'Power1$4232' in one col label
-        checkCols2 <- ncol(dplyr::select(tempDT,dplyr::contains("Power1$4232")))
+        checkCols2 <- ncol(dplyr::select(fDT,dplyr::contains("Power1$4232")))
         if(checkCols2 == 1){
           # we got label set 2
-          if(fullFb){print(paste0("Found circuit labels set 2 in ", f))}
-          setnames(tempDT, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399",
+          if(gSpyParams$fullFb){print(paste0("Found circuit labels set 2 in ", f))}
+          setnames(fDT, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399",
                              "Hot Water - Controlled1$4231", "Hot Water - Controlled2$4400",
                              "Incomer - Uncontrolled1$4230", "Incomer - Uncontrolled2$4401",
                              "Incomer Voltage$4405", "Kitchen & Bedrooms1$4229",
@@ -339,12 +354,12 @@ processGridSpyDataFiles <- function(dt, mf){
                      "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403", "Lighting$4233", "Lighting$4404"))
         }
         # check if we have the third form of labels - they have 'Power_Imag$4399' in one col label
-        checkCols3 <- ncol(dplyr::select(tempDT,dplyr::contains("Power_Imag$4399")))
+        checkCols3 <- ncol(dplyr::select(fDT,dplyr::contains("Power_Imag$4399")))
         if(checkCols3 == 1){
           # we got label set 3
-          if(fullFb){print(paste0("Found circuit labels set 3 in ", f))}
+          if(gSpyParams$fullFb){print(paste0("Found circuit labels set 3 in ", f))}
           # be careful to get this order correct so that it matches the label 1 order
-          setnames(tempDT, c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power_Imag$4399",
+          setnames(fDT, c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power_Imag$4399",
                              "Hot Water - Controlled$4231", "Hot Water - Controlled_Imag$4400",
                              "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled_Imag$4401", "Incomer Voltage$4405",
                              "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms_Imag$4402",
@@ -358,7 +373,23 @@ processGridSpyDataFiles <- function(dt, mf){
                      "Lighting$4233", "Lighting$4404"))
         }
       }
-      # >> Check circuit labels to see if any remaining errors ----
+      # > add vars & switch to long form ----
+      # add hhid for ease of future loading etc
+      fDT <- fDT[, hhID := hh]
+      # switch to long format for easy future loading
+      # this turns each circuit label (column) into a label within 'variable' and
+      # sets value to be the power measurement
+      # we then relabel them for clarity
+      fLongDT <- reshape2::melt(fDT, id=c("hhID","dateTime_char","r_dateTimeUTC", "dateColName"))
+      data.table::setnames(fLongDT, "value", "power")
+      data.table::setnames(fLongDT, "variable", "circuit")
+      # force numeric
+      fLongDT <- fLongDT[, powerW := as.numeric(power)]
+      
+      # remove NA after conversion to numeric if present
+      fLongDT <- fLongDT[!is.na(powerW)]
+      fLongDT$power <- NULL # remove to save space/memory
+      
       # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them - this is the only way we have to check if data from different households has been placed in the wrong folder.
       dt <- dt[fullPath == f,
                circuitLabels := toString(sort(colnames(dplyr::select(tempDT,
@@ -369,69 +400,72 @@ processGridSpyDataFiles <- function(dt, mf){
       #tempDT <- tempDT[, sourceFile := f] # record for later checks - don't as it breaks de-duplication code
 
       # >> rbind file to hh data collector ----
-      tempHhDT <- rbind(tempHhDT, tempDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
+      tempHhLongDT <- rbind(tempHhLongDT, fLongDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
+      #fLongDT <- NULL # uncomment this if you don't need it for error checking (will be the last file loaded)
     } # XX >> end of per-file loop ----
+    
+    # Set correct time zone
+    
+    #tempHhLongDT <- tempHhLongDT[, defaultTZ := lubridate::tz(r_dateTimeUTC)]
+    
+    #table(tempHhLongDT$defaultTZ, useNA = "always")
+    
+    tempHhLongDT <- tempHhLongDT[dateColName %like% "UTC",
+                     r_dateTime := lubridate::force_tz(r_dateTimeUTC, tzone = "Pacific/Auckland", roll = TRUE)] # requires lubridate
+    tempHhLongDT <- tempHhLongDT[dateColName %like% "NZ",
+                     r_dateTime := r_dateTimeUTC] # it wasn't actually UTC
+    tempHhLongDT$r_dateTimeUTC <- NULL # remove
+    
+    #tempHhDT <- tempHhDT[, finalTZ := lubridate::tz(r_dateTime)]
+    
+    #table(tempHhDT$finalTZ, useNA = "always")
     
     # > Remove duplicates caused by over-lapping files and dates etc ----
     # Need to remove all uneccessary vars for this to work
     # Any remaining duplicates will probably be due to over-lapping files which have different circuit labels - see table below
-    #try(tempHhDT$dateColName <- NULL)
-    #try(tempHhDT$dateFormat <- NULL)
-    #try(tempHhDT$dateTime_char <- NULL) # if we leave this one in then we get duplicates where we have date NZ & date UTC for the same timestamp due to overlapping file downloads
+    try(tempHhDT$dateColName <- NULL)
+    try(tempHhDT$dateFormat <- NULL)
+    try(tempHhDT$dateTime_char <- NULL) # if we leave this one in then we get duplicates where we have date NZ & date UTC for the same timestamp due to overlapping file downloads
 
-    # nObs <- nrow(tempHhDT)
-    # if(fullFb){print(paste0("N rows before removal of duplicates: ", nObs))}
-    # tempHhDT <- unique(tempHhDT)
-    # nObs <- nrow(tempHhDT)
-    # if(fullFb){print(paste0("N rows after removal of duplicates: ", nObs))}
+    nObs <- nrow(tempHhDT)
+    if(gSpyParams$fullFb){print(paste0("N rows before removal of duplicates: ", nObs))}
+    tempHhDT <- unique(tempHhDT) # this will leave the duplicate DST readings alone provided at least 1 of the power readings differs
+    nObs <- nrow(tempHhDT)
+    if(gSpyParams$fullFb){print(paste0("N rows after removal of duplicates: ", nObs))}
 
     hhStatTempDT <- tempHhDT[, .(nObs = .N,
                                  nDataColumns = ncol(select(tempDT, contains("$")))), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
                              keyby = (date = as.Date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
     # add hhID
     hhStatTempDT <- hhStatTempDT[, hhID := hh]
-
+    
+    # make list of all circuits in this household's data
+    circuitsDT <- tempHhLongDT[, .(nObs = .N), keyby = circuit]
+    # split to remove the $
+    circuitsDT <- circuitsDT[, c("circuitLabel", "circuitID") := tstrsplit(circuit, '$', fixed = TRUE)]
+    circuitLabels <- circuitsDT[, circuitLabel]
+    
     hhStatDT <- rbind(hhStatDT,hhStatTempDT) # add to the collector
-    # > add vars & switch to long form ----
-    # add hhid for ease of future loading etc
-    tempHhDT <- tempHhDT[, hhID := hh]
-    # switch to long format for easy future loading
-    # this turns each circuit label (column) into a label within 'variable' and
-    # sets value to be the power measurement
-    # we then relabel them for clarity
-    tempHhLongDT <- reshape2::melt(tempHhDT, id=c("hhID","r_dateTime"))
-    data.table::setnames(tempHhLongDT, "value", "power")
-    data.table::setnames(tempHhLongDT, "variable", "circuit")
-    # force numeric
-    tempHhLongDT <- tempHhLongDT[, powerW := as.numeric(power)]
-
-    # remove NA if present
-    oldN <- nrow(tempHhLongDT)
-    tempHhLongDT <- tempHhLongDT[!is.na(powerW)]
-    tempHhLongDT$power <- NULL # remove to save space/memory
-    newN <- nrow(tempHhLongDT)
-    pcNA <- ((oldN - newN)/oldN)*100
-    print(paste0("Removed ", oldN - newN, " (", round(pcNA, 2) , "% of observations) where powerW = NA"))
-
+    
     # > Save hh file ----
     ofile <- paste0(outPath, "data/", hh,"_all_1min_data.csv")
-    if(fullFb | baTest){
+    if(gSpyParams$fullFb | gSpyParams$localTest){
       print(paste0("Saving ", ofile, "..."))
     }
     data.table::fwrite(tempHhLongDT, ofile)
-    if(fullFb | baTest){
+    if(gSpyParams$fullFb | gSpyParams$localTest){
       print(paste0("Saved ", ofile, ", gzipping..."))
     }
     cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
     try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
-    if(fullFb | baTest){
+    if(gSpyParams$fullFb | gSpyParams$localTest){
       print(paste0("Gzipped ", ofile))
     }
-    if(fullFb){
+    if(gSpyParams$fullFb){
       print("Col names: ")
       print(names(tempHhLongDT))
     }
-    #tempHhDT <- NULL # just in case
+    tempHhDT <- NULL # just in case
   } # X > end of per household loop ----
 
   #> Save observed data stats for all files loaded ----
@@ -449,229 +483,3 @@ processGridSpyDataFiles <- function(dt, mf){
   tempHhLongDT <- NULL
   return(dt) # return the updated file list
 }
-
-#' Loads cleaned grid spy power data for a given circuit between two dates into a data.table
-#'
-#' \code{getCleanGridSpyData} checks to see if the extract file already exists. If not it loops over a file list and loads each in turn using \code{readr::read_csv}. It filters each file to
-#' extract data for particular circuits between two dates and creates some derived time/date variables before
-#' using \code{rbind} to create a single data.table which is saved and returned.
-#'
-#' Function matches \code{circuitPattern} to extract specific circuits and selects observations between
-#'  \code{dateFrom} and \code{dateTo}. Use this to extract any circuit you want between any given dates.
-#'
-#'  \code{circuitPattern} is passed to the \code{data.table} operator \code{\%like\%} so wild cards & stuff may work. YMMV
-#'
-#'  Use of \code{readr::read_csv} enables .gz files to be autoloaded and proper parsing of dateTimes.
-#'
-#' @param fPath location of files to load
-#' @param circuitPattern the circuit pattern to match
-#' @param dateFrom date to start extract (inclusive)
-#' @param dateTo date to end extract (inclusive)
-#'
-#' @import data.table
-#' @import readr
-#' @import hms
-#'
-#' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
-#' @export
-#'
-#'
-getCleanGridSpyCircuit <- function(iFile, fPath, circuitPattern, dateFrom, dateTo) {
-  # check file exists
-  if(file.exists(iFile)){
-    print(paste0(iFile, " exists so re-loading..."))
-    dataDT <- data.table::fread(iFile, showProgress = FALSE)
-  } else {
-    # we need to create it
-    print(paste0(iFile, " does not exist so creating..."))
-    # check files to load
-    fPattern <- "*.csv.gz"
-    print(paste0("Looking for data using pattern = ", fPattern, " in ", fPath, " - could take a while..."))
-    #> Get the file list as a data.table ----
-    fListDT <- data.table::as.data.table(list.files(path = fPath, pattern = fPattern))
-
-    nFiles <- nrow(fListDT)
-    print(paste0("Found ", tidyNum(nFiles), " files"))
-
-    fListDT <- fListDT[, fullPath := paste0(fPath, V1)] # add in full path as it doesn't return in list.files()
-
-    filesToLoad <- fListDT[, fullPath]
-
-    print(paste0("# Looking for circuits matching: ", circuitPattern))
-    print(paste0("# Filtering on date range: ", dateFrom, " - ", dateTo))
-
-    # loop over files in list and rbind them
-    # load into a single data.table
-    nFiles <- length(filesToLoad)
-    print(paste0("# Loading ",nFiles, " files..."))
-    # don't use parallel for file reading - no performance gain
-    # http://stackoverflow.com/questions/22104858/is-it-a-good-idea-to-read-write-files-in-parallel
-    dataDT <- data.table::data.table()
-    # file load loop ----
-    for(f in filesToLoad){# should use lapply but...
-      print(paste0("# Loading ", f))
-      df <- readr::read_csv(f,
-                            progress = FALSE,
-                            col_types = list(col_character(), col_datetime(), col_character(), col_double())
-      ) # decodes .gz on the fly, requires readr
-      dt <- as.data.table(df)
-      # filter on circuit label pattern and dates (inclusive)
-      filteredDT <- dt[circuit %like% circuitPattern & # match circuitPattern
-                         as.Date(r_dateTime) >= dateFrom & # filter by dateFrom
-                         as.Date(r_dateTime) <= dateTo] # filter by dateTo
-      print(paste0("# Found: ", tidyNum(nrow(filteredDT)), " that match -> ", circuitPattern,
-                   " <- between ", dateFrom, " and ", dateTo,
-                   " out of ", tidyNum(nrow(dt))))
-
-      if(nrow(filteredDT) > 0){# if any matches...
-        print("Summary of extracted rows:")
-        print(summary(filteredDT))
-        dataDT <- rbind(dataDT, filteredDT)
-      }
-    }
-    print("# Finished extraction")
-    if(nrow(dataDT) > 0){
-      # we got a match
-      # derived variables ----
-      print("# > Setting useful dates & times (slow)")
-      dataDT <- dataDT[, timeAsChar := format(r_dateTime, format = "%H:%M:%S")] # creates a char
-      dataDT <- dataDT[, obsHourMin := hms::as.hms(timeAsChar)] # creates an hms time, makes graphs easier
-      dataDT$timeAsChar <- NULL # drop to save space
-
-      print(paste0("# Found ", tidyNum(nrow(dataDT)),
-                   " observations matching -> ", circuitPattern, " <- in ",
-                   uniqueN(dataDT$hhID), " households between ", dateFrom, " and ", dateTo))
-
-      print("Summary of all extracted rows:")
-      print(summary(dataDT))
-
-      #> Save the data out for future re-use ----
-      fName <- paste0(circuitPattern, "_", dateFrom, "_", dateTo, "_observations.csv")
-      ofile <- paste0(outPath, "dataExtracts/", fName)
-      print(paste0("Saving ", ofile))
-      data.table::fwrite(dataDT, ofile)
-      # do not compress so can use fread to load back in
-    } else {
-     # no matches -> fail
-     stop(paste0("No matching data found, please check your search pattern (", circuitPattern,
-                 ") or your dates..."))
-    }
-  }
-
-  print(paste0("# Loaded ", tidyNum(nrow(dataDT)), " rows of data"))
-
-  # return DT
-  return(dataDT)
-}
-
-#' Loads cleaned grid spy power data for all households between two dates into a data.table
-#'
-#' \code{getCleanGridSpyData} checks to see if the extract file already exists. If not it loops over a file list and loads each in turn using \code{readr::read_csv}. It filters each file to
-#' extract data between two dates and creates some derived time/date variables before
-#' using \code{rbind} to create a single data.table which is saved and returned.
-#'
-#' Function selects observations between
-#'  \code{dateFrom} and \code{dateTo}.
-#'
-#'  Use of \code{readr::read_csv} enables .gz files to be autoloaded and proper parsing of dateTimes.
-#'
-#' @param fPath location of files to load
-#' @param dateFrom date to start extract (inclusive)
-#' @param dateTo date to end extract (inclusive)
-#'
-#' @import data.table
-#' @import readr
-#' @import hms
-#'
-#' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
-#' @export
-#'
-#'
-getCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
-  # check file exists
-  if(file.exists(iFile)){
-    print(paste0(iFile, " exists so re-loading..."))
-    dataDT <- data.table::fread(iFile, showProgress = FALSE)
-  } else {
-    # we need to create it
-    print(paste0(iFile, " does not exist so creating..."))
-    # check files to load
-    fPattern <- "*.csv.gz"
-    print(paste0("Looking for data using pattern = ", fPattern, " in ", fPath, " - could take a while..."))
-    #> Get the file list as a data.table ----
-    fListDT <- data.table::as.data.table(list.files(path = fPath, pattern = fPattern))
-
-    nFiles <- nrow(fListDT)
-    print(paste0("Found ", tidyNum(nFiles), " files"))
-
-    fListDT <- fListDT[, fullPath := paste0(fPath, V1)] # add in full path as it doesn't return in list.files()
-
-    filesToLoad <- fListDT[, fullPath]
-
-    print(paste0("# Looking for circuits matching: ", circuitPattern))
-    print(paste0("# Filtering on date range: ", dateFrom, " - ", dateTo))
-
-    # loop over files in list and rbind them
-    # load into a single data.table
-    nFiles <- length(filesToLoad)
-    print(paste0("# Loading ",nFiles, " files..."))
-    # don't use parallel for file reading - no performance gain
-    # http://stackoverflow.com/questions/22104858/is-it-a-good-idea-to-read-write-files-in-parallel
-    dataDT <- data.table::data.table()
-    # file load loop ----
-    for(f in filesToLoad){# should use lapply but...
-      print(paste0("# Loading ", f))
-      df <- readr::read_csv(f,
-                            progress = FALSE,
-                            col_types = list(col_character(), col_datetime(), col_character(), col_double())
-      ) # decodes .gz on the fly, requires readr
-      dt <- as.data.table(df)
-      # filter on circuit label pattern and dates (inclusive)
-      filteredDT <- dt[circuit %like% circuitPattern & # match circuitPattern
-                         as.Date(r_dateTime) >= dateFrom & # filter by dateFrom
-                         as.Date(r_dateTime) <= dateTo] # filter by dateTo
-      print(paste0("# Found: ", tidyNum(nrow(filteredDT)), " that match -> ", circuitPattern,
-                   " <- between ", dateFrom, " and ", dateTo,
-                   " out of ", tidyNum(nrow(dt))))
-
-      if(nrow(filteredDT) > 0){# if any matches...
-        print("Summary of extracted rows:")
-        print(summary(filteredDT))
-        dataDT <- rbind(dataDT, filteredDT)
-      }
-    }
-    print("# Finished extraction")
-    if(nrow(dataDT) > 0){
-      # we got a match
-      # derived variables ----
-      print("# > Setting useful dates & times (slow)")
-      dataDT <- dataDT[, timeAsChar := format(r_dateTime, format = "%H:%M:%S")] # creates a char
-      dataDT <- dataDT[, obsHourMin := hms::as.hms(timeAsChar)] # creates an hms time, makes graphs easier
-      dataDT$timeAsChar <- NULL # drop to save space
-
-      print(paste0("# Found ", tidyNum(nrow(dataDT)),
-                   " observations matching -> ", circuitPattern, " <- in ",
-                   uniqueN(dataDT$hhID), " households between ", dateFrom, " and ", dateTo))
-
-      print("Summary of all extracted rows:")
-      print(summary(dataDT))
-
-      #> Save the data out for future re-use ----
-      fName <- paste0(circuitPattern, "_", dateFrom, "_", dateTo, "_observations.csv")
-      ofile <- paste0(outPath, "dataExtracts/", fName)
-      print(paste0("Saving ", ofile))
-      data.table::fwrite(dataDT, ofile)
-      # do not compress so can use fread to load back in
-    } else {
-      # no matches -> fail
-      stop(paste0("No matching data found, please check your search pattern (", circuitPattern,
-                  ") or your dates..."))
-    }
-  }
-
-  print(paste0("# Loaded ", tidyNum(nrow(dataDT)), " rows of data"))
-
-  # return DT
-  return(dataDT)
-}
-
