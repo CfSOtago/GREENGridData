@@ -6,10 +6,7 @@ rm(list=ls(all=TRUE)) # remove all objects from workspace
 # Load nzGREENGrid package ----
 library(nzGREENGridDataR) # local utilities
 
-# Set start time ----
-startTime <- proc.time()
-
-# Local parameters ----
+# Global parameters ----
 fullFb <- 0 # switch on (1) or off (0) full feedback
 baTest <- 1 # test (1) or full (0) run?
 refreshData <- 1 # re-build entire fileset? 0 = no
