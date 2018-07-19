@@ -4,12 +4,14 @@
 \alias{getGridSpyFileList}
 \title{Gets a list of gridSpy data files matching a pattern}
 \usage{
-getGridSpyFileList(fpath, pattern, mf)
+getGridSpyFileList(fpath, pattern, dataThreshold)
 }
 \arguments{
 \item{fpath}{where to look (recursively)}
 
 \item{pattern}{the pattern to match}
+
+\item{dataThreshold}{the file size threshold (files smaller than this will be ignored as we assume they have no data)}
 
 \item{mf}{name of file to save interim file list and meta data to}
 }
