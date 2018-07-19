@@ -37,7 +37,7 @@ if(gSpyParams$localTest){
   # full monty
   gSpyParams$gSpyInPath <- paste0("/Volumes/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/") # location of data
   gSpyParams$gSpyOutPath <- paste0("/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/gridSpy/1min/") # place to save them
-  msg1 <- paste0("Test run using reduced data from ", 
+  msg1 <- paste0("Full run using full data from ", 
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
 }
@@ -45,9 +45,9 @@ if(gSpyParams$localTest){
 print(msg1)
 
 
-gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath, "fListAllDT.csv") # place to store the interim file list with initial meta-data
-gSpyParams$fListLoaded <- paste0(gSpyParams$gSpyOutPath, "fListLoaded.csv") # place to store the final loaded file list with all meta-data
-gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath, "hhStatsByDate.csv") # place to store the final hh summary stats
+gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath, "checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
+gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath, "checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
+gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath, "checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
 
 
 # Set local (this script) parameters ----
