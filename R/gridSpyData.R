@@ -244,13 +244,9 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 #'    
 #'      The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads). 
 #'    
-#'      If the original data was actually NZ time then we force the tz to be Pacific/Auckland but keep the clock time 
-#'      the same. This uses lubridate::force_tz(x, roll = TRUE) to set a time in the DST break to the next local time.
-#'      See https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/force_tz
-#'      This will create duplicate r_dateTimes where there is an extra hour as you will have two moments of time with the same r_dateTime.
-#'      However they will (probably) have different power values as they were measured an hour apart.
+#'      If the original data was actually NZ time then we parse it with tz = Pacific/Auckland. It is not clear what will happen at the DST break.
 #'      
-#'      If the original data was actually UTC then we just tell R to use Pacific/Auckland when displaying. Note that this will also create 
+#'      If the original data was actually UTC then we parse it with the default tz = UTC and then set to Pacific/Auckland. Note that this will create 
 #'      duplicate r_dateTimes during the DST break when there is an extra hour and thus two moments of time with the same r_dateTime.
 #'      
 #'      Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files. 
@@ -281,7 +277,7 @@ processHhGridSpyData <- function(hh, fileList){
   # Does not check that hh matches file path - XX TO DO XX
   tempHhDT <- data.table::data.table() # (re)create new hh gridSpy data collector for each loop (hh)
   nFiles <- length(fileList)
-  print(paste0(hh, ": Loading ", nFiles, " files."))
+  print(paste0(hh, ": Loading ", nFiles, " files..."))
   pbF <- progress::progress_bar$new(total = length(fileList)) # set progress bar using n files to load
   # X > start of per-file loop ----
   for(f in fileList){ 
@@ -292,19 +288,20 @@ processHhGridSpyData <- function(hh, fileList){
     # add hhid for ease of future loading etc
     fDT <- fDT[, hhID := hh]
     
+    # Fix labels in households where strange things seemed to have happened
+    if(hh == "rf_24"){
+      # rf_24 has an additional circuit in some files but value is always NA
+      print(paste0(hh, ": Fixing rf_24 labels"))
+      fDT <- fixCircuitLabels_rf_24(fDT)
+    }
+    if(hh == "rf_46"){
+      # rf_46 has 3 different versions of the circuit labels
+      print(paste0(hh, ": Fixing rf_46 labels"))
+      fDT <- fixCircuitLabels_rf_46(fDT)
+    }
+    
+    
     # >> set default dateTimes ----
-    # what is the date column called?
-    # Use this to work out which TZ is being applied
-    if(nrow(dplyr::select(fDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
-      # if we have > 1 row with col name containing 'NZ'
-      setnames(fDT, 'date NZ', "dateTime_orig")
-      fDT <- fDT[, TZ_orig := "date NZ"]
-    }
-    if(nrow(dplyr::select(fDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
-      # if we have > 1 row with col name containing 'UTC'
-      setnames(fDT, 'date UTC', "dateTime_orig")
-      fDT <- fDT[, TZ_orig := "date UTC"]
-    }
     
     # This will also have consequences for time - esp related to DST:
     # smb://storage.hcs-p01.otago.ac.nz/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/README.txt says:
@@ -323,47 +320,65 @@ processHhGridSpyData <- function(hh, fileList){
     
     # Using the pre-inferred dateFormat
     fDT <- fDT[, dateFormat := fListToLoadDT[fullPath == f, dateFormat]]
-    # Sets timezone to default (UTC) - sort this out later as it could be wrong (some dates are in NZ time!)
-    fDT <- fDT[dateFormat %like% "mdy",
-               r_dateTimeUTC := lubridate::mdy_hm(dateTime_orig)] # requires lubridate
-    fDT <- fDT[dateFormat %like% "dmy",
-               r_dateTimeUTC := lubridate::dmy_hm(dateTime_orig)] # requires lubridate
-    fDT <- fDT[dateFormat %like% "ydm",
-               r_dateTimeUTC := lubridate::ymd_hm(dateTime_orig)] # requires lubridate
-    fDT <- fDT[dateFormat %like% "ymd",
-               r_dateTimeUTC := lubridate::ymd_hm(dateTime_orig)] # requires lubridate
-    fDT$dateFormat <- NULL # no longer needed
-    # We will harmonise these to the correct (lived) 'time' later using the full household file
     
-    # Fix labels in households where strange things seemed to have happened
-    if(hh == "rf_24"){
-      # rf_24 has an additional circuit in some files but value is always NA
-      print(paste0(hh, ": Fixing rf_24 labels"))
-      fDT <- fixCircuitLabels_rf_24(fDT)
+    # what is the date column called?
+    # Use this to work out which TZ is being applied
+    if(nrow(dplyr::select(fDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
+      # if we have > 1 row with col name containing 'NZ'
+      # in fact this means all rows will have NZ time
+      TZ_orig <- "date NZ"
+      setnames(fDT, 'date NZ', "dateTime_orig")
+      fDT <- fDT[, TZ_orig := "date NZ"]
+      # Original data is NZ time - what this means for the DST break is unclear
+      fDT <- fDT[dateFormat %like% "mdy",
+                 r_dateTime := lubridate::mdy_hm(dateTime_orig, tz = "Pacific/Auckland")]
+      fDT <- fDT[dateFormat %like% "dmy",
+                 r_dateTime := lubridate::dmy_hm(dateTime_orig, tz = "Pacific/Auckland")]
+      fDT <- fDT[dateFormat %like% "ydm",
+                 r_dateTime := lubridate::ydm_hm(dateTime_orig, tz = "Pacific/Auckland")]
+      fDT <- fDT[dateFormat %like% "ymd",
+                 r_dateTime := lubridate::ymd_hm(dateTime_orig, tz = "Pacific/Auckland")]
     }
-    if(hh == "rf_46"){
-      # rf_46 has 3 different versions of the circuit labels
-      print(paste0(hh, ": Fixing rf_46 labels"))
-      fDT <- fixCircuitLabels_rf_46(fDT)
+    if(nrow(dplyr::select(fDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
+      # as above
+      TZ_orig <- "date UTC"
+      setnames(fDT, 'date UTC', "dateTime_orig")
+      fDT <- fDT[, TZ_orig := "date UTC"]
+      # Original data is UTC time
+      fDT <- fDT[dateFormat %like% "mdy",
+                 r_dateTimeUTC := lubridate::mdy_hm(dateTime_orig)] # UTC by default
+      fDT <- fDT[dateFormat %like% "dmy",
+                 r_dateTimeUTC := lubridate::dmy_hm(dateTime_orig)] # UTC by default
+      fDT <- fDT[dateFormat %like% "ydm",
+                 r_dateTimeUTC := lubridate::ydm_hm(dateTime_orig)] # UTC by default
+      fDT <- fDT[dateFormat %like% "ymd",
+                 r_dateTimeUTC := lubridate::ymd_hm(dateTime_orig)] # requires lubridate
+      fDT <- fDT[, r_dateTime := lubridate::with_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")] # set to NZ
+      fDT$r_dateTimeUTC <- NULL # not needed, also messes up the reshape as it may/not be present
     }
+    
+    fDT$dateFormat <- NULL # no longer needed
     
     # >> set some file stats ----
     #print("Getting file stats")
     fileStat <- list()
-    fileStat$fullPath <- f
-    fileStat$hhID <- hh
-    fileStat$nObs <- nrow(fDT) # could include duplicates
-    fileStat$minDateTimeUTC <- min(fDT$r_dateTimeUTC)
-    fileStat$maxDateTimeUTC <- max(fDT$r_dateTimeUTC)
-    fileStat$dateFormat <- fListToLoadDT[fullPath == f, dateFormat]
-    fileStat$mDateTime <- fListToLoadDT[fullPath == f, fMTime]
-    fileStat$fSize <- fListToLoadDT[fullPath == f, fSize]
     
     # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them 
     # - this is the only way we have to check if data from different households has been placed in the wrong folder.
     fileStat$circuitLabels <- toString(sort(colnames(dplyr::select(fDT, dplyr::contains("$")))))
     # check for the number of circuits - all seem to contain "$"
     fileStat$nCircuits <- ncol(dplyr::select(fDT, dplyr::contains("$")))
+    
+    fileStat$fullPath <- f
+    fileStat$hhID <- hh
+    fileStat$nObs <- nrow(fDT) # could include duplicates
+    fileStat$minDateTimeUTC <- min(fDT$r_dateTimeUTC)
+    fileStat$maxDateTimeUTC <- max(fDT$r_dateTimeUTC)
+    fileStat$TZ_orig <- toString(unique(fDT$TZ_orig))
+    fileStat$dateFormat <- fListToLoadDT[fullPath == f, dateFormat]
+    fileStat$mDateTime <- fListToLoadDT[fullPath == f, fMTime]
+    fileStat$fSize <- fListToLoadDT[fullPath == f, fSize]
+    
     
     # >> save file stats ----
     #print("Saving file stats")
@@ -373,76 +388,50 @@ processHhGridSpyData <- function(hh, fileList){
                        ofile, 
                        append = TRUE) # will only write out col names on first pass
     
-    # >> rbind data to hh data collector ----
+    # >> rbind data to the hh data collector ----
     tempHhDT <- rbind(tempHhDT, fDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
-    
+  
   } # X > end of per file loop ----
   print(paste0(hh, ": Done, cleaning rbound files"))
   
+
   # Switch to long format ----
   # this turns each circuit label (column) into a label within 'variable' and
   # sets value to be the power measurement
+  print(paste0(hh, ": wide form variables -> ", toString(names(tempHhDT))))
   # we then relabel them for clarity
-  fLongDT <- reshape2::melt(tempHhDT, id=c("hhID","dateTime_orig","r_dateTimeUTC", "TZ_orig"))
-  data.table::setnames(fLongDT, "value", "power")
-  data.table::setnames(fLongDT, "variable", "circuit")
+  hhLongDT <- reshape2::melt(tempHhDT, id=c("hhID","dateTime_orig", "TZ_orig", "r_dateTime"))
+  data.table::setnames(hhLongDT, "value", "power")
+  data.table::setnames(hhLongDT, "variable", "circuit")
   
-  print(paste0(hh, ": Switched to long form"))
+  print(paste0(hh, ": switched to long form"))
   
   # > Force power to be numeric ----
-  fLongDT <- fLongDT[, powerW := as.numeric(power)]
+  hhLongDT <- hhLongDT[, powerW := as.numeric(power)]
   
   # remove NA after conversion to numeric if present
-  fLongDT <- fLongDT[!is.na(powerW)]
-  fLongDT$power <- NULL # remove to save space/memory
+  hhLongDT <- hhLongDT[!is.na(powerW)]
+  hhLongDT$power <- NULL # remove to save space/memory
   
-  print(paste0(hh, ": Removed powerW = NA"))
+  print(paste0(hh, ": removed powerW = NA"))
   
-  # > Fix the time zones ----
-  fLongDT <- fLongDT[, TZ_orig := lubridate::tz(r_dateTimeUTC)]
-  # min(fLongDT$r_dateTimeUTC)
-  # table(fLongDT$TZ_orig)
-  # if the data was actually NZ time then we need to force the tz to be Pacific/Auckland but keep the clock time 
-  # the same. Use roll = TRUE to set a time in the DST break hour to the next local time.
-  # This will create duplicate times but with (probably) different power values.
-  # Up to the user how they deal with this.
-  # See https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/force_tz
-  fLongDT <- fLongDT[TZ_orig %like% "NZ",
-                     r_dateTime := lubridate::force_tz(r_dateTimeUTC, 
-                                                       tzone = "Pacific/Auckland", roll = TRUE)]
-  # If the data was actually UTC then we just tell R to use Pacific/Auckland when displaying
-  fLongDT <- fLongDT[TZ_orig %like% "UTC",
-                     r_dateTime := lubridate::with_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")]
-  
-  #fLongDT$r_dateTimeUTC <- NULL # remove
-  fLongDT <- fLongDT[, finalTZ := lubridate::tz(r_dateTime)]
-  # min(fLongDT$r_dateTime)
-  # table(fLongDT$TZ_orig, fLongDT$finalTZ, useNA = "always")
-  
-  print(paste0(hh, ": Fixed timezones"))
-  
-  # > Remove any duplicates by dateTime(UTC), circuit & power ----
-  # First by UTC
-  dupsBy <- c("r_dateTimeUTC", "circuit", "powerW")
-  nDups <- anyDuplicated(fLongDT, by=dupsBy)
-  pcDups <- round(100*(nDups/nrow(fLongDT)), 2)
-  print(paste0("Removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
-  fLongDT <- unique(fLongDT, by=dupsBy)
-  
-  # Then by final r_dateTime
+  # > Remove any duplicates by dateTime, circuit & power ----
+
   dupsBy <- c("r_dateTime", "circuit", "powerW")
-  nDups <- anyDuplicated(fLongDT, by=dupsBy)
-  pcDups <- round(100*(nDups/nrow(fLongDT)), 2)
-  print(paste0("Removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
-  fLongDT <- unique(fLongDT, by=dupsBy)
+  nDups <- anyDuplicated(hhLongDT, by=dupsBy)
+  pcDups <- round(100*(nDups/nrow(hhLongDT)), 2)
+  print(paste0(hh, ": removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
+  hhLongDT <- unique(hhLongDT, by=dupsBy)
   
   # Create clean circuit labels
-  fLongDT <- fLongDT[, c("circuitLabel", "circuitID") := tstrsplit(circuit, "$", fixed = TRUE)]
+  hhLongDT <- hhLongDT[, c("circuitLabel", "circuitID") := tstrsplit(circuit, "$", fixed = TRUE)]
   
-  fLongDT$circuit <- NULL # no longer needed
+  hhLongDT$circuit <- NULL # no longer needed
   
-  setkey(fLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
-  return(fLongDT) # for saving etc
+  setkey(hhLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
+  print(paste0(hh, ": final long form variables ->", toStrong(names(hhLongDT))))
+  
+  return(hhLongDT) # for saving etc
 }
 
 #' Fixes circuit labels in rf_24

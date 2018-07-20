@@ -39,13 +39,9 @@ Things to note...
    
      The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads). 
    
-     If the original data was actually NZ time then we force the tz to be Pacific/Auckland but keep the clock time 
-     the same. This uses lubridate::force_tz(x, roll = TRUE) to set a time in the DST break to the next local time.
-     See https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/force_tz
-     This will create duplicate r_dateTimes where there is an extra hour as you will have two moments of time with the same r_dateTime.
-     However they will (probably) have different power values as they were measured an hour apart.
+     If the original data was actually NZ time then we parse it with tz = Pacific/Auckland. It is not clear what will happen at the DST break.
      
-     If the original data was actually UTC then we just tell R to use Pacific/Auckland when displaying. Note that this will also create 
+     If the original data was actually UTC then we parse it with the default tz = UTC and then set to Pacific/Auckland. Note that this will create 
      duplicate r_dateTimes during the DST break when there is an extra hour and thus two moments of time with the same r_dateTime.
      
      Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files. 

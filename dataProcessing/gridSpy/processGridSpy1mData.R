@@ -71,7 +71,9 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   dt <- dt[, obsTime := hms::as.hms(r_dateTime)]
   
   # >> power checks ----
-  # These will show us when the household was consuming electricity - do they look OK?
+  # These will show us when the household was consuming electricity 
+  # - do they look OK?
+  # - can you spot the households with PV?
   plotDT <- dt[, .(meanW = mean(powerW)), keyby = .(circuitLabel, month, year, obsTime)
                ]
   vLineAlpha <- 0.4
