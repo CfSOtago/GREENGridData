@@ -336,7 +336,7 @@ processHhGridSpyData <- function(hh, fileList){
     tempHhDT <- rbind(tempHhDT, fDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
     
   } # X > end of per file loop ----
-  print(paste0(hh, ": Done loading, cleaning whole file"))
+  print(paste0(hh, ": Done, cleaning rbound files"))
   
   # Switch to long format ----
   # this turns each circuit label (column) into a label within 'variable' and
@@ -357,7 +357,7 @@ processHhGridSpyData <- function(hh, fileList){
   
   print(paste0(hh, ": Removed powerW = NA"))
   
-  # Fix the time zones ----
+  # > Fix the time zones ----
   fLongDT <- fLongDT[, TZ_orig := lubridate::tz(r_dateTimeUTC)]
   # min(fLongDT$r_dateTimeUTC)
   # table(fLongDT$TZ_orig)
@@ -376,7 +376,15 @@ processHhGridSpyData <- function(hh, fileList){
   
   print(paste0(hh, ": Fixed timezones"))
   
-  # get rid of any duplicates by dateTime, circuit & power
+  # > Remove any duplicates by dateTime(UTC), circuit & power ----
+  # First by UTC
+  dupsBy <- c("r_dateTimeUTC", "circuit", "powerW")
+  nDups <- anyDuplicated(fLongDT, by=dupsBy)
+  pcDups <- round(100*(nDups/nrow(fLongDT)), 2)
+  print(paste0("Removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
+  fLongDT <- unique(fLongDT, by=dupsBy)
+  
+  # Then by final r_dateTime
   dupsBy <- c("r_dateTime", "circuit", "powerW")
   nDups <- anyDuplicated(fLongDT, by=dupsBy)
   pcDups <- round(100*(nDups/nrow(fLongDT)), 2)
