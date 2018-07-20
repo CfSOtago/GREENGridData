@@ -362,15 +362,10 @@ processHhGridSpyData <- function(hh, fileList){
     # >> set some file stats ----
     #print("Getting file stats")
     fileStat <- list()
-    
-    # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them 
-    # - this is the only way we have to check if data from different households has been placed in the wrong folder.
-    fileStat$circuitLabels <- toString(sort(colnames(dplyr::select(fDT, dplyr::contains("$")))))
-    # check for the number of circuits - all seem to contain "$"
-    fileStat$nCircuits <- ncol(dplyr::select(fDT, dplyr::contains("$")))
+    fileStat$hhID <- hh
     
     fileStat$fullPath <- f
-    fileStat$hhID <- hh
+    
     fileStat$nObs <- nrow(fDT) # could include duplicates
     fileStat$minDateTime <- min(fDT$r_dateTime)
     fileStat$maxDateTime <- max(fDT$r_dateTime)
@@ -379,6 +374,12 @@ processHhGridSpyData <- function(hh, fileList){
     fileStat$mDateTime <- fListToLoadDT[fullPath == f, fMTime]
     fileStat$fSize <- fListToLoadDT[fullPath == f, fSize]
     
+    # check for the number of circuits - all seem to contain "$"
+    fileStat$nCircuits <- ncol(dplyr::select(fDT, dplyr::contains("$")))
+    
+    # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them 
+    # - this is the only way we have to check if data from different households has been placed in the wrong folder.
+    fileStat$circuitLabels <- toString(sort(colnames(dplyr::select(fDT, dplyr::contains("$")))))
     
     # >> save file stats ----
     #print("Saving file stats")
