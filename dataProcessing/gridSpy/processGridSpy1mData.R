@@ -59,10 +59,10 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   print(paste0(hh, ": Start"))
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
   t <- proc.time() - startTime
-  print(paste0("Data for ", hh, " loaded in ", getDuration(t)))
+  print(paste0(hh, ": data files loaded in ", getDuration(t)))
   
   # > Run basic tests ----
-  print(paste0("Running basic tests for: ", hh))
+  print(paste0(hh, ": running basic tests"))
   # set some vars to aggregate by
   dt <- dt[, month := lubridate::month(r_dateTime, label = TRUE)]
   dt <- dt[, year := lubridate::year(r_dateTime)]
