@@ -20,13 +20,17 @@ nzGREENGridDataR::setup()
 # Set gSpy parameters ----
 gSpyParams <- list()
 gSpyParams$fullFb <- 0 # give full feedback (1 = yes)?
-gSpyParams$localTest <- 1 # local data test or not (1 = yes)?
 gSpyParams$gSpyFileThreshold <- 3000 # assume any files smaller than this (bytes) = no data or some mangled xml/html. Really, we should check the contents of each file.
 
 gSpyParams$pattern <- "*at1.csv$" # e.g. *at1.csv$ filters only 1 min data
 
-# > Data paths  ----
-if(gSpyParams$localTest){
+# Set local (this script) parameters ----
+refreshData <- 1 # 0 = No
+buildReport <- 1 # 0 = No
+localTest <- 1 # local data test or not (1 = yes)?
+
+# > Set data paths  ----
+if(localTest){
   # Local test
   gSpyParams$gSpyInPath <- paste0("~/Data/NZGreenGrid/gridspy/1min_orig/") # location of data (BA laptop)
   gSpyParams$gSpyOutPath <- paste0("~/Data/NZGreenGrid/safe/gridSpy/1min/") # place to save them (BA laptop)
@@ -48,11 +52,6 @@ print(msg1)
 gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath, "checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
 gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath, "checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
 gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath, "checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
-
-
-# Set local (this script) parameters ----
-refreshData <- 1 # 0 = No
-buildReport <- 1 # 0 = No
 
 # Local functions ----
 getDuration <- function(t){
