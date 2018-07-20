@@ -429,7 +429,7 @@ processHhGridSpyData <- function(hh, fileList){
   hhLongDT$circuit <- NULL # no longer needed
   
   setkey(hhLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
-  print(paste0(hh, ": final long form variables ->", toStrong(names(hhLongDT))))
+  print(paste0(hh, ": final long form variables ->", toString(names(hhLongDT))))
   
   return(hhLongDT) # for saving etc
 }
