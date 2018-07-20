@@ -372,8 +372,8 @@ processHhGridSpyData <- function(hh, fileList){
     fileStat$fullPath <- f
     fileStat$hhID <- hh
     fileStat$nObs <- nrow(fDT) # could include duplicates
-    fileStat$minDateTimeUTC <- min(fDT$r_dateTimeUTC)
-    fileStat$maxDateTimeUTC <- max(fDT$r_dateTimeUTC)
+    fileStat$minDateTime <- min(fDT$r_dateTime)
+    fileStat$maxDateTime <- max(fDT$r_dateTime)
     fileStat$TZ_orig <- toString(unique(fDT$TZ_orig))
     fileStat$dateFormat <- fListToLoadDT[fullPath == f, dateFormat]
     fileStat$mDateTime <- fListToLoadDT[fullPath == f, fMTime]
@@ -429,7 +429,7 @@ processHhGridSpyData <- function(hh, fileList){
   hhLongDT$circuit <- NULL # no longer needed
   
   setkey(hhLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
-  print(paste0(hh, ": final long form variables ->", toStrong(names(hhLongDT))))
+  print(paste0(hh, ": final long form variables ->", toString(names(hhLongDT))))
   
   return(hhLongDT) # for saving etc
 }
