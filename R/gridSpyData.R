@@ -218,13 +218,54 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 
 #' Loads and processes a list of gridSpy data files for a given household
 #'
-#' \code{getHhGridSpyData} takes a file list and loads & processes data before returning the dt for checks & saving. 
-#'    It assumes all data is for one household (can only be detected from input file names)
-#'
-#'    Updates the per input file metadata and the per household per day summary stats file
+#' \code{getHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
+#'     
+#'     What it does:
+#'     
+#'     - Updates the per input file metadata as it loops over each file
+#'     
+#'     - Fixes circuit labels for rf_46
+#'     
+#'     - Concatenates (rbinds) the files into a data.table and converts to long form for easier re-use
+#'     
+#'     - Splits original circuit name by $ into a label (first string) and an id (second string)
+#'     
+#'     - Attempts to create a correct r_dateTime in UTC but with tz set to "Pacific/Auckland"
+#'     
+#'     - Removes duplicates by r_dateTime <-> circuit <-> power caused by data from duplicate files. Note that this will retain the DST induced duplicate dateTimes if the power values are different (see below)
+#'     
+#'     - Removes any cases where power = NA
+#'     
+#'     - Returns the data.table
+#' 
+#'     Things to note...
 #'    
+#'      The function assumes all data in the fileList is for one household (can only be detected from input file path)
+#'    
+#'      The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads). 
+#'    
+#'      If the original data was actually NZ time then we force the tz to be Pacific/Auckland but keep the clock time 
+#'      the same. This uses lubridate::force_tz(x, roll = TRUE) to set a time in the DST break to the next local time.
+#'      See https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/force_tz
+#'      This will create duplicate r_dateTimes where there is an extra hour as you will have two moments of time with the same r_dateTime.
+#'      However they will (probably) have different power values as they were measured an hour apart.
+#'      
+#'      If the original data was actually UTC then we just tell R to use Pacific/Auckland when displaying. Note that this will also create 
+#'      duplicate r_dateTimes during the DST break when there is an extra hour and thus two moments of time with the same r_dateTime.
+#'      
+#'      Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files. 
+#'      However this will also remove observations around the DST break which are different moments of time but have the same 
+#'      r_dateTime (as one of them is in the DST break hour) and by chance the same power values in the same circuits. Got that?
+#'      
+#'      Due to uncertainties over the timezones and dateTimes, we recommend that analysis should exclude the days on which DST changes occur.
+#'      
+#'      #YMMV
+#'    
+#'      Loading the resulting saved data from .csv will probably set the tz of r_dateTime to your local time. Be sure to set it to
+#'      correctly using lubridate::with_tz(r_dateTime, tzone = "Pacific/Auckland")
+#'      
 #' @param hh the household id
-#' @param fileList list of files to load
+#' @param fileList list of files to load (assumed to be all from hh)
 #'
 #' @import dplyr
 #' @import data.table
@@ -361,13 +402,17 @@ processHhGridSpyData <- function(hh, fileList){
   fLongDT <- fLongDT[, TZ_orig := lubridate::tz(r_dateTimeUTC)]
   # min(fLongDT$r_dateTimeUTC)
   # table(fLongDT$TZ_orig)
-  # if the data was actually NZST then we need to force the tz to be Pacific/Auckland but keep the clock time the same
+  # if the data was actually NZ time then we need to force the tz to be Pacific/Auckland but keep the clock time 
+  # the same. Use roll = TRUE to set a time in the DST break hour to the next local time.
+  # This will create duplicate times but with (probably) different power values.
+  # Up to the user how they deal with this.
+  # See https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/force_tz
   fLongDT <- fLongDT[TZ_orig %like% "NZ",
                      r_dateTime := lubridate::force_tz(r_dateTimeUTC, 
                                                        tzone = "Pacific/Auckland", roll = TRUE)]
-  # If the data was actually UTC then we just tell R to use local time when displaying
+  # If the data was actually UTC then we just tell R to use Pacific/Auckland when displaying
   fLongDT <- fLongDT[TZ_orig %like% "UTC",
-                     r_dateTime := lubridate::with_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")] # datetime stored as UTC
+                     r_dateTime := lubridate::with_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")]
   
   #fLongDT$r_dateTimeUTC <- NULL # remove
   fLongDT <- fLongDT[, finalTZ := lubridate::tz(r_dateTime)]
