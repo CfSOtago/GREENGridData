@@ -12,7 +12,7 @@ processHhGridSpyData(hh, fileList)
 \item{fileList}{list of files to load}
 }
 \description{
-\code{getHhGridSpyData} takes a file list and loads & processes data before saving out 1 file. 
+\code{getHhGridSpyData} takes a file list and loads & processes data before returning the dt for checks & saving. 
    It assumes all data is for one household (can only be detected from input file names)
 }
 \details{

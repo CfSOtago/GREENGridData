@@ -166,17 +166,17 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
         # what is the date column called?
         dt <- dt[fullPath == f, dateColName := "unknown - can't tell"]
         if(nrow(dplyr::select(row1DT, dplyr::contains("NZ"))) > 0){ # requires dplyr
-          setnames(row1DT, 'date NZ', "dateTime_char")
+          setnames(row1DT, 'date NZ', "dateTime_orig")
           row1DT <- row1DT[, dateColName := "date NZ"]
           dt <- dt[fullPath == f, dateColName := "date NZ"]
         }
         if(nrow(dplyr::select(row1DT, dplyr::contains("UTC"))) > 0){ # requires dplyr
-          setnames(row1DT, 'date UTC', "dateTime_char")
+          setnames(row1DT, 'date UTC', "dateTime_orig")
           row1DT <- row1DT[, dateColName := "date UTC"]
           dt <- dt[fullPath == f, dateColName := "date UTC"]
         }
         # split dateTime
-        row1DT <- row1DT[, c("date_char", "time_char") := data.table::tstrsplit(dateTime_char, " ")]
+        row1DT <- row1DT[, c("date_char", "time_char") := data.table::tstrsplit(dateTime_orig, " ")]
         # add example of date to metadata - presumably they are the same in each file?!
         dt <- dt[fullPath == f, dateExample := row1DT[1, date_char]]
 
@@ -195,16 +195,16 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
     if(length(fAmbig) > 0){ # there were some
       pbA <- progress::progress_bar$new(total = length(fAmbig))
       for(fa in fAmbig){
-        if(gSpyParams$localTest | gSpyParams$fullFb){print(paste0("Checking ambiguous date formats in ", fa))}
+        if(gSpyParams$fullFb){print(paste0("Checking ambiguous date formats in ", fa))}
         ambDT <- fread(fa)
         pbA$tick()
         if(nrow(dplyr::select(ambDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
-          setnames(ambDT, 'date NZ', "dateTime_char")
+          setnames(ambDT, 'date NZ', "dateTime_orig")
         }
         if(nrow(dplyr::select(ambDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
-          setnames(ambDT, 'date UTC', "dateTime_char")
+          setnames(ambDT, 'date UTC', "dateTime_orig")
         }
-        ambDT <- ambDT[, c("date_char", "time_char") := data.table::tstrsplit(dateTime_char, " ")]
+        ambDT <- ambDT[, c("date_char", "time_char") := data.table::tstrsplit(dateTime_orig, " ")]
         ambDT <- checkDates(ambDT)
         # set what we now know (or guess!)
         dt <- dt[fullPath == fa, dateFormat := ambDT[1,dateFormat]]
@@ -218,7 +218,7 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 
 #' Loads and processes a list of gridSpy data files for a given household
 #'
-#' \code{getHhGridSpyData} takes a file list and loads & processes data before saving out 1 file. 
+#' \code{getHhGridSpyData} takes a file list and loads & processes data before returning the dt for checks & saving. 
 #'    It assumes all data is for one household (can only be detected from input file names)
 #'
 #'    Updates the per input file metadata and the per household per day summary stats file
@@ -236,7 +236,6 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 #' @export
 #'
 processHhGridSpyData <- function(hh, fileList){
-  print("####>")
   # Gets all files listed, loads, processes, cleans & merges, saves out in long form
   # Does not check that hh matches file path - XX TO DO XX
   tempHhDT <- data.table::data.table() # (re)create new hh gridSpy data collector for each loop (hh)
@@ -257,13 +256,13 @@ processHhGridSpyData <- function(hh, fileList){
     # Use this to work out which TZ is being applied
     if(nrow(dplyr::select(fDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
       # if we have > 1 row with col name containing 'NZ'
-      setnames(fDT, 'date NZ', "dateTime_char")
-      fDT <- fDT[, incomingTZ := "date NZ"]
+      setnames(fDT, 'date NZ', "dateTime_orig")
+      fDT <- fDT[, TZ_orig := "date NZ"]
     }
     if(nrow(dplyr::select(fDT, dplyr::contains("UTC"))) > 0){ # requires dplyr
       # if we have > 1 row with col name containing 'UTC'
-      setnames(fDT, 'date UTC', "dateTime_char")
-      fDT <- fDT[, incomingTZ := "date UTC"]
+      setnames(fDT, 'date UTC', "dateTime_orig")
+      fDT <- fDT[, TZ_orig := "date UTC"]
     }
     
     # This will also have consequences for time - esp related to DST:
@@ -283,15 +282,15 @@ processHhGridSpyData <- function(hh, fileList){
     
     # Using the pre-inferred dateFormat
     fDT <- fDT[, dateFormat := fListToLoadDT[fullPath == f, dateFormat]]
-    # Sets timezone to default (UTC) - sort this out later
+    # Sets timezone to default (UTC) - sort this out later as it could be wrong (some dates are in NZ time!)
     fDT <- fDT[dateFormat %like% "mdy",
-               r_dateTimeUTC := lubridate::mdy_hm(dateTime_char)] # requires lubridate
+               r_dateTimeUTC := lubridate::mdy_hm(dateTime_orig)] # requires lubridate
     fDT <- fDT[dateFormat %like% "dmy",
-               r_dateTimeUTC := lubridate::dmy_hm(dateTime_char)] # requires lubridate
+               r_dateTimeUTC := lubridate::dmy_hm(dateTime_orig)] # requires lubridate
     fDT <- fDT[dateFormat %like% "ydm",
-               r_dateTimeUTC := lubridate::ymd_hm(dateTime_char)] # requires lubridate
+               r_dateTimeUTC := lubridate::ymd_hm(dateTime_orig)] # requires lubridate
     fDT <- fDT[dateFormat %like% "ymd",
-               r_dateTimeUTC := lubridate::ymd_hm(dateTime_char)] # requires lubridate
+               r_dateTimeUTC := lubridate::ymd_hm(dateTime_orig)] # requires lubridate
     fDT$dateFormat <- NULL # no longer needed
     # We will harmonise these to the correct (lived) 'time' later using the full household file
     
@@ -313,8 +312,8 @@ processHhGridSpyData <- function(hh, fileList){
     fileStat$fullPath <- f
     fileStat$hhID <- hh
     fileStat$nObs <- nrow(fDT) # could include duplicates
-    fileStat$minDateTime <- min(fDT$r_dateTimeUTC)
-    fileStat$maxDateTime <- max(fDT$r_dateTimeUTC)
+    fileStat$minDateTimeUTC <- min(fDT$r_dateTimeUTC)
+    fileStat$maxDateTimeUTC <- max(fDT$r_dateTimeUTC)
     fileStat$dateFormat <- fListToLoadDT[fullPath == f, dateFormat]
     fileStat$mDateTime <- fListToLoadDT[fullPath == f, fMTime]
     fileStat$fSize <- fListToLoadDT[fullPath == f, fSize]
@@ -343,7 +342,7 @@ processHhGridSpyData <- function(hh, fileList){
   # this turns each circuit label (column) into a label within 'variable' and
   # sets value to be the power measurement
   # we then relabel them for clarity
-  fLongDT <- reshape2::melt(tempHhDT, id=c("hhID","dateTime_char","r_dateTimeUTC", "incomingTZ"))
+  fLongDT <- reshape2::melt(tempHhDT, id=c("hhID","dateTime_orig","r_dateTimeUTC", "TZ_orig"))
   data.table::setnames(fLongDT, "value", "power")
   data.table::setnames(fLongDT, "variable", "circuit")
   
@@ -359,21 +358,21 @@ processHhGridSpyData <- function(hh, fileList){
   print(paste0(hh, ": Removed powerW = NA"))
   
   # Fix the time zones ----
-  fLongDT <- fLongDT[, defaultTZ := lubridate::tz(r_dateTimeUTC)]
+  fLongDT <- fLongDT[, TZ_orig := lubridate::tz(r_dateTimeUTC)]
   # min(fLongDT$r_dateTimeUTC)
-  # table(fLongDT$defaultTZ)
+  # table(fLongDT$TZ_orig)
   # if the data was actually NZST then we need to force the tz to be Pacific/Auckland but keep the clock time the same
-  fLongDT <- fLongDT[incomingTZ %like% "NZ",
+  fLongDT <- fLongDT[TZ_orig %like% "NZ",
                      r_dateTime := lubridate::force_tz(r_dateTimeUTC, 
                                                        tzone = "Pacific/Auckland", roll = TRUE)]
   # If the data was actually UTC then we just tell R to use local time when displaying
-  fLongDT <- fLongDT[incomingTZ %like% "UTC",
+  fLongDT <- fLongDT[TZ_orig %like% "UTC",
                      r_dateTime := lubridate::with_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")] # datetime stored as UTC
   
   #fLongDT$r_dateTimeUTC <- NULL # remove
   fLongDT <- fLongDT[, finalTZ := lubridate::tz(r_dateTime)]
   # min(fLongDT$r_dateTime)
-  # table(fLongDT$defaultTZ, fLongDT$finalTZ, useNA = "always")
+  # table(fLongDT$TZ_orig, fLongDT$finalTZ, useNA = "always")
   
   print(paste0(hh, ": Fixed timezones"))
   
@@ -389,35 +388,8 @@ processHhGridSpyData <- function(hh, fileList){
   
   fLongDT$circuit <- NULL # no longer needed
   
-  # > Save hh file ----
-  ofile <- paste0(gSpyParams$gSpyOutPath, "data/", hh,"_all_1min_data.csv")
-  print(paste0(hh, ": Saving ", ofile, "..."))
-  
-  data.table::fwrite(fLongDT, ofile)
-  
-  print(paste0(hh, ": Saved ", ofile, ", gzipping..."))
-  cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
-  try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
-  print(paste0(hh, ": Gzipped ", ofile))
-  
-  # > Set household level stats by date ----
-  statDT <- fLongDT[, .(nObs = .N,
-                        meanPower = mean(powerW),
-                        sdPowerW = sd(powerW),
-                        minPowerW = min(powerW),
-                        maxPowerW = max(powerW),
-                        circuitLabels = toString(unique(circuitLabel)),
-                        nCircuits = uniqueN(circuitLabel)), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
-                    keyby = .(hhID, date = lubridate::date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
-  
-  # > Add fStats to end of stats file stats collector
-  ofile <- gSpyParams$hhStatsByDate 
-  print(paste0(hh, ": Adding hh stats by date list stats to ", ofile))
-  data.table::fwrite(statDT, ofile, append=TRUE) # this will only write out column names once when file is created see ?fwrite
-  print(paste0(hh, ": Done"))
-  print("<####")
-  
-  return(fLongDT) # for testing
+  setkey(fLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
+  return(fLongDT) # for saving etc
 }
 
 #' Fixes circuit labels in rf_24
