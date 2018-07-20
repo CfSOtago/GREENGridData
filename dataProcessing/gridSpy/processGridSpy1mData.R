@@ -55,8 +55,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   startTime <- proc.time()
   # > Process files ----
   fileList <- fListToLoadDT[hhID == hh, fullPath] # files for this household
-  print("####>")
-  print(paste0(hh, ": Start"))
+  print(paste0("#---------------------------- Begin ",hh,"----------------------------#"))
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
   t <- proc.time() - startTime
   print(paste0(hh, ": data files loaded in ", getDuration(t)))
@@ -172,7 +171,6 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
   print(paste0(hh, ": Gzipped ", ofile))
   print(paste0(hh, ": Done"))
-  print("<####")
 } # << X end per household loop ----
 
 
