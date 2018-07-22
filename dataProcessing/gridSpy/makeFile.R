@@ -30,17 +30,21 @@ buildReport <- 1 # 0 = No
 localTest <- 1 # local data test or not (1 = yes)?
 
 # > Set data paths  ----
+
+# dst dates
+gSpyParams$dstNZDates <- paste0(nzGREENGridDataR::findParentDirectory("nzGREENGridDataR"),"/data/dstNZDates.csv")
+
 if(localTest){
   # Local test
-  gSpyParams$gSpyInPath <- paste0("~/Data/NZGreenGrid/gridspy/1min_orig/") # location of data (BA laptop)
-  gSpyParams$gSpyOutPath <- paste0("~/Data/NZGreenGrid/safe/gridSpy/1min/") # place to save them (BA laptop)
+  gSpyParams$gSpyInPath <- "~/Data/NZGreenGrid/gridspy/1min_orig/" # location of data (BA laptop)
+  gSpyParams$gSpyOutPath <- "~/Data/NZGreenGrid/safe/gridSpy/1min/" # place to save them (BA laptop)
   msg1 <- paste0("Test run using reduced data from ", 
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
 } else {
   # full monty
-  gSpyParams$gSpyInPath <- paste0("/Volumes/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/") # location of data
-  gSpyParams$gSpyOutPath <- paste0("/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/gridSpy/1min/") # place to save them
+  gSpyParams$gSpyInPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/" # location of data
+  gSpyParams$gSpyOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/gridSpy/1min/" # place to save them
   msg1 <- paste0("Full run using full data from ", 
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
