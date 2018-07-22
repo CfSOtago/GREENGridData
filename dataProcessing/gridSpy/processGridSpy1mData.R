@@ -19,6 +19,9 @@ library(ggplot2)
 try(file.remove(gSpyParams$hhStatsByDate)) # otherwise the append within the get data function will keep adding
 try(file.remove(gSpyParams$fLoadedStats)) # otherwise the append within the get data function will keep adding
 
+# > Get DST labels ----
+dstDT <- data.table::fread(gSpyParams$dstNZDates)
+
 # > Get file list ----
 
 fListAllDT <- nzGREENGridDataR::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
@@ -95,7 +98,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
          caption = paste0("gridSpy data from ", min(dt$r_dateTime), 
                           " to ", max(dt$r_dateTime),
                           "\nobsTime = Pacific/Auckland"))
-  
+    
   myPlot + 
     scale_x_time(breaks = timeBreaks) +
     geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
@@ -116,8 +119,9 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     geom_tile() +
     # https://ggplot2.tidyverse.org/reference/scale_brewer.html
     # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
-    scale_fill_distiller(palette = "Spectral", direction = -1) +
-    scale_x_date(date_breaks = "1 month") +
+    #scale_fill_distiller(palette = "Spectral", direction = -1) +
+    scale_fill_gradient2(midpoint = 1) +
+    scale_x_date(date_breaks = "2 months") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
     labs(title = paste0("Date time plot: ", hh),
          y = "Hour", 
@@ -126,19 +130,17 @@ for(hh in hhIDs){ # X >> start of per household loop ----
                           "\nobsDate = Pacific/Auckland",
                           "\nWe expect ", nExpectedObs, " per hour given ", nCircuits, " circuits",
                           "\nRatio = nObs/nExpectedObs so a value of 2 means we have duplicate hours (usualy at DST changes)"))
-  myPlot + 
-    annotate("text", x = as.Date("2014-04-06"),
-             y = 6,size = 4,angle = 90,
-             label = "DST end") +
-  annotate("text", x = as.Date("2014-09-28"),
-           y = 6,size = 4,angle = 90,
-             label = "DST start") +
-    annotate("text", x = as.Date("2015-04-05"),
-             y = 6,size = 4,angle = 90,
-             label = "DST end") +
-    annotate("text", x = as.Date("2015-09-27"),
-             y = 6,size = 4,angle = 90,
-             label = "DST start")
+  
+  # Add DST labels. We add all labels as it helps to show which households have ongoing data collection
+  for(d in unique(dstDT$date)){
+    obsDate <- lubridate::dmy(d)
+    label <- dstDT[date == d, label]
+    myPlot <- myPlot +
+      annotate("text", x = obsDate,
+               y = 7,size = 3, angle = 90,
+               label = label)
+  }
+  myPlot 
   
   ofile <- paste0(gSpyParams$gSpyOutPath, "checkPlots/", hh, "_timePlot.png")
   ggsave(ofile, height = 10)
