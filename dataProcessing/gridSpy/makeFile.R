@@ -27,7 +27,7 @@ gSpyParams$pattern <- "*at1.csv$" # e.g. *at1.csv$ filters only 1 min data
 # Set local (this script) parameters ----
 refreshData <- 1 # 0 = No
 buildReport <- 1 # 0 = No
-localTest <- 1 # local data test or not (1 = yes)?
+localTest <- 0 # local data test or not (1 = yes)?
 
 # > Set data paths  ----
 
