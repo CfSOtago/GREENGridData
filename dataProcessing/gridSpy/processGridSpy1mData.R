@@ -59,9 +59,11 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   # > Process files ----
   fileList <- fListToLoadDT[hhID == hh, fullPath] # files for this household
   print(paste0("#---------------------------- Begin ",hh,"----------------------------#"))
+  nFiles <- length(fileList)
+  print(paste0(hh, ": Loading ", nFiles, " files..."))
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
   t <- proc.time() - startTime
-  print(paste0(hh, ": data files loaded in ", getDuration(t)))
+  print(paste0(hh, ": ", nFiles ,"data files loaded in ", getDuration(t)))
   
   # > Run basic tests ----
   print(paste0(hh, ": running basic tests"))

@@ -276,8 +276,6 @@ processHhGridSpyData <- function(hh, fileList){
   # Gets all files listed, loads, processes, cleans & merges, saves out in long form
   # Does not check that hh matches file path - XX TO DO XX
   tempHhDT <- data.table::data.table() # (re)create new hh gridSpy data collector for each loop (hh)
-  nFiles <- length(fileList)
-  print(paste0(hh, ": Loading ", nFiles, " files..."))
   pbF <- progress::progress_bar$new(total = length(fileList)) # set progress bar using n files to load
   # X > start of per-file loop ----
   for(f in fileList){ 
