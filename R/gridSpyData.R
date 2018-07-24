@@ -113,12 +113,12 @@ fixAmbiguousDates <- function(dt){
 #' @export
 #'
 getGridSpyFileList <- function(fpath, pattern, dataThreshold){
-  print(paste0("Looking for data using pattern = ", pattern, " in ", fpath, " - could take a while..."))
+  print(paste0("#--> Looking for data using pattern = ", pattern, " in ", fpath, " - could take a while..."))
   # > Get the file list as a data.table ----
   fList <- list.files(path = fpath, pattern = pattern, # use to filter e.g. 1m from 30s files
                       recursive = TRUE)
   if(length(fList) == 0){ # if there are no files in the list...
-    print(paste0("No matching data files found, please check your path (", fpath, 
+    print(paste0("#--> No matching data files found, please check your path (", fpath, 
                  ") or your search pattern (", pattern, ")"))
     dt <- data.table::as.data.table(NULL)
   } else {
@@ -126,16 +126,16 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
   }
 
   nFiles <- nrow(dt)
-  print(paste0("Found ", tidyNum(nFiles), " files"))
+  print(paste0("#--> Found ", tidyNum(nFiles), " files"))
 
   #> Process file metadata ----
 
   if(nrow(dt) == 0){
     # Then no files were found - should have been caught previously but...
-    stop(paste0("No matching data files found, please check your path (", fpath,
+    stop(paste0("#--> No matching data files found, please check your path (", fpath,
                 ") or your search pattern (", pattern1Min, "). If using /hum-csafe/ are you connected to it?!"))
   } else {
-    print(paste0("Processing file list and getting file meta-data including checking date formats."))
+    print(paste0("#--> Processing file list and getting file meta-data including checking date formats."))
     dt <- dt[, c("hhID","fileName") := data.table::tstrsplit(fList, "/")]
     dt <- dt[, fullPath := paste0(fpath, hhID,"/",fileName)]
     loopCount <- 1
@@ -188,14 +188,15 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
       }
       loopCount <- loopCount + 1
     }
-    print("All files checked")
+    print("#--> All files checked")
 
     # any date formats are still ambiguous need a deeper inspection using the full file - could be slow
     fAmbig <- dt[dateFormat == "ambiguous", fullPath] # get ambiguous files as a list
     if(length(fAmbig) > 0){ # there were some
+      print(paste0("#--> Checking ambiguous date formats"))
       pbA <- progress::progress_bar$new(total = length(fAmbig))
       for(fa in fAmbig){
-        if(gSpyParams$fullFb){print(paste0("Checking ambiguous date formats in ", fa))}
+        if(gSpyParams$fullFb){print(paste0("#--> Checking ambiguous date formats in ", fa))}
         ambDT <- fread(fa)
         pbA$tick()
         if(nrow(dplyr::select(ambDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
@@ -209,9 +210,10 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
         # set what we now know (or guess!)
         dt <- dt[fullPath == fa, dateFormat := ambDT[1,dateFormat]]
       }
+      print(paste0("#--> Ambiguous date formats checked"))
     }
     dt <- setnames(dt, "fList", "file")
-    print("Done")
+    print("#--> Done")
   }
   return(dt)
 }
@@ -473,7 +475,7 @@ fixCircuitLabels_rf_46 <- function(dt){
   if(checkCols2 == 1){
     # we got label set 2
     if(gSpyParams$fullFb){print(paste0("Found circuit labels set 2 in ", f))}
-    setnames(fDT, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399",
+    setnames(dt, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399",
                     "Hot Water - Controlled1$4231", "Hot Water - Controlled2$4400",
                     "Incomer - Uncontrolled1$4230", "Incomer - Uncontrolled2$4401",
                     "Incomer Voltage$4405", "Kitchen & Bedrooms1$4229",
