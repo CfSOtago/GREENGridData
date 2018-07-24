@@ -31,11 +31,11 @@ if(testFile){
   mDate <- as.Date(file.mtime(gSpyParams$fListAll))
   if(mDate == today() & !gSpyParams$refreshFileList){
     # Already ran today but 
-    print(paste0("#--> Re-using saved file list"))
+    print(paste0("#-> Re-using saved file list"))
     fListAllDT <- data.table::fread(gSpyParams$fListAll)
   } 
   if(mDate != today() | !testFile | gSpyParams$refreshFileList) {
-      print(paste0("#--> Refreshing file list"))
+      print(paste0("#-> Refreshing file list"))
       fListAllDT <- nzGREENGridDataR::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
                                                      gSpyParams$pattern, # what to look for
                                                      gSpyParams$gSpyFileThreshold # file size threshold
@@ -44,12 +44,12 @@ if(testFile){
       fListAllDT <- nzGREENGridDataR::fixAmbiguousDates(fListAllDT)
       # > Save the full list listing 
       ofile <- gSpyParams$fListAll #  set in global
-      print(paste0("#--> Saving full list of 1 minute data files with metadata to ", ofile))
+      print(paste0("#-> Saving full list of 1 minute data files with metadata to ", ofile))
       data.table::fwrite(fListAllDT, ofile)
   }
 }
 
-print(paste0("#--> Overall we have ", nrow(fListAllDT), " files from ",
+print(paste0("#-> Overall we have ", nrow(fListAllDT), " files from ",
              uniqueN(fListAllDT$hhID), " households."))
 
 # > Get data files where we think there is data ----
@@ -57,7 +57,7 @@ fListToLoadDT <- fListAllDT[!(dateColName %like% "ignore")] # based on fsize che
 
 pcFiles <- round(100*(nrow(fListToLoadDT)/nrow(fListAllDT)))
 
-print(paste0("#--> Loading the ", nrow(fListToLoadDT), 
+print(paste0("#-> Loading the ", nrow(fListToLoadDT), 
              " files (", pcFiles, " % of all ", 
              nrow(fListAllDT), " files) which we think have data (from ",
              uniqueN(fListToLoadDT$hhID), " of ",uniqueN(fListAllDT$hhID), " households)"))
@@ -74,7 +74,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   print(paste0("#--> ", hh, ": Loading ", nFiles, " files..."))
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
   t <- proc.time() - startTime
-  print(paste0("#--> ",hh, ": ", nFiles ,"data files loaded in ", getDuration(t)))
+  print(paste0("#--> ",hh, ": ", nFiles ," data files loaded in ", getDuration(t)))
   
   # > Run basic tests ----
   print(paste0("#--> ",hh, ": running basic tests"))
@@ -177,11 +177,11 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   # > Save hh file ----
   # Keep only the vars we can't easily re-create
   keepVars <- c("hhID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuitLabel", "circuitID", "powerW")
-  saveDT <- dt[, c(keepVars)]
+  saveDT <- dt[, ..keepVars] # just saves the keepVars
   ofile <- paste0(gSpyParams$gSpyOutPath, "data/", hh,"_all_1min_data.csv")
-  print(paste0(hh, ": Saving ", ofile, "..."))
-  data.table::fwrite(dt, ofile)
-    print(paste0("#--> ",hh, ": Saved ", ofile, ", gzipping..."))
+  print(paste0("#--> ", hh, ": Saving ", ofile, " (columns: ", toString(names(saveDT)), ")"))
+  data.table::fwrite(saveDT, ofile)
+  print(paste0("#--> ",hh, ": Saved ", ofile, ", gzipping..."))
   cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
   try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
   print(paste0("#--> ",hh, ": Gzipped ", ofile))
