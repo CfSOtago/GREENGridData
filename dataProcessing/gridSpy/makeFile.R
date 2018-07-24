@@ -20,14 +20,14 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Spy Data ----------
 
 # Load nzGREENGrid package ----
 
-print(paste0("#--- Load nzGREENGridDataR package"))
+print(paste0("#-> Load nzGREENGridDataR package"))
 library(nzGREENGridDataR) # local utilities
-print(paste0("#--- Done "))
+print(paste0("#-> Done "))
 
 # Set global package parameters ----
-print(paste0("#--- Set up nzGREENGridDataR package "))
+print(paste0("#-> Set up nzGREENGridDataR package "))
 nzGREENGridDataR::setup()
-print(paste0("#--- Done "))
+print(paste0("#-> Done "))
 
 # Set gSpy parameters ----
 gSpyParams <- list()
@@ -39,15 +39,15 @@ gSpyParams$refreshFileList <- 1 # forces new file search & ignores any previousl
 
 # Set local (this script) parameters ----
 refreshData <- 1 # 0 = No
-buildReport <- 1 # 0 = No
-localTest <- 1 # local data test or not (1 = yes)?
+buildReport <- 0 # 0 = No
+localData <- 1 # local data test or not (1 = yes)?
 
 # > Set data paths  ----
 
 # dst dates
 gSpyParams$dstNZDates <- paste0(nzGREENGridDataR::findParentDirectory("nzGREENGridDataR"),"/data/dstNZDates.csv")
 
-if(localTest){
+if(localData){
   # Local test
   gSpyParams$gSpyInPath <- "~/Data/NZGreenGrid/gridspy/1min_orig/" # location of data (BA laptop)
   gSpyParams$gSpyOutPath <- "~/Data/NZGreenGrid/safe/gridSpy/1min/" # place to save them (BA laptop)
@@ -88,23 +88,25 @@ print(msg1)
 if(refreshData){
   # > set start time ----
   startTime <- proc.time()
-  print(paste0("#-- Refreshing all data using ", gSpyParams$gSpyInPath))
+  print(paste0("#-> Refreshing all data using ", gSpyParams$gSpyInPath))
   sourceF <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/processGridSpy1mData.R")
-  print(paste0("#-- Running ", sourceF))
+  print(paste0("#-> Running ", sourceF))
   source(sourceF)
-  print("#-- Data refresh complete") 
+  print("#-> Data refresh complete") 
   t <- proc.time() - startTime
-  print(paste0("#-- Data refresh completed in ", getDuration(t)))
+  print(paste0("#-> Data refresh completed in ", getDuration(t)))
 }
 
 
 # --- Build report ----
+library(rmarkdown)
 # Via (parameterised) .Rmd
 if(buildReport){
   startTime <- proc.time()
   print("#-- Rebuilding report")
   # run the report .Rmd and render to pdf
-  rmarkdown::render(input = "buildGridSpy1mReport.Rmd",
+  rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd")
+  rmarkdown::render(input = rmdFile,
                     output_format = "pdf_document",
                     output_file = paste0(gSpyParams$gSpyOutPath,"processingReports/gridSpy1mProcessingReport.pdf")
   )
