@@ -9,6 +9,7 @@ Description: Code here includes functions to:
     - load, clean & pseudonymise Time Use Diary (TUD) data
     - load, clean & pseudonymise appliance/dwelling data 
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+Depends: R
 Imports: 
   data.table,
   dplyr,
