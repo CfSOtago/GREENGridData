@@ -89,7 +89,7 @@ fixAmbiguousDates <- function(dt){
   dt <- dt[dateFormat == "ambiguous",
            dateFormat := "dmy - inferred"]
 
-  print(paste0("Fixed ", nrow(aList), " files with an ambiguous dateFormat"))
+  print(paste0("#-> Fixed ", nrow(aList), " files with an ambiguous dateFormat"))
   return(dt)
 }
 
@@ -113,7 +113,7 @@ fixAmbiguousDates <- function(dt){
 #' @export
 #'
 getGridSpyFileList <- function(fpath, pattern, dataThreshold){
-  print(paste0("#--> Looking for data using pattern = ", pattern, " in ", fpath, " - could take a while..."))
+  print(paste0("#-> Looking for data using pattern = ", pattern, " in ", fpath, " - could take a while..."))
   # > Get the file list as a data.table ----
   fList <- list.files(path = fpath, pattern = pattern, # use to filter e.g. 1m from 30s files
                       recursive = TRUE)
@@ -126,16 +126,16 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
   }
 
   nFiles <- nrow(dt)
-  print(paste0("#--> Found ", tidyNum(nFiles), " files"))
+  print(paste0("#-> Found ", tidyNum(nFiles), " files"))
 
   #> Process file metadata ----
 
   if(nrow(dt) == 0){
     # Then no files were found - should have been caught previously but...
-    stop(paste0("#--> No matching data files found, please check your path (", fpath,
+    stop(paste0("#-> No matching data files found, please check your path (", fpath,
                 ") or your search pattern (", pattern1Min, "). If using /hum-csafe/ are you connected to it?!"))
   } else {
-    print(paste0("#--> Processing file list and getting file meta-data including checking date formats."))
+    print(paste0("#-> Processing file list and getting file meta-data including checking date formats."))
     dt <- dt[, c("hhID","fileName") := data.table::tstrsplit(fList, "/")]
     dt <- dt[, fullPath := paste0(fpath, hhID,"/",fileName)]
     loopCount <- 1
@@ -188,15 +188,15 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
       }
       loopCount <- loopCount + 1
     }
-    print("#--> All files checked")
+    print("#-> All files checked")
 
     # any date formats are still ambiguous need a deeper inspection using the full file - could be slow
     fAmbig <- dt[dateFormat == "ambiguous", fullPath] # get ambiguous files as a list
     if(length(fAmbig) > 0){ # there were some
-      print(paste0("#--> Checking ambiguous date formats"))
+      print(paste0("#-> Checking ambiguous date formats"))
       pbA <- progress::progress_bar$new(total = length(fAmbig))
       for(fa in fAmbig){
-        if(gSpyParams$fullFb){print(paste0("#--> Checking ambiguous date formats in ", fa))}
+        if(gSpyParams$fullFb){print(paste0("#-> Checking ambiguous date formats in ", fa))}
         ambDT <- fread(fa)
         pbA$tick()
         if(nrow(dplyr::select(ambDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
@@ -210,10 +210,9 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
         # set what we now know (or guess!)
         dt <- dt[fullPath == fa, dateFormat := ambDT[1,dateFormat]]
       }
-      print(paste0("#--> Ambiguous date formats checked"))
+      print(paste0("#-> Ambiguous date formats checked"))
     }
     dt <- setnames(dt, "fList", "file")
-    print("#--> Done")
   }
   return(dt)
 }
@@ -281,7 +280,7 @@ processHhGridSpyData <- function(hh, fileList){
   pbF <- progress::progress_bar$new(total = length(fileList)) # set progress bar using n files to load
   # X > start of per-file loop ----
   for(f in fileList){ 
-    if(gSpyParams$fullFb){print(paste0("Loading ", f))}
+    if(gSpyParams$fullFb){print(paste0("#--> Loading ", f))}
     fDT <- data.table::fread(f)
     pbF$tick()
     
@@ -291,12 +290,12 @@ processHhGridSpyData <- function(hh, fileList){
     # Fix labels in households where strange things seemed to have happened
     if(hh == "rf_24"){
       # rf_24 has an additional circuit in some files but value is always NA
-      print(paste0(hh, ": Fixing rf_24 labels"))
+      #print(paste0("#--> ", hh, ": Fixing rf_24 labels"))
       fDT <- fixCircuitLabels_rf_24(fDT)
     }
     if(hh == "rf_46"){
       # rf_46 has 3 different versions of the circuit labels
-      print(paste0(hh, ": Fixing rf_46 labels"))
+      #print(paste0("#--> ", hh, ": Fixing rf_46 labels"))
       fDT <- fixCircuitLabels_rf_46(fDT)
     }
     
@@ -393,19 +392,19 @@ processHhGridSpyData <- function(hh, fileList){
     tempHhDT <- rbind(tempHhDT, fDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
   
   } # X > end of per file loop ----
-  print(paste0(hh, ": Done, cleaning rbound files"))
+  print(paste0("#--> ", hh, ": Done, cleaning rbound files"))
   
 
   # Switch to long format ----
   # this turns each circuit label (column) into a label within 'variable' and
   # sets value to be the power measurement
-  print(paste0(hh, ": wide form variables -> ", toString(names(tempHhDT))))
+  print(paste0("#--> ", hh, ": wide form variables -> ", toString(names(tempHhDT))))
   # we then relabel them for clarity
   hhLongDT <- reshape2::melt(tempHhDT, id=c("hhID","dateTime_orig", "TZ_orig", "r_dateTime"))
   data.table::setnames(hhLongDT, "value", "power")
   data.table::setnames(hhLongDT, "variable", "circuit")
   
-  print(paste0(hh, ": switched to long form"))
+  print(paste0("#--> ", hh, ": converted to long form"))
   
   # > Force power to be numeric ----
   hhLongDT <- hhLongDT[, powerW := as.numeric(power)]
@@ -414,14 +413,14 @@ processHhGridSpyData <- function(hh, fileList){
   hhLongDT <- hhLongDT[!is.na(powerW)]
   hhLongDT$power <- NULL # remove to save space/memory
   
-  print(paste0(hh, ": removed powerW = NA"))
+  print(paste0("#--> ", hh, ": removed powerW = NA"))
   
   # > Remove any duplicates by dateTime, circuit & power ----
 
   dupsBy <- c("r_dateTime", "circuit", "powerW")
   nDups <- anyDuplicated(hhLongDT, by=dupsBy)
   pcDups <- round(100*(nDups/nrow(hhLongDT)), 2)
-  print(paste0(hh, ": removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
+  print(paste0("#--> ", hh, ": removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
   hhLongDT <- unique(hhLongDT, by=dupsBy)
   
   # Create clean circuit labels
@@ -430,7 +429,7 @@ processHhGridSpyData <- function(hh, fileList){
   hhLongDT$circuit <- NULL # no longer needed
   
   setkey(hhLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
-  print(paste0(hh, ": final long form variables ->", toString(names(hhLongDT))))
+  print(paste0("#--> ", hh, ": final long form variables ->", toString(names(hhLongDT))))
   
   return(hhLongDT) # for saving etc
 }
