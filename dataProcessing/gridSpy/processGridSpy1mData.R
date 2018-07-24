@@ -3,12 +3,13 @@
 
 # expects to be called from makeFile which will have set parameters used
 
-# Local packages
-library(data.table)
-library(dplyr)
-library(lubridate)
-library(hms)
-library(ggplot2)
+# Local packages (needed in this script) ----
+localLibs <- c("data.table",
+               "lubridate",
+               "hms",
+               "ggplot2")
+
+nzGREENGridDataR::loadLibraries(localLibs)
 
 # Local functions ----
 
@@ -23,22 +24,32 @@ try(file.remove(gSpyParams$fLoadedStats)) # otherwise the append within the get 
 dstDT <- data.table::fread(gSpyParams$dstNZDates)
 
 # > Get file list ----
+testFile <- file.exists(gSpyParams$fListAll) # does it exist?
+  
+if(testFile){
+  mTime <- file.mtime(gSpyParams$fListAll)
+  mDate <- as.Date(file.mtime(gSpyParams$fListAll))
+  if(mDate == today() & !gSpyParams$refreshFileList){
+    # Already ran today but 
+    print(paste0("#--> Re-using saved file list"))
+    fListAllDT <- data.table::fread(gSpyParams$fListAll)
+  } 
+  if(mDate != today() | !testFile | gSpyParams$refreshFileList) {
+      print(paste0("#--> Refreshing file list"))
+      fListAllDT <- nzGREENGridDataR::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
+                                                     gSpyParams$pattern, # what to look for
+                                                     gSpyParams$gSpyFileThreshold # file size threshold
+      )
+      # > Fix ambiguous dates in meta data derived from file listing 
+      fListAllDT <- nzGREENGridDataR::fixAmbiguousDates(fListAllDT)
+      # > Save the full list listing 
+      ofile <- gSpyParams$fListAll #  set in global
+      print(paste0("#--> Saving full list of 1 minute data files with metadata to ", ofile))
+      data.table::fwrite(fListAllDT, ofile)
+  }
+}
 
-fListAllDT <- nzGREENGridDataR::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
-                                                   gSpyParams$pattern, # what to look for
-                                                   gSpyParams$gSpyFileThreshold # file size threshold
-)
-
-# > Fix ambiguous dates in meta data derived from file listing ----
-fListAllDT <- nzGREENGridDataR::fixAmbiguousDates(fListAllDT)
-
-# > Save the full list listing ----
-ofile <- gSpyParams$fListAll #  set in global
-print(paste0("Saving full list of 1 minute data files with metadata to ", ofile))
-data.table::fwrite(fListAllDT, ofile)
-
-
-print(paste0("Overall we have ", nrow(fListAllDT), " files from ",
+print(paste0("#--> Overall we have ", nrow(fListAllDT), " files from ",
              uniqueN(fListAllDT$hhID), " households."))
 
 # > Get data files where we think there is data ----
@@ -46,7 +57,7 @@ fListToLoadDT <- fListAllDT[!(dateColName %like% "ignore")] # based on fsize che
 
 pcFiles <- round(100*(nrow(fListToLoadDT)/nrow(fListAllDT)))
 
-print(paste0("Loading the ", nrow(fListToLoadDT), 
+print(paste0("#--> Loading the ", nrow(fListToLoadDT), 
              " files (", pcFiles, " % of all ", 
              nrow(fListAllDT), " files) which we think have data (from ",
              uniqueN(fListToLoadDT$hhID), " of ",uniqueN(fListAllDT$hhID), " households)"))
@@ -60,13 +71,13 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   fileList <- fListToLoadDT[hhID == hh, fullPath] # files for this household
   print(paste0("#---------------------------- Begin ",hh,"----------------------------#"))
   nFiles <- length(fileList)
-  print(paste0(hh, ": Loading ", nFiles, " files..."))
+  print(paste0("#--> ", hh, ": Loading ", nFiles, " files..."))
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
   t <- proc.time() - startTime
-  print(paste0(hh, ": ", nFiles ,"data files loaded in ", getDuration(t)))
+  print(paste0("#--> ",hh, ": ", nFiles ,"data files loaded in ", getDuration(t)))
   
   # > Run basic tests ----
-  print(paste0(hh, ": running basic tests"))
+  print(paste0("#--> ",hh, ": running basic tests"))
   # set some vars to aggregate by
   dt <- dt[, month := lubridate::month(r_dateTime, label = TRUE)]
   dt <- dt[, year := lubridate::year(r_dateTime)]
@@ -117,7 +128,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   nExpectedObs <- nCircuits * 60
   t <- dt[, .(nObs = .N), keyby = .(obsDate, obsHour)]
   t$ratio <- t$nObs/nExpectedObs
-  myPlot <- ggplot(t, aes(x = obsDate, y = obsHour, fill = ratio)) + 
+  myPlot <- ggplot2::ggplot(t, aes(x = obsDate, y = obsHour, fill = ratio)) + 
     geom_tile() +
     # https://ggplot2.tidyverse.org/reference/scale_brewer.html
     # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
@@ -159,7 +170,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   
   # > Add fStats to end of stats file stats collector
   ofile <- gSpyParams$hhStatsByDate 
-  print(paste0(hh, ": Adding hh stats by date list stats to ", ofile))
+  print(paste0("#--> ",hh, ": Adding hh stats by date list stats to ", ofile))
   data.table::fwrite(statDT, ofile, append=TRUE) # this will only write out column names once when file is created see ?fwrite
 
   
@@ -170,12 +181,11 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   ofile <- paste0(gSpyParams$gSpyOutPath, "data/", hh,"_all_1min_data.csv")
   print(paste0(hh, ": Saving ", ofile, "..."))
   data.table::fwrite(dt, ofile)
-    print(paste0(hh, ": Saved ", ofile, ", gzipping..."))
+    print(paste0("#--> ",hh, ": Saved ", ofile, ", gzipping..."))
   cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
   try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
-  print(paste0(hh, ": Gzipped ", ofile))
-  print(paste0(hh, ": Done"))
+  print(paste0("#--> ",hh, ": Gzipped ", ofile))
+  print(paste0("#--> ",hh, ": Done"))
 } # << X end per household loop ----
-
 
 # End
