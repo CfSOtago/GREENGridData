@@ -1,5 +1,5 @@
 ---
-title: 'Processing, cleaning and saving NZ GREEN Grid project 1 minute electricity
+title: 'Processing report: NZ GREEN Grid project 1 minute electricity
   power data'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
@@ -34,31 +34,16 @@ rm(list=ls(all=TRUE)) # remove all objects from workspace
 startTime <- proc.time()
 
 # Local parameters ----
-fullFb <- 0 # switch on (1) or off (0) full feedback
-baTest <- 1 # test (1) or full (0) run?
 
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
-
-if(baTest){
-  # Local test
-  dPath <- "~/Data/NZGreenGrid/gridspy/" # BA laptop test set
-  fpath <- paste0(dPath,"1min_orig/") # location of data
-  outPath <- paste0(dPath, "consolidated/1min/") # place to save them 
-} else {
-  # full monty
-  dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HPS
-  fpath <- paste0(dPath,"_RAW DATA/GridSpyData/") # location of data
-  outPath <- paste0(dPath, "Clean_data/safe/gridSpy/1min/") # place to save them 
-}
-
-dataThreshold <- 3000 # assume any files smaller than this (bytes) = no data or some mangled xml/html. Really, we should check the contents of each file.
 
 # Load nzGREENGrid package ----
 library(nzGREENGrid) # local utilities
 
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("ggplot2", # for fancy graphs
+             "readr", # for reading & parsing .csv files
              "knitr", # for kable
              "kableExtra" # for extra kable
 )
@@ -72,23 +57,11 @@ nzGREENGrid::loadLibraries(rmdLibs)
 
 \newpage
 
-# Status
-
-```{r reportStatus, include = FALSE}
-if(baTest){
-  msg <- paste0("Test run using reduced data from ", fpath)
-} else {
-  msg <- paste0("Full run using all data from ", fpath)
-}
-```
-
-`r msg`
-
 # Citation
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing, cleaning and saving NZ GREEN Grid project 1 minute electricity power data, University of Otago: Dunedin, NZ.
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing report: NZ GREEN Grid project 1 minute electricity  power data, University of Otago: Dunedin, NZ.
 
 \newpage
 
@@ -100,26 +73,22 @@ Report circulation:
 
 ## Purpose
 
-This report is intended to: 
+This report is intended to produce summary data quality statistics for the original GREEN grid Grid Spy data.
 
- * load and clean the project electricity power data (Grid Spy)
- * save the cleaned data out as a single file per household
- * produce summary data quality statistics
-
-The resulting cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
+The cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
 
 The data contains a unique household id which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
 
 ## Requirements:
 
- * grid spy 1 minute data downloads
+ * grid spy 1 minute data downloads processed using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R
 
 ## History
 
-Generally tracked via our git.soton [repo](https://git.soton.ac.uk/ba1e12/nzGREENGrid):
+Generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR/issues):
 
- * [history](https://git.soton.ac.uk/ba1e12/nzGREENGrid/commits/master)
- * [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues)
+ * [history](https://github.com/dataknut/nzGREENGridDataR/commits/master)
+ * [issues](https://github.com/dataknut/nzGREENGridDataR/issues)
  
 ## Support
 
@@ -131,31 +100,21 @@ This work was supported by:
  
 This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton.
 
-We do not 'support' the code but if you have a problem check the [issues](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues) on our [repo](https://git.soton.ac.uk/ba1e12/nzGREENGrid) and if it doesn't already exist, open one. We might be able to fix it :-)
+We do not 'support' the code but if you have a problem check the [issues](https://github.com/dataknut/nzGREENGridDataR/commits/master) on our [repo](https://github.com/dataknut/nzGREENGridDataR) and if it doesn't already exist, open one. We might be able to fix it :-)
 
-# Obtain listing of files
+# Original Data: Quality checks
 
-In this section we generate a listing of all 1 minute data files that we have received. If we are running over the complete dataset then we will be using data from:
+In this section we generate a listing of all 1 minute data files that we have received. These files are stored on `r ggrParams$otagoHCS` at:
 
- * /hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/
- 
-In this run we are using data from:
-
- * `r fpath`
-
-If these do not match then this may be a test run.
+ * `r gSpyParams$gSpyInPath`
 
 ```{r getCompleteFileList}
-# get file list via R script
-
-source("../scripts/process1minGridSpyFiles.R")
-
-print(paste0("Overall we have ", nrow(fListCompleteDT), " files from ", 
-             uniqueN(fListCompleteDT$hhID), " households."))
+# get file list 
+fListCompleteDT <- data.table::as.data.table(readr::read_csv(gSpyParams$fListAll))
 
 # for use below
 nFiles <- nrow(fListCompleteDT)
-nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "unknown"])
+nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 ```
 
 Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were _not_ loaded/checked as their file sizes indicated that they contained no data.
@@ -183,36 +142,9 @@ knitr::kable(t,
 
 Results to note:
 
- * There are `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` ambiguous files
+ * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files with ambiguous dates;
  * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
  
-We now inspect the ambiguous and (some of) the default files.
-
-To help with data cleaning the following table lists files that have ambiguous dates.
-
-```{r listAmbigFiles, echo=TRUE}
-# list ambigious files
-aList <- fListCompleteDT[dateFormat == "ambiguous", 
-                         .(file, dateColName, dateExample, dateFormat)]
-
-cap <- paste0("All ", nrow(aList), 
-              " files with an ambiguous dateFormat")
-
-knitr::kable(caption = cap, aList)
-
-```
-
-Check against file names to see what is reasonable and then fix them.
-
-```{r setAmbiguous, echo=TRUE}
-# Setting to dmy seems OK
-fListCompleteDT <- fListCompleteDT[dateFormat == "ambiguous", 
-                                   dateFormat := "dmy - inferred"]
-
-paste0("Fixed ", nrow(aList), " files with an ambiguous dateFormat")
-```
-
-
 The following table lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
 
 ```{r listDefaultDateFilesNZT, echo=TRUE}
@@ -257,8 +189,8 @@ knitr::kable(t,
 The following chart shows the distribution of these files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
 
 ```{r allFileSizesPlot}
-myCaption <- paste0("Data source: ", fpath,
-                    "\nUsing data received up to ", Sys.Date())
+myCaption <- paste0("Data source: ", gSpyParams$gSpyInPath,
+                    "\nUsing data received up to ", max(fListCompleteDT$fMDate))
 
 plotDT <- fListCompleteDT[, .(nFiles = .N,
                               meanfSize = mean(fSize)), 
@@ -276,16 +208,13 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
                         "\nLog file size used as some files are full year data")
     
   )
-ggplot2::ggsave(paste0(outPath, "gridSpyAllFileListSizeTilePlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyAllFileListSizeTilePlot.png"))
 ```
 
 
 The following chart shows the same chart but only for files which we think contain data.
 
 ```{r loadedFileSizesPlot}
-myCaption <- paste0("Data source: ", fpath,
-                    "\nUsing data received up to ", Sys.Date())
-
 plotDT <- fListCompleteDT[!is.na(dateFormat), .(nFiles = .N,
                               meanfSize = mean(fSize)), 
                           keyby = .(hhID, date = as.Date(fMDate))]
@@ -298,27 +227,30 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
   labs(title = "Mean file size of loaded grid spy data files received per day",
        caption = paste0(myCaption, 
                         "\nLog file size used as some files are full year data",
-                        "\nFiles loaded if fsize > ", dataThreshold, " bytes")
+                        "\nFiles loaded if fsize > ", gSpyParams$gSpyFileThreshold, " bytes")
     
   )
-ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileListSizeTilePlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
 
-# Load data files
 
-In this section we load the data files that have a file size > `r dataThreshold` bytes. Things to note:
+# Safe Data: quality checks
+
+## Loaded data files
+
+In this section we analyse the data files that have a file size > `r gSpyParams$gSpyFileThreshold` bytes and which have been used to create the safe data. Things to note:
 
  * We assume that any files smaller than this value have no observations. This is based on:
      * Manual inspection of several small files
      * The identical (small) file sizes involved
      * _But_ we should probably test the first few lines to double check...
- * We have to deal with quite a lot of duplication some of which has caused the different date formats. See our [repo issues list](https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues?scope=all&utf8=%E2%9C%93&state=all).
+ * We have had to deal with quite a lot of duplication some of which has caused the different date formats.
  
-The following table shows the number of files per household that we willl load.
+The following table shows the number of files per household that are actually processed to make the safe version.
 
 ```{r filesToLoadTable, echo=TRUE}
 # check files to load
-t <- fListCompleteDT[dateColName %like% "do not load", .(nFiles = .N,
+t <- fListCompleteDT[dateColName %like% "date", .(nFiles = .N,
                        meanSize = mean(fSize),
                        minFileDate = min(fMDate),
                        maxFileDate = max(fMDate)), keyby = .(hhID)]
@@ -327,32 +259,18 @@ knitr::kable(caption = "Summary of household files to load", t)
 ```
 
 
-```{r loadValidFiles, echo=TRUE, include=FALSE}
-# do not include outputs as it breaks the pdf render (why?)
-# load data using external R script
-source("../scripts/process1minGridSpyData.R")
-
-```
-
-# Data quality analysis
-
-Now produce some data quality plots & tables.
-
 ## Circuit label checks
 
-The following table shows the number of data files with different circuit labels by household. In theory there should only be one unique list per household and it should be present in every data file. 
-
-> NB: This table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(outPath, "circuitLabelCheck.csv")` for viewing in e.g. xl.
+The following table shows the number of households with different circuit labels by household. In theory each household should only have one set of unique circuit labels.
 
 ```{r circuitLabelCheck}
-# short cut if exists already
-#ifile <- paste0(outPath, fListFinal)
-#fListCompleteDT <- fread(ifile)
-t <- table(fListCompleteDT$circuitLabels,fListCompleteDT$hhID)
-knitr::kable(caption = "Circuit labels list by household", t)
+# get file list 
+fLoadedListDT <- data.table::as.data.table(readr::read_csv(gSpyParams$fLoadedStats))
 
-ofile <- paste0(outPath, "circuitLabelCheckTable.csv")
-write.csv(t, ofile)
+t <- fLoadedListDT[, .(nFiles = .N), keyby = .(hhID,circuitLabels)]
+
+knitr::kable(caption = "Circuit labels list by number of files per household", t)
+
 ```
 
 If this is not the case then this implies that:
@@ -366,12 +284,12 @@ Some or all of these may be true at any given time!
 Errors are easy to spot in the following plot where a hhID spans 2 or more circuit labels.
 
 ```{r plotCircuitLabelIssuesAsTile, fig.height=8}
-dt <- fListCompleteDT[!is.na(circuitLabels), 
+dt <- fLoadedListDT[!is.na(circuitLabels), 
                      .(nFiles = .N,
-                       minObsDate = min(obsStartDate), # helps locate issues in data
-                       maxObsDate = max(obsEndDate),
-                       minFileDate = min(fMDate), # helps locate issues in files
-                       maxFileDate = max(fMDate),
+                       minObsDate = min(minDateTime), # helps locate issues in data
+                       maxObsDate = max(maxDateTime),
+                       minFileDate = min(mDateTime), # helps locate issues in files
+                       maxFileDate = max(mDateTime),
                        nObs = sum(nObs)),
                      keyby = .(circuitLabels, hhID)] # ignore NA - it is files not loaded due to size thresholds
 
@@ -382,10 +300,10 @@ ggplot2::ggplot(dt, aes(y = hhID, x = circuitLabels,
   labs(title = "Circuit label counts for all loaded grid spy data",
        caption = paste0(myCaption,
                         "\nOnly files of size > ", 
-                        dataThreshold, " bytes loaded")
+                        gSpyParams$gSpyFileThreshold, " bytes loaded")
        
   )
-ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileCircuitLabelsPlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileCircuitLabelsPlot.png"))
 ```
 
 The following table provides more detail to aid error checking. Check for:
@@ -401,7 +319,7 @@ If the above plot and this table flag a lot of errors then some re-naming of the
 knitr::kable(dt, 
              caption = "Circuit labels by household with addiitonal meta-data")
 
-ofile <- paste0(outPath, "circuitLabelMetaDataCheckTable.csv")
+ofile <- paste0(gSpyParams$gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTable.csv")
 write.csv(dt, ofile)
 ```
 
@@ -422,9 +340,12 @@ The following plots show the number of observations per day per household. In th
 If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it's consolidated household dataset (a _within household absolute duplicate_ check).
 
 ```{r loadedFilesObsPlots}
-# short cut if already generated
-# hhStatDT <- as.data.table(read_csv(ofile)) # parses dates
-
+# get file list 
+hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
+myCaption <- paste0(myCaption,
+                        "\nOnly files of size > ", 
+                        gSpyParams$gSpyFileThreshold, " bytes loaded")
+  
 # tile plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, 
                                fill = nObs)) +
@@ -435,12 +356,10 @@ ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID,
                                    vjust = 0.5,
                                    hjust = 0.5)) + 
   labs(title = "N observations per household per day for all loaded grid spy data",
-       caption = paste0(myCaption,
-                        "\nOnly files of size > ", 
-                        dataThreshold, " bytes loaded")
+       caption = myCaption
        
   )
-ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileNobsTilePlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsTilePlot.png"))
 
 # point plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, 
@@ -451,12 +370,10 @@ ggplot2::ggplot(hhStatDT, aes( x = date,
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, 
                                    hjust = 0.5)) + 
   labs(title = "N observations per household per day for all loaded grid spy data",
-       caption = paste0(myCaption,
-                        "\nOnly files of size > ", 
-                        dataThreshold, " bytes loaded")
+       caption = myCaption
        
   )
-ggplot2::ggsave(paste0(outPath, "gridSpyLoadedFileNobsPointPlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsPointPlot.png"))
 ```
 
 The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
@@ -473,7 +390,7 @@ The following table shows the min/max observations per day and min/max dates for
 # Stats table (so we can pick out the dateTime errors)
 t <- hhStatDT[, .(minObs = min(nObs),
              maxObs = max(nObs), # should not be more than 1440, if so suggests duplicates
-             meanNDataColumns =mean(nDataColumns), #i.e. n circuits
+             meanN_Circuits =mean(nCircuits), #i.e. n circuits
              minDate = min(date),
              maxDate = max(date)),
          keyby = .(hhID)]
@@ -495,12 +412,10 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
                                    vjust = 0.5, 
                                    hjust = 0.5)) + 
   labs(title = "N live households per day for all loaded grid spy data",
-       caption = paste0(myCaption,
-                        "\nOnly files of size > ", 
-                        dataThreshold, " bytes loaded")
+       caption = myCaption
        
   )
-ggplot2::ggsave(paste0(outPath, "gridSpyLiveHouseholdsToDate.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLiveHouseholdsToDate.png"))
 
 ```
 
