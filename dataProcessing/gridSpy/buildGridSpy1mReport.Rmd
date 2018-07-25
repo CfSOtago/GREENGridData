@@ -1,15 +1,11 @@
 ---
+params:
+  localData: ""
 title: 'Processing report: NZ GREEN Grid project 1 minute electricity
   power data'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
   html_document:
     code_folding: hide
     fig_caption: true
@@ -18,6 +14,12 @@ output:
     self_contained: no
     toc: true
     toc_float: true
+    toc_depth: 2
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
     toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
@@ -62,56 +64,62 @@ nzGREENGrid::loadLibraries(rmdLibs)
 
 \newpage
 
+# Report circulation:
+
+ * Public
+ 
+# License
+
+```{r ccby license, child=ggrParams$licenseCCBY}
+```
+ 
 # Citation
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing report: NZ GREEN Grid project 1 minute electricity  power data, University of Otago: Dunedin, NZ.
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing report: NZ GREEN Grid project 1 minute electricity  power data, `r ggrParams$pubLoc`. XX replace with UKDA DOI when available XX
 
 \newpage
 
 # Introduction
 
-Report circulation:
-
- * Restricted to: [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project partners and contractors.
+```{r generic sample, child=ggrParams$sampleGeneric}
+```
+ 
 
 ## Purpose
 
-This report is intended to produce summary data quality statistics for the original GREEN grid Grid Spy data.
+This report is intended to produce summary data quality statistics for the original GREEN grid Grid Spy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the `r ggrParams$repo` repository.
 
-The cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
+The cleaned 'safe' data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners and to archive/release for research purposes via the UK Data Service's [ReShare](http://reshare.ukdataservice.ac.uk/) service.
 
-The data contains a unique household id which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
+The data contains a unique household id which can be used to link it to the anonymised NZ GREEN Grid household level data which will also be archived/release for research purposes via the UK Data Service's [ReShare](http://reshare.ukdataservice.ac.uk/) service.
 
 ## Requirements:
 
- * grid spy 1 minute data downloads processed using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R
+This report uses data quality statistics produced when processing the original grid spy 1 minute data downloads.
 
 ## History
 
-Generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR/issues):
+Generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
 
- * [history](https://github.com/dataknut/nzGREENGridDataR/commits/master)
- * [issues](https://github.com/dataknut/nzGREENGridDataR/issues)
+ * [report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
+ * [general issues](https://github.com/dataknut/nzGREENGridDataR/issues)
  
 ## Support
 
-This work was supported by:
 
- * The [University of Otago](https://www.otago.ac.nz/)
- * The New Zealand [Ministry of Business, Innovation and Employment (MBIE)](http://www.mbie.govt.nz/)
- * [SPATIALEC](http://www.energy.soton.ac.uk/tag/spatialec/) - a [Marie Skłodowska-Curie Global Fellowship](http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm) based at the University of Otago’s [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html) (2017-2019) & the University of Southampton's Sustainable Energy Research Group (2019-202).
+```{r generic support, child=ggrParams$supportGeneric}
+```
  
-This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton.
-
-We do not 'support' the code but if you have a problem check the [issues](https://github.com/dataknut/nzGREENGridDataR/commits/master) on our [repo](https://github.com/dataknut/nzGREENGridDataR) and if it doesn't already exist, open one. We might be able to fix it :-)
 
 # Original Data: Quality checks
 
-In this section we generate a listing of all 1 minute data files that we have received. These files are stored on `r ggrParams$otagoHCS` at:
+The original data files files are stored on `r ggrParams$otagoHCS` at:
 
  * `r gSpyParams$gSpyInPath`
+
+Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created.
 
 ```{r getCompleteFileList}
 # get file list 
@@ -122,7 +130,9 @@ nFiles <- nrow(fListCompleteDT)
 nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 ```
 
-Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were _not_ loaded/checked as their file sizes indicated that they contained no data.
+Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed.
+
+Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were _not_ loaded/checked as their file sizes indicated that they contained no data.
 
 ## Date format checks
 
@@ -318,13 +328,13 @@ The following table provides more detail to aid error checking. Check for:
  
 If the above plot and this table flag a lot of errors then some re-naming of the circuit labels (column names) may be necessary. 
 
-> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(outPath, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
+> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(gSpyParams$gSpyOutPath, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
 
 ```{r circuitLabelMetaDataCheck}
 knitr::kable(dt, 
              caption = "Circuit labels by household with addiitonal meta-data")
 
-ofile <- paste0(gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTable.csv")
+ofile <- paste0(gSpyParams$gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTable.csv")
 write.csv(dt, ofile)
 ```
 
@@ -346,10 +356,10 @@ If present both of the latter may have been implied by the table above and would
 
 ```{r loadedFilesObsPlots}
 # get file list 
-hhStatDT <- data.table::as.data.table(readr::read_csv(hhStatsByDate))
+hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
 myCaption <- paste0(myCaption,
                         "\nOnly files of size > ", 
-                        gSpyFileThreshold, " bytes loaded")
+                        gSpyParams$gSpyFileThreshold, " bytes loaded")
   
 # tile plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, 
@@ -364,7 +374,7 @@ ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID,
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsTilePlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsTilePlot.png"))
 
 # point plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, 
@@ -378,7 +388,7 @@ ggplot2::ggplot(hhStatDT, aes( x = date,
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsPointPlot.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsPointPlot.png"))
 ```
 
 The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
@@ -420,7 +430,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyOutPath, "/checkPlots/gridSpyLiveHouseholdsToDate.png"))
+ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLiveHouseholdsToDate.png"))
 
 ```
 
