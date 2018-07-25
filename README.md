@@ -1,44 +1,60 @@
 # nzGREENGridDataR
 Code to process data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project.
 
-# About
+[NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) data includes:
 
-The code in this repo does two things:
-
- * processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data)
- * produces original data processing reports (code will only work if you have the original data)
- * produces cleaned 'safe' data reports (code will work on the archived 'safe' data)
+ * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
+ * Occupant time-use diaries (focused on energy use)
+ * Dwelling & appliance surveys
 
 NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
 
-# Data Access
+----
+
+## About
+
+The code in this repo does two things:
+
+ * Data processing and reporting:
+    - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data)
+    - produces original data processing reports (code will only work if you have the original data)
+    - produces cleaned 'safe' data reports (code will work on the archived 'safe' data)
+ * Provides examples of code to:
+    - extract 'Heat Pump' profiles from the 'safe' data between two dates
+    - link the household survey and extracted 'Heat Pump' data for analysis
+
+## Data Access
 
 A link to the archived 'safe' version of the data will appear here soon. 
 
 Access to the original data which is stored on the University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html) is restricted.
 
-# Using the code
-This repo is intentionally structured as an R package so you can install it and re-use the code. 
+## Using the code
+This repo is intentionally structured as an R package so you can install it and re-use the code. To install it:
 
-# Re-Use and Contribution
+ * install the R [devtools](http://r-pkgs.had.co.nz/git.html) package: `> install.packages("devtools")`;
+ * run `> devtools::install_github(dataknut/nzGREENGridDataR)` - this should install the package and any [dependencies](http://r-pkgs.had.co.nz/description.html#dependencies) you may not have;
+ * inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
 
-## Terms of Re-Use
+## Re-Use and Contribution
 
-Read the [License](LICENSE) file. In general you can re-use the code and results provided you give appropriate attribution (citation).
+### Terms of Re-Use
 
-## Re-Using the results
-If you want to re-use any of the results in the md/html/pdf reports please cite them using the format described in the reports.
+In general you can re-use the code and results provided you give appropriate attribution (citation) and retain the same usage terms in your own work.
 
-## Re-Using the code
+### Re-Using the results
+If you want to re-use any of the results in the md/html/pdf reports please cite them using the format described in the reports and observe the license terms applied (usually [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
 
-If you want to re-use the code in your own work, please read the [License](LICENSE) file for specific guidance. 
+### Re-Using the code
+
+If you want to re-use the code in your own work, please read the repo [License](LICENSE) file for specific guidance. 
 
 Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV)
 
-## Comments & suggestions:
+### Comments & suggestions:
 Please use git [issues](https://github.com/dataknut/nzGREENGridDataR/issues) to make a comment or point out an error. We also use issues to manage our 'to do' list so please check your comment is not already open :-)
  
-## Contributing code
+### Contributing code
 Feel free to [fork](https://help.github.com/articles/fork-a-repo/) the repository (or a [branch](https://help.github.com/articles/about-branches/) if you are a collaborator with write access to this repo) and contribute your own additions through the normal git [pull request](https://github.com/dataknut/nzGREENGridDataR/pulls) process (ideally R or [RMarkdown](http://rmarkdown.rstudio.com/) please!). If you haven't used github before, now is a good time to [learn](https://guides.github.com/) - it works for any codebase, not just R. For R, we recommend using [RStudio](http://www.rstudio.com)'s integrated github features.
 
 If you make a substantive addition to any of the exisiting RMarkdown reports please add yourself as an author. Your contributions will, in any case, be [tracked by github](https://help.github.com/articles/tracing-changes-in-a-file/) and so fully visible to the world in perpetuity :-)

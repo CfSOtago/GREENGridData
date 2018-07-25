@@ -1,0 +1,3 @@
+The NZ GREEN Grid project recruited a sample of c 25 households in each of two regions of New Zealand. The first sample was recruited in early 2014 and the second in early 2015. Each household was instrumented as follows:
+
+ * a Grid Spy electricity demand monitoring 
