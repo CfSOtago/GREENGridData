@@ -22,13 +22,13 @@ output:
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
-```{r setup, include=FALSE}
+```{r knitrSetup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
 ```
 
+
 ```{r codeSetup, include=FALSE}
-# Housekeeping ----
-rm(list=ls(all=TRUE)) # remove all objects from workspace
 
 # Set start time ----
 startTime <- proc.time()
@@ -42,6 +42,9 @@ b2Mb <- 1048576
 library(nzGREENGridDataR) # local utilities
 
 nzGREENGridDataR::setup()
+
+# Set grid spy data paths etc from file ----
+source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("ggplot2", # for fancy graphs
@@ -321,7 +324,7 @@ If the above plot and this table flag a lot of errors then some re-naming of the
 knitr::kable(dt, 
              caption = "Circuit labels by household with addiitonal meta-data")
 
-ofile <- paste0(gSpyParams$gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTable.csv")
+ofile <- paste0(gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTable.csv")
 write.csv(dt, ofile)
 ```
 
@@ -343,10 +346,10 @@ If present both of the latter may have been implied by the table above and would
 
 ```{r loadedFilesObsPlots}
 # get file list 
-hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
+hhStatDT <- data.table::as.data.table(readr::read_csv(hhStatsByDate))
 myCaption <- paste0(myCaption,
                         "\nOnly files of size > ", 
-                        gSpyParams$gSpyFileThreshold, " bytes loaded")
+                        gSpyFileThreshold, " bytes loaded")
   
 # tile plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, 
@@ -361,7 +364,7 @@ ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID,
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsTilePlot.png"))
+ggplot2::ggsave(paste0(gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsTilePlot.png"))
 
 # point plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, 
@@ -375,7 +378,7 @@ ggplot2::ggplot(hhStatDT, aes( x = date,
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsPointPlot.png"))
+ggplot2::ggsave(paste0(gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsPointPlot.png"))
 ```
 
 The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
@@ -417,7 +420,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLiveHouseholdsToDate.png"))
+ggplot2::ggsave(paste0(gSpyOutPath, "/checkPlots/gridSpyLiveHouseholdsToDate.png"))
 
 ```
 
