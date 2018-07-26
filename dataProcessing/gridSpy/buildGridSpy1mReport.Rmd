@@ -35,10 +35,6 @@ options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to
 # Set start time ----
 startTime <- proc.time()
 
-# Local parameters ----
-
-b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
-b2Mb <- 1048576
 
 # Load nzGREENGrid package ----
 library(nzGREENGridDataR) # local utilities
@@ -57,6 +53,13 @@ rmdLibs <- c("ggplot2", # for fancy graphs
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
 
+# Local parameters ----
+
+b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
+b2Mb <- 1048576
+plotLoc <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/checkPlots/")
+statsLoc <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/checkStats/")
+  
 # Local functions ----
 
 
@@ -158,7 +161,8 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
                         "\nLog file size used as some files are full year data and so extremely large")
     
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyAllFileListSizeTilePlot.png"))
+
+ggplot2::ggsave(paste0(plotLoc, "gridSpyAllFileListSizeTilePlot.png"))
 ```
 As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. 
 
@@ -180,7 +184,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
                         "\nFiles loaded if fsize > ", gSpyParams$gSpyFileThreshold, " bytes")
     
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileListSizeTilePlot.png"))
+ggplot2::ggsave(paste0(plotLoc, "/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
 As we can see this removes a large number of the autmatically downloaded files.
 
@@ -276,8 +280,8 @@ knitr::kable(caption = "Circuit labels list by number of files per household", t
 
 Things to note:
 
- * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA
- * rf_46 had multiple circuit labels which have been 
+ * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
+ * rf_46 had multiple circuit labels caused by apparent typos. These have been re-labelled.
 
 
 If this is not the case then this implies that:
@@ -298,7 +302,7 @@ dt <- fLoadedListDT[!is.na(circuitLabels),
                        minFileDate = min(mDateTime), # helps locate issues in files
                        maxFileDate = max(mDateTime),
                        nObs = sum(nObs)),
-                     keyby = .(circuitLabels, hhID)] # ignore NA - it is files not loaded due to size thresholds
+                     keyby = .(hhID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
 
 ggplot2::ggplot(dt, aes(y = hhID, x = circuitLabels, 
                        fill = nObs)) +
@@ -310,7 +314,7 @@ ggplot2::ggplot(dt, aes(y = hhID, x = circuitLabels,
                         gSpyParams$gSpyFileThreshold, " bytes loaded")
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileCircuitLabelsPlot.png"))
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileCircuitLabelsPlot.png"))
 ```
 
 The following table provides more detail to aid error checking. Check for:
@@ -320,13 +324,13 @@ The following table provides more detail to aid error checking. Check for:
  
 If the above plot and this table flag a lot of errors then some re-naming of the circuit labels (column names) may be necessary. 
 
-> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(gSpyParams$gSpyOutPath, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
+> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
 
 ```{r circuitLabelMetaDataCheck}
 knitr::kable(dt, 
-             caption = "Circuit labels by household with addiitonal meta-data")
+             caption = "Circuit labels by household with additional meta-data")
 
-ofile <- paste0(gSpyParams$gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTable.csv")
+ofile <- paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")
 write.csv(dt, ofile)
 ```
 
@@ -363,7 +367,7 @@ ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID,
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsTilePlot.png"))
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsTilePlot.png"))
 
 # point plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, 
@@ -377,7 +381,7 @@ ggplot2::ggplot(hhStatDT, aes( x = date,
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileNobsPointPlot.png"))
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"))
 ```
 
 The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
@@ -419,7 +423,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLiveHouseholdsToDate.png"))
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
 
 ```
 
