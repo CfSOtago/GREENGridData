@@ -70,6 +70,10 @@ checkDates <- function(dt) {
       dt$dateFormat <- "mdy - definite"
     }
   }
+  # Setting ambiguous to dmy seems OK as this only seems to happen with UTC which is dmy by default
+  dt <- dt[dateFormat == "ambiguous",
+           dateFormat := "dmy - inferred"]
+  
   return(dt)
 }
 
@@ -88,7 +92,8 @@ fixAmbiguousDates <- function(dt){
   # Setting to dmy seems OK
   dt <- dt[dateFormat == "ambiguous",
            dateFormat := "dmy - inferred"]
-
+  # Get an example date
+  
   print(paste0("#-> Fixed ", nrow(aList), " files with an ambiguous dateFormat"))
   return(dt)
 }
@@ -165,12 +170,14 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
         row1DT <- fread(f, nrows = 1)
         # what is the date column called?
         dt <- dt[fullPath == f, dateColName := "unknown - can't tell"]
-        if(nrow(dplyr::select(row1DT, dplyr::contains("NZ"))) > 0){ # requires dplyr
+        if(nrow(dplyr::select(row1DT, dplyr::contains("NZ"))) > 0){ # requires dplyr - selects cols with 'NZ' in name
+          # we have NZT
           setnames(row1DT, 'date NZ', "dateTime_orig")
           row1DT <- row1DT[, dateColName := "date NZ"]
           dt <- dt[fullPath == f, dateColName := "date NZ"]
         }
-        if(nrow(dplyr::select(row1DT, dplyr::contains("UTC"))) > 0){ # requires dplyr
+        if(nrow(dplyr::select(row1DT, dplyr::contains("UTC"))) > 0){ # requires dplyr - selects cols with 'UTC' in name
+          # we have UTC
           setnames(row1DT, 'date UTC', "dateTime_orig")
           row1DT <- row1DT[, dateColName := "date UTC"]
           dt <- dt[fullPath == f, dateColName := "date UTC"]
@@ -183,14 +190,13 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
         if(gSpyParams$fullFb){print(paste0("Checking date formats in ", f))}
         testDT <- checkDates(row1DT)
         dt <- dt[fullPath == f, dateFormat := testDT[1, dateFormat]]
-        dt <- dt[fullPath == f, dateFormat := testDT[1, dateFormat]]
         if(gSpyParams$fullFb){print(paste0("Done ", f))}
       }
       loopCount <- loopCount + 1
     }
     print("#-> All files checked")
 
-    # any date formats are still ambiguous need a deeper inspection using the full file - could be slow
+    # any date formats that are still ambiguous need a deeper inspection using the full file - could be slow
     fAmbig <- dt[dateFormat == "ambiguous", fullPath] # get ambiguous files as a list
     if(length(fAmbig) > 0){ # there were some
       print(paste0("#-> Checking ambiguous date formats"))
@@ -219,7 +225,7 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 
 #' Loads and processes a list of gridSpy data files for a given household
 #'
-#' \code{getHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
+#' \code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
 #'     
 #'     What it does:
 #'     
@@ -429,7 +435,7 @@ processHhGridSpyData <- function(hh, fileList){
   hhLongDT$circuit <- NULL # no longer needed
   
   setkey(hhLongDT, r_dateTime, circuitLabel) # force dateTime & circuit order
-  print(paste0("#--> ", hh, ": final long form variables ->", toString(names(hhLongDT))))
+  print(paste0("#--> ", hh, ": final long form variables -> ", toString(names(hhLongDT))))
   
   return(hhLongDT) # for saving etc
 }
