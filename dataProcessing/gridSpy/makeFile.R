@@ -37,7 +37,7 @@ nzGREENGridDataR::loadLibraries(localLibs)
 # Set local (this script) parameters ----
 refreshData <- 0 # 0 = No
 buildReport <- 1 # 0 = No
-localData <- 0 # local data test or not (1 = yes)?
+localData <- 1 # local data test or not (1 = yes)?
 
 # Set grid spy data paths etc from file ----
 source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
@@ -81,9 +81,9 @@ if(buildReport){
   # run the report .Rmd and render to pdf
   rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd")
   rmarkdown::render(input = rmdFile,
-                    output_format = "pdf_document",
+                    output_format = "html_document",
                     params = list(localData = localData),
-                    output_file = paste0(gSpyParams$gSpyOutPath,"processingReports/gridSpy1mProcessingReport.pdf")
+                    output_file = paste0(gSpyParams$gSpyOutPath,"processingReports/gridSpy1mProcessingReport.html")
   )
   t <- proc.time() - startTime
   print(paste0("Report rebuild completed in ", getDuration(t)))
