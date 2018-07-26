@@ -12,7 +12,7 @@ processHhGridSpyData(hh, fileList)
 \item{fileList}{list of files to load (assumed to be all from hh)}
 }
 \description{
-\code{getHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
+\code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
     
     What it does:
     
