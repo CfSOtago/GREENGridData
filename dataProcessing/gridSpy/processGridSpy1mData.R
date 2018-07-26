@@ -34,7 +34,8 @@ if(testFile){
     print(paste0("#-> Re-using saved file list"))
     fListAllDT <- data.table::fread(gSpyParams$fListAll)
   } 
-  if(mDate != today() | !testFile | gSpyParams$refreshFileList) {
+}
+if(!testFile | gSpyParams$refreshFileList) {
       print(paste0("#-> Refreshing file list"))
       fListAllDT <- nzGREENGridDataR::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
                                                      gSpyParams$pattern, # what to look for
@@ -47,7 +48,6 @@ if(testFile){
       print(paste0("#-> Saving full list of 1 minute data files with metadata to ", ofile))
       data.table::fwrite(fListAllDT, ofile)
   }
-}
 
 print(paste0("#-> Overall we have ", nrow(fListAllDT), " files from ",
              uniqueN(fListAllDT$hhID), " households."))
@@ -115,8 +115,8 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   myPlot + 
     scale_x_time(breaks = timeBreaks) +
     geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
-  
-  ofile <- paste0(gSpyParams$gSpyOutPath, "checkPlots/", hh, "_powerPlot.png")
+  plotLoc <- paste0(ggrParams$projLoc,"/dataProcessing/gridSpy/checkPlots/")
+  ofile <- paste0(plotLoc, hh, "_powerPlot.png")
   ggsave(ofile, height = 10)
   
   # >> date time checks ----
@@ -155,7 +155,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   }
   myPlot 
   
-  ofile <- paste0(gSpyParams$gSpyOutPath, "checkPlots/", hh, "_timePlot.png")
+  ofile <- paste0(plotLoc, hh, "_timePlot.png")
   ggsave(ofile, height = 10)
 
   # > Set household level stats by date ----

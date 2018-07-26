@@ -28,6 +28,6 @@ if(localData){
                  gSpyParams$gSpyOutPath)
 }
 
-gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath, "checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
-gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath, "checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
-gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath, "checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
+gSpyParams$fListAll <- paste0(ggrParams$projLoc,"/dataProcessing/gridSpy/checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
+gSpyParams$fLoadedStats <- paste0(ggrParams$projLoc,"/dataProcessing/gridSpy/checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
+gSpyParams$hhStatsByDate <- paste0(ggrParams$projLoc,"/dataProcessing/gridSpy/checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
