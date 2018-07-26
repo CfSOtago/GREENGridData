@@ -132,7 +132,7 @@ nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 
 Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored' as they have 1 of two file sizes (43 or 2751 bytes).
 
-Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were labelled as 'ignore' as their file sizes indicated that they contained no data.
+Of the `r tidyNum(nFiles)` files,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were labelled as 'ignore' as their file sizes indicated that they contained no data.
 
 ## Data file quality checks
 
@@ -155,12 +155,12 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
                                    vjust = 0.5, hjust = 0.5)) + 
   labs(title = "Mean file size of all grid spy data files received per day",
        caption = paste0(myCaption, 
-                        "\nLog file size used as some files are full year data")
+                        "\nLog file size used as some files are full year data and so extremely large")
     
   )
 ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyAllFileListSizeTilePlot.png"))
 ```
-
+As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. 
 
 The following chart shows the same chart but only for files which we think contain data.
 
@@ -182,16 +182,16 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
   )
 ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
-
+As we can see this removes a large number of the autmatically downloaded files.
 
 ## Date format checks
 
-The original data was downloaded in two ways:
+As noted above, the original data was downloaded in two ways:
 
- * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears to also have varying dateTime formats (d/m/y, y/m/d etc);
+ * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d etc);
  * Automatic download of daily data. In this case the dateTime of the observation is stored as UTC
 
-These variations and uncertainties have required substantial effort to fix.
+Resolving and cleaning these variations and uncertainties have required substantial effort and in some cases the date has had to be inferred from the file names.
 
 The following table lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
 
@@ -219,7 +219,7 @@ cap <- paste0("First 10 (max) of ", nrow(aList),
 knitr::kable(caption = cap, head(aList, 10))
 ```
 
-Check final date formats:
+After final cleaning, the final date formats are:
 
 ```{r finalDateFormatTable}
 # See what the date formats look like now
@@ -236,19 +236,18 @@ Results to note:
 
  * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
  * There are a range of dateTme formats - these are fixed in the data cleaning process
- * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files with ambiguous dates;
+ * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files which are still labelled as having ambiguous dates;
  
-# Loaded data files
+# Processed Data: Quality checks
 
 In this section we analyse the data files that have a file size > `r gSpyParams$gSpyFileThreshold` bytes and which have been used to create the safe data. Things to note:
 
- * We assume that any files smaller than this value have no observations. This is based on:
+ * As inidcated above, we assume that any files smaller than this value have no observations. This is based on:
      * Manual inspection of several small files
      * The identical (small) file sizes involved
-     * _But_ we should probably test the first few lines to double check...
- * We have had to deal with quite a lot of duplication some of which has caused the different date formats, especially where they run through Daylight Savings Time (DST) changes.
+ * We have had to deal with quite a lot of duplication some of which was caused by the different date formats, especially where they run through Daylight Savings Time (DST) changes.
  
-The following table shows the number of files per household that are actually processed to make the safe version.
+The following table shows the number of files per household that are actually processed to make the safe version together with the min/max file save dates (not the observed data dates).
 
 ```{r filesToLoadTable, echo=TRUE}
 # check files to load
@@ -263,7 +262,7 @@ knitr::kable(caption = "Summary of household files to load", t)
 
 ## Circuit label checks
 
-The following table shows the number of households with different circuit labels by household. In theory each household should only have one set of unique circuit labels.
+The following table shows the number of files for each household with different circuit labels. In theory each household should only have one set of unique circuit labels.
 
 ```{r circuitLabelCheck}
 # get file list 
@@ -275,13 +274,19 @@ knitr::kable(caption = "Circuit labels list by number of files per household", t
 
 ```
 
+Things to note:
+
+ * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA
+ * rf_46 had multiple circuit labels which have been 
+
+
 If this is not the case then this implies that:
 
  * some of the circuit labels for these households may have been changed during the data collection process;
  * some of the circuit labels may have character conversion errors which have changed the labels during the data collection process;
  * at least one file from one household has been saved to a folder containing data from a different household (unfortunately the raw data files do _not_ contain household IDs in the data or the file names which would enable checking/preventative filtering). This will be visible in the table if two households appear to share _exactly_ the same list of circuit labels.
 
-Some or all of these may be true at any given time!
+Some or all of these may be true at any given time.
 
 Errors are easy to spot in the following plot where a hhID spans 2 or more circuit labels.
 
@@ -325,9 +330,6 @@ ofile <- paste0(gSpyParams$gSpyOutPath, "/checkStats/circuitLabelMetaDataCheckTa
 write.csv(dt, ofile)
 ```
 
-Things to note:
-
- * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA
  
 ## Observations
 
