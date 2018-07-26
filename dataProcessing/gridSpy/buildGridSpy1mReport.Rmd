@@ -130,78 +130,13 @@ nFiles <- nrow(fListCompleteDT)
 nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 ```
 
-Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed.
+Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored' as they have 1 of two file sizes (43 or 2751 bytes).
 
-Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were _not_ loaded/checked as their file sizes indicated that they contained no data.
-
-## Date format checks
-
-We now need to check how many of the loaded files have an ambiguous or default date - these could introduce errors.
-
-```{r initialDateFormatTable}
-
-# short cut if interim file list already saved ----
-#ifile <- paste0(outPath, fListInterim)
-#print(paste0("Loading 1 minute data files interim metadata to ", ifile))
-#fListCompleteDT <- fread(ifile)
-  
-  
-t <- fListCompleteDT[, .(nFiles = .N, 
-                         minDate = min(dateExample), # may not make much sense
-                         maxDate = max(dateExample)), 
-                     keyby = .(dateColName, dateFormat)]
-
-knitr::kable(t, 
-             caption = "Number of files and min/max date (as char) with given date column names by inferred date format")
-```
-
-Results to note:
-
- * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files with ambiguous dates;
- * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
- 
-The following table lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
-
-```{r listDefaultDateFilesNZT, echo=TRUE}
-# list default files with NZ time
-aList <- fListCompleteDT[dateColName == "date NZ" & dateFormat %like% "default", 
-                         .(file, fSize, dateColName, dateExample, dateFormat)]
-
-cap <- paste0("First 10 (max) of ", nrow(aList), 
-              " files with dateColName = 'date NZ' and default dateFormat")
-
-knitr::kable(caption = cap, head(aList))
-```
-
-The following table lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
-
-```{r listDefaultDateFilesUTC, echo=TRUE}
-# list default files with UTC time
-aList <- fListCompleteDT[dateColName == "date UTC" & dateFormat %like% "default", 
-                         .(file, fSize, dateColName, dateExample, dateFormat)]
-
-cap <- paste0("First 10 (max) of ", nrow(aList), 
-              " files with dateColName = 'date UTC' and default dateFormat")
-
-knitr::kable(caption = cap, head(aList, 10))
-```
-
-Check final date formats:
-
-```{r finalDateFormatTable}
-# See what the date formats look like now
-t <- fListCompleteDT[, .(nFiles = .N, 
-                         minDate = min(dateExample), # may not make much sense
-                         maxDate = max(dateExample)), 
-                     keyby = .(dateColName, dateFormat)]
-
-knitr::kable(t,
-             caption = "Number of files & min/max dates (as char) with given date column names by final imputed date format")
-```
+Of the `r tidyNum(nFiles)`,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were labelled as 'ignore' as their file sizes indicated that they contained no data.
 
 ## Data file quality checks
 
-The following chart shows the distribution of these files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
+The following chart shows the distribution of all files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
 
 ```{r allFileSizesPlot}
 myCaption <- paste0("Data source: ", gSpyParams$gSpyInPath,
@@ -249,9 +184,61 @@ ggplot2::ggsave(paste0(gSpyParams$gSpyOutPath, "/checkPlots/gridSpyLoadedFileLis
 ```
 
 
-# Safe Data: quality checks
+## Date format checks
 
-## Loaded data files
+The original data was downloaded in two ways:
+
+ * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears to also have varying dateTime formats (d/m/y, y/m/d etc);
+ * Automatic download of daily data. In this case the dateTime of the observation is stored as UTC
+
+These variations and uncertainties have required substantial effort to fix.
+
+The following table lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
+
+```{r listDefaultDateFilesNZT, echo=TRUE}
+# list default files with NZ time
+aList <- fListCompleteDT[dateColName == "date NZ" & dateFormat %like% "default", 
+                         .(file, fSize, dateColName, dateExample, dateFormat)]
+
+cap <- paste0("First 10 (max) of ", nrow(aList), 
+              " files with dateColName = 'date NZ' and default dateFormat")
+
+knitr::kable(caption = cap, head(aList))
+```
+
+The following table lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
+
+```{r listDefaultDateFilesUTC, echo=TRUE}
+# list default files with UTC time
+aList <- fListCompleteDT[dateColName == "date UTC" & dateFormat %like% "default", 
+                         .(file, fSize, dateColName, dateExample, dateFormat)]
+
+cap <- paste0("First 10 (max) of ", nrow(aList), 
+              " files with dateColName = 'date UTC' and default dateFormat")
+
+knitr::kable(caption = cap, head(aList, 10))
+```
+
+Check final date formats:
+
+```{r finalDateFormatTable}
+# See what the date formats look like now
+t <- fListCompleteDT[, .(nFiles = .N, 
+                         minDate = min(dateExample), # may not make much sense
+                         maxDate = max(dateExample)), 
+                     keyby = .(dateColName, dateFormat)]
+
+knitr::kable(t,
+             caption = "Number of files & min/max dates (as char) with given date column names by final imputed date format")
+```
+
+Results to note:
+
+ * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
+ * There are a range of dateTme formats - these are fixed in the data cleaning process
+ * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files with ambiguous dates;
+ 
+# Loaded data files
 
 In this section we analyse the data files that have a file size > `r gSpyParams$gSpyFileThreshold` bytes and which have been used to create the safe data. Things to note:
 
@@ -259,7 +246,7 @@ In this section we analyse the data files that have a file size > `r gSpyParams$
      * Manual inspection of several small files
      * The identical (small) file sizes involved
      * _But_ we should probably test the first few lines to double check...
- * We have had to deal with quite a lot of duplication some of which has caused the different date formats.
+ * We have had to deal with quite a lot of duplication some of which has caused the different date formats, especially where they run through Daylight Savings Time (DST) changes.
  
 The following table shows the number of files per household that are actually processed to make the safe version.
 
@@ -349,7 +336,7 @@ The following plots show the number of observations per day per household. In th
  * dates before 2014 or in to the future. These may indicate:
     * date conversion errors;
  * more than 1440 observations per day. These may indicate:
-    * duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels;
+    * duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_timePlot.png plots to be found in ;
     * observations from files that are in the 'wrong' rf_XX folder and so are included in the 'wrong' household as 'duplicate' time stamps.
 
 If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it's consolidated household dataset (a _within household absolute duplicate_ check).
