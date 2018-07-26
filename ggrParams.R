@@ -14,8 +14,8 @@ ggrParams$repo <- "[nzGREENGridDataR](https://github.com/dataknut/nzGREENGridDat
 
 # Rmd includes
 ggrParams$licenseCCBY <- paste0(ggrParams$projLoc, "/includes/licenseCCBY.Rmd")
-ggrParams$supportGeneric <- paste0(ggrParams$supportGeneric, "/includes/supportGeneric.Rmd")
-ggrParams$sampleGeneric <- paste0(ggrParams$sampleGeneric, "/includes/sampleGeneric")
+ggrParams$supportGeneric <- paste0(ggrParams$projLoc, "/includes/supportGeneric.Rmd")
+ggrParams$sampleGeneric <- paste0(ggrParams$projLoc, "/includes/sampleGeneric.Rmd")
 
 # Misc
 ggrParams$b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
