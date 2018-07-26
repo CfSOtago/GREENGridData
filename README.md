@@ -16,13 +16,25 @@ NB: *None* of the data is held in this repo so *none* of the code here will work
 The code in this repo does two things:
 
  * Data processing and reporting:
-    - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data)
+    - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data). As it does so it creates two check plots for each household: monthly mean power profiles & the number of observations over time
     - produces original data processing reports (code will only work if you have the original data)
     - produces cleaned 'safe' data reports (code will work on the archived 'safe' data)
  * Provides examples of code to:
     - extract 'Heat Pump' profiles from the 'safe' data between two dates
     - link the household survey and extracted 'Heat Pump' data for analysis
 
+Guide to folders:
+
+ * data - misc data (not the research data)
+ * checkPlots - data quality/check plots for each household produced during processing
+ * checkStats - data quality summary statistics produced during processing
+ * dataProcessing - r scripts to process data and generate data quality reports
+ * examples - r script examples to use on the clean 'safe' data
+ * includes - .Rmd files use in report generation
+ * man - r package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/))
+ * R - r code implementing the package functions
+ * reports - data quality reports
+ 
 ## Data Access
 
 A link to the archived 'safe' version of the data will appear here soon. 
