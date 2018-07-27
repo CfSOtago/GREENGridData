@@ -43,15 +43,6 @@ localData <- 0 # local data test or not (1 = yes)?
 source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 
 # Local functions ----
-getDuration <- function(t){
-  elapsed <- t[[3]]
-  duration <- paste0(round(elapsed,2), 
-               " seconds ( ", 
-               round(elapsed/60,2),
-               " minutes)"
-  )
-  return(duration)
-}
 
 # --- Code ---
 
@@ -68,7 +59,7 @@ if(refreshData){
   source(sourceF)
   print("#-> Data refresh complete") 
   t <- proc.time() - startTime
-  print(paste0("#-> Data refresh completed in ", getDuration(t)))
+  print(paste0("#-> Data refresh completed in ", nzGREENGridDataR::getDuration(t)))
 }
 
 
@@ -86,7 +77,7 @@ if(buildReport){
                     output_file = paste0(ggrParams$projLoc,"/reports/gridSpy1mProcessingReport.html")
   )
   t <- proc.time() - startTime
-  print(paste0("Report rebuild completed in ", getDuration(t)))
+  print(paste0("Report rebuild completed in ", nzGREENGridDataR::getDuration(t)))
 }
 
 
