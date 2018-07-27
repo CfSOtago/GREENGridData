@@ -159,7 +159,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
 
 ggplot2::ggsave(paste0(plotLoc, "gridSpyAllFileListSizeTilePlot.png"))
 ```
-As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. 
+As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.
 
 The following chart shows the same chart but _only_ for files which we think contain data.
 
@@ -223,8 +223,11 @@ After final cleaning, the final date formats are:
 ```{r finalDateFormatTable}
 # See what the date formats look like now
 t <- fListCompleteDT[, .(nFiles = .N, 
-                         minDate = min(dateExample), # may not make much sense
-                         maxDate = max(dateExample)), 
+                         meanFSizeKb = tidyNum(mean(fSize/b2Kb)),
+                         minFSizeKb = tidyNum(min(fSize/b2Kb)),
+                         maxFSizeKb = tidyNum(max(fSize/b2Kb)),
+                         minFDate = min(fMDate), # may not make much sense
+                         maxFDate = max(fMDate)), 
                      keyby = .(dateColName, dateFormat)]
 
 knitr::kable(t,
@@ -298,14 +301,17 @@ Errors are easier to spot in the following plot where a hhID spans 2 or more cir
 
 ```{r plotCircuitLabelIssuesAsTile, fig.height=8}
 
-dt$newx = stringr::str_wrap(dt$circuitLabels, width = 20) #https://stackoverflow.com/questions/21878974/auto-wrapping-of-labels-via-labeller-label-wrap-in-ggplot2
+dt$newx = stringr::str_wrap(dt$circuitLabels, width = 40) #https://stackoverflow.com/questions/21878974/auto-wrapping-of-labels-via-labeller-label-wrap-in-ggplot2
 
 ggplot2::ggplot(dt, aes(y = newx, x = hhID, 
                        fill = nObs)) +
   geom_tile() +
-  #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  theme(axis.text.y = element_text(size = 3)) + 
+  theme(legend.position="bottom") +
+  scale_fill_gradient(low="green", high = "red") +
   labs(title = "Circuit label counts for all loaded grid spy data",
-       x = "Circuit label sets (as strings)",
+       y = "Circuit label sets (as strings)",
        caption = paste0(myCaption,
                         "\nOnly files of size > ", 
                         gSpyParams$gSpyFileThreshold, " bytes loaded")
