@@ -35,7 +35,7 @@ nzGREENGridDataR::loadLibraries(localLibs)
 
 
 # Set local (this script) parameters ----
-refreshData <- 1 # 0 = No
+refreshData <- 0 # 0 = No
 buildReport <- 1 # 0 = No
 localData <- 0 # local data test or not (1 = yes)?
 
