@@ -1,0 +1,224 @@
+---
+params:
+  hhID: "rf_06" # <- change this to switch household. That's it :-)
+  title: 'NZ GREEN Grid project example:'
+  subtitle: 'Testing power demand: '
+title: '`r params$title`'
+subtitle: '`r paste0(params$subtitle, params$hhID)`'
+author: "Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)"
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: yes
+    keep_md: yes
+    number_sections: yes
+    self_contained: no
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
+bibliography: '`r path.expand("~/bibliography.bib")`'
+---
+
+```{r knitrSetup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
+```
+
+
+```{r codeSetup, include=FALSE}
+
+# Set start time ----
+startTime <- proc.time()
+
+
+# Load nzGREENGrid package ----
+library(nzGREENGridDataR) # local utilities
+
+nzGREENGridDataR::setup()
+
+# Packages needed in this .Rmd file ----
+rmdLibs <- c("data.table", # data munching
+             "lubridate", # date & time stuff
+             "ggplot2", # for fancy graphs
+             "readr", # for reading & parsing .csv files
+             "knitr" # for kable
+)
+# load them
+nzGREENGrid::loadLibraries(rmdLibs)
+
+# Local parameters ----
+# change this to suit your data location & to use a different household
+gsFile <- paste0(ggrParams$dataLoc, "Clean_data/safe/gridSpy/1min/data/", params$hhID,"_all_1min_data.csv.gz")
+hhFile <- paste0(ggrParams$dataLoc, "Clean_data/safe/survey/ggHouseholdAttributes.csv")
+
+# Local functions ----
+
+
+```
+
+\newpage
+
+# About
+
+## Report circulation:
+
+ * Public - this report is intended to accompany the data release.
+ 
+## License
+
+```{r ccby license, child=ggrParams$licenseCCBY}
+```
+ 
+## Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r lubridate::year(today())`) `r params$title` `r paste0(params$subtitle, params$hhID)` `r ggrParams$pubLoc`.
+
+This work is (c) `r lubridate::year(today())` the University of Southampton.
+
+## History
+
+Code history is generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
+
+ * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/examples/testHouseholdPower.Rmd)
+ * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
+ 
+## Requirements:
+
+This report uses the safe version of the grid spy 1 minute data which has been processed using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R.
+
+## Support
+
+```{r generic support, child=ggrParams$supportGeneric}
+```
+ 
+\newpage
+
+# Introduction
+
+```{r generic sample, child=ggrParams$sampleGeneric}
+```
+ 
+This report provides summary analysis of one household as an example.
+
+# Load `r params$hhID` data
+
+The data used to generate this report is:
+
+ * `r gsFile`
+ * `r hhFile`
+
+```{r loadAllData}
+hhDT <- data.table::as.data.table(readr::read_csv(hhFile)) # load hh data
+
+t <- hhDT[hhID == params$hhID]
+
+knitr::kable(caption = paste0("Summary of household data for", params$hhID), t)
+
+gsDT <- data.table::as.data.table(readr::read_csv(gsFile, 
+                                                  col_types = cols(hhID = col_character(),
+                                                                   dateTime_orig = col_character(), # <- this is crucial otherwise readr attempts to parse this as a dateTime and FAILS (see https://github.com/dataknut/nzGREENGridDataR/issues/2)
+                                                                   TZ_orig = col_character(),
+                                                                   r_dateTime = col_datetime(format = ""),
+                                                                   circuit = col_character(),
+                                                                   powerW = col_double()
+                                                                   )
+                                                  )
+                                  ) # load gs data
+
+t <- summary(gsDT)
+
+knitr::kable(caption = paste0("Summary of grid spy data for", params$hhID), t)
+
+gsDT <- gsDT[, month := lubridate::month(r_dateTime, label = TRUE)]
+gsDT <- gsDT[, year := lubridate::year(r_dateTime)]
+gsDT <- gsDT[, obsHour := lubridate::hour(r_dateTime)]
+gsDT <- gsDT[, obsDate := lubridate::date(r_dateTime)]
+gsDT <- gsDT[, obsTime := hms::as.hms(r_dateTime)]
+```
+
+The first table shows household attributes such as how many people live in this household.
+
+The second table shows a summary of the grid spy 1 minute power data. Note that:
+
+ * the original dataTime (`dateTime_orig`) and TZ (`TZ_orig`) have been retained so that the user can check for parsing errors (see https://github.com/dataknut/nzGREENGridDataR/issues/2) if required;
+ * r_datetime is the correct dateTime of each observation in UTC and will have loaded as your local timezone. If you are conducting this analysis outside NZ then you will get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
+
+# Plot monthly power profiles
+
+This section plots overall mean power (W) per minute per month for each circuit to show:
+
+ * patterns of missing data (no lines)
+ * patterns of consumption
+ * possible dateTime issues (where consumption patterns seem to be stangely shifted in time)
+ * possible PV installation
+
+```{r plotProfiles, fig.height=8}
+plotDT <- gsDT[, .(meanW = mean(powerW)), keyby = .(circuit, month, year, obsTime)
+             ] # aggregate by circuit to preserve unique circuit labels in households 
+# (e.g. rf_46) where names are re-used but with different ids. see ?fixCircuitLabels_rf_46
+vLineAlpha <- 0.4
+vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+timeBreaks <- c(hms::as.hms("04:00:00"), 
+                hms::as.hms("08:00:00"),
+                hms::as.hms("12:00:00"),
+                hms::as.hms("16:00:00"),
+                hms::as.hms("20:00:00"),
+                hms::as.hms("24:00:00")
+)
+
+myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = circuit)) +
+  geom_line() + 
+  facet_grid(month  ~ year) + 
+  theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  theme(legend.position = "bottom") + 
+  labs(title = paste0("Montly mean power profiles by circuit plot: ", params$hhID),
+       y = "Mean kW", 
+       caption = paste0("gridSpy data from ", min(gsDT$r_dateTime), 
+                        " to ", max(gsDT$r_dateTime),
+                        "\nobsTime = Pacific/Auckland"))
+
+myPlot + 
+  scale_x_time(breaks = timeBreaks) +
+  geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
+```
+
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used:
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * lubridate - date manipulation [@lubridate]
+ * ggplot2 - for slick graphics [@ggplot2]
+ * readr - for csv reading/writing [@readr]
+ * knitr - to create this document & neat tables [@knitr]
+ * nzGREENGridDataR - for local NZ GREEN Grid project utilities
+
+Session info:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References
