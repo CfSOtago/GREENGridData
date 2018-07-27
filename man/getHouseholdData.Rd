@@ -10,10 +10,20 @@ getHouseholdData(f)
 \item{f}{the .xlsx file}
 }
 \description{
-\code{getHouseholdData} does what it says. Expects .xlsx with two sheets, one for each sample.
+\code{getHouseholdData} does what it says. Expects an .xlsx with two sheets, one for each sample.
 }
 \details{
-Combines the results into one table. Could be extended to include other survey data when available.
+Combines & returns the results as a data.table which records:
+
+- power company
+   - location
+   - n adults
+   - n children aged 0-12
+   - n chidlren aged 13-18
+   - any recruitment or sampling notes
+   - date gridSpy monitor disconnected and (potentially) re-used
+   
+   Will be extended to include other survey data when available.
 }
 \author{
 Ben Anderson, \email{b.anderson@soton.ac.uk}
