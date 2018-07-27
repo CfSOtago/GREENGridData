@@ -13,6 +13,9 @@ nzGREENGridDataR::loadLibraries(localLibs)
 
 # Local functions ----
 
+# Local parameters ----
+plotLoc <- paste0(ggrParams$projLoc,"/checkPlots/") # where to save the check plots
+
 # Code ----
 
 # > Housekeeping ----
@@ -55,6 +58,16 @@ print(paste0("#-> Overall we have ", nrow(fListAllDT), " files from ",
 # > Get data files where we think there is data ----
 fListToLoadDT <- fListAllDT[!(dateColName %like% "ignore")] # based on fsize check
 
+
+# See what the date formats look like now
+t <- fListToLoadDT[, .(nFiles = .N, 
+                         minDate = min(dateExample), # may not make much sense
+                         maxDate = max(dateExample)), 
+                     keyby = .(dateColName, dateFormat)]
+
+print("#-> Test inferred date formats")
+t
+
 pcFiles <- round(100*(nrow(fListToLoadDT)/nrow(fListAllDT)))
 
 print(paste0("#-> Loading the ", nrow(fListToLoadDT), 
@@ -76,6 +89,10 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   t <- proc.time() - startTime
   print(paste0("#--> ",hh, ": ", nFiles ," data files loaded in ", getDuration(t)))
   
+  # > Create clean circuit labels ----
+  # dt <- dt[, c("circuitLabel", "circuitID") := tstrsplit(circuit, "$", fixed = TRUE)]
+  # don't do this as it can lead to confusion due to re-use of labels with differing IDs
+  
   # > Run basic tests ----
   print(paste0("#--> ",hh, ": running basic tests"))
   # set some vars to aggregate by
@@ -89,8 +106,10 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   # These will show us when the household was consuming electricity 
   # - do they look OK?
   # - can you spot the households with PV?
-  plotDT <- dt[, .(meanW = mean(powerW)), keyby = .(circuitLabel, month, year, obsTime)
-               ]
+  
+  plotDT <- dt[, .(meanW = mean(powerW)), keyby = .(circuit, month, year, obsTime)
+               ] # aggregate by circuit to preserve unique circuit labels in households 
+                 # (e.g. rf_46) where names are re-used but with different ids. see ?fixCircuitLabels_rf_46
   vLineAlpha <- 0.4
   vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
   timeBreaks <- c(hms::as.hms("02:00:00"), hms::as.hms("04:00:00"), 
@@ -100,13 +119,13 @@ for(hh in hhIDs){ # X >> start of per household loop ----
                   hms::as.hms("18:00:00"), hms::as.hms("20:00:00"),
                   hms::as.hms("22:00:00")
   )
-  myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = circuitLabel)) +
+  myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = circuit)) +
     geom_line() + 
     facet_grid(month  ~ year) + 
     theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
     theme(legend.position = "bottom") + 
-    labs(title = paste0("Power plot: ", hh),
+    labs(title = paste0("Montly mean power profiles by circuit plot: ", hh),
          y = "Mean kW", 
          caption = paste0("gridSpy data from ", min(dt$r_dateTime), 
                           " to ", max(dt$r_dateTime),
@@ -115,8 +134,8 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   myPlot + 
     scale_x_time(breaks = timeBreaks) +
     geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
-  plotLoc <- paste0(ggrParams$projLoc,"/dataProcessing/gridSpy/checkPlots/")
-  ofile <- paste0(plotLoc, hh, "_powerPlot.png")
+  
+  ofile <- paste0(plotLoc, hh, "_monthlyPowerPlot.png")
   ggsave(ofile, height = 10)
   
   # >> date time checks ----
@@ -124,7 +143,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   # We should have too many once a year when the DST change occurs and we 'gain' an hour (we have 02:00 - 03:00 twice)
   # and the reverse once a year when we lose 02:00 - 03:00
   # This will not be visible in UTC time, only local time
-  nCircuits <- uniqueN(dt$circuitLabel)
+  nCircuits <- uniqueN(dt$circuit)
   nExpectedObs <- nCircuits * 60
   t <- dt[, .(nObs = .N), keyby = .(obsDate, obsHour)]
   t$ratio <- t$nObs/nExpectedObs
@@ -136,7 +155,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     scale_fill_gradient2(midpoint = 1) +
     scale_x_date(date_breaks = "2 months") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
-    labs(title = paste0("Date time plot: ", hh),
+    labs(title = paste0("Expected observations ratio by date & hour plot: ", hh),
          y = "Hour", 
          caption = paste0("gridSpy data from ", min(dt$r_dateTime), 
                           " to ", max(dt$r_dateTime),
@@ -155,7 +174,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   }
   myPlot 
   
-  ofile <- paste0(plotLoc, hh, "_timePlot.png")
+  ofile <- paste0(plotLoc, hh, "_observationsRatioPlot.png")
   ggsave(ofile, height = 10)
 
   # > Set household level stats by date ----
@@ -164,8 +183,8 @@ for(hh in hhIDs){ # X >> start of per household loop ----
                         sdPowerW = sd(powerW),
                         minPowerW = min(powerW),
                         maxPowerW = max(powerW),
-                        circuitLabels = toString(unique(circuitLabel)),
-                        nCircuits = uniqueN(circuitLabel)), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
+                        circuitLabels = toString(unique(circuit)),
+                        nCircuits = uniqueN(circuit)), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
                     keyby = .(hhID, date = lubridate::date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
   
   # > Add fStats to end of stats file stats collector
@@ -176,7 +195,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   
   # > Save hh file ----
   # Keep only the vars we can't easily re-create
-  keepVars <- c("hhID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuitLabel", "circuitID", "powerW")
+  keepVars <- c("hhID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")
   saveDT <- dt[, ..keepVars] # just saves the keepVars
   ofile <- paste0(gSpyParams$gSpyOutPath, "data/", hh,"_all_1min_data.csv")
   print(paste0("#--> ", hh, ": Saving ", ofile, " (columns: ", toString(names(saveDT)), ")"))
