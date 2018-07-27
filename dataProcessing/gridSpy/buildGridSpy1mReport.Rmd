@@ -57,8 +57,8 @@ nzGREENGrid::loadLibraries(rmdLibs)
 
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
-plotLoc <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/checkPlots/")
-statsLoc <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/checkStats/")
+plotLoc <- paste0(ggrParams$projLoc, "/reports/plots/")
+statsLoc <- paste0(ggrParams$projLoc, "/checkStats/")
   
 # Local functions ----
 
@@ -67,16 +67,18 @@ statsLoc <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/checkStats/")
 
 \newpage
 
-# Report circulation:
+# About
 
- * Public
+## Report circulation:
+
+ * Public - this report is intended to accompany the data release.
  
-# License
+## License
 
 ```{r ccby license, child=ggrParams$licenseCCBY}
 ```
  
-# Citation
+## Citation
 
 If you wish to use any of the material from this report please cite as:
 
@@ -92,11 +94,7 @@ If you wish to use any of the material from this report please cite as:
 
 ## Purpose
 
-This report is intended to produce summary data quality statistics for the original GREEN grid Grid Spy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the `r ggrParams$repo` repository.
-
-The cleaned 'safe' data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners and to archive/release for research purposes via the UK Data Service's [ReShare](http://reshare.ukdataservice.ac.uk/) service.
-
-The data contains a unique household id which can be used to link it to the anonymised NZ GREEN Grid household level data which will also be archived/release for research purposes via the UK Data Service's [ReShare](http://reshare.ukdataservice.ac.uk/) service.
+This report provides summary data quality statistics for the original GREEN grid Grid Spy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the `r ggrParams$repo` repository.
 
 ## Requirements:
 
@@ -111,18 +109,14 @@ Generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridD
  
 ## Support
 
-
 ```{r generic support, child=ggrParams$supportGeneric}
 ```
  
-
 # Original Data: Quality checks
 
 The original data files files are stored on `r ggrParams$otagoHCS` at:
 
  * `r gSpyParams$gSpyInPath`
-
-Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created.
 
 ```{r getCompleteFileList}
 # get file list 
@@ -133,9 +127,9 @@ nFiles <- nrow(fListCompleteDT)
 nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 ```
 
-Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored' as they have 1 of two file sizes (43 or 2751 bytes).
+Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (`r file.mtime(gSpyParams$fListAll)`).
 
-Of the `r tidyNum(nFiles)` files,  `r tidyNum(nFilesNotLoaded)` (`r round(100*(nFilesNotLoaded/nFiles),2)`%) were labelled as 'ignore' as their file sizes indicated that they contained no data.
+Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles),2)`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
 ## Data file quality checks
 
@@ -352,7 +346,8 @@ If present both of the latter may have been implied by the table above and would
 hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
 myCaption <- paste0(myCaption,
                         "\nOnly files of size > ", 
-                        gSpyParams$gSpyFileThreshold, " bytes loaded")
+                        gSpyParams$gSpyFileThreshold, " bytes loaded",
+                    "\nNB: number of observations is a function of the number of circuits monitored as well as missing data!")
   
 # tile plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, 
