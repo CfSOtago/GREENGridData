@@ -4,7 +4,7 @@ params:
 title: 'Processing report: NZ GREEN Grid project 1 minute electricity
   power data'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
-date: 'Last run at: 2018-07-26 23:04:21'
+date: 'Last run at: 2018-07-27 11:42:51'
 output:
   html_document:
     code_folding: hide
@@ -142,7 +142,7 @@ Of the 2,802 files,  2,125 (75.84%) were labelled as 'ignore' as their file size
 
 The following chart shows the distribution of all files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
 
-![](/Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/gridSpy1mProcessingReport_files/figure-html/allFileSizesPlot-1.png)<!-- -->
+![](/Users/ben/github/dataknut/nzGREENGridDataR/reports/gridSpy1mProcessingReport_files/figure-html/allFileSizesPlot-1.png)<!-- -->
 
 ```
 ## Saving 7 x 5 in image
@@ -151,7 +151,7 @@ As we can see, relatively large files were donwloaded (manually) in June and Oct
 
 The following chart shows the same chart but only for files which we think contain data.
 
-![](/Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/gridSpy1mProcessingReport_files/figure-html/loadedFileSizesPlot-1.png)<!-- -->
+![](/Users/ben/github/dataknut/nzGREENGridDataR/reports/gridSpy1mProcessingReport_files/figure-html/loadedFileSizesPlot-1.png)<!-- -->
 
 ```
 ## Saving 7 x 5 in image
@@ -305,8 +305,8 @@ The following table shows the number of files for each household with different 
 
 Things to note:
 
- * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA
- * rf_46 had multiple circuit labels which have been 
+ * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
+ * rf_46 had multiple circuit labels caused by apparent typos. These have been re-labelled.
 
 
 If this is not the case then this implies that:
@@ -319,7 +319,7 @@ Some or all of these may be true at any given time.
 
 Errors are easy to spot in the following plot where a hhID spans 2 or more circuit labels.
 
-![](/Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/gridSpy1mProcessingReport_files/figure-html/plotCircuitLabelIssuesAsTile-1.png)<!-- -->
+![](/Users/ben/github/dataknut/nzGREENGridDataR/reports/gridSpy1mProcessingReport_files/figure-html/plotCircuitLabelIssuesAsTile-1.png)<!-- -->
 
 ```
 ## Saving 7 x 8 in image
@@ -332,7 +332,7 @@ The following table provides more detail to aid error checking. Check for:
  
 If the above plot and this table flag a lot of errors then some re-naming of the circuit labels (column names) may be necessary. 
 
-> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in /Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/checkStats/circuitLabelMetaDataCheckTable.csv for viewing in e.g. xl.
+> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in /Users/ben/github/dataknut/nzGREENGridDataR/checkStats/circuitLabelMetaDataCheckTable.csv for viewing in e.g. xl.
 
 
 |hhID  |circuitLabels                                                                                                                                                                                                                                                                                                                          | nFiles|minObsDate          |maxObsDate          |minFileDate         |maxFileDate         |    nObs|
@@ -372,13 +372,13 @@ If present both of the latter may have been implied by the table above and would
 ## )
 ```
 
-![](/Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/gridSpy1mProcessingReport_files/figure-html/loadedFilesObsPlots-1.png)<!-- -->
+![](/Users/ben/github/dataknut/nzGREENGridDataR/reports/gridSpy1mProcessingReport_files/figure-html/loadedFilesObsPlots-1.png)<!-- -->
 
 ```
 ## Saving 7 x 5 in image
 ```
 
-![](/Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/gridSpy1mProcessingReport_files/figure-html/loadedFilesObsPlots-2.png)<!-- -->
+![](/Users/ben/github/dataknut/nzGREENGridDataR/reports/gridSpy1mProcessingReport_files/figure-html/loadedFilesObsPlots-2.png)<!-- -->
 
 ```
 ## Saving 7 x 5 in image
@@ -397,16 +397,16 @@ The following table shows the min/max observations per day and min/max dates for
 
 |hhID  | minObs| maxObs| meanN_Circuits|minDate    |maxDate    |
 |:-----|------:|------:|--------------:|:----------|:----------|
-|rf_01 |     12|   8871|       6.000000|2014-01-06 |2015-10-20 |
-|rf_06 |   2460|   8825|       6.000000|2014-06-09 |2018-07-19 |
-|rf_45 |   4770|   8758|       6.000000|2015-03-25 |2016-10-15 |
-|rf_46 |   2526|  19357|       6.977842|2015-03-27 |2018-02-20 |
-|rf_47 |   3156|   8818|       6.000000|2015-03-25 |2016-05-08 |
+|rf_01 |     12|   8871|        6.00000|2014-01-06 |2015-10-20 |
+|rf_06 |   2460|   8825|        6.00000|2014-06-09 |2018-07-19 |
+|rf_45 |   4770|   8758|        6.00000|2015-03-25 |2016-10-15 |
+|rf_46 |   2526|  19357|       12.84489|2015-03-27 |2018-02-20 |
+|rf_47 |   3156|   8818|        6.00000|2015-03-25 |2016-05-08 |
 
 
 Finally we show the total number of households which we think are still sending data.
 
-![](/Users/ben/github/dataknut/nzGREENGridDataR/dataProcessing/gridSpy/gridSpy1mProcessingReport_files/figure-html/liveDataHouseholds-1.png)<!-- -->
+![](/Users/ben/github/dataknut/nzGREENGridDataR/reports/gridSpy1mProcessingReport_files/figure-html/liveDataHouseholds-1.png)<!-- -->
 
 ```
 ## Saving 7 x 5 in image
@@ -417,7 +417,7 @@ Finally we show the total number of households which we think are still sending 
 
 
 
-Analysis completed in 11.07 seconds ( 0.18 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
+Analysis completed in 12.18 seconds ( 0.2 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
 
 # R environment
 
@@ -462,22 +462,21 @@ Session info:
 ##  [1] progress_1.2.0    tidyselect_0.2.4  reshape2_1.4.3   
 ##  [4] purrr_0.2.5       lattice_0.20-35   colorspace_1.3-2 
 ##  [7] viridisLite_0.3.0 htmltools_0.3.6   yaml_2.1.19      
-## [10] utf8_1.1.4        rlang_0.2.1       pillar_1.2.3     
-## [13] glue_1.2.0        sp_1.3-1          bindrcpp_0.2.2   
-## [16] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4       
-## [19] stringr_1.3.1     munsell_0.5.0     gtable_0.2.0     
-## [22] rvest_0.3.2       RgoogleMaps_1.4.2 mapproj_1.2.6    
-## [25] evaluate_0.10.1   labeling_0.3      highr_0.7        
-## [28] proto_1.0.0       Rcpp_0.12.17      geosphere_1.5-7  
-## [31] openssl_1.0.1     backports_1.1.2   scales_0.5.0     
-## [34] rjson_0.2.20      png_0.1-7         digest_0.6.15    
-## [37] stringi_1.2.3     grid_3.5.0        rprojroot_1.3-2  
-## [40] cli_1.0.0         tools_3.5.0       magrittr_1.5     
-## [43] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
-## [46] crayon_1.3.4      pkgconfig_2.0.1   xml2_1.2.0       
-## [49] prettyunits_1.0.2 assertthat_0.2.0  httr_1.3.1       
-## [52] rstudioapi_0.7    R6_2.2.2          ggmap_2.6.1      
-## [55] compiler_3.5.0
+## [10] rlang_0.2.1       pillar_1.2.3      glue_1.2.0       
+## [13] sp_1.3-1          bindrcpp_0.2.2    jpeg_0.1-8       
+## [16] bindr_0.1.1       plyr_1.8.4        stringr_1.3.1    
+## [19] munsell_0.5.0     gtable_0.2.0      rvest_0.3.2      
+## [22] RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.10.1  
+## [25] labeling_0.3      highr_0.7         proto_1.0.0      
+## [28] Rcpp_0.12.17      geosphere_1.5-7   openssl_1.0.1    
+## [31] backports_1.1.2   scales_0.5.0      rjson_0.2.20     
+## [34] png_0.1-7         digest_0.6.15     stringi_1.2.3    
+## [37] grid_3.5.0        rprojroot_1.3-2   tools_3.5.0      
+## [40] magrittr_1.5      maps_3.3.0        lazyeval_0.2.1   
+## [43] tibble_1.4.2      crayon_1.3.4      pkgconfig_2.0.1  
+## [46] xml2_1.2.0        prettyunits_1.0.2 assertthat_0.2.0 
+## [49] httr_1.3.1        rstudioapi_0.7    R6_2.2.2         
+## [52] ggmap_2.6.1       compiler_3.5.0
 ```
 
 # References
