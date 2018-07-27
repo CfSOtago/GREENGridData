@@ -32,7 +32,7 @@ refresh <- 1 # refresh data even if it seems to already exsit
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
 
-# amend these to suit your data storage location
+# Amend these to suit your data storage location ----
 if(localTest == 1){
   # Local test
   dPath <- "~/Data/NZGreenGrid/safe/gridSpy/1min/" # local test set
