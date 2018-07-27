@@ -5,7 +5,7 @@ ggrParams$projLoc <- findParentDirectory("nzGREENGridDataR")
 ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HPS by default
 
 # Location of basic household data
-ggrParams$gsHHMasterFile <- path.expand("~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx")
+ggrParams$gsHHMasterFile <- "~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx"
 
 # Vars for Rmd
 ggrParams$pubLoc <- "[Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin"
