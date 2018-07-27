@@ -29,15 +29,6 @@ localLibs <- c("rmarkdown")
 nzGREENGridDataR::loadLibraries(localLibs)
 
 # Local functions ----
-getDuration <- function(t){
-  elapsed <- t[[3]]
-  duration <- paste0(round(elapsed,2), 
-               " seconds ( ", 
-               round(elapsed/60,2),
-               " minutes)"
-  )
-  return(duration)
-}
 
 # --- Code ---
 
@@ -59,7 +50,7 @@ if(buildReport){
                     output_file = paste0(ggrParams$projLoc,"/reports/surveyProcessingReport.pdf")
   )
   t <- proc.time() - startTime
-  print(paste0("Report rebuild completed in ", getDuration(t)))
+  print(paste0("Report rebuild completed in ", nzGREENGridDataR::getDuration(t)))
 }
 
 
