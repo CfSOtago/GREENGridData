@@ -238,7 +238,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Processing report: NZ GREEN Grid project 1 minute electricity power data</h1>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-07-27 13:26:32</em></h4>
+<h4 class="date"><em>Last run at: 2018-07-27 16:06:11</em></h4>
 
 </div>
 
@@ -322,9 +322,9 @@ div.tocify {
 </div>
 <div id="original-data-quality-checks" class="section level1">
 <h1><span class="header-section-number">3</span> Original Data: Quality checks</h1>
-<p>The original data files files are stored on the University of Otago’s High-Capacity Central File Storage <a href="https://www.otago.ac.nz/its/services/hosting/otago068353.html">HCS</a> at:</p>
+<p>The original data files files are stored on the University of Otago’s High-Capacity Central File Storage <a href="https://www.otago.ac.nz/its/services/hosting/otago068353.html">HCS</a>. The data used to generate this report was at:</p>
 <ul>
-<li>~/Data/NZGreenGrid/gridspy/1min_orig/</li>
+<li>/Volumes/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/</li>
 </ul>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -336,17 +336,23 @@ div.tocify {
 ##   fMTime = col_datetime(format = &quot;&quot;),
 ##   fMDate = col_date(format = &quot;&quot;),
 ##   dateColName = col_character(),
-##   dateExample = col_character(),
+##   dateExample = col_date(format = &quot;&quot;),
 ##   dateFormat = col_character()
 ## )</code></pre>
-<p>Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (2018-07-27 12:53:11).</p>
-<p>Overall we have 2,802 files from 5 households. However a large number of files (2,125 or 75.84%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as ‘to be ignored’.</p>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 31 parsing failures.
+## row # A tibble: 5 x 5 col     row col         expected     actual   file                             expected   &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;    &lt;chr&gt;                            actual 1  1237 dateExample &quot;date like &quot; 14/07/14 &#39;/Users/ben/github/dataknut/nzG… file 2  1802 dateExample &quot;date like &quot; 14/07/14 &#39;/Users/ben/github/dataknut/nzG… row 3  2367 dateExample &quot;date like &quot; 14/07/14 &#39;/Users/ben/github/dataknut/nzG… col 4  3499 dateExample &quot;date like &quot; 14/07/14 &#39;/Users/ben/github/dataknut/nzG… expected 5  4066 dateExample &quot;date like &quot; 14/07/14 &#39;/Users/ben/github/dataknut/nzG…
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
+<p>Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (2018-07-27 14:36:18).</p>
+<p>Overall we have 24,884 files from 44 households. However a large number of files (14,752 or 59.28%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as ‘to be ignored’.</p>
 <div id="input-data-file-quality-checks" class="section level2">
 <h2><span class="header-section-number">3.1</span> Input data file quality checks</h2>
 <p>The following chart shows the distribution of <em>all</em> files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.</p>
 <p><img src="gridSpy1mProcessingReport_files/figure-html/allFileSizesPlot-1.png" /><!-- --></p>
 <pre><code>## Saving 7 x 5 in image</code></pre>
-<p>As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017.</p>
+<p>As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.</p>
 <p>The following chart shows the same chart but <em>only</em> for files which we think contain data.</p>
 <p><img src="gridSpy1mProcessingReport_files/figure-html/loadedFileSizesPlot-1.png" /><!-- --></p>
 <pre><code>## Saving 7 x 5 in image</code></pre>
@@ -395,10 +401,38 @@ knitr::kable(caption = cap, head(aList))</code></pre>
 <td align="left">ymd - default (but day/month value &lt;= 12)</td>
 </tr>
 <tr class="even">
+<td align="left">rf_02/1Jan2014-24May2014at1.csv</td>
+<td align="right">6131625</td>
+<td align="left">date NZ</td>
+<td align="left">2014-03-03</td>
+<td align="left">ymd - default (but day/month value &lt;= 12)</td>
+</tr>
+<tr class="odd">
 <td align="left">rf_06/24May2014-24May2015at1.csv</td>
 <td align="right">19398444</td>
 <td align="left">date NZ</td>
 <td align="left">2014-06-09</td>
+<td align="left">ymd - default (but day/month value &lt;= 12)</td>
+</tr>
+<tr class="even">
+<td align="left">rf_10/24May2014-24May2015at1.csv</td>
+<td align="right">24386048</td>
+<td align="left">date NZ</td>
+<td align="left">2014-07-09</td>
+<td align="left">ymd - default (but day/month value &lt;= 12)</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_11/24May2014-24May2015at1.csv</td>
+<td align="right">23693893</td>
+<td align="left">date NZ</td>
+<td align="left">2014-07-08</td>
+<td align="left">ymd - default (but day/month value &lt;= 12)</td>
+</tr>
+<tr class="even">
+<td align="left">rf_12/24May2014-24May2015at1.csv</td>
+<td align="right">21191785</td>
+<td align="left">date NZ</td>
+<td align="left">2014-07-09</td>
 <td align="left">ymd - default (but day/month value &lt;= 12)</td>
 </tr>
 </tbody>
@@ -503,79 +537,119 @@ knitr::kable(caption = cap, head(aList, 10))</code></pre>
 </tbody>
 </table>
 <p>After final cleaning, the final date formats are:</p>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="35%" />
+<col width="24%" />
+<col width="4%" />
+<col width="7%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">dateColName</th>
 <th align="left">dateFormat</th>
 <th align="right">nFiles</th>
-<th align="left">minDate</th>
-<th align="left">maxDate</th>
+<th align="left">meanFSizeKb</th>
+<th align="left">minFSizeKb</th>
+<th align="left">maxFSizeKb</th>
+<th align="left">minFDate</th>
+<th align="left">maxFDate</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Unknown - ignore as fsize ( 2751 ) &lt; dataThreshold ( 3000 )</td>
 <td align="left">NA</td>
-<td align="right">604</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">1812</td>
+<td align="left">2.686523</td>
+<td align="left">2.686523</td>
+<td align="left">2.686523</td>
+<td align="left">2017-01-11</td>
+<td align="left">2017-11-08</td>
 </tr>
 <tr class="even">
 <td align="left">Unknown - ignore as fsize ( 43 ) &lt; dataThreshold ( 3000 )</td>
 <td align="left">NA</td>
-<td align="right">1521</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">12940</td>
+<td align="left">0.04199219</td>
+<td align="left">0.04199219</td>
+<td align="left">0.04199219</td>
+<td align="left">2017-01-11</td>
+<td align="left">2018-07-26</td>
 </tr>
 <tr class="odd">
 <td align="left">date NZ</td>
 <td align="left">dmy - definite</td>
 <td align="right">1</td>
-<td align="left">27/03/2015</td>
-<td align="left">27/03/2015</td>
+<td align="left">4,097.157</td>
+<td align="left">4,097.157</td>
+<td align="left">4,097.157</td>
+<td align="left">2016-09-29</td>
+<td align="left">2016-09-29</td>
 </tr>
 <tr class="even">
 <td align="left">date NZ</td>
 <td align="left">mdy - definite</td>
-<td align="right">1</td>
-<td align="left">5/26/2016</td>
-<td align="left">5/26/2016</td>
+<td align="right">2</td>
+<td align="left">13,833.84</td>
+<td align="left">9,067.765</td>
+<td align="left">18,599.92</td>
+<td align="left">2016-10-25</td>
+<td align="left">2016-10-25</td>
 </tr>
 <tr class="odd">
 <td align="left">date NZ</td>
 <td align="left">ymd - default (but day/month value &lt;= 12)</td>
-<td align="right">2</td>
-<td align="left">2014-01-06</td>
-<td align="left">2014-06-09</td>
+<td align="right">12</td>
+<td align="left">16,862.1</td>
+<td align="left">2,652.745</td>
+<td align="left">27,267.51</td>
+<td align="left">2016-09-20</td>
+<td align="left">2016-10-13</td>
 </tr>
 <tr class="even">
 <td align="left">date NZ</td>
 <td align="left">ymd - definite</td>
-<td align="right">6</td>
-<td align="left">2014-05-24</td>
-<td align="left">2016-05-26</td>
+<td align="right">67</td>
+<td align="left">11,248.34</td>
+<td align="left">228.9131</td>
+<td align="left">31,502.92</td>
+<td align="left">2016-09-19</td>
+<td align="left">2016-10-13</td>
 </tr>
 <tr class="odd">
 <td align="left">date UTC</td>
 <td align="left">dmy - inferred</td>
-<td align="right">3</td>
-<td align="left">11-10-16</td>
-<td align="left">24/03/15</td>
+<td align="right">28</td>
+<td align="left">27,304.84</td>
+<td align="left">569.8506</td>
+<td align="left">53,282.66</td>
+<td align="left">2016-05-25</td>
+<td align="left">2017-11-21</td>
 </tr>
 <tr class="even">
 <td align="left">date UTC</td>
 <td align="left">ymd - default (but day/month value &lt;= 12)</td>
-<td align="right">265</td>
-<td align="left">2016-10-11</td>
-<td align="left">2018-07-12</td>
+<td align="right">3957</td>
+<td align="left">315.9203</td>
+<td align="left">20.63379</td>
+<td align="left">40,318.22</td>
+<td align="left">2016-09-19</td>
+<td align="left">2018-07-14</td>
 </tr>
 <tr class="odd">
 <td align="left">date UTC</td>
 <td align="left">ymd - definite</td>
-<td align="right">399</td>
-<td align="left">2015-05-24</td>
-<td align="left">2018-07-17</td>
+<td align="right">6065</td>
+<td align="left">294.3571</td>
+<td align="left">21.20605</td>
+<td align="left">50,810.54</td>
+<td align="left">2016-06-08</td>
+<td align="left">2018-07-26</td>
 </tr>
 </tbody>
 </table>
@@ -625,27 +699,300 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 <td align="left">2016-09-30</td>
 </tr>
 <tr class="even">
-<td align="left">rf_06</td>
-<td align="right">256</td>
-<td align="right">616879.7</td>
-<td align="left">2016-05-25</td>
-<td align="left">2018-07-19</td>
+<td align="left">rf_02</td>
+<td align="right">3</td>
+<td align="right">10134268.3</td>
+<td align="left">2016-09-20</td>
+<td align="left">2016-09-30</td>
 </tr>
 <tr class="odd">
+<td align="left">rf_06</td>
+<td align="right">263</td>
+<td align="right">604662.9</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="even">
+<td align="left">rf_07</td>
+<td align="right">263</td>
+<td align="right">645692.3</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_08</td>
+<td align="right">5</td>
+<td align="right">23989121.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2017-11-21</td>
+</tr>
+<tr class="even">
+<td align="left">rf_09</td>
+<td align="right">2</td>
+<td align="right">14344605.0</td>
+<td align="left">2016-09-21</td>
+<td align="left">2016-09-21</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_10</td>
+<td align="right">358</td>
+<td align="right">525455.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-03-30</td>
+</tr>
+<tr class="even">
+<td align="left">rf_11</td>
+<td align="right">565</td>
+<td align="right">387593.9</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_12</td>
+<td align="right">2</td>
+<td align="right">10713096.0</td>
+<td align="left">2016-09-21</td>
+<td align="left">2016-09-21</td>
+</tr>
+<tr class="even">
+<td align="left">rf_13</td>
+<td align="right">497</td>
+<td align="right">440250.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_14</td>
+<td align="right">329</td>
+<td align="right">424262.0</td>
+<td align="left">2016-06-08</td>
+<td align="left">2017-12-31</td>
+</tr>
+<tr class="even">
+<td align="left">rf_15</td>
+<td align="right">2</td>
+<td align="right">10553143.0</td>
+<td align="left">2016-09-21</td>
+<td align="left">2016-09-21</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_16</td>
+<td align="right">1</td>
+<td align="right">20037376.0</td>
+<td align="left">2016-09-20</td>
+<td align="left">2016-09-20</td>
+</tr>
+<tr class="even">
+<td align="left">rf_17</td>
+<td align="right">234</td>
+<td align="right">363774.8</td>
+<td align="left">2016-09-21</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_18</td>
+<td align="right">2</td>
+<td align="right">14374309.5</td>
+<td align="left">2016-09-21</td>
+<td align="left">2016-09-21</td>
+</tr>
+<tr class="even">
+<td align="left">rf_19</td>
+<td align="right">565</td>
+<td align="right">513990.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_20</td>
+<td align="right">2</td>
+<td align="right">14665810.0</td>
+<td align="left">2016-09-21</td>
+<td align="left">2016-09-21</td>
+</tr>
+<tr class="even">
+<td align="left">rf_21</td>
+<td align="right">4</td>
+<td align="right">23058797.8</td>
+<td align="left">2016-05-25</td>
+<td align="left">2016-10-12</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_22</td>
+<td align="right">371</td>
+<td align="right">533704.5</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-01-16</td>
+</tr>
+<tr class="even">
+<td align="left">rf_23</td>
+<td align="right">565</td>
+<td align="right">400680.1</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_24</td>
+<td align="right">533</td>
+<td align="right">404668.3</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="even">
+<td align="left">rf_25</td>
+<td align="right">3</td>
+<td align="right">12341581.3</td>
+<td align="left">2016-06-08</td>
+<td align="left">2017-11-21</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_26</td>
+<td align="right">471</td>
+<td align="right">365829.7</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="even">
+<td align="left">rf_27</td>
+<td align="right">3</td>
+<td align="right">22607698.7</td>
+<td align="left">2016-05-25</td>
+<td align="left">2016-09-21</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_28</td>
+<td align="right">2</td>
+<td align="right">2297483.0</td>
+<td align="left">2016-06-08</td>
+<td align="left">2016-09-19</td>
+</tr>
+<tr class="even">
+<td align="left">rf_29</td>
+<td align="right">555</td>
+<td align="right">317248.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_30</td>
+<td align="right">5</td>
+<td align="right">13695336.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2016-10-13</td>
+</tr>
+<tr class="even">
+<td align="left">rf_31</td>
+<td align="right">565</td>
+<td align="right">314895.2</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_32</td>
+<td align="right">2</td>
+<td align="right">13934454.0</td>
+<td align="left">2016-06-08</td>
+<td align="left">2016-09-20</td>
+</tr>
+<tr class="even">
+<td align="left">rf_33</td>
+<td align="right">530</td>
+<td align="right">275592.6</td>
+<td align="left">2016-06-08</td>
+<td align="left">2018-06-22</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_34</td>
+<td align="right">7</td>
+<td align="right">14106275.3</td>
+<td align="left">2016-05-25</td>
+<td align="left">2016-10-13</td>
+</tr>
+<tr class="even">
+<td align="left">rf_35</td>
+<td align="right">134</td>
+<td align="right">573648.6</td>
+<td align="left">2016-05-25</td>
+<td align="left">2017-11-21</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_36</td>
+<td align="right">490</td>
+<td align="right">282969.5</td>
+<td align="left">2016-06-08</td>
+<td align="left">2018-07-05</td>
+</tr>
+<tr class="even">
+<td align="left">rf_37</td>
+<td align="right">564</td>
+<td align="right">280662.5</td>
+<td align="left">2016-06-08</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_38</td>
+<td align="right">201</td>
+<td align="right">385707.5</td>
+<td align="left">2016-06-08</td>
+<td align="left">2017-11-21</td>
+</tr>
+<tr class="even">
+<td align="left">rf_39</td>
+<td align="right">441</td>
+<td align="right">339265.1</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_40</td>
+<td align="right">2</td>
+<td align="right">9299902.0</td>
+<td align="left">2016-06-08</td>
+<td align="left">2016-09-20</td>
+</tr>
+<tr class="even">
+<td align="left">rf_41</td>
+<td align="right">556</td>
+<td align="right">249753.1</td>
+<td align="left">2016-06-08</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_42</td>
+<td align="right">45</td>
+<td align="right">1315953.6</td>
+<td align="left">2016-06-08</td>
+<td align="left">2017-11-21</td>
+</tr>
+<tr class="even">
+<td align="left">rf_43</td>
+<td align="right">4</td>
+<td align="right">9442492.0</td>
+<td align="left">2016-05-25</td>
+<td align="left">2016-09-28</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_44</td>
+<td align="right">565</td>
+<td align="right">315733.5</td>
+<td align="left">2016-05-25</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="even">
 <td align="left">rf_45</td>
 <td align="right">4</td>
 <td align="right">10513812.0</td>
 <td align="left">2016-06-08</td>
 <td align="left">2017-11-21</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">rf_46</td>
 <td align="right">411</td>
 <td align="right">605048.1</td>
 <td align="left">2016-06-08</td>
 <td align="left">2018-02-21</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rf_47</td>
 <td align="right">3</td>
 <td align="right">17544847.0</td>
@@ -682,13 +1029,13 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 ## )</code></pre>
 <table style="width:100%;">
 <colgroup>
-<col width="1%" />
-<col width="75%" />
-<col width="1%" />
-<col width="4%" />
-<col width="4%" />
-<col width="4%" />
-<col width="4%" />
+<col width="2%" />
+<col width="64%" />
+<col width="2%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
 <col width="2%" />
 </colgroup>
 <thead>
@@ -715,44 +1062,184 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 <td align="right">855836</td>
 </tr>
 <tr class="even">
+<td align="left">rf_02</td>
+<td align="left">Cooking Bath tile heat$1573, Fridge$1572, Heating$1576, Hot Water$1574, Lights$1577, Mains$1575</td>
+<td align="right">3</td>
+<td align="left">2014-03-02 11:00:00</td>
+<td align="left">2015-05-28 04:23:00</td>
+<td align="left">2016-09-20 02:53:43</td>
+<td align="left">2016-09-30 00:14:19</td>
+<td align="right">592592</td>
+</tr>
+<tr class="odd">
 <td align="left">rf_06</td>
 <td align="left">Hot Water - Controlled$2248, Incomer - Uncontrolled$2249, Kitchen$2246, Laundry, Downstairs &amp; Lounge$2245, Lighting$2244, Oven &amp; Hob$2247</td>
-<td align="right">256</td>
+<td align="right">263</td>
 <td align="left">2014-06-08 12:00:00</td>
-<td align="left">2018-07-19 11:59:00</td>
+<td align="left">2018-07-26 11:59:00</td>
 <td align="left">2016-05-25 10:26:07</td>
-<td align="left">2018-07-19 16:03:06</td>
-<td align="right">3108716</td>
-</tr>
-<tr class="odd">
-<td align="left">rf_45</td>
-<td align="left">Heat Pump$4160, Hot Water - Controlled$4158, Incomer - Uncontrolled$4157, Kitchen Appliances$4161, Laundry &amp; Garage Fridge$4162, Lighting$4159</td>
-<td align="right">4</td>
-<td align="left">2015-03-24 11:00:00</td>
-<td align="left">2016-10-15 01:08:00</td>
-<td align="left">2016-06-08 03:01:50</td>
-<td align="left">2017-11-21 01:20:05</td>
-<td align="right">821472</td>
+<td align="left">2018-07-26 16:03:04</td>
+<td align="right">3128876</td>
 </tr>
 <tr class="even">
-<td align="left">rf_46</td>
-<td align="left">Heat Pumps (2x) &amp; Power$4232, Heat Pumps (2x) &amp; Power$4399, Hot Water - Controlled$4231, Hot Water - Controlled$4400, Incomer - Uncontrolled$4230, Incomer - Uncontrolled$4401, Incomer Voltage$4405, Kitchen &amp; Bedrooms$4229, Kitchen &amp; Bedrooms$4402, Laundry &amp; Bedrooms$4228, Laundry &amp; Bedrooms$4403, Lighting$4233, Lighting$4404</td>
-<td align="right">411</td>
-<td align="left">2015-03-26 11:00:00</td>
-<td align="left">2018-02-19 22:08:00</td>
-<td align="left">2016-06-08 03:11:57</td>
-<td align="left">2018-02-21 15:03:24</td>
-<td align="right">2529107</td>
+<td align="left">rf_07</td>
+<td align="left">Incomer 1 - Uncontrolled$2726, Incomer 2 - Uncontrolled$2725, Kitchen Appliances &amp; Laundry$2722, Microwave$2721, Oven$2724, Workshop$2723</td>
+<td align="right">263</td>
+<td align="left">2014-07-13 12:00:00</td>
+<td align="left">2018-07-26 11:59:00</td>
+<td align="left">2016-05-25 10:44:03</td>
+<td align="left">2018-07-26 16:03:04</td>
+<td align="right">3380609</td>
 </tr>
 <tr class="odd">
-<td align="left">rf_47</td>
-<td align="left">Heat Pump &amp; 2 x Bathroom Heat$4171, Incomer - All$4170, Kitchen Power &amp; Heat, Lounge$4174, Laundry, Garage &amp; 2 Bedrooms$4173, Lighting$4172, Wall Oven$4169</td>
-<td align="right">3</td>
-<td align="left">2015-03-24 11:00:00</td>
-<td align="left">2016-05-08 02:38:00</td>
-<td align="left">2016-05-25 04:53:18</td>
-<td align="left">2016-09-20 02:51:12</td>
-<td align="right">1180942</td>
+<td align="left">rf_08</td>
+<td align="left">Heat Pump$2092, Hot Water - Controlled$2094, Incomer - Uncontrolled$2093, Kitchen$2089, Laundry &amp; 2nd Fridge Freezer$2090, Oven &amp; Hob$2091</td>
+<td align="right">5</td>
+<td align="left">2014-05-28 12:00:00</td>
+<td align="left">2017-05-15 02:02:00</td>
+<td align="left">2016-05-25 05:48:18</td>
+<td align="left">2017-11-21 01:09:19</td>
+<td align="right">2536195</td>
+</tr>
+<tr class="even">
+<td align="left">rf_09</td>
+<td align="left">Heat Pump &amp; Bedroom 2$2731, Incomer 1 - Uncont - Inc Hob$2729, Incomer 2 - Uncont - Inc Oven$2730, Kitchen Appliances$2727, Laundry$2732, Lounge, Dining &amp; Bedrooms$2728</td>
+<td align="right">2</td>
+<td align="left">2014-07-13 12:00:00</td>
+<td align="left">2015-07-16 02:42:00</td>
+<td align="left">2016-09-21 01:26:07</td>
+<td align="left">2016-09-21 01:26:55</td>
+<td align="right">529363</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_10</td>
+<td align="left">Bedrooms &amp; Lounge$2602, Heat Pump$2598, Incomer - All$2599, Kitchen Appliances$2601, Laundry &amp; Garage$2597, Oven$2600</td>
+<td align="right">358</td>
+<td align="left">2014-07-08 12:00:00</td>
+<td align="left">2018-03-29 06:28:00</td>
+<td align="left">2016-05-25 10:16:08</td>
+<td align="left">2018-03-30 15:03:07</td>
+<td align="right">3734792</td>
+</tr>
+<tr class="even">
+<td align="left">rf_11</td>
+<td align="left">Heat Pump &amp; Lounge$2590, Hob$2589, Hot Water Cpbd Heater- Cont$2586, Incomer - Uncontrolled$2585, Kitchen Appliances &amp; Laundry$2588, Spa - Uncontrolled$2587</td>
+<td align="right">565</td>
+<td align="left">2014-07-07 12:00:00</td>
+<td align="left">2018-07-26 11:59:00</td>
+<td align="left">2016-05-25 06:15:06</td>
+<td align="left">2018-07-26 16:03:06</td>
+<td align="right">4353936</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_12</td>
+<td align="left">Incomer 1 - Hot Water - Cont$2626, Incomer 2 - Uncontrolled$2625, Incomer 3 - Uncontrolled$2627, Kitchen Appliances &amp; Lounge$2630, Laundry, Fridge &amp; Microwave$2628, Oven$2629</td>
+<td align="right">2</td>
+<td align="left">2014-07-08 12:00:00</td>
+<td align="left">2015-06-02 20:07:00</td>
+<td align="left">2016-09-21 00:44:42</td>
+<td align="left">2016-09-21 00:46:01</td>
+<td align="right">410063</td>
+</tr>
+<tr class="even">
+<td align="left">rf_13</td>
+<td align="left">Downstairs (inc 1 Heat Pump)$2212, Hot Water - Controlled$2208, Incomer - Uncontrolled$2209, Kitchen &amp; Laundry$2213, Oven &amp; Hob$2210, Upstairs Heat Pumps$2211</td>
+<td align="right">497</td>
+<td align="left">2014-06-05 12:00:00</td>
+<td align="left">2018-07-26 11:59:00</td>
+<td align="left">2016-05-25 05:57:08</td>
+<td align="left">2018-07-26 16:03:08</td>
+<td align="right">4060513</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_14</td>
+<td align="left">Hot Water - Controlled$2719, Incomer 1 - Uncont inc Stove$2718, Incomer 2 - Uncont inc Oven$2717, Kitchen Appliances$2715, Laundry &amp; Microwave$2720, Power Outlets$2716</td>
+<td align="right">329</td>
+<td align="left">2014-07-13 12:00:00</td>
+<td align="left">2017-12-30 01:59:00</td>
+<td align="left">2016-06-08 03:31:15</td>
+<td align="left">2017-12-31 15:03:08</td>
+<td align="right">2654180</td>
+</tr>
+<tr class="even">
+<td align="left">rf_15</td>
+<td align="left">Hob$3954, Hot Water$3952, Incomer 1$3956, Incomer 2$3955, Laundry &amp; Kitchen Appliances$3951, Oven$3953</td>
+<td align="right">2</td>
+<td align="left">2015-01-14 11:00:00</td>
+<td align="left">2016-04-18 20:37:00</td>
+<td align="left">2016-09-21 00:47:53</td>
+<td align="left">2016-09-21 00:49:20</td>
+<td align="right">395011</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_16</td>
+<td align="left">Hallway &amp; Washing Machine$2683, Hot Water - Controlled$2679, Incomer 1 - Uncont inc Oven$2681, Incomer 2 - Uncont inc Stove$2680, Kitchen Appliances &amp; Bedrooms$2684, Microwave &amp; Breadmaker$2682</td>
+<td align="right">1</td>
+<td align="left">2014-07-09 12:00:00</td>
+<td align="left">2015-03-25 20:22:00</td>
+<td align="left">2016-09-20 23:51:39</td>
+<td align="left">2016-09-20 23:51:39</td>
+<td align="right">373523</td>
+</tr>
+<tr class="even">
+<td align="left">rf_17</td>
+<td align="left">Heat Pump$2148, Hot Water - Controlled$2150, Incomer 1 - Uncont - inc Hob$2152, Incomer 2 - Uncont - inc Oven$2151, Kitchen Appliances$2147, Laundry$2149</td>
+<td align="right">2</td>
+<td align="left">2014-05-29 12:00:00</td>
+<td align="left">2016-03-28 02:54:00</td>
+<td align="left">2016-09-21 00:50:57</td>
+<td align="left">2016-09-21 00:52:45</td>
+<td align="right">962873</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_17</td>
+<td align="left">Incomer 1 - inc Top Oven$5620, Incomer 2 - inc Bottom Oven$5621, Kitchen Appliances$5625, Laundry &amp; Garage$5624, Lighting 1/2$5623, Lighting 2/2$5622</td>
+<td align="right">232</td>
+<td align="left">2016-10-11 11:00:00</td>
+<td align="left">2018-07-26 05:31:00</td>
+<td align="left">2017-01-11 00:08:08</td>
+<td align="left">2018-07-26 16:03:09</td>
+<td align="right">795319</td>
+</tr>
+<tr class="even">
+<td align="left">rf_18</td>
+<td align="left">Hot Water - Controlled$2129, Incomer 1 - Uncontrolled$2128, Incomer 2 - Uncontrolled$2130, Kitchen Appliances &amp; Ventilati$2131, Laundry &amp; Hob$2133, Oven$2132</td>
+<td align="right">2</td>
+<td align="left">2014-05-29 12:00:00</td>
+<td align="left">2015-06-11 02:36:00</td>
+<td align="left">2016-09-21 00:56:19</td>
+<td align="left">2016-09-21 00:57:41</td>
+<td align="right">543098</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_19</td>
+<td align="left">Bedroom &amp; Lounge Heat Pumps$2741, Incomer 1 - All$2738, Incomer 2 - All$2737, Kitchen Appliances$2735, Laundry$2734, Oven$2736, PV 1$2739, PV 2$2733, Theatre Heat Pump$2740</td>
+<td align="right">565</td>
+<td align="left">2014-07-14 12:00:00</td>
+<td align="left">2018-07-26 11:59:00</td>
+<td align="left">2016-05-25 06:07:02</td>
+<td align="left">2018-07-26 16:03:10</td>
+<td align="right">4337426</td>
+</tr>
+<tr class="even">
+<td align="left">rf_20</td>
+<td align="left">Heat Pump &amp; Misc$2107, Hob$2109, Hot Water - Controlled$2110, Incomer 1 - Uncontrolled$2112, Incomer 2 - Uncontrolled$2111, Oven &amp; Kitchen Appliances$2108</td>
+<td align="right">2</td>
+<td align="left">2014-05-28 12:00:00</td>
+<td align="left">2015-06-11 01:37:00</td>
+<td align="left">2016-09-21 00:39:57</td>
+<td align="left">2016-09-21 00:41:34</td>
+<td align="right">545138</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_21</td>
+<td align="left">Fridge$2752, Heat Pump &amp; Washing Machine$2750, Incomer - All$2748, Kitchen Appliances &amp; Garage$2753, Lower Bedrooms &amp; Bathrooms$2751, Oven$2749</td>
+<td align="right">4</td>
+<td align="left">2014-07-14 12:00:00</td>
+<td align="left">2016-07-01 04:49:00</td>
+<td align="left">2016-05-25 05:54:50</td>
+<td align="left">2016-10-12 00:34:44</td>
+<td align="right">1972512</td>
 </tr>
 </tbody>
 </table>
@@ -821,41 +1308,145 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 <td align="left">rf_01</td>
 <td align="right">12</td>
 <td align="right">8871</td>
-<td align="right">6.00000</td>
+<td align="right">6</td>
 <td align="left">2014-01-06</td>
 <td align="left">2015-10-20</td>
 </tr>
 <tr class="even">
+<td align="left">rf_02</td>
+<td align="right">732</td>
+<td align="right">8640</td>
+<td align="right">6</td>
+<td align="left">2014-03-03</td>
+<td align="left">2015-05-28</td>
+</tr>
+<tr class="odd">
 <td align="left">rf_06</td>
 <td align="right">2460</td>
 <td align="right">8825</td>
-<td align="right">6.00000</td>
+<td align="right">6</td>
 <td align="left">2014-06-09</td>
-<td align="left">2018-07-19</td>
-</tr>
-<tr class="odd">
-<td align="left">rf_45</td>
-<td align="right">4770</td>
-<td align="right">8758</td>
-<td align="right">6.00000</td>
-<td align="left">2015-03-25</td>
-<td align="left">2016-10-15</td>
+<td align="left">2018-07-26</td>
 </tr>
 <tr class="even">
-<td align="left">rf_46</td>
-<td align="right">2526</td>
-<td align="right">19357</td>
-<td align="right">12.84489</td>
-<td align="left">2015-03-27</td>
-<td align="left">2018-02-20</td>
+<td align="left">rf_07</td>
+<td align="right">882</td>
+<td align="right">8893</td>
+<td align="right">6</td>
+<td align="left">2014-07-14</td>
+<td align="left">2018-07-26</td>
 </tr>
 <tr class="odd">
-<td align="left">rf_47</td>
-<td align="right">3156</td>
-<td align="right">8818</td>
-<td align="right">6.00000</td>
-<td align="left">2015-03-25</td>
-<td align="left">2016-05-08</td>
+<td align="left">rf_08</td>
+<td align="right">1344</td>
+<td align="right">8847</td>
+<td align="right">6</td>
+<td align="left">2014-05-29</td>
+<td align="left">2017-05-15</td>
+</tr>
+<tr class="even">
+<td align="left">rf_09</td>
+<td align="right">2466</td>
+<td align="right">8915</td>
+<td align="right">6</td>
+<td align="left">2014-07-14</td>
+<td align="left">2015-07-16</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_10</td>
+<td align="right">2040</td>
+<td align="right">8840</td>
+<td align="right">6</td>
+<td align="left">2014-07-09</td>
+<td align="left">2018-03-29</td>
+</tr>
+<tr class="even">
+<td align="left">rf_11</td>
+<td align="right">2549</td>
+<td align="right">8826</td>
+<td align="right">6</td>
+<td align="left">2014-07-08</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_12</td>
+<td align="right">60</td>
+<td align="right">8838</td>
+<td align="right">6</td>
+<td align="left">2014-07-09</td>
+<td align="left">2015-06-03</td>
+</tr>
+<tr class="even">
+<td align="left">rf_13</td>
+<td align="right">4925</td>
+<td align="right">8934</td>
+<td align="right">6</td>
+<td align="left">2014-06-06</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_14</td>
+<td align="right">732</td>
+<td align="right">8868</td>
+<td align="right">6</td>
+<td align="left">2014-07-14</td>
+<td align="left">2017-12-30</td>
+</tr>
+<tr class="even">
+<td align="left">rf_15</td>
+<td align="right">84</td>
+<td align="right">8640</td>
+<td align="right">6</td>
+<td align="left">2015-01-15</td>
+<td align="left">2016-04-19</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_16</td>
+<td align="right">3060</td>
+<td align="right">8937</td>
+<td align="right">6</td>
+<td align="left">2014-07-10</td>
+<td align="left">2015-03-26</td>
+</tr>
+<tr class="even">
+<td align="left">rf_17</td>
+<td align="right">6</td>
+<td align="right">8854</td>
+<td align="right">6</td>
+<td align="left">2014-05-30</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_18</td>
+<td align="right">1116</td>
+<td align="right">8849</td>
+<td align="right">6</td>
+<td align="left">2014-05-30</td>
+<td align="left">2015-06-11</td>
+</tr>
+<tr class="even">
+<td align="left">rf_19</td>
+<td align="right">72</td>
+<td align="right">13161</td>
+<td align="right">9</td>
+<td align="left">2014-07-15</td>
+<td align="left">2018-07-26</td>
+</tr>
+<tr class="odd">
+<td align="left">rf_20</td>
+<td align="right">3024</td>
+<td align="right">8878</td>
+<td align="right">6</td>
+<td align="left">2014-05-29</td>
+<td align="left">2015-06-11</td>
+</tr>
+<tr class="even">
+<td align="left">rf_21</td>
+<td align="right">1542</td>
+<td align="right">8854</td>
+<td align="right">6</td>
+<td align="left">2014-07-15</td>
+<td align="left">2016-07-01</td>
 </tr>
 </tbody>
 </table>
@@ -866,7 +1457,7 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 9.06 seconds ( 0.15 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 29.32 seconds ( 0.49 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -899,30 +1490,38 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] data.table_1.11.4      kableExtra_0.9.0       stringr_1.3.1         
-## [4] knitr_1.20             readr_1.1.1            ggplot2_2.2.1         
-## [7] rmarkdown_1.10         nzGREENGridDataR_0.1.0
+##  [1] Hmisc_4.1-1            Formula_1.2-3          survival_2.42-3       
+##  [4] lattice_0.20-35        dplyr_0.7.5            nzGREENGrid_0.1.0     
+##  [7] hms_0.4.2              lubridate_1.7.4        data.table_1.11.4     
+## [10] kableExtra_0.9.0       stringr_1.3.1          knitr_1.20            
+## [13] readr_1.1.1            ggplot2_2.2.1          rmarkdown_1.10        
+## [16] nzGREENGridDataR_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
-##  [4] purrr_0.2.5       reshape2_1.4.3    lattice_0.20-35  
-##  [7] colorspace_1.3-2  viridisLite_0.3.0 htmltools_0.3.6  
-## [10] yaml_2.1.19       rlang_0.2.1       pillar_1.2.3     
-## [13] glue_1.2.0        sp_1.3-1          bindrcpp_0.2.2   
-## [16] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4       
-## [19] munsell_0.5.0     gtable_0.2.0      rvest_0.3.2      
-## [22] RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.10.1  
-## [25] labeling_0.3      highr_0.7         proto_1.0.0      
-## [28] Rcpp_0.12.17      geosphere_1.5-7   openssl_1.0.1    
-## [31] backports_1.1.2   scales_0.5.0      rjson_0.2.20     
-## [34] hms_0.4.2         png_0.1-7         digest_0.6.15    
-## [37] stringi_1.2.3     dplyr_0.7.5       rprojroot_1.3-2  
-## [40] grid_3.5.0        tools_3.5.0       magrittr_1.5     
-## [43] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
-## [46] crayon_1.3.4      pkgconfig_2.0.1   xml2_1.2.0       
-## [49] prettyunits_1.0.2 lubridate_1.7.4   assertthat_0.2.0 
-## [52] httr_1.3.1        rstudioapi_0.7    R6_2.2.2         
-## [55] ggmap_2.6.1       compiler_3.5.0</code></pre>
+##  [1] httr_1.3.1          maps_3.3.0          viridisLite_0.3.0  
+##  [4] splines_3.5.0       assertthat_0.2.0    sp_1.3-1           
+##  [7] highr_0.7           latticeExtra_0.6-28 cellranger_1.1.0   
+## [10] yaml_2.1.19         progress_1.2.0      pillar_1.2.3       
+## [13] backports_1.1.2     glue_1.2.0          digest_0.6.15      
+## [16] RColorBrewer_1.1-2  checkmate_1.8.5     rvest_0.3.2        
+## [19] colorspace_1.3-2    htmltools_0.3.6     Matrix_1.2-14      
+## [22] plyr_1.8.4          pkgconfig_2.0.1     purrr_0.2.5        
+## [25] scales_0.5.0        jpeg_0.1-8          ggmap_2.6.1        
+## [28] tibble_1.4.2        htmlTable_1.12      openssl_1.0.1      
+## [31] nnet_7.3-12         lazyeval_0.2.1      cli_1.0.0          
+## [34] proto_1.0.0         magrittr_1.5        crayon_1.3.4       
+## [37] readxl_1.1.0        evaluate_0.10.1     xml2_1.2.0         
+## [40] foreign_0.8-70      tools_3.5.0         prettyunits_1.0.2  
+## [43] geosphere_1.5-7     RgoogleMaps_1.4.2   munsell_0.5.0      
+## [46] cluster_2.0.7-1     bindrcpp_0.2.2      compiler_3.5.0     
+## [49] tinytex_0.5         rlang_0.2.1         grid_3.5.0         
+## [52] rstudioapi_0.7      rjson_0.2.20        htmlwidgets_1.2    
+## [55] labeling_0.3        base64enc_0.1-3     gtable_0.2.0       
+## [58] reshape2_1.4.3      R6_2.2.2            gridExtra_2.3      
+## [61] utf8_1.1.4          bindr_0.1.1         rprojroot_1.3-2    
+## [64] stringi_1.2.3       Rcpp_0.12.17        mapproj_1.2.6      
+## [67] rpart_4.1-13        acepack_1.4.1       png_0.1-7          
+## [70] tidyselect_0.2.4</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
