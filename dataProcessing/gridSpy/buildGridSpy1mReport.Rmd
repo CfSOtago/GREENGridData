@@ -48,6 +48,7 @@ source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 rmdLibs <- c("ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
              "knitr", # for kable
+             "stringr", # for str_wrap for long labels on plots
              "kableExtra" # for extra kable
 )
 # load them
@@ -131,9 +132,9 @@ Data collection is ongoing and this section reports on the availability of data 
 
 Overall we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` households. However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles),2)`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-## Data file quality checks
+## Input data file quality checks
 
-The following chart shows the distribution of all files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
+The following chart shows the distribution of _all_ files over time using their sizes. Note that white indicates the presence of small files which may not contain observations.
 
 ```{r allFileSizesPlot}
 myCaption <- paste0("Data source: ", gSpyParams$gSpyInPath,
@@ -160,7 +161,7 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyAllFileListSizeTilePlot.png"))
 ```
 As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. 
 
-The following chart shows the same chart but only for files which we think contain data.
+The following chart shows the same chart but _only_ for files which we think contain data.
 
 ```{r loadedFileSizesPlot}
 plotDT <- fListCompleteDT[!is.na(dateFormat), .(nFiles = .N,
@@ -182,7 +183,7 @@ ggplot2::ggsave(paste0(plotLoc, "/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
 As we can see this removes a large number of the autmatically downloaded files.
 
-## Date format checks
+## Input date format checks
 
 As noted above, the original data was downloaded in two ways:
 
@@ -260,25 +261,7 @@ knitr::kable(caption = "Summary of household files to load", t)
 
 ## Circuit label checks
 
-The following table shows the number of files for each household with different circuit labels. In theory each household should only have one set of unique circuit labels.
-
-```{r circuitLabelCheck}
-# get file list 
-fLoadedListDT <- data.table::as.data.table(readr::read_csv(gSpyParams$fLoadedStats))
-
-t <- fLoadedListDT[, .(nFiles = .N), keyby = .(hhID,circuitLabels)]
-
-knitr::kable(caption = "Circuit labels list by number of files per household", t)
-
-```
-
-Things to note:
-
- * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
- * rf_46 had multiple circuit labels caused by apparent typos. These have been re-labelled.
-
-
-If this is not the case then this implies that:
+The following table shows the number of files for each household with different circuit labels. In theory each household should only have one set of unique circuit labels. If not:
 
  * some of the circuit labels for these households may have been changed during the data collection process;
  * some of the circuit labels may have character conversion errors which have changed the labels during the data collection process;
@@ -286,39 +269,7 @@ If this is not the case then this implies that:
 
 Some or all of these may be true at any given time.
 
-Errors are easy to spot in the following plot where a hhID spans 2 or more circuit labels.
-
-```{r plotCircuitLabelIssuesAsTile, fig.height=8}
-dt <- fLoadedListDT[!is.na(circuitLabels), 
-                     .(nFiles = .N,
-                       minObsDate = min(minDateTime), # helps locate issues in data
-                       maxObsDate = max(maxDateTime),
-                       minFileDate = min(mDateTime), # helps locate issues in files
-                       maxFileDate = max(mDateTime),
-                       nObs = sum(nObs)),
-                     keyby = .(hhID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
-
-ggplot2::ggplot(dt, aes(y = hhID, x = circuitLabels, 
-                       fill = nObs)) +
-  geom_tile() +
-  #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
-  labs(title = "Circuit label counts for all loaded grid spy data",
-       caption = paste0(myCaption,
-                        "\nOnly files of size > ", 
-                        gSpyParams$gSpyFileThreshold, " bytes loaded")
-       
-  )
-ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileCircuitLabelsPlot.png"))
-```
-
-The following table provides more detail to aid error checking. Check for:
-
- * 2+ adjacent rows which have exactly the same circuit labels but different hh_ids. This implies some data from one household has been saved in the wrong folder;
- * 2+ adjacent rows which have different circuit labels but identical hh_ids. This could imply the same thing but is more likely to be errors/changes to the circuit labelling. 
- 
-If the above plot and this table flag a lot of errors then some re-naming of the circuit labels (column names) may be necessary. 
-
-> NB: As before, the table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
+> NB: The table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
 
 ```{r circuitLabelMetaDataCheck}
 knitr::kable(dt, 
@@ -328,16 +279,59 @@ ofile <- paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")
 write.csv(dt, ofile)
 ```
 
- 
+```{r circuitLabelCheck}
+# get file list 
+fLoadedListDT <- data.table::as.data.table(readr::read_csv(gSpyParams$fLoadedStats))
+
+dt <- fLoadedListDT[!is.na(circuitLabels), 
+                     .(nFiles = .N,
+                       minObsDate = min(minDateTime), # helps locate issues in data
+                       maxObsDate = max(maxDateTime),
+                       minFileDate = min(mDateTime), # helps locate issues in files
+                       maxFileDate = max(mDateTime),
+                       nObs = sum(nObs)),
+                     keyby = .(hhID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
+
+knitr::kable(caption = "Circuit labels list by number of files per household", dt)
+
+```
+
+Things to note:
+
+ * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
+ * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/dataknut/nzGREENGridDataR/issues/1) but note that this is the only household to have 13 circuits monitored.
+
+Errors are easier to spot in the following plot where a hhID spans 2 or more circuit label sets.
+
+```{r plotCircuitLabelIssuesAsTile, fig.height=8}
+
+dt$newx = stringr::str_wrap(dt$circuitLabels, width = 20) #https://stackoverflow.com/questions/21878974/auto-wrapping-of-labels-via-labeller-label-wrap-in-ggplot2
+
+ggplot2::ggplot(dt, aes(y = newx, x = hhID, 
+                       fill = nObs)) +
+  geom_tile() +
+  #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  labs(title = "Circuit label counts for all loaded grid spy data",
+       x = "Circuit label sets (as strings)",
+       caption = paste0(myCaption,
+                        "\nOnly files of size > ", 
+                        gSpyParams$gSpyFileThreshold, " bytes loaded")
+       
+  )
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileCircuitLabelsPlot.png"))
+```
+
+If the above plot and table flag a lot of errors then some re-naming of the circuit labels (column names) may be necessary. 
+
 ## Observations
 
 The following plots show the number of observations per day per household. In theory we should not see:
 
  * dates before 2014 or in to the future. These may indicate:
-    * date conversion errors;
+    - date conversion errors;
  * more than 1440 observations per day. These may indicate:
-    * duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_timePlot.png plots to be found in the repo [checkPlots](https://github.com/dataknut/nzGREENGridDataR/tree/master/dataProcessing/gridSpy/checkPlots) folder;
-    * observations from files that are in the 'wrong' rf_XX folder and so are included in the 'wrong' household as 'duplicate' time stamps.
+    - duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_observationsRatioPlot.png plots to be found in the repo [checkPlots](https://github.com/dataknut/nzGREENGridDataR/tree/master/checkPlots) folder;
+    - observations from files that are in the 'wrong' rf_XX folder and so are included in the 'wrong' household as 'duplicate' time stamps.
 
 If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it's consolidated household dataset (a _within household absolute duplicate_ check).
 
@@ -347,7 +341,8 @@ hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
 myCaption <- paste0(myCaption,
                         "\nOnly files of size > ", 
                         gSpyParams$gSpyFileThreshold, " bytes loaded",
-                    "\nNB: number of observations is a function of the number of circuits monitored as well as missing data!")
+                    "\nNB: number of observations is a function of the number of circuits monitored",
+                    "\n (see above) as well as missing data!")
   
 # tile plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, 
@@ -381,11 +376,10 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"))
 
 The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
 
- * dates before 2014 or in to the future (indicates date conversion errors)
- * more than 1440 observations per day (indicates potentially duplicate observations)
- * non-integer counts of circuits as it suggests some column errors
- 
- We should also not see NA in any row (indicates date conversion errors). 
+ * dates before 2014 or in to the future (indicates date conversion errors);
+ * less than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
+ * non-integer counts of circuits as it suggests some circuit label errors or changes to the number of circuits monitored over time;
+ * NA in any row (indicates date conversion errors).
  
  If we do see any of these then we still have data cleaning work to do!
 
