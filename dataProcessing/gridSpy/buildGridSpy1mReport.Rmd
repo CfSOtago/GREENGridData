@@ -45,7 +45,8 @@ nzGREENGridDataR::setup()
 source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 
 # Packages needed in this .Rmd file ----
-rmdLibs <- c("ggplot2", # for fancy graphs
+rmdLibs <- c("data.table", # data munching
+             "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
              "knitr", # for kable
              "stringr", # for str_wrap for long labels on plots
@@ -83,8 +84,26 @@ statsLoc <- paste0(ggrParams$projLoc, "/checkStats/")
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing report: NZ GREEN Grid project 1 minute electricity  power data, `r ggrParams$pubLoc`. XX replace with UKDA DOI when available XX
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) Processing report: NZ GREEN Grid project 1 minute electricity  power data, `r ggrParams$pubLoc`. 
+ 
+> XX replace with UKDA DOI when available XX
 
+## History
+
+Code history is generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
+
+ * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
+ * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
+ 
+## Requirements:
+
+This report uses data quality statistics produced when processing the original grid spy 1 minute data downloads using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R.
+
+## Support
+
+```{r generic support, child=ggrParams$supportGeneric}
+```
+ 
 \newpage
 
 # Introduction
@@ -92,30 +111,11 @@ If you wish to use any of the material from this report please cite as:
 ```{r generic sample, child=ggrParams$sampleGeneric}
 ```
  
-
-## Purpose
-
 This report provides summary data quality statistics for the original GREEN grid Grid Spy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the `r ggrParams$repo` repository.
 
-## Requirements:
-
-This report uses data quality statistics produced when processing the original grid spy 1 minute data downloads.
-
-## History
-
-Generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
-
- * [report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
- * [general issues](https://github.com/dataknut/nzGREENGridDataR/issues)
- 
-## Support
-
-```{r generic support, child=ggrParams$supportGeneric}
-```
- 
 # Original Data: Quality checks
 
-The original data files files are stored on `r ggrParams$otagoHCS` at:
+The original data files files are stored on `r ggrParams$otagoHCS`. The data used to generate this report was at:
 
  * `r gSpyParams$gSpyInPath`
 
@@ -269,15 +269,7 @@ The following table shows the number of files for each household with different 
 
 Some or all of these may be true at any given time.
 
-> NB: The table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in `r paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")` for viewing in e.g. xl.
-
-```{r circuitLabelMetaDataCheck}
-knitr::kable(dt, 
-             caption = "Circuit labels by household with additional meta-data")
-
-ofile <- paste0(statsLoc, "circuitLabelMetaDataCheckTable.csv")
-write.csv(dt, ofile)
-```
+> NB: The table is only legible in the html version of this report because latex does a very bad job of wrapping table cell text. A version is saved in https://github.com/dataknut/nzGREENGridDataR/tree/master/checkStats for viewing in e.g. xl.
 
 ```{r circuitLabelCheck}
 # get file list 
@@ -293,7 +285,8 @@ dt <- fLoadedListDT[!is.na(circuitLabels),
                      keyby = .(hhID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
 
 knitr::kable(caption = "Circuit labels list by number of files per household", dt)
-
+ofile <- paste0(statsLoc, "circuitLabelsCheckTable.csv")
+write.csv(dt, ofile)
 ```
 
 Things to note:
@@ -440,7 +433,7 @@ R packages used:
  * progress - for progress bars [@progress]
  * knitr - to create this document & neat tables [@knitr]
  * kableExtra - for extra neat tables [@kableExtra]
- * nzGREENGrid - for local NZ GREEN Grid project utilities
+ * nzGREENGridDataR - for local NZ GREEN Grid project utilities
 
 Session info:
 
