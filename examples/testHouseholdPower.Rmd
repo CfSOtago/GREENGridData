@@ -115,27 +115,35 @@ The data used to generate this report is:
  * `r gsFile`
  * `r hhFile`
 
-```{r loadAllData}
+```{r hhData}
 hhDT <- data.table::as.data.table(readr::read_csv(hhFile)) # load hh data
 
 t <- hhDT[hhID == params$hhID]
 
-knitr::kable(caption = paste0("Summary of household data for", params$hhID), t)
+knitr::kable(t, 
+             booktabs = TRUE,
+             caption = paste0("Summary of household data for", params$hhID))
 
+# Guide to markdown cross-refs: https://bookdown.org/yihui/rmarkdown/bookdown-markdown.html#bookdown-markdown
+```
+
+Table \@ref(tab:hhData) shows household attributes such as how many people live in this household.
+
+```{r gsData}
 gsDT <- data.table::as.data.table(readr::read_csv(gsFile, 
                                                   col_types = cols(hhID = col_character(),
                                                                    dateTime_orig = col_character(), # <- this is crucial otherwise readr attempts to parse this as a dateTime and FAILS (see https://github.com/dataknut/nzGREENGridDataR/issues/2)
                                                                    TZ_orig = col_character(),
                                                                    r_dateTime = col_datetime(format = ""),
                                                                    circuit = col_character(),
-                                                                   powerW = col_double()
+                                                                   powerW = col_double() # <- also crucial otherwise readr seems to assume an integer
                                                                    )
                                                   )
                                   ) # load gs data
 
 t <- summary(gsDT)
 
-knitr::kable(caption = paste0("Summary of grid spy data for", params$hhID), t)
+knitr::kable(t, caption = paste0("Summary of grid spy data for", params$hhID))
 
 gsDT <- gsDT[, month := lubridate::month(r_dateTime, label = TRUE)]
 gsDT <- gsDT[, year := lubridate::year(r_dateTime)]
@@ -144,9 +152,10 @@ gsDT <- gsDT[, obsDate := lubridate::date(r_dateTime)]
 gsDT <- gsDT[, obsTime := hms::as.hms(r_dateTime)]
 ```
 
-The first table shows household attributes such as how many people live in this household.
 
-The second table shows a summary of the grid spy 1 minute power data. Note that:
+Table \@ref(tab:gsData) shows a summary of the grid spy 1 minute power data. 
+
+Note that:
 
  * the original dataTime (`dateTime_orig`) and TZ (`TZ_orig`) have been retained so that the user can check for parsing errors (see https://github.com/dataknut/nzGREENGridDataR/issues/2) if required;
  * r_datetime is the correct dateTime of each observation in UTC and will have loaded as your local timezone. If you are conducting this analysis outside NZ then you will get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
@@ -160,7 +169,7 @@ This section plots overall mean power (W) per minute per month for each circuit 
  * possible dateTime issues (where consumption patterns seem to be stangely shifted in time)
  * possible PV installation
 
-```{r plotProfiles, fig.height=8}
+```{r plotProfiles, fig.height=8, fig.cap="Demand profile plot"}
 plotDT <- gsDT[, .(meanW = mean(powerW)), keyby = .(circuit, month, year, obsTime)
              ] # aggregate by circuit to preserve unique circuit labels in households 
 # (e.g. rf_46) where names are re-used but with different ids. see ?fixCircuitLabels_rf_46
@@ -191,6 +200,7 @@ myPlot +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 ```
 
+Figure \@ref(fig:plotProfiles) shows the plot for this household (`r params$hhID`). Can you see anything interesting or unusual?
 
 # Runtime
 
