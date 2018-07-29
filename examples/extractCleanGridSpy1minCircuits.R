@@ -23,7 +23,7 @@ rmdLibs <- c("data.table", # data munching
 nzGREENGridDataR::loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Hot Water"
+circuitPattern <- "Lighting"
 dateFrom <- "2015-04-01"
 dateTo <- "2016-03-31"
 
