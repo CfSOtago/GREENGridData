@@ -23,7 +23,7 @@ rmdLibs <- c("data.table", # data munching
 nzGREENGridDataR::loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Heat Pump"
+circuitPattern <- "Hot Water"
 dateFrom <- "2015-04-01"
 dateTo <- "2016-03-31"
 
@@ -84,4 +84,4 @@ print(paste0("Extraction of ", circuitPattern," circuit data completed in ",
              round(elapsed,2),
              " seconds ( ",
              round(elapsed/60,2), " minutes) using ",
-             R.version.string, " running on ", R.version$platform, "."))
+             R.version.string , " running on ", R.version$platform , "."))
