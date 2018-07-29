@@ -13,7 +13,7 @@ The code in this folder constructs (and describes) the available household attri
 
 The code maked extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done.
 
-We keep a log of [issues](https://github.com/dataknut/nzGREENGridDataR/labels/hhAttributes) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/dataknut/nzGREENGridDataR/labels/hhAttributes).
+We keep a log of [issues](https://github.com/dataknut/nzGREENGridDataR/issues?q=is%3Aissue+label%3AhhAttributes) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/dataknut/nzGREENGridDataR/issues?q=is%3Aissue+label%3AhhAttributes).
 
 ## Known issues
 
