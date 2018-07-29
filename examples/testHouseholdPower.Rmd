@@ -1,6 +1,6 @@
 ---
 params:
-  hhID: "rf_06" # <- change this to switch household. That's it :-)
+  hhID: "rf_38" # <- change this to switch household. That's it :-)
   title: 'NZ GREEN Grid project example:'
   subtitle: 'Testing power demand: '
 title: '`r params$title`'

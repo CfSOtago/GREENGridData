@@ -1,6 +1,8 @@
 ####- R script to extract and save all observations whose circuit labels match a given pattern between two dates -####
 # If the pattern/dateFrom/dateTo file already exists, it skips and ends
 
+# Best run using: "> Rscript extractCleanGridSpy1minCircuits.R "
+
 # Header ----
 
 # Housekeeping ----
