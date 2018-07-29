@@ -22,7 +22,7 @@ The code here processes the original Grid Spy data files to produce a 'safe' for
 
 The code maked extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done.
 
-We keep a log of [issues](https://github.com/dataknut/nzGREENGridDataR/labels/gridSpy) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/dataknut/nzGREENGridDataR/labels/gridSpy).
+We keep a log of [issues](https://github.com/dataknut/nzGREENGridDataR/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3AgridSpy) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/dataknut/nzGREENGridDataR/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3AgridSpy).
 
 ## Known issues
 
