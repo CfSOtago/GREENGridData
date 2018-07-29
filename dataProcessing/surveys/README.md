@@ -7,6 +7,21 @@
 
 _None_ of the code here will work unless you also have access to the data. While we have plans to deposit anonymised versions of the data with a suitable data archive (any offers?!), the data is currently held on the University of Otago High Performance Storage filestore and access is controlled by the [NZ GREEN Grid project administrator](mailto:jane.wilcox@otago.ac.nz?subject=Access to GREEN Grid data (via github readme)).
 
-## Dwelling and appliance surveys
+## Household attributes
 
-To do.
+The code in this folder constructs (and describes) the available household attribute data collected during the project. It saves the data as a .csv file and produces a [report](../../reports/surveyProcessingReport.pdf).
+
+The code maked extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done.
+
+We keep a log of [issues](https://github.com/dataknut/nzGREENGridDataR/labels/hhAttributes) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/dataknut/nzGREENGridDataR/labels/hhAttributes).
+
+## Known issues
+
+### Monitor re-use
+
+Two Grid Spy monitoring kits were re-used during the project. These were:
+
+ * rf_15 
+ * rf_17
+
+The household attribute data provides information on the dates these were switched to new households (see the household attribute [report](../../reports/surveyProcessingReport.pdf)). The relevant [checkPlots](../../checkPlots) also give you a clue.
