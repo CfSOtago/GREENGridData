@@ -35,8 +35,8 @@ nzGREENGridDataR::loadLibraries(localLibs)
 
 
 # Set local (this script) parameters ----
-refreshData <- 0 # 0 = No
-buildReport <- 1 # 0 = No
+refreshData <- 1 # 0 = No
+buildReport <- 0 # 0 = No
 localData <- 0 # local data test or not (1 = yes)?
 
 # Set grid spy data paths etc from file ----
@@ -60,6 +60,7 @@ if(refreshData){
   print("#-> Data refresh complete") 
   t <- proc.time() - startTime
   print(paste0("#-> Data refresh completed in ", nzGREENGridDataR::getDuration(t)))
+  print(paste0("Non-fatal data processing warnings may follow"))
 }
 
 
