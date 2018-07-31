@@ -27,7 +27,3 @@ if(localData){
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
 }
-
-gSpyParams$fListAll <- paste0(ggrParams$projLoc,"/checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
-gSpyParams$fLoadedStats <- paste0(ggrParams$projLoc,"/checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
-gSpyParams$hhStatsByDate <- paste0(ggrParams$projLoc,"/checkStats/hhStatsByDate.csv") # place to store the final hh summary stats

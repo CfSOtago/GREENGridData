@@ -14,7 +14,14 @@ nzGREENGridDataR::loadLibraries(localLibs)
 # Local functions ----
 
 # Local parameters ----
-plotLoc <- paste0(ggrParams$projLoc,"/checkPlots/") # where to save the check plots
+
+# > set summary stats location (not github) ----
+gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath,"/checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
+gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath,"/checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
+gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath,"/checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
+
+# > set check plots location (github) ----
+plotLoc <- paste0(ggrParams$projLoc,"/checkPlots/") # where to save the check plots (github)
 
 # Code ----
 
