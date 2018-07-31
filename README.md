@@ -27,7 +27,6 @@ Guide to folders:
 
  * data - misc data (not the research data)
  * checkPlots - data quality/check plots for each household produced during processing
- * checkStats - data quality summary statistics produced during processing
  * dataProcessing - r scripts to process data and generate data quality reports
  * examples - r script examples to use on the clean 'safe' data
  * includes - .Rmd files use in report generation
