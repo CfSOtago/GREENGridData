@@ -13,4 +13,8 @@ NB: *None* of the data is held in this repo so *none* of the code here will work
 
 ## Reports
 
-Reports and data documentation
+Reports and data documentation:
+
+ * Project and research data overview report
+ * [Grid Spy data processing](gridSpy1mProcessingReport.html) report
+ * [Survey data processing](surveyProcessingReport.pdf) report
