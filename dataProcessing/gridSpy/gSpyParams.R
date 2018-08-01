@@ -26,7 +26,15 @@ if(localData){
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
 }
-
+if(Sys.info()[7] == "dataknut" & localData == 0){
+  # we're on the CS RStudio server
+  gSpyParams$gSpyInPath <- "~/GridSpyData/" # location of data
+  gSpyParams$gSpyOutPath <- "~/testData/" # place to save them
+  msg1 <- paste0("#--- Full run using full data from ", 
+                 gSpyParams$gSpyInPath, " and saving to ",
+                 gSpyParams$gSpyOutPath)
+  
+}
 # > set summary stats location (not github) ----
 gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath,"checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
 gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath,"checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
