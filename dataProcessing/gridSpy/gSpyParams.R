@@ -26,7 +26,7 @@ if(localData){
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
 }
-if(Sys.info()[7] == "dataknut" & Sys.info()[4] == "gridcrawler" & localData == 0){
+if(Sys.info()[4] == "gridcrawler"){
   # we're on the CS RStudio server & we're refreshing
   gSpyParams$gSpyInPath <- path.expand("~/GridSpyData/") # location of data
   gSpyParams$gSpyOutPath <- path.expand("~/testData/") # place to save them
