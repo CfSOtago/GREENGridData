@@ -8,7 +8,6 @@ gSpyParams$gSpyFileThreshold <- 3000 # assume any files smaller than this (bytes
 gSpyParams$pattern <- "*at1.csv$" # e.g. *at1.csv$ filters only 1 min data
 
 gSpyParams$dstNZDates <- paste0(nzGREENGridDataR::findParentDirectory("nzGREENGridDataR"),"/data/dstNZDates.csv")
-gSpyParams$gSpyFileThreshold
 
 # Must be run after localData is set
 
@@ -27,3 +26,8 @@ if(localData){
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
 }
+
+# > set summary stats location (not github) ----
+gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath,"checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
+gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath,"checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
+gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath,"checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
