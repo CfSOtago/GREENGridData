@@ -45,9 +45,9 @@ if(buildReport){
   # run the report .Rmd and render to pdf
   rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/surveys/createHouseholdAttributes.Rmd")
   rmarkdown::render(input = rmdFile,
-                    output_format = "pdf_document",
+                    output_format = "html_document",
                     params = list(title = title, subtitle = subtitle),
-                    output_file = paste0(ggrParams$projLoc,"/reports/surveyProcessingReport.pdf")
+                    output_file = paste0(ggrParams$projLoc,"/docs/surveyProcessingReport.html")
   )
   t <- proc.time() - startTime
   print(paste0("Report rebuild completed in ", nzGREENGridDataR::getDuration(t)))
