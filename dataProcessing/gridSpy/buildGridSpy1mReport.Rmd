@@ -59,7 +59,7 @@ nzGREENGrid::loadLibraries(rmdLibs)
 
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
-plotLoc <- paste0(ggrParams$projLoc, "/reports/plots/")
+plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 statsLoc <- paste0(ggrParams$projLoc, "/checkStats/")
   
 # Local functions ----
