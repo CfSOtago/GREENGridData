@@ -75,7 +75,7 @@ if(buildReport){
   rmarkdown::render(input = rmdFile,
                     output_format = "html_document",
                     params = list(localData = localData),
-                    output_file = paste0(ggrParams$projLoc,"/reports/gridSpy1mProcessingReport.html")
+                    output_file = paste0(ggrParams$projLoc,"/docs/gridSpy1mProcessingReport.html")
   )
   t <- proc.time() - startTime
   print(paste0("Report rebuild completed in ", nzGREENGridDataR::getDuration(t)))
