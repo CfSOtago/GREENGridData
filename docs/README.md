@@ -15,6 +15,6 @@ NB: *None* of the data is held in this repo so *none* of the code here will work
 
 Reports and data documentation:
 
- * Project and research data overview report
+ * [Project and research data overview](ggOverviewReport.html) report
  * [Grid Spy data processing](gridSpy1mProcessingReport.html) report
- * [Survey data processing](surveyProcessingReport.pdf) report
+ * [Survey data processing](surveyProcessingReport.html) report
