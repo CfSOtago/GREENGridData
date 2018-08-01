@@ -41,7 +41,11 @@ A link to the archived 'safe' version of the data will appear here soon.
 Access to the original data which is stored on the University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html) is restricted.
 
 ## Using the code
-This repo is intentionally structured as an R package so you can install it and re-use the code. To install it:
+This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in two ways:
+
+*Clone/fork the repo from github* - this will give you a replication of the package as a local repo which you can edit & install locally. You can then (if you wish) submit pull requests for any improvements you make. Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
+
+*Install the package* - this will install it wherever your version of R(Studio) stores packages. It will also install any dependencies. However you will not (easily) be able to edit or amend the code. To do this:
 
  * install the R [devtools](http://r-pkgs.had.co.nz/git.html) package: `> install.packages("devtools")`;
  * run `> devtools::install_github(dataknut/nzGREENGridDataR)` - this should install the package and any [dependencies](http://r-pkgs.had.co.nz/description.html#dependencies) you may not have;
