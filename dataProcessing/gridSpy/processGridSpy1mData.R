@@ -205,44 +205,44 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   if(hh == "rf_15"){
     print("#---> fixing rf_15 re-use")
     # rf_15a up to 2015-01-15 then rf_15b to 2016-04-02 # see https://dataknut.github.io/nzGREENGridDataR/surveyProcessingReport.html
-    saveDT <- saveDT[, linkID := "rf_15a"]
-    saveDT <- saveDT[lubridate::date(r_dateTime) > as.Date("2015-01-15"), linkID := "rf_15b"]
-    # saveDT[, .(nObs = .N, 
+    dt <- dt[, linkID := "rf_15a"]
+    dt <- dt[lubridate::date(r_dateTime) > as.Date("2015-01-15"), linkID := "rf_15b"]
+    # dt[, .(nObs = .N, 
     #            minDate = min(as.Date(r_dateTime)),
     #            maxDate = max(as.Date(r_dateTime))), keyby = .(linkID)]
-    dta <- saveDT[linkID == "rf_15a"]
+    dta <- dt[linkID == "rf_15a"]
     hh <- "rf_15a"
     makePowerPlot(hh,dta)
     makeObsPlot(hh,dta)
     saveFinalDT(hh,dta)
     hh <- "rf_15b"
-    dtb <- saveDT[linkID == "rf_15b"]
+    dtb <- dt[linkID == "rf_15b"]
     makePowerPlot(hh,dtb)
     makeObsPlot(hh,dtb)
     saveFinalDT(hh,dtb)
   } else if (hh == "rf_17"){
     print("#---> fixing rf_17 re-use")
     # rf_17a up to 2016-03-28 then rf_17b
-    saveDT <- saveDT[, linkID := "rf_17a"]
-    saveDT <- saveDT[lubridate::date(r_dateTime) > as.Date("2016-03-28"), linkID = "rf_17b"]
+    dt <- dt[, linkID := "rf_17a"]
+    dt <- dt[lubridate::date(r_dateTime) > as.Date("2016-03-28"), linkID = "rf_17b"]
     hh <- "rf_17a"
-    dta <- saveDT[linkID == hh]
+    dta <- dt[linkID == hh]
     makePowerPlot(hh,dta)
     makeObsPlot(hh,dta)
     saveFinalDT(hh,dta)
     hh <- "rf_17b"
-    dtb <- saveDT[linkID == hh]
+    dtb <- dt[linkID == hh]
     makePowerPlot(hh,dtb)
     makeObsPlot(hh,dtb)
     saveFinalDT(hh,dtb)
   } else {
     # no problems so set newID to hhID
-    saveDT <- saveDT[, linkID := hhID]
-    saveFinalDT(hh,saveDT)
+    dt <- dt[, linkID := hhID]
+    saveFinalDT(hh,dt)
   }
   
   # > Set household level stats by date ----
-  statDT <- saveDT[, .(nObs = .N,
+  statDT <- dt[, .(nObs = .N,
                    meanPower = mean(powerW),
                    sdPowerW = sd(powerW),
                    minPowerW = min(powerW),
