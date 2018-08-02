@@ -93,7 +93,7 @@ makeObsPlot  <- function(hh,dt){
 
 saveFinalDT <- function(hh,dt){
   # Keep only the vars we can't easily re-create
-  keepVars <- c("hhID", "newID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")
+  keepVars <- c("hhID", "linkID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")
   saveDT <- dt[, ..keepVars] # just saves the keepVars
   ofile <- paste0(gSpyParams$gSpyOutPath, "data/", hh,"_all_1min_data.csv")
   print(paste0("#--> ", hh, ": Saving ", ofile, " (columns: ", toString(names(saveDT)), ")"))
@@ -106,11 +106,6 @@ saveFinalDT <- function(hh,dt){
 }
 
 # Local parameters ----
-
-# > set summary stats location (not github) ----
-gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath,"/checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
-gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath,"/checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
-gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath,"/checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
 
 # > set check plots location (github) ----
 plotLoc <- paste0(ggrParams$projLoc,"/checkPlots/") # where to save the check plots (github)
@@ -193,7 +188,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   # don't do this as it can lead to confusion due to re-use of labels with differing IDs
   
   # > Run basic tests ----
-  print(paste0("#--> ",hh, ": running basic tests"))
+  print(paste0("#--> ",hh, ": deriving test vars"))
   # set some vars to aggregate by
   dt <- dt[, month := lubridate::month(r_dateTime, label = TRUE)]
   dt <- dt[, year := lubridate::year(r_dateTime)]
@@ -201,43 +196,69 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   dt <- dt[, obsDate := lubridate::date(r_dateTime)]
   dt <- dt[, obsTime := hms::as.hms(r_dateTime)]
 
-  # > Fix the re-used rf_XX before we save anything ----
+  print(paste0("#--> ",hh, ": running basic tests"))
+  # > Fix the re-used rf_XX before we test or save anything ----
   if(hh == "rf_15"){
-    print("#---> fixing rf_15 re-use")
+    print(paste0("#--> ",hh, ": Fixing rf_15 re-use"))
     # rf_15a up to 2015-01-15 then rf_15b to 2016-04-02 # see https://dataknut.github.io/nzGREENGridDataR/surveyProcessingReport.html
-    dt <- dt[, linkID := "rf_15a"]
-    dt <- dt[lubridate::date(r_dateTime) > as.Date("2015-01-15"), linkID := "rf_15b"]
+    hh <- "rf_15a"
+    dt <- dt[, linkID := hh] # set default
+    # GS master file notes disconnected 2015-01-15 but in fact there is no data before this date so
+    # we assume the new household's data started on this date.
+    dt <- dt[lubridate::date(r_dateTime) >= as.Date("2015-01-15"), linkID := "rf_15b"] # set to re-user
     # dt[, .(nObs = .N, 
     #            minDate = min(as.Date(r_dateTime)),
     #            maxDate = max(as.Date(r_dateTime))), keyby = .(linkID)]
-    dta <- dt[linkID == "rf_15a"]
-    hh <- "rf_15a"
-    makePowerPlot(hh,dta)
-    makeObsPlot(hh,dta)
-    saveFinalDT(hh,dta)
-    hh <- "rf_15b"
-    dtb <- dt[linkID == "rf_15b"]
-    makePowerPlot(hh,dtb)
-    makeObsPlot(hh,dtb)
-    saveFinalDT(hh,dtb)
-  } else if (hh == "rf_17"){
-    print("#---> fixing rf_17 re-use")
-    # rf_17a up to 2016-03-28 then rf_17b
-    dt <- dt[, linkID := "rf_17a"]
-    dt <- dt[lubridate::date(r_dateTime) > as.Date("2016-03-28"), linkID = "rf_17b"]
-    hh <- "rf_17a"
     dta <- dt[linkID == hh]
-    makePowerPlot(hh,dta)
-    makeObsPlot(hh,dta)
-    saveFinalDT(hh,dta)
+    if(nrow(dta) > 0){
+      # there is data
+      makePowerPlot(hh,dta)
+      makeObsPlot(hh,dta)
+      saveFinalDT(hh,dta)
+    } else {
+      print(paste0("#--> ",hh, ": no data rows for rf_15a"))
+    }
+    hh <- "rf_15b"
+    dtb <- dt[linkID == hh]
+    if(nrow(dtb) > 0){
+      # there is data
+      makePowerPlot(hh,dtb)
+      makeObsPlot(hh,dtb)
+      saveFinalDT(hh,dtb)
+    } else {
+      print(paste0("#--> ",hh, ": no data rows for rf_15b"))
+    }
+  } else if(hh == "rf_17"){
+    print(paste0("#--> ",hh, ": Fixing rf_17 re-use"))
+    # rf_17a up to 2016-03-28 then rf_17b
+    hh <- "rf_17a"
+    dt <- dt[, linkID := hh] # set default
+    dt <- dt[lubridate::date(r_dateTime) > as.Date("2016-03-28"), linkID := "rf_17b"]
+    dta <- dt[linkID == hh]
+    if(nrow(dta) > 0){
+      # there is data
+      makePowerPlot(hh,dta)
+      makeObsPlot(hh,dta)
+      saveFinalDT(hh,dta)
+    } else {
+      print(paste0("#--> ",hh, ": no data rows for rf_17a"))
+    }
     hh <- "rf_17b"
     dtb <- dt[linkID == hh]
-    makePowerPlot(hh,dtb)
-    makeObsPlot(hh,dtb)
-    saveFinalDT(hh,dtb)
+    if(nrow(dtb) > 0){
+      # there is data
+      makePowerPlot(hh,dtb)
+      makeObsPlot(hh,dtb)
+      saveFinalDT(hh,dtb)
+    } else {
+      print(paste0("#--> ",hh, ": no data rows for rf_17b"))
+    }
   } else {
     # no problems so set newID to hhID
+    print(paste0("#--> ",hh, ": No re-use to fix"))
     dt <- dt[, linkID := hhID]
+    makePowerPlot(hh,dt)
+    makeObsPlot(hh,dt)
     saveFinalDT(hh,dt)
   }
   
