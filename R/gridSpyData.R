@@ -399,7 +399,6 @@ processHhGridSpyData <- function(hh, fileList){
   
   } # X > end of per file loop ----
   print(paste0("#--> ", hh, ": Done, cleaning rbound files"))
-  
 
   #> Switch to long form ----
   # this turns each circuit label (column) into a label within 'variable' and
