@@ -28,8 +28,8 @@ if(localData){
 }
 if(Sys.info()[4] == "gridcrawler"){
   # we're on the CS RStudio server
-  gSpyParams$gSpyInPath <- path.expand("~/GridSpyData/") # location of data
-  gSpyParams$gSpyOutPath <- path.expand("~/testData/") # place to save them
+  gSpyParams$gSpyInPath <- path.expand("~/greenGridData/_RAW DATA/GridSpyData/") # location of data
+  gSpyParams$gSpyOutPath <- path.expand("~/greenGridData/Clean_data/safe/gridSpy/1min/") # place to save them
   msg1 <- paste0("#--- Full run using full data from ", 
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
