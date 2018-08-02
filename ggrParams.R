@@ -2,7 +2,7 @@ ggrParams <<- list() # params holder
 
 # Location of original data
 ggrParams$projLoc <- findParentDirectory("nzGREENGridDataR")
-ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HPS by default
+ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HCS by default
 
 # Location of basic household data
 ggrParams$gsHHMasterFile <- "~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx"
