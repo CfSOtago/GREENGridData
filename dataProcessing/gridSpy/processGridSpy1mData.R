@@ -46,7 +46,7 @@ makePowerPlot  <- function(hh,dt){
     scale_x_time(breaks = timeBreaks) +
     geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
   
-  ofile <- paste0(plotLoc, hh, "_monthlyPowerPlot.png")
+  ofile <- paste0(gSpyParams$checkPlots, hh, "_monthlyPowerPlot.png")
   ggplot2::ggsave(ofile, height = 10)
 }
 
@@ -87,7 +87,7 @@ makeObsPlot  <- function(hh,dt){
   }
   myPlot 
   
-  ofile <- paste0(plotLoc, hh, "_observationsRatioPlot.png")
+  ofile <- paste0(gSpyParams$checkPlots, hh, "_observationsRatioPlot.png")
   ggplot2::ggsave(ofile, height = 10)
 }
 
