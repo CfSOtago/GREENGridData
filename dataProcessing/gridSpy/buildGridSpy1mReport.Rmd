@@ -287,7 +287,7 @@ dt <- fLoadedListDT[!is.na(circuitLabels),
                      keyby = .(hhID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
 
 knitr::kable(caption = "Circuit labels list by number of files per household", dt)
-ofile <- paste0(statsLoc, "circuitLabelsCheckTable.csv")
+ofile <- paste0(paste0(gSpyParams$gSpyOutPath,"checkStats/circuitLabelsCheckTable.csv"))
 write.csv(dt, ofile)
 ```
 
@@ -343,7 +343,7 @@ myCaption <- paste0(myCaption,
                     "\n (see above) as well as missing data!")
   
 # tile plot ----
-ggplot2::ggplot(hhStatDT, aes( x = date, y = hhID, 
+ggplot2::ggplot(hhStatDT, aes( x = date, y = linkID, 
                                fill = nObs)) +
   geom_tile() +
   scale_fill_gradient(low = "red", high = "green") +
@@ -360,7 +360,7 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsTilePlot.png"))
 # point plot ----
 ggplot2::ggplot(hhStatDT, aes( x = date, 
                                y = nObs, 
-                               colour = hhID)) +
+                               colour = linkID)) +
   geom_point() +
   scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, 
@@ -388,7 +388,7 @@ t <- hhStatDT[, .(minObs = min(nObs),
              meanN_Circuits =mean(nCircuits), #i.e. n circuits
              minDate = min(date),
              maxDate = max(date)),
-         keyby = .(hhID)]
+         keyby = .(linkID)]
 
 knitr::kable(caption = "Summary observation stats by hhID", t)
 ```
@@ -397,7 +397,7 @@ knitr::kable(caption = "Summary observation stats by hhID", t)
 Finally we show the total number of households which we think are still sending data.
 
 ```{r liveDataHouseholds}
-plotDT <- hhStatDT[, .(nHH = uniqueN(hhID)), keyby = .(date)]
+plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]
 
 # point plot ----
 ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
