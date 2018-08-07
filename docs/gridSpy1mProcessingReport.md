@@ -6,7 +6,7 @@ params:
 title: 'NZ GREEN Grid project data processing report'
 subtitle: '1 minute electricity power'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
-date: 'Last run at: 2018-08-07 14:54:03'
+date: 'Last run at: 2018-08-07 16:45:26'
 output:
   html_document:
     code_folding: hide
@@ -66,9 +66,7 @@ For the avoidance of doubt and explanation of terms please refer to the full [li
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (2018) NZ GREEN Grid project data processing report: 1 minute electricity power, [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin. 
- 
-> XX replace with UKDA DOI when available XX
+ * Anderson, B. (2018) NZ GREEN Grid project data processing report: 1 minute electricity power, [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin.
 
 ## History
 
@@ -98,11 +96,10 @@ This work was supported by:
 
 The NZ GREEN Grid project recruited a sample of [c 25 households in each of two regions of New Zealand](ggOverviewReport.html). The first sample was recruited in early 2014 and the second in early 2015. Research data includes:
 
- * 1 minute electricity power (W) data was collected for each dwelling circuit using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp.
- * Occupant time-use diaries (focused on energy use)
- * Dwelling & appliance surveys
+ * 1 minute electricity power (W) data was collected for each dwelling circuit using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - [gridSpy1mProcessingReport](gridSpy1mProcessingReport.html);
+ * Dwelling & appliance surveys. See - [surveyProcessingReport](surveyProcessingReport.html);
+ * Occupant time-use diaries (focused on energy use).
  
-We are working towards releasing 'clean' (anonymised) versions of this research data for re-use.
  
 This report provides summary data quality statistics for the original GREEN grid Grid Spy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the [nzGREENGridDataR](https://github.com/dataknut/nzGREENGridDataR) repository.
 
@@ -478,7 +475,7 @@ If the above plot and table flag errors then further re-naming of the circuit la
 
 
 
-Analysis completed in 37.6 seconds ( 0.63 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
+Analysis completed in 61.82 seconds ( 1.03 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
 
 # R environment
 
@@ -514,21 +511,39 @@ Session info:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kableExtra_0.9.0       stringr_1.3.1          knitr_1.20             readr_1.1.1           
-## [5] ggplot2_3.0.0          data.table_1.11.4      rmarkdown_1.10         nzGREENGridDataR_0.1.0
+##  [1] Hmisc_4.1-1            Formula_1.2-3          survival_2.42-6       
+##  [4] lattice_0.20-35        lubridate_1.7.4        kableExtra_0.9.0      
+##  [7] stringr_1.3.1          knitr_1.20             readr_1.1.1           
+## [10] ggplot2_3.0.0          data.table_1.11.4      rmarkdown_1.10        
+## [13] nzGREENGridDataR_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4  reshape2_1.4.3    purrr_0.2.5       lattice_0.20-35  
-##  [7] colorspace_1.3-2  viridisLite_0.3.0 htmltools_0.3.6   yaml_2.2.0        utf8_1.1.4        rlang_0.2.1      
-## [13] pillar_1.3.0      glue_1.3.0        withr_2.1.2       sp_1.3-1          readxl_1.1.0      bindrcpp_0.2.2   
-## [19] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4        munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
-## [25] rvest_0.3.2       RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.11     labeling_0.3      fansi_0.2.3      
-## [31] highr_0.7         proto_1.0.0       Rcpp_0.12.18      geosphere_1.5-7   openssl_1.0.2     scales_0.5.0     
-## [37] backports_1.1.2   rjson_0.2.20      hms_0.4.2         png_0.1-7         digest_0.6.15     stringi_1.2.4    
-## [43] dplyr_0.7.6       grid_3.5.0        rprojroot_1.3-2   cli_1.0.0         tools_3.5.0       magrittr_1.5     
-## [49] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2      crayon_1.3.4      pkgconfig_2.0.1   xml2_1.2.0       
-## [55] prettyunits_1.0.2 lubridate_1.7.4   httr_1.3.1        assertthat_0.2.0  rstudioapi_0.7    R6_2.2.2         
-## [61] ggmap_2.6.1       compiler_3.5.0
+##  [1] httr_1.3.1          maps_3.3.0          viridisLite_0.3.0  
+##  [4] splines_3.5.0       assertthat_0.2.0    sp_1.3-1           
+##  [7] highr_0.7           latticeExtra_0.6-28 cellranger_1.1.0   
+## [10] yaml_2.2.0          progress_1.2.0      pillar_1.3.0       
+## [13] backports_1.1.2     glue_1.3.0          digest_0.6.15      
+## [16] RColorBrewer_1.1-2  checkmate_1.8.5     rvest_0.3.2        
+## [19] colorspace_1.3-2    htmltools_0.3.6     Matrix_1.2-14      
+## [22] plyr_1.8.4          pkgconfig_2.0.1     bookdown_0.7       
+## [25] purrr_0.2.5         scales_0.5.0        jpeg_0.1-8         
+## [28] openssl_1.0.2       ggmap_2.6.1         htmlTable_1.12     
+## [31] tibble_1.4.2        withr_2.1.2         nnet_7.3-12        
+## [34] lazyeval_0.2.1      cli_1.0.0           proto_1.0.0        
+## [37] magrittr_1.5        crayon_1.3.4        readxl_1.1.0       
+## [40] evaluate_0.11       fansi_0.2.3         xml2_1.2.0         
+## [43] foreign_0.8-71      tools_3.5.0         prettyunits_1.0.2  
+## [46] hms_0.4.2           geosphere_1.5-7     RgoogleMaps_1.4.2  
+## [49] munsell_0.5.0       cluster_2.0.7-1     bindrcpp_0.2.2     
+## [52] compiler_3.5.0      rlang_0.2.1         grid_3.5.0         
+## [55] rstudioapi_0.7      rjson_0.2.20        htmlwidgets_1.2    
+## [58] labeling_0.3        base64enc_0.1-3     gtable_0.2.0       
+## [61] reshape2_1.4.3      R6_2.2.2            gridExtra_2.3      
+## [64] dplyr_0.7.6         utf8_1.1.4          bindr_0.1.1        
+## [67] rprojroot_1.3-2     nzGREENGrid_0.1.0   stringi_1.2.4      
+## [70] Rcpp_0.12.18        mapproj_1.2.6       rpart_4.1-13       
+## [73] acepack_1.4.1       png_0.1-7           tidyselect_0.2.4   
+## [76] xfun_0.3
 ```
 
 # References
