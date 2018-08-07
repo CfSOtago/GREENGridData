@@ -19,6 +19,8 @@ ggrParams$pubLoc <- "[Centre for Sustainability](http://www.otago.ac.nz/centre-s
 ggrParams$otagoHCS <- "the University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html)"
 ggrParams$repo <- "[nzGREENGridDataR](https://github.com/dataknut/nzGREENGridDataR)"
 
+ggrParams$Authors <- "?? Anderson, B., Eyers, D., Jack, M, and Stephenson, J. ??"
+
 # Rmd includes
 ggrParams$licenseCCBY <- paste0(ggrParams$projLoc, "/includes/licenseCCBY.Rmd")
 ggrParams$supportGeneric <- paste0(ggrParams$projLoc, "/includes/supportGeneric.Rmd")
