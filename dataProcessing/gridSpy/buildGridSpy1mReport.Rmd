@@ -85,9 +85,9 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggrParams$pubLoc`. 
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggrParams$pubLoc`.
  
-> XX replace with UKDA DOI when available XX
+This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
@@ -131,7 +131,7 @@ nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 
 Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (`r file.mtime(gSpyParams$fListAll)`).
 
-To date we have `r tidyNum(nFiles)` files with `r tidyNum(uniqueN(fListCompleteDT$hhID))` unique grid spy IDs
+To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` unique grid spy IDs.
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
