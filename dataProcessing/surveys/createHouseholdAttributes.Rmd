@@ -7,22 +7,24 @@ subtitle: '`r params$subtitle`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
 output:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: true
+    number_sections: true
+    self_contained: no
+    toc: true
+    toc_float: true
+    toc_depth: 2
   bookdown::pdf_document2:
     fig_caption: yes
     number_sections: yes
     toc: yes
-    toc_depth: 2
-  bookdown::html_document2:
-    toc: true
-    toc_float: true
-    number_sections: yes
     toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
-options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
 ```
 
 ```{r codeSetup, include=FALSE}
@@ -78,13 +80,13 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 ```{r includeHistory, child=ggrParams$historyGenericRmd}
 ```
  
-Specific history of this code:
+Specific history of this report:
 
  * https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/surveys/createHouseholdAttributes.Rmd
 
 ## Requirements:
 
-This report uses the original nz GREEn grid household survey and meta data.
+This report uses the original nz GREEN Grid household survey and meta data.
 
 ## Support
 
@@ -95,6 +97,9 @@ This report uses the original nz GREEn grid household survey and meta data.
 
 # Introduction
 
+```{r generic sample, child=ggrParams$sampleGeneric}
+```
+ 
 The prupose of this report is to: 
 
  * create a household attribute file that can be linked to the project power monitoring data;
@@ -102,7 +107,7 @@ The prupose of this report is to:
 
 The resulting cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
 
-The data contains a unique household id which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
+The data contains a unique household id (`linkID`) which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
 
 # Load data
 
@@ -123,9 +128,9 @@ Hmisc::describe(hhAttributesDT)
 ```
 
 
-# Describe data
+# Household attribute tables
 
-NA usually means not known.
+This section reports tables of the key attributes by sample location. Note that NA usually means not known.
 
 ## Number of adults
 
@@ -168,14 +173,14 @@ The cleaned data for the `r nrow(hhAttributesDT)` households has been saved as a
 
  * `r ggrParams$outPath` 
 
-The following table shows the key columns of the household attributes file. The data can be linked to the gridSpy data using hhID.
+The following table shows the key columns of the household attributes file. The data can be linked to the gridSpy data using `linkID`.
 
-The purpose of the newID is to enable the flagging of re-used grid spy units. As an example unit rf_15 was re-used in a different household. Data users should therefore make sure that the correct household data (rf_15a or rf_15b) is linked to the grid spy data (coded rf_15) at the correct date.
+The purpose of the linkID is to enable the flagging of [re-used grid spy units](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units). As an example unit rf_15 was re-used in a different household. We have created `linkID` so that the correct household data (rf_15a or rf_15b) can be linked to the grid spy data (coded rf_15) at the correct date.
 
 Note also that data exists in the grid spy power demand data for whom no household data exists (e.g. rf_01 & rf_02).
 
 ```{r data header}
-kable(caption = "Household data: key columns", hhAttributesDT[, c("hhID", "Location", "nAdults", "newID", "r_stopDate", "notes")][order(hhID)])
+kable(caption = "Household data: key columns", hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)])
 ```
 
 
