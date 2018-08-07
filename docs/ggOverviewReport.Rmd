@@ -117,7 +117,9 @@ hhDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 gsStatDT <- data.table::as.data.table(readr::read_csv(paste0(ggrParams$statsLoc, "hhStatsByDate.csv")))
 ```
 
-The project research sample comprises `r nrow(hhDT)` households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). Recruitment was via a non-random (?) sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.
+The project research sample comprises `r nrow(hhDT)` households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). 
+
+Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.
 
 Table \@ref(tab:sampleTable) shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.
 
@@ -130,7 +132,8 @@ kableExtra::kable(t, caption = "Sample location")
 Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
 
 ```{r allHhData}
-kable(hhDT[, c("sample", "hhID", "linkID", "Location", "notes", "r_stopDate")], caption = "Sample details")
+kable(hhDT[, c("sample", "hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
+
 ```
 
 The households labeled 'NA' were initial pilot/test households who did not form part of the sample and for whom no survey data is available. They should be excluded from any data analysis.
@@ -141,7 +144,7 @@ The households labeled 'NA' were initial pilot/test households who did not form 
 Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom grid spy data exists on a given date by sample and indicates that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
 
 ```{r liveDataHouseholds, fig.cap="Sample size over time"}
-setkey(gsStatDT, hhID)
+setkey(gsStatDT, linkID)
 dt <- merge(gsStatDT, hhDT, allow.cartesian=TRUE)
 
 dt <- dt[, sample := factor(sample, levels = c("Unison","Powerco"))] # re-order for chart

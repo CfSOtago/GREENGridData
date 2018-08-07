@@ -238,7 +238,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">NZ GREEN Grid project: Research data overview</h1>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-02 08:49:15</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-07 16:37:34</em></h4>
 
 </div>
 
@@ -263,12 +263,10 @@ div.tocify {
 <p>Under the following terms:</p>
 <ul>
 <li><em>Attribution</em> — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</li>
-<li>ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
-<li>No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</li>
+<li><em>ShareAlike</em> — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
+<li><em>No additional restrictions</em> — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</li>
 </ul>
-</div>
-<div id="notices" class="section level2">
-<h2><span class="header-section-number">1.3</span> Notices:</h2>
+<p><strong>Notices:</strong></p>
 <ul>
 <li>You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.</li>
 <li>No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material. #YMMV</li>
@@ -276,7 +274,7 @@ div.tocify {
 <p>For the avoidance of doubt and explanation of terms please refer to the full <a href="https://creativecommons.org/licenses/by-sa/4.0/">license notice</a> and <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">legal code</a>.</p>
 </div>
 <div id="citation" class="section level2">
-<h2><span class="header-section-number">1.4</span> Citation</h2>
+<h2><span class="header-section-number">1.3</span> Citation</h2>
 <p>If you wish to use any of the material from this report please cite as:</p>
 <ul>
 <li>Anderson, B. (2018) NZ GREEN Grid project: Research data overview, <a href="http://www.otago.ac.nz/centre-sustainability/">Centre for Sustainability</a>, University of Otago: Dunedin.</li>
@@ -286,7 +284,7 @@ div.tocify {
 </blockquote>
 </div>
 <div id="history" class="section level2">
-<h2><span class="header-section-number">1.5</span> History</h2>
+<h2><span class="header-section-number">1.4</span> History</h2>
 <p>Code history is generally tracked via our github <a href="https://github.com/dataknut/nzGREENGridDataR">repo</a>:</p>
 <ul>
 <li><a href="https://github.com/dataknut/nzGREENGridDataR/commits/master/docs/ggOverviewReport.Rmd">Report history</a></li>
@@ -294,14 +292,14 @@ div.tocify {
 </ul>
 </div>
 <div id="requirements" class="section level2">
-<h2><span class="header-section-number">1.6</span> Requirements:</h2>
+<h2><span class="header-section-number">1.5</span> Requirements:</h2>
 <p>This report uses:</p>
 <ul>
 <li>safe versions of the project research data and associated data quality statistics produced during processing of the original data.</li>
 </ul>
 </div>
 <div id="support" class="section level2">
-<h2><span class="header-section-number">1.7</span> Support</h2>
+<h2><span class="header-section-number">1.6</span> Support</h2>
 <p>This work was supported by:</p>
 <ul>
 <li>The <a href="https://www.otago.ac.nz/">University of Otago</a>;</li>
@@ -314,42 +312,18 @@ div.tocify {
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
-<p>The NZ GREEN Grid project recruited a sample of c 25 households in each of two regions of New Zealand. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
+<p>The NZ GREEN Grid project recruited a sample of <a href="ggOverviewReport.html">c 25 households in each of two regions of New Zealand</a>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
-<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">gridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp.</li>
-<li>Occupant time-use diaries (focused on energy use)</li>
-<li>Dwelling &amp; appliance surveys</li>
+<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">gridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
+<li>Dwelling &amp; appliance surveys. See - <a href="surveyProcessingReport.html">surveyProcessingReport</a>;</li>
+<li>Occupant time-use diaries (focused on energy use).</li>
 </ul>
-<p>We are working towards releasing ‘clean’ (anonymised) versions of this research data for re-use.</p>
 <p>This report provides an overview of the GREEN Grid project research data. The most recent version of this report can be found at <a href="https://dataknut.github.io/nzGREENGridDataR/" class="uri">https://dataknut.github.io/nzGREENGridDataR/</a>.</p>
 </div>
 <div id="study-recruitment" class="section level1">
 <h1><span class="header-section-number">3</span> Study recruitment</h1>
-<pre><code>## Parsed with column specification:
-## cols(
-##   sample = col_character(),
-##   hhID = col_character(),
-##   newID = col_character(),
-##   Location = col_character(),
-##   nAdults = col_integer(),
-##   nChildren0_12 = col_integer(),
-##   nTeenagers13_18 = col_integer(),
-##   notes = col_character(),
-##   r_stopDate = col_date(format = &quot;&quot;)
-## )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   hhID = col_character(),
-##   date = col_date(format = &quot;&quot;),
-##   nObs = col_integer(),
-##   meanPower = col_double(),
-##   sdPowerW = col_double(),
-##   minPowerW = col_double(),
-##   maxPowerW = col_double(),
-##   circuitLabels = col_character(),
-##   nCircuits = col_integer()
-## )</code></pre>
-<p>The project research sample comprises 44 households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). Recruitment was via a non-random (?) sampling method and a number of households were intentionally selected for their ‘complex’ electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.</p>
+<p>The project research sample comprises 44 households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison).</p>
+<p>Recruitment was via a non-random sampling method and a number of households were intentionally selected for their ‘complex’ electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.</p>
 <p>Table <a href="#tab:sampleTable">3.1</a> shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.</p>
 <table>
 <caption>
@@ -393,7 +367,7 @@ Powerco
 </tr>
 </tbody>
 </table>
-<p>Table <a href="#tab:allHhData">3.2</a> shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the clean grid spy data for the relevant households. Linkage between the survey and grid spy data should always use <code>newID</code> to avoid errors.</p>
+<p>Table <a href="#tab:allHhData">3.2</a> shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the <a href="gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units">clean grid spy data</a> for the relevant households. Linkage between the survey and grid spy data should always use <code>linkID</code> to avoid errors.</p>
 <table>
 <caption>
 <span id="tab:allHhData">Table 3.2: </span>Sample details
@@ -407,7 +381,7 @@ sample
 hhID
 </th>
 <th style="text-align:left;">
-newID
+linkID
 </th>
 <th style="text-align:left;">
 Location
@@ -423,486 +397,6 @@ r_stopDate
 <tbody>
 <tr>
 <td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_28
-</td>
-<td style="text-align:left;">
-rf_28
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_29
-</td>
-<td style="text-align:left;">
-rf_29
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_30
-</td>
-<td style="text-align:left;">
-rf_30
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_31
-</td>
-<td style="text-align:left;">
-rf_31
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_32
-</td>
-<td style="text-align:left;">
-rf_32
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_33
-</td>
-<td style="text-align:left;">
-rf_33
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_34
-</td>
-<td style="text-align:left;">
-rf_34
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_35
-</td>
-<td style="text-align:left;">
-rf_35
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_36
-</td>
-<td style="text-align:left;">
-rf_36
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_37
-</td>
-<td style="text-align:left;">
-rf_37
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_38
-</td>
-<td style="text-align:left;">
-rf_38
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_39
-</td>
-<td style="text-align:left;">
-rf_39
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_40
-</td>
-<td style="text-align:left;">
-rf_40
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_41
-</td>
-<td style="text-align:left;">
-rf_41
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_42
-</td>
-<td style="text-align:left;">
-rf_42
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_43
-</td>
-<td style="text-align:left;">
-rf_43
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_44
-</td>
-<td style="text-align:left;">
-rf_44
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_45
-</td>
-<td style="text-align:left;">
-rf_45
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_46
-</td>
-<td style="text-align:left;">
-rf_46
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Unison
-</td>
-<td style="text-align:left;">
-rf_47
-</td>
-<td style="text-align:left;">
-rf_47
-</td>
-<td style="text-align:left;">
-Hawkes Bay
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_12
-</td>
-<td style="text-align:left;">
-rf_12
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_25
-</td>
-<td style="text-align:left;">
-rf_25
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_23
-</td>
-<td style="text-align:left;">
-rf_23
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_26
-</td>
-<td style="text-align:left;">
-rf_26
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 Powerco
 </td>
 <td style="text-align:left;">
@@ -926,10 +420,50 @@ NA
 Powerco
 </td>
 <td style="text-align:left;">
-rf_19
+rf_07
 </td>
 <td style="text-align:left;">
-rf_19
+rf_07
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_08
+</td>
+<td style="text-align:left;">
+rf_08
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_09
+</td>
+<td style="text-align:left;">
+rf_09
 </td>
 <td style="text-align:left;">
 New Plymouth
@@ -986,6 +520,26 @@ NA
 Powerco
 </td>
 <td style="text-align:left;">
+rf_12
+</td>
+<td style="text-align:left;">
+rf_12
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
 rf_13
 </td>
 <td style="text-align:left;">
@@ -1006,210 +560,10 @@ NA
 Powerco
 </td>
 <td style="text-align:left;">
-rf_09
-</td>
-<td style="text-align:left;">
-rf_09
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_07
-</td>
-<td style="text-align:left;">
-rf_07
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_22
-</td>
-<td style="text-align:left;">
-rf_22
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_08
-</td>
-<td style="text-align:left;">
-rf_08
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_18
-</td>
-<td style="text-align:left;">
-rf_18
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_17
-</td>
-<td style="text-align:left;">
-rf_17a
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-Unusual &amp; specialist energy tech configuration. Disconnected 28/03/2016. Re-used.
-</td>
-<td style="text-align:left;">
-2016-03-28
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
 rf_14
 </td>
 <td style="text-align:left;">
 rf_14
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_16
-</td>
-<td style="text-align:left;">
-rf_16
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_21
-</td>
-<td style="text-align:left;">
-rf_21
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_20
-</td>
-<td style="text-align:left;">
-rf_20
-</td>
-<td style="text-align:left;">
-New Plymouth
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Powerco
-</td>
-<td style="text-align:left;">
-rf_27
-</td>
-<td style="text-align:left;">
-rf_27
 </td>
 <td style="text-align:left;">
 New Plymouth
@@ -1246,10 +600,30 @@ Disconnected 15/01/2015. Re-used
 Powerco
 </td>
 <td style="text-align:left;">
-rf_24
+rf_15
 </td>
 <td style="text-align:left;">
-rf_24
+rf_15b
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+Re-user. Then disconnected 02/04/2016
+</td>
+<td style="text-align:left;">
+2016-04-02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_16
+</td>
+<td style="text-align:left;">
+rf_16
 </td>
 <td style="text-align:left;">
 New Plymouth
@@ -1266,19 +640,19 @@ NA
 Powerco
 </td>
 <td style="text-align:left;">
-rf_15
+rf_17
 </td>
 <td style="text-align:left;">
-rf_15b
+rf_17a
 </td>
 <td style="text-align:left;">
 New Plymouth
 </td>
 <td style="text-align:left;">
-Re-user. Then disconnected 02/04/2016
+Unusual &amp; specialist energy tech configuration. Disconnected 28/03/2016. Re-used.
 </td>
 <td style="text-align:left;">
-2016-04-02
+2016-03-28
 </td>
 </tr>
 <tr>
@@ -1301,6 +675,606 @@ Re-user
 NA
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_18
+</td>
+<td style="text-align:left;">
+rf_18
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_19
+</td>
+<td style="text-align:left;">
+rf_19
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_20
+</td>
+<td style="text-align:left;">
+rf_20
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_21
+</td>
+<td style="text-align:left;">
+rf_21
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_22
+</td>
+<td style="text-align:left;">
+rf_22
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_23
+</td>
+<td style="text-align:left;">
+rf_23
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_24
+</td>
+<td style="text-align:left;">
+rf_24
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_25
+</td>
+<td style="text-align:left;">
+rf_25
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_26
+</td>
+<td style="text-align:left;">
+rf_26
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Powerco
+</td>
+<td style="text-align:left;">
+rf_27
+</td>
+<td style="text-align:left;">
+rf_27
+</td>
+<td style="text-align:left;">
+New Plymouth
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_28
+</td>
+<td style="text-align:left;">
+rf_28
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_29
+</td>
+<td style="text-align:left;">
+rf_29
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_30
+</td>
+<td style="text-align:left;">
+rf_30
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_31
+</td>
+<td style="text-align:left;">
+rf_31
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_32
+</td>
+<td style="text-align:left;">
+rf_32
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_33
+</td>
+<td style="text-align:left;">
+rf_33
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_34
+</td>
+<td style="text-align:left;">
+rf_34
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_35
+</td>
+<td style="text-align:left;">
+rf_35
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_36
+</td>
+<td style="text-align:left;">
+rf_36
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_37
+</td>
+<td style="text-align:left;">
+rf_37
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_38
+</td>
+<td style="text-align:left;">
+rf_38
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_39
+</td>
+<td style="text-align:left;">
+rf_39
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_40
+</td>
+<td style="text-align:left;">
+rf_40
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_41
+</td>
+<td style="text-align:left;">
+rf_41
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_42
+</td>
+<td style="text-align:left;">
+rf_42
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_43
+</td>
+<td style="text-align:left;">
+rf_43
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_44
+</td>
+<td style="text-align:left;">
+rf_44
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_45
+</td>
+<td style="text-align:left;">
+rf_45
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_46
+</td>
+<td style="text-align:left;">
+rf_46
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+very large number of circuits
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unison
+</td>
+<td style="text-align:left;">
+rf_47
+</td>
+<td style="text-align:left;">
+rf_47
+</td>
+<td style="text-align:left;">
+Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
 </tbody>
 </table>
 <p>The households labeled ‘NA’ were initial pilot/test households who did not form part of the sample and for whom no survey data is available. They should be excluded from any data analysis.</p>
@@ -1317,7 +1291,7 @@ Figure 4.1: Sample size over time
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 9.34 seconds ( 0.16 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 12.51 seconds ( 0.21 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
