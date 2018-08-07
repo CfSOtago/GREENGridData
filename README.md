@@ -7,13 +7,13 @@ Code to process data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sus
  * Occupant time-use diaries (focused on energy use)
  * Dwelling & appliance surveys
 
-NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
+NB: *None* of the data is held in this [repo](https://github.com/dataknut/nzGREENGridDataR) so *none* of the code here will work unless you also have access to the data. 
 
 ----
 
 ## About
 
-The code in this repo does two things:
+The code in this [repo](https://github.com/dataknut/nzGREENGridDataR) does two things:
 
  * Data processing and reporting:
     - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data). As it does so it creates two check plots for each household: monthly mean power profiles & the number of observations over time
@@ -32,7 +32,7 @@ Guide to folders:
  * includes - .Rmd files use in report generation
  * man - r package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/))
  * R - r code implementing the package functions
- * reports - data quality reports
+ * docs - data quality reports published via [githhub pages](https://dataknut.github.io/nzGREENGridDataR/)
  
 ## Data Access
 
