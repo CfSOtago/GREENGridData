@@ -109,11 +109,11 @@ This report provides an overview of the GREEN Grid project research data. The mo
 
 # Study recruitment
 
-```{r loadSafeHouseholdData}
+```{r loadSafeHouseholdData, include=FALSE}
 hhDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 ```
 
-```{r loadHHgsStat}
+```{r loadHHgsStat, include=FALSE}
 gsStatDT <- data.table::as.data.table(readr::read_csv(paste0(ggrParams$statsLoc, "hhStatsByDate.csv")))
 ```
 
@@ -124,13 +124,13 @@ Table \@ref(tab:sampleTable) shows the number in each sample and the dates from 
 ```{r sampleTable}
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location, sample)]
 
-kable(t, caption = "Sample location")
+kableExtra::kable(t, caption = "Sample location")
 ```
 
-Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the clean grid spy data for the relevant households. Linkage between the survey and grid spy data should always use `newID` to avoid errors.
+Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
 
 ```{r allHhData}
-kable(hhDT[, c("sample", "hhID", "newID", "Location", "notes", "r_stopDate")], caption = "Sample details")
+kable(hhDT[, c("sample", "hhID", "linkID", "Location", "notes", "r_stopDate")], caption = "Sample details")
 ```
 
 The households labeled 'NA' were initial pilot/test households who did not form part of the sample and for whom no survey data is available. They should be excluded from any data analysis.
