@@ -6,7 +6,7 @@ params:
 title: 'NZ GREEN Grid project data processing report'
 subtitle: '1 minute electricity power'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
-date: 'Last run at: 2018-08-07 16:53:57'
+date: 'Last run at: 2018-08-07 16:57:24'
 output:
   html_document:
     code_folding: hide
@@ -477,7 +477,7 @@ If the above plot and table flag errors then further re-naming of the circuit la
 
 
 
-Analysis completed in 84.09 seconds ( 1.4 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
+Analysis completed in 58 seconds ( 0.97 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
 
 # R environment
 
