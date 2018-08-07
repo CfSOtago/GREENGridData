@@ -85,9 +85,9 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggrParams$pubLoc`. 
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggrParams$pubLoc`.
  
-> XX replace with UKDA DOI when available XX
+This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 

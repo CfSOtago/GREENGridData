@@ -40,6 +40,7 @@ nzGREENGridDataR::setup()
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
+             "lubridate", # for year()
              "knitr", # for kable
              "stringr", # for str_wrap for long labels on plots
              "kableExtra" # for extra kable
@@ -76,9 +77,11 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) NZ GREEN Grid project: Research data overview, `r ggrParams$pubLoc`. 
+ * `r ggrParams$Authors` (`r 1900 + as.POSIXlt(Sys.Date())$year`) NZ GREEN Grid project: Research data overview, `r ggrParams$pubLoc`. 
  
 > XX replace with UKDA DOI when available XX
+
+This work is (c) `r lubridate::year(today())` the authors and the University of Southampton.
 
 ## History
 
