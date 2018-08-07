@@ -9,7 +9,6 @@ Code to process data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sus
  * Dwelling & appliance surveys
  * Occupant time-use diaries (focused on energy use)
 
- 
 We have developed a cleaned and _safe_ (i.e. anonymised) data package for archiving and re-use.
 
 ----
