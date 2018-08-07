@@ -274,12 +274,12 @@ As noted in the introduction, two units were re-allocated to new households duri
  * rf_15 - allocated to a new household on 20/1/2015
  * rf_17 - allocated to a new household on 
 
-To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during data processing. The clean data therefore contains data files for:
+To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during [data processing](https://github.com/dataknut/nzGREENGridDataR/issues/3). The clean data therefore contains data files for:
 
  * rf_15a and rf_15b
  * rf_17a and rf_17b
 
-Each cleaned safe data file contains both the original hhID (i.e. the gird spy ID) and a new `linkID` which has the sae value as hhID excpet in the case of these four files. the `linkID` variable should be used to link the grid spy data to the survey or other household level data in the data package.
+Each cleaned safe data file contains both the original hhID (i.e. the gird spy ID) and a new `linkID` which has the same value as hhID except in the case of these four files. The `linkID` variable should always be used to link the grid spy data to the survey or other household level data in the data package.
 
 In all subsequent analysis we use `linkID` to give results for each household.
 
@@ -290,57 +290,67 @@ The following plots show the number of observations per day per household. In th
  * dates before 2014 or in to the future. These may indicate:
     - date conversion errors;
  * more than 1440 observations per day. These may indicate:
-    - duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_observationsRatioPlot.png plots to be found in the repo [checkPlots](https://github.com/dataknut/nzGREENGridDataR/tree/master/checkPlots) folder;
+    - duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_observationsRatioPlot.png plots to be found in the data package _checkPlots_ folder;
     - observations from files that are in the 'wrong' rf_XX folder and so are included in the 'wrong' household as 'duplicate' time stamps.
 
 If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it's consolidated household dataset (a _within household absolute duplicate_ check).
 
-```{r loadedFilesObsPlots}
+Note that rf_15a is not present as no usable data was obtained from this household.
+
+```{r loadHHStat, include=FALSE}
 hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
+```
+
+```{r obsPlots, fig.height=6}
 myCaption <- paste0(myCaption,
                         "\nOnly files of size > ", 
-                        gSpyParams$gSpyFileThreshold, " bytes loaded",
-                    "\nNB: number of observations is a function of the number of circuits monitored",
-                    "\n (see above) as well as missing data!")
+                        gSpyParams$gSpyFileThreshold, " bytes loaded")
   
 # tile plot ----
-ggplot2::ggplot(hhStatDT, aes( x = date, y = linkID, 
-                               fill = nObs)) +
+obsPlot1 <- ggplot2::ggplot(hhStatDT, aes( x = date, y = linkID, 
+                               fill = nObs/nCircuits)) + # divide by the number of circuits
   geom_tile() +
   scale_fill_gradient(low = "red", high = "green") +
   scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
   theme(axis.text.x = element_text(angle = 90, 
                                    vjust = 0.5,
                                    hjust = 0.5)) + 
-  labs(title = "N observations per household per day for all loaded grid spy data",
+  labs(title = "N observations per household per circuit per day for all loaded grid spy data",
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsTilePlot.png"))
+obsPlot1
+
 
 # point plot ----
-ggplot2::ggplot(hhStatDT, aes( x = date, 
-                               y = nObs, 
+obsPlot2 <-ggplot2::ggplot(hhStatDT, aes( x = date, 
+                               y = nObs/nCircuits, 
                                colour = linkID)) +
   geom_point() +
   scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, 
                                    hjust = 0.5)) + 
-  labs(title = "N observations per household per day for all loaded grid spy data",
+  labs(title = "N observations per household per circuit per day for all loaded grid spy data",
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"))
+obsPlot2
 ```
 
-The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
+```{r saveObsPlots, include=FALSE}
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsTilePlot.png"), obsPlot1)
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"), obsPlot2)
+```
+
+
+The following table shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
 
  * dates before 2014 or in to the future (indicates date conversion errors);
  * less than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
  * non-integer counts of circuits as it suggests some circuit label errors or changes to the number of circuits monitored over time;
  * NA in any row (indicates date conversion errors).
  
- If we do see any of these then we still have data cleaning work to do!
+If we do see any of these then we still have data cleaning work to do!
 
 ```{r summaryTable}
 # Stats table (so we can pick out the dateTime errors)
@@ -355,9 +365,9 @@ knitr::kable(caption = "Summary observation stats by hhID", t)
 ```
 
 
-Finally we show the total number of households which we think are still sending data.
+Finally we plot the total number of households for whom we have data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#4_data_collection_duration) coded by sample.
 
-```{r liveDataHouseholds}
+```{r attritionPlot}
 plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]
 
 # point plot ----
@@ -371,11 +381,12 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
        caption = myCaption
        
   )
-ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
-
 ```
 
-
+```{r saveAttritionPlot, include=FALSE}
+# own chunk to hide warning
+ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
+```
 
 ## Circuit label checks
 
@@ -391,9 +402,9 @@ Some or all of these may be true at any given time.
 dt <- hhStatDT[!is.na(circuitLabels), 
                      .(nFiles = .N,
                        nObs = sum(nObs),
-                       meanDailyPower = mean(meanPower),
-                       minDailyPower = min(minPowerW),
-                       axDailyPower = max(minPowerW)),
+                       meanDailyPowerkW = round(mean(meanPower)/1000,2),
+                       minDailyPowerkW = round(min(minPowerW)/1000,2),
+                       maxDailyPowerkW = round(max(maxPowerW)/1000,2)),
                      keyby = .(linkID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
 
 knitr::kable(caption = "Circuit labels list by number of files per household", dt)
@@ -424,6 +435,9 @@ ggplot2::ggplot(dt, aes(y = newx, x = linkID,
                         gSpyParams$gSpyFileThreshold, " bytes loaded")
        
   )
+```
+
+```{r saveLabelPlot, include=FALSE}
 ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileCircuitLabelsPlot.png"))
 ```
 

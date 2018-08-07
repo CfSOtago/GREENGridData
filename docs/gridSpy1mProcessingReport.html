@@ -239,7 +239,7 @@ div.tocify {
 <h1 class="title toc-ignore">NZ GREEN Grid project data processing report</h1>
 <h3 class="subtitle"><em>1 minute electricity power</em></h3>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-07 13:53:34</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-07 14:54:03</em></h4>
 
 </div>
 
@@ -328,14 +328,14 @@ div.tocify {
 <p>Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (2018-08-02 18:03:19).</p>
 <p>To date we have 25,148 files with 44 unique grid spy IDs</p>
 <p>However a large number of files (14,929 or 59%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as ‘to be ignored’.</p>
-<p>In addition two of the grid spy units <a href="ggOverviewReport.html#3_study_recruitment">were re-used in new households</a> following withdrawl of the original participants. The grid spy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section @ref(cleanData) below.</p>
+<p>In addition two of the grid spy units <a href="ggOverviewReport.html#3_study_recruitment">were re-used in new households</a> following withdrawl of the original participants. The grid spy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section @ref(reallocation) below.</p>
 <div id="input-data-file-quality-checks" class="section level2">
 <h2><span class="header-section-number">3.1</span> Input data file quality checks</h2>
 <p>The following chart shows the distribution of the file sizes of <em>all</em> files over time by grid spy ID. Note that white indicates the presence of small files which may not contain observations.</p>
 <p><img src="gridSpy1mProcessingReport_files/figure-html/allFileSizesPlot-1.png" /><!-- --></p>
 <pre><code>## Saving 7 x 5 in image</code></pre>
 <p>As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.</p>
-<p>The following chart shows the same analysis but <em>excludes</em> files which do not meet the file sieze threshold and which we therefore assume do not contain data.</p>
+<p>The following chart shows the same analysis but <em>excludes</em> files which do not meet the file size threshold and which we therefore assume do not contain data.</p>
 <p><img src="gridSpy1mProcessingReport_files/figure-html/loadedFileSizesPlot-1.png" /><!-- --></p>
 <pre><code>## Saving 7 x 5 in image</code></pre>
 <p>As we can see this removes a large number of the autmatically downloaded files.</p>
@@ -638,7 +638,7 @@ knitr::kable(caption = cap, head(aList, 10))</code></pre>
 <p>Results to note:</p>
 <ul>
 <li>The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data.</li>
-<li>There are a range of dateTme formats - these are fixed in the data cleaning process</li>
+<li>There are a range of dateTme formats - these are fixed in the data cleaning process and all datesTimes have been set to UTC except where explicitly labelled. Note that R will load UTC data with the local timezone so if you re-use the data in New Zealand this will be correct. If you re-use the data outside New Zealand you will need to set the timezone accordingly or you will get thoroughly confused. We are not great fans of <a href="https://github.com/dataknut/nzGREENGridDataR/issues/2">timezones</a>.</li>
 <li>Following detailed checks there are now 0 files which are still labelled as having ambiguous dates;</li>
 </ul>
 </div>
@@ -983,19 +983,19 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 </tr>
 </tbody>
 </table>
-<div id="recoding-re-allocated-grid-spy-units" class="section level2">
+<div id="reallocation" class="section level2">
 <h2><span class="header-section-number">4.1</span> Recoding re-allocated grid spy units</h2>
 <p>As noted in the introduction, two units were re-allocated to new households during the study. These were:</p>
 <ul>
 <li>rf_15 - allocated to a new household on 20/1/2015</li>
 <li>rf_17 - allocated to a new household on</li>
 </ul>
-<p>To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the approrpiate dates during data processing. The clean data therefore contains data files for:</p>
+<p>To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during <a href="https://github.com/dataknut/nzGREENGridDataR/issues/3">data processing</a>. The clean data therefore contains data files for:</p>
 <ul>
 <li>rf_15a and rf_15b</li>
 <li>rf_17a and rf_17b</li>
 </ul>
-<p>Each cleaned safe data file contains both the original hhID (i.e. the gird spy ID) and a new <code>linkID</code> which has the sae value as hhID excpet in the case of these four files. the <code>linkID</code> variable should be used to link the grid spy data to the survey or other household level data in the data package.</p>
+<p>Each cleaned safe data file contains both the original hhID (i.e. the gird spy ID) and a new <code>linkID</code> which has the same value as hhID except in the case of these four files. The <code>linkID</code> variable should always be used to link the grid spy data to the survey or other household level data in the data package.</p>
 <p>In all subsequent analysis we use <code>linkID</code> to give results for each household.</p>
 </div>
 <div id="observations" class="section level2">
@@ -1008,28 +1008,14 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 </ul></li>
 <li>more than 1440 observations per day. These may indicate:
 <ul>
-<li>duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_observationsRatioPlot.png plots to be found in the repo <a href="https://github.com/dataknut/nzGREENGridDataR/tree/master/checkPlots">checkPlots</a> folder;</li>
+<li>duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_observationsRatioPlot.png plots to be found in the data package <em>checkPlots</em> folder;</li>
 <li>observations from files that are in the ‘wrong’ rf_XX folder and so are included in the ‘wrong’ household as ‘duplicate’ time stamps.</li>
 </ul></li>
 </ul>
 <p>If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it’s consolidated household dataset (a <em>within household absolute duplicate</em> check).</p>
-<pre><code>## Parsed with column specification:
-## cols(
-##   linkID = col_character(),
-##   date = col_date(format = &quot;&quot;),
-##   nObs = col_integer(),
-##   meanPower = col_double(),
-##   sdPowerW = col_double(),
-##   minPowerW = col_double(),
-##   maxPowerW = col_double(),
-##   circuitLabels = col_character(),
-##   nCircuits = col_integer()
-## )</code></pre>
-<p><img src="gridSpy1mProcessingReport_files/figure-html/loadedFilesObsPlots-1.png" /><!-- --></p>
-<pre><code>## Saving 7 x 5 in image</code></pre>
-<p><img src="gridSpy1mProcessingReport_files/figure-html/loadedFilesObsPlots-2.png" /><!-- --></p>
-<pre><code>## Saving 7 x 5 in image</code></pre>
-<p>The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:</p>
+<p>Note that rf_15a is not present as no usable data was obtained from this household.</p>
+<p><img src="gridSpy1mProcessingReport_files/figure-html/obsPlots-1.png" /><!-- --><img src="gridSpy1mProcessingReport_files/figure-html/obsPlots-2.png" /><!-- --></p>
+<p>The following table shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:</p>
 <ul>
 <li>dates before 2014 or in to the future (indicates date conversion errors);</li>
 <li>less than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);</li>
@@ -1411,9 +1397,8 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 </tr>
 </tbody>
 </table>
-<p>Finally we show the total number of households which we think are still sending data.</p>
-<p><img src="gridSpy1mProcessingReport_files/figure-html/liveDataHouseholds-1.png" /><!-- --></p>
-<pre><code>## Saving 7 x 5 in image</code></pre>
+<p>Finally we plot the total number of households for whom we have data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the <a href="ggOverviewReport.html#4_data_collection_duration">overall data package summary</a> coded by sample.</p>
+<p><img src="gridSpy1mProcessingReport_files/figure-html/attritionPlot-1.png" /><!-- --></p>
 </div>
 <div id="circuit-label-checks" class="section level2">
 <h2><span class="header-section-number">4.3</span> Circuit label checks</h2>
@@ -1426,13 +1411,13 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 <p>Some or all of these may be true at any given time.</p>
 <table style="width:100%;">
 <colgroup>
-<col width="2%" />
-<col width="82%" />
-<col width="2%" />
+<col width="1%" />
+<col width="80%" />
+<col width="1%" />
 <col width="2%" />
 <col width="4%" />
-<col width="3%" />
-<col width="3%" />
+<col width="4%" />
+<col width="4%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1440,9 +1425,9 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 <th align="left">circuitLabels</th>
 <th align="right">nFiles</th>
 <th align="right">nObs</th>
-<th align="right">meanDailyPower</th>
-<th align="right">minDailyPower</th>
-<th align="right">axDailyPower</th>
+<th align="right">meanDailyPowerkW</th>
+<th align="right">minDailyPowerkW</th>
+<th align="right">maxDailyPowerkW</th>
 </tr>
 </thead>
 <tbody>
@@ -1451,423 +1436,423 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 <td align="left">Kitchen power$1632, Heating$1633, Mains$1634, Lights$1635, Hot water$1636, Range$1637</td>
 <td align="right">594</td>
 <td align="right">5111157</td>
-<td align="right">532.54386</td>
-<td align="right">-66.99</td>
-<td align="right">0.00</td>
+<td align="right">0.53</td>
+<td align="right">-0.07</td>
+<td align="right">13.56</td>
 </tr>
 <tr class="even">
 <td align="left">rf_02</td>
 <td align="left">Fridge$1572, Cooking Bath tile heat$1573, Hot Water$1574, Mains$1575, Heating$1576, Lights$1577</td>
 <td align="right">415</td>
 <td align="right">3487293</td>
-<td align="right">218.10672</td>
-<td align="right">-330.38</td>
-<td align="right">0.00</td>
+<td align="right">0.22</td>
+<td align="right">-0.33</td>
+<td align="right">10.20</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_06</td>
 <td align="left">Lighting$2244, Laundry, Downstairs &amp; Lounge$2245, Kitchen$2246, Oven &amp; Hob$2247, Hot Water - Controlled$2248, Incomer - Uncontrolled$2249</td>
 <td align="right">1328</td>
 <td align="right">11411167</td>
-<td align="right">236.96024</td>
-<td align="right">-1436.21</td>
-<td align="right">0.00</td>
+<td align="right">0.24</td>
+<td align="right">-1.44</td>
+<td align="right">8.95</td>
 </tr>
 <tr class="even">
 <td align="left">rf_07</td>
 <td align="left">Microwave$2721, Kitchen Appliances &amp; Laundry$2722, Workshop$2723, Oven$2724, Incomer 2 - Uncontrolled$2725, Incomer 1 - Uncontrolled$2726</td>
 <td align="right">1425</td>
 <td align="right">12061885</td>
-<td align="right">161.47376</td>
-<td align="right">-827.47</td>
-<td align="right">0.00</td>
+<td align="right">0.16</td>
+<td align="right">-0.83</td>
+<td align="right">7.12</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_08</td>
 <td align="left">Kitchen$2089, Laundry &amp; 2nd Fridge Freezer$2090, Oven &amp; Hob$2091, Heat Pump$2092, Incomer - Uncontrolled$2093, Hot Water - Controlled$2094</td>
 <td align="right">1083</td>
 <td align="right">9289503</td>
-<td align="right">240.63183</td>
+<td align="right">0.24</td>
 <td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">11.66</td>
 </tr>
 <tr class="even">
 <td align="left">rf_09</td>
 <td align="left">Kitchen Appliances$2727, Lounge, Dining &amp; Bedrooms$2728, Incomer 1 - Uncont - Inc Hob$2729, Incomer 2 - Uncont - Inc Oven$2730, Heat Pump &amp; Bedroom 2$2731, Laundry$2732</td>
 <td align="right">368</td>
 <td align="right">3167835</td>
-<td align="right">183.83230</td>
-<td align="right">-41.00</td>
-<td align="right">0.00</td>
+<td align="right">0.18</td>
+<td align="right">-0.04</td>
+<td align="right">5.95</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_10</td>
 <td align="left">Laundry &amp; Garage$2597, Heat Pump$2598, Incomer - All$2599, Oven$2600, Kitchen Appliances$2601, Bedrooms &amp; Lounge$2602</td>
 <td align="right">1268</td>
 <td align="right">10932797</td>
-<td align="right">189.29410</td>
-<td align="right">-373.60</td>
-<td align="right">0.00</td>
+<td align="right">0.19</td>
+<td align="right">-0.37</td>
+<td align="right">9.86</td>
 </tr>
 <tr class="even">
 <td align="left">rf_11</td>
 <td align="left">Incomer - Uncontrolled$2585, Hot Water Cpbd Heater- Cont$2586, Spa - Uncontrolled$2587, Kitchen Appliances &amp; Laundry$2588, Hob$2589, Heat Pump &amp; Lounge$2590</td>
 <td align="right">1481</td>
 <td align="right">12763308</td>
-<td align="right">154.77153</td>
-<td align="right">-3.00</td>
+<td align="right">0.15</td>
 <td align="right">0.00</td>
+<td align="right">10.94</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_12</td>
 <td align="left">Incomer 2 - Uncontrolled$2625, Incomer 1 - Hot Water - Cont$2626, Incomer 3 - Uncontrolled$2627, Laundry, Fridge &amp; Microwave$2628, Oven$2629, Kitchen Appliances &amp; Lounge$2630</td>
 <td align="right">289</td>
 <td align="right">2389215</td>
-<td align="right">179.90953</td>
-<td align="right">-1397.55</td>
-<td align="right">0.00</td>
+<td align="right">0.18</td>
+<td align="right">-1.40</td>
+<td align="right">7.27</td>
 </tr>
 <tr class="even">
 <td align="left">rf_13</td>
 <td align="left">Hot Water - Controlled$2208, Incomer - Uncontrolled$2209, Oven &amp; Hob$2210, Upstairs Heat Pumps$2211, Downstairs (inc 1 Heat Pump)$2212, Kitchen &amp; Laundry$2213</td>
 <td align="right">1516</td>
 <td align="right">13080941</td>
-<td align="right">392.27746</td>
-<td align="right">-3973.34</td>
-<td align="right">0.00</td>
+<td align="right">0.39</td>
+<td align="right">-3.97</td>
+<td align="right">11.58</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_14</td>
 <td align="left">Kitchen Appliances$2715, Power Outlets$2716, Incomer 2 - Uncont inc Oven$2717, Incomer 1 - Uncont inc Stove$2718, Hot Water - Controlled$2719, Laundry &amp; Microwave$2720</td>
 <td align="right">1244</td>
 <td align="right">10700939</td>
-<td align="right">149.75081</td>
-<td align="right">-2355.91</td>
-<td align="right">0.00</td>
+<td align="right">0.15</td>
+<td align="right">-2.36</td>
+<td align="right">6.48</td>
 </tr>
 <tr class="even">
 <td align="left">rf_15b</td>
 <td align="left">Laundry &amp; Kitchen Appliances$3951, Hot Water$3952, Oven$3953, Hob$3954, Incomer 2$3955, Incomer 1$3956</td>
 <td align="right">276</td>
 <td align="right">2345250</td>
-<td align="right">328.42360</td>
-<td align="right">-1162.00</td>
-<td align="right">0.00</td>
+<td align="right">0.33</td>
+<td align="right">-1.16</td>
+<td align="right">8.12</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_16</td>
 <td align="left">Hot Water - Controlled$2679, Incomer 2 - Uncont inc Stove$2680, Incomer 1 - Uncont inc Oven$2681, Microwave &amp; Breadmaker$2682, Hallway &amp; Washing Machine$2683, Kitchen Appliances &amp; Bedrooms$2684</td>
 <td align="right">260</td>
 <td align="right">2234133</td>
-<td align="right">124.27467</td>
-<td align="right">-272.00</td>
-<td align="right">0.00</td>
+<td align="right">0.12</td>
+<td align="right">-0.27</td>
+<td align="right">6.26</td>
 </tr>
 <tr class="even">
 <td align="left">rf_17a</td>
 <td align="left">Kitchen Appliances$2147, Heat Pump$2148, Laundry$2149, Hot Water - Controlled$2150, Incomer 2 - Uncont - inc Oven$2151, Incomer 1 - Uncont - inc Hob$2152</td>
 <td align="right">669</td>
 <td align="right">5760067</td>
-<td align="right">112.48533</td>
-<td align="right">-1129.65</td>
-<td align="right">0.00</td>
+<td align="right">0.11</td>
+<td align="right">-1.13</td>
+<td align="right">8.19</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_17b</td>
 <td align="left">Incomer 1 - inc Top Oven$5620, Incomer 2 - inc Bottom Oven$5621, Lighting 2/2$5622, Lighting 1/2$5623, Laundry &amp; Garage$5624, Kitchen Appliances$5625</td>
 <td align="right">257</td>
 <td align="right">1632900</td>
-<td align="right">87.89162</td>
-<td align="right">-100.05</td>
-<td align="right">0.00</td>
+<td align="right">0.09</td>
+<td align="right">-0.10</td>
+<td align="right">4.64</td>
 </tr>
 <tr class="even">
 <td align="left">rf_18</td>
 <td align="left">Incomer 1 - Uncontrolled$2128, Hot Water - Controlled$2129, Incomer 2 - Uncontrolled$2130, Kitchen Appliances &amp; Ventilati$2131, Oven$2132, Laundry &amp; Hob$2133</td>
 <td align="right">378</td>
 <td align="right">3243033</td>
-<td align="right">334.83644</td>
-<td align="right">-2584.09</td>
-<td align="right">0.00</td>
+<td align="right">0.33</td>
+<td align="right">-2.58</td>
+<td align="right">8.82</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_19</td>
 <td align="left">PV 1$2739, Theatre Heat Pump$2740, Bedroom &amp; Lounge Heat Pumps$2741, PV 2$2733, Laundry$2734, Kitchen Appliances$2735, Oven$2736, Incomer 2 - All$2737, Incomer 1 - All$2738</td>
 <td align="right">1</td>
 <td align="right">5766</td>
-<td align="right">-20.15766</td>
-<td align="right">-2393.57</td>
-<td align="right">-2393.57</td>
+<td align="right">-0.02</td>
+<td align="right">-2.39</td>
+<td align="right">2.06</td>
 </tr>
 <tr class="even">
 <td align="left">rf_19</td>
 <td align="left">PV 2$2733, Laundry$2734, Kitchen Appliances$2735, Oven$2736, Incomer 2 - All$2737, Incomer 1 - All$2738, PV 1$2739, Theatre Heat Pump$2740, Bedroom &amp; Lounge Heat Pumps$2741</td>
 <td align="right">1471</td>
 <td align="right">18977224</td>
-<td align="right">-183.71998</td>
-<td align="right">-4630.10</td>
-<td align="right">0.00</td>
+<td align="right">-0.18</td>
+<td align="right">-4.63</td>
+<td align="right">5.28</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_20</td>
 <td align="left">Heat Pump &amp; Misc$2107, Oven &amp; Kitchen Appliances$2108, Hob$2109, Hot Water - Controlled$2110, Incomer 2 - Uncontrolled$2111, Incomer 1 - Uncontrolled$2112</td>
 <td align="right">379</td>
 <td align="right">3260738</td>
-<td align="right">212.38587</td>
-<td align="right">-3152.76</td>
-<td align="right">0.00</td>
+<td align="right">0.21</td>
+<td align="right">-3.15</td>
+<td align="right">6.21</td>
 </tr>
 <tr class="even">
 <td align="left">rf_21</td>
 <td align="left">Incomer - All$2748, Oven$2749, Heat Pump &amp; Washing Machine$2750, Lower Bedrooms &amp; Bathrooms$2751, Fridge$2752, Kitchen Appliances &amp; Garage$2753</td>
 <td align="right">704</td>
 <td align="right">6061797</td>
-<td align="right">138.48066</td>
-<td align="right">-30.28</td>
-<td align="right">0.00</td>
+<td align="right">0.14</td>
+<td align="right">-0.03</td>
+<td align="right">7.99</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_22</td>
 <td align="left">Lighting$2232, Ventilation &amp; Lounge Power$2233, Kitchen &amp; Laundry$2234, Oven$2235, Hot Water - Controlled$2236, Incomer - Uncontrolled$2237</td>
 <td align="right">1314</td>
 <td align="right">11312684</td>
-<td align="right">370.12795</td>
-<td align="right">-1429.57</td>
-<td align="right">0.00</td>
+<td align="right">0.37</td>
+<td align="right">-1.43</td>
+<td align="right">15.50</td>
 </tr>
 <tr class="even">
 <td align="left">rf_23</td>
 <td align="left">Spa (HEMS)$2080, Hot Water - Controlled (HEMS)$2081, Incomer - Uncontrolled$2082, PV &amp; Storage$2083, Kitchen, Laundry &amp; Ventilation$2084, Oven$2085</td>
 <td align="right">1525</td>
 <td align="right">13086959</td>
-<td align="right">255.58300</td>
-<td align="right">-2122.52</td>
-<td align="right">0.00</td>
+<td align="right">0.26</td>
+<td align="right">-2.12</td>
+<td align="right">11.02</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_24</td>
 <td align="left">Incomer - Uncontrolled$2101, Hot Water - Controlled$2102, Oven &amp; Hob$2103, Kitchen$2104, Laundry, Fridge &amp; Freezer$2105, PV$2106</td>
 <td align="right">1469</td>
 <td align="right">12645693</td>
-<td align="right">-89.01397</td>
-<td align="right">-4945.85</td>
-<td align="right">0.00</td>
+<td align="right">-0.09</td>
+<td align="right">-4.95</td>
+<td align="right">6.93</td>
 </tr>
 <tr class="even">
 <td align="left">rf_25</td>
 <td align="left">Heat Pump$2758, Hob &amp; Kitchen Appliances$2759, Oven$2760, Hot Water - Controlled$2761, Incomer 2 - Uncontrolled $2762, Incomer 1 - Uncontrolled $2763</td>
 <td align="right">507</td>
 <td align="right">4237240</td>
-<td align="right">269.33194</td>
-<td align="right">-44.00</td>
-<td align="right">0.00</td>
+<td align="right">0.27</td>
+<td align="right">-0.04</td>
+<td align="right">7.14</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_26</td>
 <td align="left">Incomer 1 - All$2703, Incomer 2 - All$2704, Oven$2705, Kitchen Appliances$2706, Laundry, Sauna &amp; 2nd Fridge$2707, Spa$2708</td>
 <td align="right">1369</td>
 <td align="right">11632001</td>
-<td align="right">207.74653</td>
-<td align="right">-1274.04</td>
-<td align="right">0.00</td>
+<td align="right">0.21</td>
+<td align="right">-1.27</td>
+<td align="right">30.82</td>
 </tr>
 <tr class="even">
 <td align="left">rf_27</td>
 <td align="left">Incomer - Uncontrolled$2824, Hot Water - Controlled$2825, Heat Pump$2826, Oven &amp; Oven Wall Appliances$2827, Bed 2, 2nd Fridge$2828, Kitchen, Laundry &amp; Beds 1&amp;3$2829</td>
 <td align="right">637</td>
 <td align="right">5452235</td>
-<td align="right">286.30427</td>
-<td align="right">-364.00</td>
-<td align="right">0.00</td>
+<td align="right">0.29</td>
+<td align="right">-0.36</td>
+<td align="right">27.76</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_28</td>
 <td align="left">Kitchen Appliances$4216, Laundry$4217, Lighting$4218, Heat Pump$4219, PV &amp; Garage$4220, Incomer - All$4221</td>
 <td align="right">61</td>
 <td align="right">518062</td>
-<td align="right">-74.18789</td>
-<td align="right">-3568.07</td>
-<td align="right">-318.39</td>
+<td align="right">-0.07</td>
+<td align="right">-3.57</td>
+<td align="right">7.96</td>
 </tr>
 <tr class="even">
 <td align="left">rf_29</td>
 <td align="left">Incomer - Uncontrolled$4181, Oven$4182, Lighting$4183, Hot Water - Controlled$4184, Laundry$4185, Heat Pump &amp; Kitchen Appliances$4186</td>
 <td align="right">1217</td>
 <td align="right">10498747</td>
-<td align="right">385.73982</td>
-<td align="right">-19.94</td>
-<td align="right">0.00</td>
+<td align="right">0.39</td>
+<td align="right">-0.02</td>
+<td align="right">8.89</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_30</td>
 <td align="left">Kitchen Appliances$4234, Laundry &amp; Kitchen$4235, Lighting$4236, Oven &amp; Hobb$4237, Hot Water - Controlled$4238, Incomer - All$4239</td>
 <td align="right">519</td>
 <td align="right">4462859</td>
-<td align="right">229.70583</td>
-<td align="right">-24.23</td>
-<td align="right">0.00</td>
+<td align="right">0.23</td>
+<td align="right">-0.02</td>
+<td align="right">8.71</td>
 </tr>
 <tr class="even">
 <td align="left">rf_31</td>
 <td align="left">Incomer - All$4199, Hot Water - Controlled$4200, Kitchen Appliances$4201, Laundry$4202, Lighting$4203, Heat Pump$4204</td>
 <td align="right">1224</td>
 <td align="right">10561695</td>
-<td align="right">175.96708</td>
+<td align="right">0.18</td>
 <td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">10.55</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_32</td>
 <td align="left">Incomer - All$4193, Laundry$4194, Kitchen Appliances$4195, Heat Pump$4196, Lighting$4197, Hot Water - Controlled$4198</td>
 <td align="right">377</td>
 <td align="right">3246891</td>
-<td align="right">195.13030</td>
+<td align="right">0.20</td>
 <td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">8.27</td>
 </tr>
 <tr class="even">
 <td align="left">rf_33</td>
 <td align="left">Laundry &amp; Teenagers Bedroom$4139, Kitchen Appliances &amp; Heat Pump$4140, Oven, Hob &amp; Microwave$4141, Lighting$4142, Incomer - Uncontrolled$4143, Hot Water - Controlled$4144</td>
 <td align="right">1117</td>
 <td align="right">9608753</td>
-<td align="right">201.06130</td>
+<td align="right">0.20</td>
 <td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">9.53</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_34</td>
 <td align="left">Lighting$4222, Heat Pump$4223, Hot Water - Uncontrolled$4224, Incomer - All$4225, Kitchen Appliances$4226, Laundry &amp; Garage Freezer$4227</td>
 <td align="right">511</td>
 <td align="right">4383672</td>
-<td align="right">345.45266</td>
-<td align="right">-399.00</td>
-<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">-0.40</td>
+<td align="right">13.04</td>
 </tr>
 <tr class="even">
 <td align="left">rf_35</td>
 <td align="left">Kitchen Appliances$4121, Laundry, Garage Fridge Freezer$4122, Lighting$4123, Heat Pump$4124, Hot Water - Uncontrolled$4125, Incomer - Uncontrolled$4126</td>
 <td align="right">547</td>
 <td align="right">4692059</td>
-<td align="right">281.94608</td>
-<td align="right">-989.00</td>
-<td align="right">0.00</td>
+<td align="right">0.28</td>
+<td align="right">-0.99</td>
+<td align="right">7.62</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_36</td>
 <td align="left">Kitchen Appliances$4145, Washing Machine$4146, Hot Water - Uncontrolled$4147, Incomer - All$4148, Lighting$4149, Heat Pump$4150</td>
 <td align="right">1128</td>
 <td align="right">9634326</td>
-<td align="right">220.42690</td>
-<td align="right">-25.64</td>
-<td align="right">0.00</td>
+<td align="right">0.22</td>
+<td align="right">-0.03</td>
+<td align="right">14.83</td>
 </tr>
 <tr class="even">
 <td align="left">rf_37</td>
 <td align="left">Lighting$4133, Heat Pump$4134, Hot Water - Controlled$4135, Incomer -Uncontrolled$4136, Kitchen Appliances$4137, Laundry &amp; Fridge Freezer$4138</td>
 <td align="right">1226</td>
 <td align="right">10580628</td>
-<td align="right">141.31126</td>
-<td align="right">-62.83</td>
-<td align="right">0.00</td>
+<td align="right">0.14</td>
+<td align="right">-0.06</td>
+<td align="right">6.68</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_38</td>
 <td align="left">Heat Pump$4175, Lighting$4176, Incomer - Uncontrolled$4177, Hot Water - Controlled$4178, Kitchen, Dining &amp; Office$4179, Laundry, Lounge, Garage, Bed$4180</td>
 <td align="right">621</td>
 <td align="right">5319113</td>
-<td align="right">263.69083</td>
-<td align="right">-179.00</td>
-<td align="right">0.00</td>
+<td align="right">0.26</td>
+<td align="right">-0.18</td>
+<td align="right">6.68</td>
 </tr>
 <tr class="even">
 <td align="left">rf_39</td>
 <td align="left">Kitchen Appliances$4244, Lighting &amp; 2 Towel Rail$4245, Oven$4246, Hot Water (2 elements)$4247, Incomer - Uncontrolled$4248</td>
 <td align="right">1072</td>
 <td align="right">7686876</td>
-<td align="right">487.88267</td>
-<td align="right">-1110.00</td>
-<td align="right">0.00</td>
+<td align="right">0.49</td>
+<td align="right">-1.11</td>
+<td align="right">12.48</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_40</td>
 <td align="left">Kitchen Appliances$4163, Laundry$4164, Lighting$4165, Heat Pump (x2) &amp; Lounge Power$4166, Hot Water - Controlled$4167, Incomer - Uncontrolled$4168</td>
 <td align="right">243</td>
 <td align="right">2089674</td>
-<td align="right">303.75124</td>
-<td align="right">-586.00</td>
-<td align="right">0.00</td>
+<td align="right">0.30</td>
+<td align="right">-0.59</td>
+<td align="right">10.70</td>
 </tr>
 <tr class="even">
 <td align="left">rf_41</td>
 <td align="left">Kitchen Appliances$4187, Laundry$4188, Lighting$4189, Heat Pump$4190, Oven$4191, Incomer - All$4192</td>
 <td align="right">968</td>
 <td align="right">8238759</td>
-<td align="right">281.22732</td>
+<td align="right">0.28</td>
 <td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">11.87</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_42</td>
 <td align="left">Kitchen Appliances$4127, Laundry &amp; Freezer$4128, Lighting (inc heat lamps)$4129, Heat Pump$4130, Hot Water - Uncontrolled$4131, Incomer - All$4132</td>
 <td align="right">686</td>
 <td align="right">5851654</td>
-<td align="right">385.06874</td>
-<td align="right">-63.00</td>
-<td align="right">0.00</td>
+<td align="right">0.39</td>
+<td align="right">-0.06</td>
+<td align="right">12.38</td>
 </tr>
 <tr class="even">
 <td align="left">rf_43</td>
 <td align="left">Kitchen Appliances$4210, Heat Pump$4211, Lighting$4212, Incomer - All$4213, Oven$4214, Laundry, Garage &amp; Guest Bed$4215</td>
 <td align="right">207</td>
 <td align="right">1777241</td>
-<td align="right">180.08940</td>
-<td align="right">-131.10</td>
-<td align="right">0.00</td>
+<td align="right">0.18</td>
+<td align="right">-0.13</td>
+<td align="right">6.69</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_44</td>
 <td align="left">Kitchen Appliances$4151, Laundry $4152, Lighting$4153, Heat Pump$4154, Hot Water - Controlled$4155, Incomer - Uncontrolled$4156</td>
 <td align="right">1225</td>
 <td align="right">10572377</td>
-<td align="right">238.29624</td>
-<td align="right">-17.57</td>
-<td align="right">0.00</td>
+<td align="right">0.24</td>
+<td align="right">-0.02</td>
+<td align="right">9.00</td>
 </tr>
 <tr class="even">
 <td align="left">rf_45</td>
 <td align="left">Incomer - Uncontrolled$4157, Hot Water - Controlled$4158, Lighting$4159, Heat Pump$4160, Kitchen Appliances$4161, Laundry &amp; Garage Fridge$4162</td>
 <td align="right">571</td>
 <td align="right">4917962</td>
-<td align="right">179.88615</td>
-<td align="right">-1.00</td>
+<td align="right">0.18</td>
 <td align="right">0.00</td>
+<td align="right">7.61</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_46</td>
 <td align="left">Laundry &amp; Bedrooms$4228, Kitchen &amp; Bedrooms$4229, Incomer - Uncontrolled$4230, Hot Water - Controlled$4231, Heat Pumps (2x) &amp; Power$4232, Lighting$4233</td>
 <td align="right">23</td>
 <td align="right">180149</td>
-<td align="right">257.39043</td>
+<td align="right">0.26</td>
 <td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">6.69</td>
 </tr>
 <tr class="even">
 <td align="left">rf_46</td>
 <td align="left">Laundry &amp; Bedrooms$4228, Kitchen &amp; Bedrooms$4229, Incomer - Uncontrolled$4230, Hot Water - Controlled$4231, Heat Pumps (2x) &amp; Power$4232, Lighting$4233, Heat Pumps (2x) &amp; Power$4399, Hot Water - Controlled$4400, Incomer - Uncontrolled$4401, Kitchen &amp; Bedrooms$4402, Laundry &amp; Bedrooms$4403, Lighting$4404, Incomer Voltage$4405</td>
 <td align="right">1015</td>
 <td align="right">18922974</td>
-<td align="right">232.90707</td>
-<td align="right">-483.28</td>
-<td align="right">-32.17</td>
+<td align="right">0.23</td>
+<td align="right">-0.48</td>
+<td align="right">10.96</td>
 </tr>
 <tr class="odd">
 <td align="left">rf_47</td>
 <td align="left">Wall Oven$4169, Incomer - All$4170, Heat Pump &amp; 2 x Bathroom Heat$4171, Lighting$4172, Laundry, Garage &amp; 2 Bedrooms$4173, Kitchen Power &amp; Heat, Lounge$4174</td>
 <td align="right">411</td>
 <td align="right">3530065</td>
-<td align="right">122.29116</td>
-<td align="right">-20.90</td>
-<td align="right">0.00</td>
+<td align="right">0.12</td>
+<td align="right">-0.02</td>
+<td align="right">11.17</td>
 </tr>
 </tbody>
 </table>
@@ -1878,13 +1863,12 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 </ul>
 <p>Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets.</p>
 <p><img src="gridSpy1mProcessingReport_files/figure-html/plotCircuitLabelIssuesAsTile-1.png" /><!-- --></p>
-<pre><code>## Saving 7 x 8 in image</code></pre>
 <p>If the above plot and table flag errors then further re-naming of the circuit labels may be necessary.</p>
 </div>
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 55.22 seconds ( 0.92 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 37.6 seconds ( 0.63 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -1917,31 +1901,20 @@ knitr::kable(caption = &quot;Summary of household files to load&quot;, t)</code>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kableExtra_0.9.0       stringr_1.3.1          knitr_1.20            
-## [4] readr_1.1.1            ggplot2_3.0.0          data.table_1.11.4     
-## [7] rmarkdown_1.10         nzGREENGridDataR_0.1.0
+## [1] kableExtra_0.9.0       stringr_1.3.1          knitr_1.20             readr_1.1.1           
+## [5] ggplot2_3.0.0          data.table_1.11.4      rmarkdown_1.10         nzGREENGridDataR_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
-##  [4] reshape2_1.4.3    purrr_0.2.5       lattice_0.20-35  
-##  [7] colorspace_1.3-2  viridisLite_0.3.0 htmltools_0.3.6  
-## [10] yaml_2.2.0        utf8_1.1.4        rlang_0.2.1      
-## [13] pillar_1.3.0      glue_1.3.0        withr_2.1.2      
-## [16] sp_1.3-1          readxl_1.1.0      bindrcpp_0.2.2   
-## [19] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4       
-## [22] munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
-## [25] rvest_0.3.2       RgoogleMaps_1.4.2 mapproj_1.2.6    
-## [28] evaluate_0.11     labeling_0.3      fansi_0.2.3      
-## [31] highr_0.7         proto_1.0.0       Rcpp_0.12.18     
-## [34] geosphere_1.5-7   openssl_1.0.2     scales_0.5.0     
-## [37] backports_1.1.2   rjson_0.2.20      hms_0.4.2        
-## [40] png_0.1-7         digest_0.6.15     stringi_1.2.4    
-## [43] dplyr_0.7.6       grid_3.5.0        rprojroot_1.3-2  
-## [46] cli_1.0.0         tools_3.5.0       magrittr_1.5     
-## [49] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
-## [52] crayon_1.3.4      pkgconfig_2.0.1   xml2_1.2.0       
-## [55] prettyunits_1.0.2 lubridate_1.7.4   httr_1.3.1       
-## [58] assertthat_0.2.0  rstudioapi_0.7    R6_2.2.2         
+##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4  reshape2_1.4.3    purrr_0.2.5       lattice_0.20-35  
+##  [7] colorspace_1.3-2  viridisLite_0.3.0 htmltools_0.3.6   yaml_2.2.0        utf8_1.1.4        rlang_0.2.1      
+## [13] pillar_1.3.0      glue_1.3.0        withr_2.1.2       sp_1.3-1          readxl_1.1.0      bindrcpp_0.2.2   
+## [19] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4        munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
+## [25] rvest_0.3.2       RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.11     labeling_0.3      fansi_0.2.3      
+## [31] highr_0.7         proto_1.0.0       Rcpp_0.12.18      geosphere_1.5-7   openssl_1.0.2     scales_0.5.0     
+## [37] backports_1.1.2   rjson_0.2.20      hms_0.4.2         png_0.1-7         digest_0.6.15     stringi_1.2.4    
+## [43] dplyr_0.7.6       grid_3.5.0        rprojroot_1.3-2   cli_1.0.0         tools_3.5.0       magrittr_1.5     
+## [49] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2      crayon_1.3.4      pkgconfig_2.0.1   xml2_1.2.0       
+## [55] prettyunits_1.0.2 lubridate_1.7.4   httr_1.3.1        assertthat_0.2.0  rstudioapi_0.7    R6_2.2.2         
 ## [61] ggmap_2.6.1       compiler_3.5.0</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
