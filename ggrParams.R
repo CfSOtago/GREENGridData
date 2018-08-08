@@ -10,6 +10,7 @@ ggrParams$gsHHMasterFile <- "~/Syncplicity Folders/Green Grid Project Management
 ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/appliancesSummary.xlsx")
 ggrParams$UnisonShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonShortSurvey_with_house_label.csv")
 ggrParams$UnisonLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonLongSurvey.csv")
+ggrParams$PowercoSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/PowerCo/Household survey results 16.7.14.csv")
 ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/ec2QuestionLabels.xlsx")
 
 # Location of stats
