@@ -3,29 +3,17 @@ title: 'NZ GREEN Grid project: Research data overview'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
 output:
-  bookdown::html_document2:
-    code_folding: hide
-    fig_caption: true
-    number_sections: true
-    self_contained: no
+    bookdown::html_document2:
     toc: true
+    toc_depth: 2
     toc_float: true
-    toc_depth: 2
-  bookdown::pdf_document2:
-    fig_caption: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
-  bookdown::word_document2:
-    fig_caption: yes
-    toc: yes
-    toc_depth: 2
+    number_sections: true
+    fig_caption: true
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
 ```{r knitrSetup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
-options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
 ```
 
 
@@ -124,14 +112,14 @@ hhDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 gsStatDT <- data.table::as.data.table(readr::read_csv(paste0(ggrParams$statsLoc, "hhStatsByDate.csv")))
 ```
 
-The project research sample comprises `r nrow(hhDT)` households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). 
+The project research sample comprises `r nrow(hhDT)` households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies. 
 
 Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances [@stephenson_smart_2017, @jack_minimal_2018, @suomalainen_comparative_2017]. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location [@stephenson_smart_2017].
 
 Table \@ref(tab:sampleTable) shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.
 
 ```{r sampleTable}
-t <- hhDT[, .(nHouseholds = .N), keyby = .(Location, sample)]
+t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 
 kableExtra::kable(t, caption = "Sample location")
 ```
@@ -139,7 +127,7 @@ kableExtra::kable(t, caption = "Sample location")
 Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
 
 ```{r allHhData}
-kable(hhDT[, c("sample", "hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
+kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
 
 ```
 
@@ -154,12 +142,10 @@ Figure \@ref(fig:liveDataHouseholds) shows the total number of households for wh
 setkey(gsStatDT, linkID)
 dt <- merge(gsStatDT, hhDT, allow.cartesian=TRUE)
 
-dt <- dt[, sample := factor(sample, levels = c("Unison","Powerco"))] # re-order for chart
-
-plotDT <- dt[, .(nHH = uniqueN(hhID)), keyby = .(date, sample)]
+plotDT <- dt[, .(nHH = uniqueN(hhID)), keyby = .(date, Location)]
 
 # point plot ----
-myCaption <- ""
+myCaption <- paste0("Source: GREEN Grid Project data ", min(dt$date), " to ", max(dt$date))
 rectAlpha <- 0.3
 vLineAlpha <- 0.8
 vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
@@ -167,7 +153,7 @@ vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-col
 yMin <- min(plotDT$nHH)
 yMax <- 2 * max(plotDT$nHH)
 
-ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = sample)) +
+ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
   geom_col() +
   scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
   theme(axis.text.x = element_text(angle = 90, 

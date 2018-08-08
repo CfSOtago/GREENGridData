@@ -30,7 +30,7 @@ nzGREENGridDataR::setup()
 print(paste0("#-> Done "))
 
 # Load libraries needed in this .r file ----
-localLibs <- c("rmarkdown")
+localLibs <- c("rmarkdown", "bookdown")
 nzGREENGridDataR::loadLibraries(localLibs)
 
 
