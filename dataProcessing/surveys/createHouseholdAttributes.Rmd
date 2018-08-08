@@ -20,6 +20,10 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
+  bookdown::word_document2:
+    fig_caption: yes
+    toc: yes
+    toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
@@ -42,9 +46,10 @@ nzGREENGridDataR::setup() # sets a load of parameters which are then accessible 
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
              "lubridate", # date & time processing
-             "readr", # writing to files
+             "readr", # reading/writing csv files
+             "readxl", # reading xlsx
              "Hmisc", # for describe
-             "knitr" # for kable
+             "kableExtra" # for kable
 )
 # load them
 nzGREENGridDataR::loadLibraries(rmdLibs)
@@ -52,6 +57,7 @@ nzGREENGridDataR::loadLibraries(rmdLibs)
 
 # Local paramaters
 ggrParams$outPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/survey/"
+  
 ```
 
 \newpage
@@ -111,46 +117,176 @@ The data contains a unique household id (`linkID`) which can be used to link it 
 
 # Load data
 
-In this section we load metadata from `r ggrParams$gsHHMasterFile`.
+## Household master dataset
+Table \@ref(tab:loadMasterData) shows the number of households in each area. 
 
-```{r load metadata}
-hhAttributesDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile)
-t <- with(hhAttributesDT, table(Location, useNA = "always"))
-kable(caption = "Sample location", t)
+```{r loadMasterData}
+hhMasterDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
+setkey(hhMasterDT, linkID)
+t <- with(hhMasterDT, table(Location, company, useNA = "always"))
+kableExtra::kable(caption = "Sample location (master file)", t)
 ```
 
-In total we have `r nrow(hhAttributesDT)` households in two sample areas.
+In total we have `r nrow(hhMasterDT)` households in two sample areas.
 
-## Data description
+## Appliance data
 
-```{r summarise metadata}
+Household appliance ownership was recorded during recruitment using a detailed survey. However this data is not readily available for all households at present. Table \@ref(tab:applianceTable) shows the number of households in each area for whom summary appliance data exists. 
+
+```{r loadApplianceData}
+hhAppliancesDT <- data.table::as.data.table(readxl::read_xlsx(ggrParams$ApplianceData))
+```
+
+```{r applianceTable}
+hhAppliancesDT$sample <- NULL # too detailed
+setkey(hhAppliancesDT, linkID)
+t <- with(hhAppliancesDT[hhMasterDT], table(Location, hasApplianceSummary, useNA = "always"))
+kableExtra::kable(caption = "Sample (appliance summary file, NA indicates no data)", t)
+```
+
+The appliances recorded in this summary are shown in Table \@ref(tab:applianceNames).
+
+```{r applianceNames}
+xcols <- c("linkID", "hasApplianceSummary")
+al <- names(hhAppliancesDT[, -..xcols])
+kableExtra::kable(caption = "Appliances recorded", al)
+```
+
+## Household survey data
+
+The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on household energy and transport attitudes/behaviours and usages for the Unison sample only. The long form of the survey was used for some households and the short form for others.
+
+```{r loadEc2Surveys, include=FALSE}
+hhEc2ShortDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonShortSurveyData))
+hhEc2LongDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonLongSurveyData))
+```
+
+Table \@ref(tab:loadEc2Survey) shows the response rates to these surveys.
+
+```{r loadEc2Survey}
+# short ----
+
+keepShortCols <- c("linkID","hasShortSurvey",
+              "StartDate",
+              "Q7",
+              "Q53_1",
+              "Q53_2",
+              "Q53_3",
+              "Q53_4",
+              "Q53_5",
+              "Q53_6",
+              "Q53_7",
+              "Q54_1",
+              "Q54_2",
+              "Q54_3",
+              "Q54_4",
+              "Q54_5",
+              "Q54_6",
+              "Q54_7",
+              "Q57",
+              "Q4",
+              "Q55")
+keephhEc2ShortDT <- hhEc2ShortDT[!is.na(linkID), ..keepShortCols]
+
+# long ----
+keepLongCols <- c("linkID", "hasLongSurvey",
+              "StartDate",
+              "Q5",
+              "Q7",
+              "Q10#1_1_1_TEXT",
+              "Q10#1_1_2_TEXT",
+              "Q10#1_2_1_TEXT",
+              "Q10#1_2_2_TEXT",
+              "Q10#1_3_1_TEXT",
+              "Q10#1_3_2_TEXT",
+              "Q10#1_4_1_TEXT",
+              "Q10#1_4_2_TEXT",
+              "Q10#1_5_1_TEXT",
+              "Q10#1_5_2_TEXT",
+              "Q10#1_6_1_TEXT",
+              "Q10#1_6_2_TEXT",
+              "Q10#1_7_1_TEXT",
+              "Q10#1_7_2_TEXT",
+              "Q10#1_8_1_TEXT",
+              "Q10#1_8_2_TEXT",
+              "Q11_1",
+              "Q14_1",
+              "Q15_1",
+              "Q17_1",
+              "Q18_1",
+              "Q30_1",
+              "Q33_1",
+              "Q53_1",
+              "Q53_2",
+              "Q53_3",
+              "Q53_4",
+              "Q53_5",
+              "Q53_6",
+              "Q53_7",
+              "Q54_1",
+              "Q54_2",
+              "Q54_3",
+              "Q54_4",
+              "Q54_5",
+              "Q54_6",
+              "Q54_7",
+              "Q57",
+              "Q4",
+              "Q55")
+keephhEc2LongDT <- hhEc2LongDT[!is.na(linkID), ..keepLongCols] # no point keeping unknown IDs
+
+setkey(keephhEc2ShortDT, linkID)
+setkey(keephhEc2LongDT, linkID)
+hhEc2CombinedDT <- rbind(keephhEc2LongDT,keephhEc2ShortDT, fill=TRUE)
+
+# check for duplicates
+# nrow(hhEc2CombinedDT)
+# uniqueN(hhEc2CombinedDT$linkID)
+
+# set date ----
+hhEc2CombinedDT <- hhEc2CombinedDT[, r_startDate := lubridate::dmy_hms(StartDate)]
+hhEc2CombinedDT$StartDate <- NULL
+setkey(hhEc2CombinedDT, linkID)
+
+# create combined DT
+hhAttributesDT <- hhEc2CombinedDT[hhAppliancesDT][hhMasterDT]
+
+t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
+kableExtra::kable(caption = "Survey responses (NA indicates no survey)", t)
+```
+
+# Final household attribute data description
+
+Table \@ref(tab:loadEc2Survey) reports the final household attribute variables and their internal distributions. The question labels are found in Table \@ref(tab:loadEc2Labels) below.
+
+```{r summariseHhAttributes}
 Hmisc::describe(hhAttributesDT)
 ```
 
 
 # Household attribute tables
 
-This section reports tables of the key attributes by sample location. Note that NA usually means not known.
+This section reports tables of the key household attributes by sample location. Note that NA usually means not known.
 
 ## Number of adults
 
 ```{r nAdults}
 t <- with(hhAttributesDT, table(nAdults, Location, useNA = "always"))
-knitr::kable(caption = "Number of adults in household by location", t)
+kableExtra::kable(caption = "Number of adults in household by location", t)
 ```
 
 ## Number of teenagers
 
 ```{r nTeens}
 t <- with(hhAttributesDT, table(nTeenagers13_18, Location, useNA = "always"))
-knitr::kable(caption = "Number of teenagers in household by location", t)
+kableExtra::kable(caption = "Number of teenagers in household by location", t)
 ```
 
 ## Number of children
 
 ```{r nChildren}
 t <- with(hhAttributesDT, table(nChildren0_12, Location, useNA = "always"))
-knitr::kable(caption = "Number of children in household by location", t)
+kableExtra::kable(caption = "Number of children in household by location", t)
 ```
 
 ## Notes
@@ -159,7 +295,7 @@ These may have been set for any number of reasons and mean the monitoring data s
 
 ```{r outliers}
 t <- with(hhAttributesDT, table(notes, Location, useNA = "always"))
-knitr::kable(caption = "Notes by location", t)
+kableExtra::kable(caption = "Notes by location", t)
 ```
 
 # Summary
@@ -193,7 +329,7 @@ t <- proc.time() - startTime
 elapsed <- t[[3]]
 ```
 
-Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [kableExtra](https://cran.r-project.org/package=kableExtra) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
 
 # R environment
 
@@ -203,7 +339,7 @@ R packages used:
  * data.table - for fast (big) data handling [@data.table]
  * readr - for csv reading/writing [@readr]
  * Hmisc - for describe [@Hmisc]
- * knitr - to create this document & neat tables [@knitr]
+ * kableExtra - to create neat tables [@kableExtra]
  * readxl - reading .xlsx [@readxl]
  * nzGREENGridDataR - for local NZ GREEN Grid project utilities
 
@@ -211,6 +347,15 @@ Session info:
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
+```
+
+# Energy Cultures 2 Long Survey Questions
+Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015] as used in the Unison sample. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [github repo issue](https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest). 
+
+```{r loadEc2Labels}
+ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
+
+kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF)
 ```
 
 # References
