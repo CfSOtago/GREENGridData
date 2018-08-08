@@ -6,6 +6,15 @@ title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: yes
+    number_sections: yes
+    self_contained: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 

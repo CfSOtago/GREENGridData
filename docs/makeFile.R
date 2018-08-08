@@ -45,8 +45,8 @@ rmarkdown::render(input = rmdFile,
 
 # --- Grid spy data report ----
 localData <- 0 # 1 = yes
-title: "NZ GREEN Grid project data processing report"
-subtitle: "1 minute electricity power"
+title <- "NZ GREEN Grid project data processing report"
+subtitle <- "1 minute electricity power"
 rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
