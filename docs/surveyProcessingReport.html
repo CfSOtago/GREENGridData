@@ -124,22 +124,22 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">GREEN Grid Data Processing:</h1>
 <h3 class="subtitle"><em>Household Attributes File</em></h3>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-08 14:24:13</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-08 15:10:17</em></h4>
 
 </div>
 
 
 
 <div id="about" class="section level1">
-<h1>About</h1>
+<h1><span class="header-section-number">1</span> About</h1>
 <div id="report-circulation" class="section level2">
-<h2>Report circulation:</h2>
+<h2><span class="header-section-number">1.1</span> Report circulation:</h2>
 <ul>
 <li>Public - this report is intended to accompany the data release.</li>
 </ul>
 </div>
 <div id="license" class="section level2">
-<h2>License</h2>
+<h2><span class="header-section-number">1.2</span> License</h2>
 <p>This work is made available under the Creative Commons <a href="https://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) License</a>.</p>
 <p>This means you are free to:</p>
 <ul>
@@ -160,7 +160,7 @@ $(document).ready(function () {
 <p>For the avoidance of doubt and explanation of terms please refer to the full <a href="https://creativecommons.org/licenses/by-sa/4.0/">license notice</a> and <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">legal code</a>.</p>
 </div>
 <div id="citation" class="section level2">
-<h2>Citation</h2>
+<h2><span class="header-section-number">1.3</span> Citation</h2>
 <p>If you wish to use any of the material from this report please cite as:</p>
 <ul>
 <li>Anderson, B. (2018) GREEN Grid Data Processing: Household Attributes File, <a href="http://www.otago.ac.nz/centre-sustainability/">Centre for Sustainability</a>, University of Otago: Dunedin.</li>
@@ -168,18 +168,18 @@ $(document).ready(function () {
 <p>This work is (c) 2018 the University of Southampton.</p>
 </div>
 <div id="history" class="section level2">
-<h2>History</h2>
+<h2><span class="header-section-number">1.4</span> History</h2>
 <p>Specific history of this report:</p>
 <ul>
 <li><a href="https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/surveys/createHouseholdAttributes.Rmd" class="uri">https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/surveys/createHouseholdAttributes.Rmd</a></li>
 </ul>
 </div>
 <div id="requirements" class="section level2">
-<h2>Requirements:</h2>
+<h2><span class="header-section-number">1.5</span> Requirements:</h2>
 <p>This report uses the original nz GREEN Grid household survey and meta data.</p>
 </div>
 <div id="support" class="section level2">
-<h2>Support</h2>
+<h2><span class="header-section-number">1.6</span> Support</h2>
 <p>This work was supported by:</p>
 <ul>
 <li>The <a href="https://www.otago.ac.nz/">University of Otago</a>;</li>
@@ -191,7 +191,7 @@ $(document).ready(function () {
 </div>
 </div>
 <div id="introduction" class="section level1">
-<h1>Introduction</h1>
+<h1><span class="header-section-number">2</span> Introduction</h1>
 <p>The NZ GREEN Grid project recruited a sample of <a href="ggOverviewReport.html">c 25 households in each of two regions of New Zealand</a> <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
 <li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">gridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
@@ -207,36 +207,28 @@ $(document).ready(function () {
 <p>The data contains a unique household id (<code>linkID</code>) which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK <a href="http://reshare.ukdataservice.ac.uk/">reshare</a> service.</p>
 </div>
 <div id="load-data" class="section level1">
-<h1>Load data</h1>
+<h1><span class="header-section-number">3</span> Load data</h1>
 <div id="household-master-dataset" class="section level2">
-<h2>Household master dataset</h2>
-<p>Table @ref(tab:loadMasterData) shows the number of households in each area.</p>
+<h2><span class="header-section-number">3.1</span> Household master dataset</h2>
+<p>Table <a href="#tab:loadMasterData"><strong>??</strong></a> shows the number of households in each area.</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left"></th>
-<th align="right">Powerco</th>
-<th align="right">Unison</th>
-<th align="right">NA</th>
+<th align="left">Location</th>
+<th align="right">Freq</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Hawkes Bay</td>
-<td align="right">0</td>
 <td align="right">19</td>
-<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">New Plymouth</td>
 <td align="right">24</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">NA</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -244,8 +236,8 @@ $(document).ready(function () {
 <p>In total we have 43 households in two sample areas.</p>
 </div>
 <div id="appliance-data" class="section level2">
-<h2>Appliance data</h2>
-<p>Household appliance ownership was recorded during recruitment using a detailed survey. However this data is not readily available for all households at present. Table @ref(tab:applianceTable) shows the number of households in each area for whom summary appliance data exists.</p>
+<h2><span class="header-section-number">3.2</span> Appliance data</h2>
+<p>Household appliance ownership was recorded during recruitment using a detailed survey. However this data is not readily available for all households at present. Table <a href="#tab:applianceTable"><strong>??</strong></a> shows the number of households in each area for whom summary appliance data exists.</p>
 <table>
 <thead>
 <tr class="header">
@@ -272,7 +264,7 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<p>The appliances recorded in this summary are shown in Table @ref(tab:applianceNames).</p>
+<p>The appliances recorded in this summary are shown in Table <a href="#tab:applianceNames"><strong>??</strong></a>.</p>
 <table>
 <thead>
 <tr class="header">
@@ -332,9 +324,9 @@ $(document).ready(function () {
 </table>
 </div>
 <div id="household-survey-data" class="section level2">
-<h2>Household survey data</h2>
-<p>The Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span> was used to collect data on household energy and transport attitudes/behaviours and usages for the Unison sample only. The long form of the survey was used for some households and the short form for others.</p>
-<p>Table @ref(tab:loadEc2Survey) shows the response rates to these surveys.</p>
+<h2><span class="header-section-number">3.3</span> Household survey data</h2>
+<p>The Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span> was used to collect data on household energy and transport attitudes/behaviours and usages for one of the regional samples only. The long form of the survey was used for some households and the short form for others.</p>
+<p>Table <a href="#tab:loadEc2Survey"><strong>??</strong></a> shows the response rates to these surveys.</p>
 <table>
 <thead>
 <tr class="header">
@@ -374,11 +366,11 @@ $(document).ready(function () {
 </div>
 </div>
 <div id="final-household-attribute-data-description" class="section level1">
-<h1>Final household attribute data description</h1>
-<p>Table @ref(tab:loadEc2Survey) reports the final household attribute variables and their internal distributions. The question labels are found in Table @ref(tab:loadEc2Labels) below.</p>
+<h1><span class="header-section-number">4</span> Final household attribute data description</h1>
+<p>Table <a href="#tab:loadEc2Survey"><strong>??</strong></a> reports the final household attribute variables and their internal distributions. The question labels are found in Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> below.</p>
 <pre><code>## hhAttributesDT 
 ## 
-##  71  Variables      43  Observations
+##  70  Variables      43  Observations
 ## ---------------------------------------------------------------------------
 ## linkID 
 ##        n  missing distinct 
@@ -898,14 +890,6 @@ $(document).ready(function () {
 ## Frequency    1
 ## Proportion   1
 ## ---------------------------------------------------------------------------
-## company 
-##        n  missing distinct 
-##       43        0        2 
-##                           
-## Value      Powerco  Unison
-## Frequency       24      19
-## Proportion   0.558   0.442
-## ---------------------------------------------------------------------------
 ## hhID 
 ##        n  missing distinct 
 ##       43        0       41 
@@ -967,10 +951,10 @@ $(document).ready(function () {
 ## [1] Other Generation Device</code></pre>
 </div>
 <div id="household-attribute-tables" class="section level1">
-<h1>Household attribute tables</h1>
+<h1><span class="header-section-number">5</span> Household attribute tables</h1>
 <p>This section reports tables of the key household attributes by sample location. Note that NA usually means not known.</p>
 <div id="number-of-adults" class="section level2">
-<h2>Number of adults</h2>
+<h2><span class="header-section-number">5.1</span> Number of adults</h2>
 <table>
 <thead>
 <tr class="header">
@@ -1009,7 +993,7 @@ $(document).ready(function () {
 </table>
 </div>
 <div id="number-of-teenagers" class="section level2">
-<h2>Number of teenagers</h2>
+<h2><span class="header-section-number">5.2</span> Number of teenagers</h2>
 <table>
 <thead>
 <tr class="header">
@@ -1048,7 +1032,7 @@ $(document).ready(function () {
 </table>
 </div>
 <div id="number-of-children" class="section level2">
-<h2>Number of children</h2>
+<h2><span class="header-section-number">5.3</span> Number of children</h2>
 <table>
 <thead>
 <tr class="header">
@@ -1093,7 +1077,7 @@ $(document).ready(function () {
 </table>
 </div>
 <div id="notes" class="section level2">
-<h2>Notes</h2>
+<h2><span class="header-section-number">5.4</span> Notes</h2>
 <p>These may have been set for any number of reasons and mean the monitoring data should be used with caution.</p>
 <table>
 <colgroup>
@@ -1152,7 +1136,7 @@ $(document).ready(function () {
 </div>
 </div>
 <div id="summary" class="section level1">
-<h1>Summary</h1>
+<h1><span class="header-section-number">6</span> Summary</h1>
 <p>The cleaned data for the 43 households has been saved as a .csv file to:</p>
 <ul>
 <li>/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/survey/</li>
@@ -1528,11 +1512,11 @@ $(document).ready(function () {
 </table>
 </div>
 <div id="runtime" class="section level1">
-<h1>Runtime</h1>
-<p>Analysis completed in 2.46 seconds ( 0.04 minutes) using <a href="https://cran.r-project.org/package=kableExtra">kableExtra</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
+<h1><span class="header-section-number">7</span> Runtime</h1>
+<p>Analysis completed in 5.64 seconds ( 0.09 minutes) using <a href="https://cran.r-project.org/package=kableExtra">kableExtra</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
-<h1>R environment</h1>
+<h1><span class="header-section-number">8</span> R environment</h1>
 <p>R packages used:</p>
 <ul>
 <li>base R - for the basics <span class="citation">(R Core Team 2016)</span></li>
@@ -1544,7 +1528,7 @@ $(document).ready(function () {
 <li>nzGREENGridDataR - for local NZ GREEN Grid project utilities</li>
 </ul>
 <p>Session info:</p>
-<pre><code>## R version 3.5.0 (2018-04-23)
+<pre><code>## R version 3.5.1 (2018-07-02)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
 ## Running under: macOS High Sierra 10.13.6
 ## 
@@ -1559,15 +1543,15 @@ $(document).ready(function () {
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] readxl_1.1.0           Hmisc_4.1-1            Formula_1.2-3         
-##  [4] survival_2.42-6        lattice_0.20-35        lubridate_1.7.4       
-##  [7] kableExtra_0.9.0       stringr_1.3.1          knitr_1.20            
-## [10] readr_1.1.1            ggplot2_3.0.0          data.table_1.11.4     
-## [13] rmarkdown_1.10         nzGREENGridDataR_0.1.0
+##  [1] stringr_1.3.1          knitr_1.20             bookdown_0.7          
+##  [4] kableExtra_0.9.0       Hmisc_4.1-1            Formula_1.2-3         
+##  [7] survival_2.42-6        lattice_0.20-35        readxl_1.1.0          
+## [10] readr_1.1.1            lubridate_1.7.4        ggplot2_3.0.0         
+## [13] data.table_1.11.4      rmarkdown_1.10         nzGREENGridDataR_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] httr_1.3.1          maps_3.3.0          viridisLite_0.3.0  
-##  [4] splines_3.5.0       assertthat_0.2.0    sp_1.3-1           
+##  [4] splines_3.5.1       assertthat_0.2.0    sp_1.3-1           
 ##  [7] highr_0.7           latticeExtra_0.6-28 cellranger_1.1.0   
 ## [10] yaml_2.2.0          progress_1.2.0      pillar_1.3.0       
 ## [13] backports_1.1.2     glue_1.3.0          digest_0.6.15      
@@ -1577,24 +1561,23 @@ $(document).ready(function () {
 ## [25] scales_0.5.0        jpeg_0.1-8          openssl_1.0.2      
 ## [28] ggmap_2.6.1         htmlTable_1.12      tibble_1.4.2       
 ## [31] withr_2.1.2         nnet_7.3-12         lazyeval_0.2.1     
-## [34] cli_1.0.0           proto_1.0.0         magrittr_1.5       
-## [37] crayon_1.3.4        evaluate_0.11       fansi_0.2.3        
-## [40] xml2_1.2.0          foreign_0.8-71      tools_3.5.0        
-## [43] prettyunits_1.0.2   hms_0.4.2           geosphere_1.5-7    
-## [46] RgoogleMaps_1.4.2   munsell_0.5.0       cluster_2.0.7-1    
-## [49] bindrcpp_0.2.2      compiler_3.5.0      rlang_0.2.1        
-## [52] grid_3.5.0          rstudioapi_0.7      rjson_0.2.20       
-## [55] htmlwidgets_1.2     labeling_0.3        base64enc_0.1-3    
-## [58] gtable_0.2.0        reshape2_1.4.3      R6_2.2.2           
-## [61] gridExtra_2.3       dplyr_0.7.6         utf8_1.1.4         
-## [64] bindr_0.1.1         rprojroot_1.3-2     nzGREENGrid_0.1.0  
-## [67] stringi_1.2.4       Rcpp_0.12.18        mapproj_1.2.6      
-## [70] rpart_4.1-13        acepack_1.4.1       png_0.1-7          
-## [73] tidyselect_0.2.4</code></pre>
+## [34] proto_1.0.0         magrittr_1.5        crayon_1.3.4       
+## [37] evaluate_0.11       xml2_1.2.0          foreign_0.8-71     
+## [40] tools_3.5.1         prettyunits_1.0.2   hms_0.4.2          
+## [43] geosphere_1.5-7     RgoogleMaps_1.4.2   munsell_0.5.0      
+## [46] cluster_2.0.7-1     bindrcpp_0.2.2      compiler_3.5.1     
+## [49] rlang_0.2.1         grid_3.5.1          rstudioapi_0.7     
+## [52] rjson_0.2.20        htmlwidgets_1.2     labeling_0.3       
+## [55] base64enc_0.1-3     gtable_0.2.0        reshape2_1.4.3     
+## [58] R6_2.2.2            gridExtra_2.3       dplyr_0.7.6        
+## [61] bindr_0.1.1         rprojroot_1.3-2     nzGREENGrid_0.1.0  
+## [64] stringi_1.2.4       Rcpp_0.12.18        mapproj_1.2.6      
+## [67] rpart_4.1-13        acepack_1.4.1       png_0.1-7          
+## [70] tidyselect_0.2.4    xfun_0.3</code></pre>
 </div>
 <div id="energy-cultures-2-long-survey-questions" class="section level1">
-<h1>Energy Cultures 2 Long Survey Questions</h1>
-<p>Table @ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span> as used in the Unison sample. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">github repo issue</a>.</p>
+<h1><span class="header-section-number">9</span> Energy Cultures 2 Long Survey Questions</h1>
+<p>Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span> as used in the Unison sample. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">github repo issue</a>.</p>
 <table>
 <colgroup>
 <col width="4%"></col>

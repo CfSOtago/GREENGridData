@@ -7,24 +7,6 @@ title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
-output:
-  bookdown::html_document2:
-    code_folding: hide
-    fig_caption: true
-    number_sections: true
-    self_contained: no
-    toc: true
-    toc_float: true
-    toc_depth: 2
-  bookdown::pdf_document2:
-    fig_caption: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
-  bookdown::word_document2:
-    fig_caption: yes
-    toc: yes
-    toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
@@ -367,7 +349,7 @@ knitr::kable(caption = "Summary observation stats by hhID", t)
 ```
 
 
-Finally we plot the total number of households for whom we have data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#4_data_collection_duration) coded by sample.
+Finally we plot the total number of households for whom we have data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
 
 ```{r attritionPlot}
 plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]

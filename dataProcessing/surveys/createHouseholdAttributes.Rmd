@@ -6,24 +6,6 @@ title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
-output:
-  bookdown::html_document2:
-    code_folding: hide
-    fig_caption: true
-    number_sections: true
-    self_contained: no
-    toc: true
-    toc_float: true
-    toc_depth: 2
-  bookdown::pdf_document2:
-    fig_caption: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
-  bookdown::word_document2:
-    fig_caption: yes
-    toc: yes
-    toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
@@ -123,7 +105,7 @@ Table \@ref(tab:loadMasterData) shows the number of households in each area.
 ```{r loadMasterData}
 hhMasterDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
 setkey(hhMasterDT, linkID)
-t <- with(hhMasterDT, table(Location, company, useNA = "always"))
+t <- with(hhMasterDT, table(Location, useNA = "always"))
 kableExtra::kable(caption = "Sample location (master file)", t)
 ```
 
@@ -154,7 +136,7 @@ kableExtra::kable(caption = "Appliances recorded", al)
 
 ## Household survey data
 
-The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on household energy and transport attitudes/behaviours and usages for the Unison sample only. The long form of the survey was used for some households and the short form for others.
+The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on household energy and transport attitudes/behaviours and usages for one of the regional samples only. The long form of the survey was used for some households and the short form for others.
 
 ```{r loadEc2Surveys, include=FALSE}
 hhEc2ShortDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonShortSurveyData))
