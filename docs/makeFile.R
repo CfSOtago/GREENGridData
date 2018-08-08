@@ -26,7 +26,6 @@ nzGREENGridDataR::loadLibraries(localLibs)
 
 # --- Overview report ----
 title <- "NZ GREEN Grid project: Research data overview"
-# run the report .Rmd and render to pdf
 rmdFile <- paste0(ggrParams$projLoc, "/docs/ggOverviewReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
@@ -45,11 +44,13 @@ rmarkdown::render(input = rmdFile,
 )
 
 # --- Grid spy data report ----
-localData <- 1
+localData <- 0 # 1 = yes
+title: "NZ GREEN Grid project data processing report"
+subtitle: "1 minute electricity power"
 rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
-                  params = list(localData = localData),
+                  params = list(localData = localData, title = title, subtitle = subtitle),
                   output_file = paste0(ggrParams$projLoc,"/docs/gridSpy1mProcessingReport.html")
 )
 

@@ -19,11 +19,6 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 # Set start time ----
 startTime <- proc.time()
 
-library(nzGREENGridDataR)
-
-# run gg set up
-nzGREENGridDataR::setup() # sets a load of parameters which are then accessible via ggrParams$xxx
-
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs

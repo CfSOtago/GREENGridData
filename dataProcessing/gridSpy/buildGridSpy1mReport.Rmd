@@ -1,8 +1,8 @@
 ---
 params:
   localData: ""
-  title: 'NZ GREEN Grid project data processing report'
-  subtitle: '1 minute electricity power'
+  title: ""
+  subtitle: ""
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
@@ -20,12 +20,6 @@ options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to
 
 # Set start time ----
 startTime <- proc.time()
-
-
-# Load nzGREENGrid package ----
-library(nzGREENGridDataR) # local utilities
-
-nzGREENGridDataR::setup()
 
 # Set grid spy data paths etc from file ----
 source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
