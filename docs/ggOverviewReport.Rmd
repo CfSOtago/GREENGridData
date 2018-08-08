@@ -1,5 +1,7 @@
 ---
-title: 'NZ GREEN Grid project: Research data overview'
+params:
+  title: ""
+title: '`r params$title`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
 output:
@@ -22,12 +24,6 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 # Set start time ----
 startTime <- proc.time()
 
-
-# Load nzGREENGrid package ----
-library(nzGREENGridDataR) # local utilities
-
-nzGREENGridDataR::setup()
-
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
@@ -35,7 +31,7 @@ rmdLibs <- c("data.table", # data munching
              "lubridate", # for year()
              "knitr", # for kable
              "stringr", # for str_wrap for long labels on plots
-             "kableExtra" # for extra kable
+             "knitr" # for kable
 )
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
@@ -116,23 +112,20 @@ The project research sample comprises `r nrow(hhDT)` households who were recruit
 
 Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances [@stephenson_smart_2017, @jack_minimal_2018, @suomalainen_comparative_2017]. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location [@stephenson_smart_2017].
 
-Table \@ref(tab:sampleTable) shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.
+Table \@ref(tab:sampleTable) shows the number in each sample.
 
-```{r sampleTable}
+```{r sampleTable, fig.cap="Sample location"}
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 
-kableExtra::kable(t, caption = "Sample location")
+knitr::kable(t, caption = "Sample location")
 ```
 
 Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
 
-```{r allHhData}
-kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
+```{r allHhData, fig.cap="Sample details"}
+knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
 
 ```
-
-The households labeled 'NA' were initial pilot/test households who did not form part of the sample and for whom no survey data is available. They should be excluded from any data analysis.
-
 
 # Data collection duration
 
