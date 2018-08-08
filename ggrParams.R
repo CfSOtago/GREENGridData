@@ -7,6 +7,11 @@ ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HCS by
 # Location of basic household data
 ggrParams$gsHHMasterFile <- "~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx"
 
+ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/appliancesSummary.xlsx")
+ggrParams$UnisonShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonShortSurvey_with_house_label.csv")
+ggrParams$UnisonLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonLongSurvey.csv")
+ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/ec2QuestionLabels.xlsx")
+
 # Location of stats
 ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "Clean_data/safe/gridSpy/1min/checkStats/")
 
