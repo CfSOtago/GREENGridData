@@ -34,7 +34,7 @@ rmdLibs <- c("data.table", # data munching
              "lubridate", # date & time processing
              "readr", # reading/writing csv files
              "readxl", # reading xlsx
-             "Hmisc", # for describe
+             "skimr", # for skim
              "kableExtra" # for kable
 )
 # load them
@@ -145,12 +145,13 @@ The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on househ
 ```{r loadEc2Surveys, include=FALSE}
 hhEc2ShortDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonShortSurveyData))
 hhEc2LongDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonLongSurveyData))
+hhEc2DT <- data.table::as.data.table(readr::read_csv(ggrParams$PowercoSurveyData))
 ```
 
 Table \@ref(tab:loadEc2Survey) shows the response rates to these surveys.
 
 ```{r loadEc2Survey}
-# short ----
+# Hawkes Bay short ----
 
 keepShortCols <- c("linkID","hasShortSurvey",
               "StartDate",
@@ -175,7 +176,7 @@ keepShortCols <- c("linkID","hasShortSurvey",
               "Q58#2_1")
 keephhEc2ShortDT <- hhEc2ShortDT[!is.na(linkID), ..keepShortCols]
 
-# long ----
+# Hawkes Bay long ----
 keepLongCols <- c("linkID", "hasLongSurvey",
               "StartDate",
               "Q4",
@@ -223,21 +224,45 @@ keepLongCols <- c("linkID", "hasLongSurvey",
               "Q58#2_1")
 keephhEc2LongDT <- hhEc2LongDT[!is.na(linkID), ..keepLongCols] # no point keeping unknown IDs
 
-setkey(keephhEc2ShortDT, linkID)
-setkey(keephhEc2LongDT, linkID)
-hhEc2CombinedDT <- rbind(keephhEc2LongDT,keephhEc2ShortDT, fill=TRUE)
+# New Plymouth sample ----
+keepCols <- c("linkID", "hasShortSurvey",
+              "Q7",
+              "Q10#1_1_1_TEXT",
+              "Q10#1_1_2_TEXT",
+              "Q14_1",
+              "Q15_1",
+              "Q33_1",
+              "Q57",
+              "Q58#2_1")
+
+keephhEc2DT <- hhEc2DT[!is.na(linkID), ..keepLongCols]
+
+# Combine them all using rbind ----
+# As we think the linkIDs are unique - no-one did any survey twice (although there are possible duplicates flagged in linkID)
+
+hhEc2CombinedDT <- rbind(keephhEc2LongDT,keephhEc2ShortDT,keephhEc2DT, fill=TRUE)
+
 
 # check for duplicates
-# nrow(hhEc2CombinedDT)
-# uniqueN(hhEc2CombinedDT$linkID)
+#nrow(hhEc2CombinedDT)
+#data.table::uniqueN(hhEc2CombinedDT$linkID)
 
 # set date ----
 hhEc2CombinedDT <- hhEc2CombinedDT[, surveyStartDate := lubridate::dmy_hms(StartDate)]
 hhEc2CombinedDT$StartDate <- NULL
 setkey(hhEc2CombinedDT, linkID)
 
+# for checking
+idVars <- c("linkID", "hasLongSurvey", "hasShortSurvey")
+idDT <- hhEc2CombinedDT[, ..idVars]
+
 # create combined DT
-hhAttributesDT <- hhEc2CombinedDT[hhAppliancesDT][hhMasterDT]
+hhAttributesDT <- hhEc2CombinedDT[hhMasterDT]
+hhAttributesDT <- hhAppliancesDT[hhAttributesDT] # why do we need to do this in two steps?
+# if we do it all in one step we get NAs in 'hasShortSurvey' if there is no appliance data?
+# for checking
+idVars <- c("linkID", "hasLongSurvey", "hasShortSurvey")
+idDT <- hhAttributesDT[, ..idVars]
 
 t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
 kableExtra::kable(caption = "Survey responses (NA indicates no survey)", t)
@@ -248,7 +273,8 @@ kableExtra::kable(caption = "Survey responses (NA indicates no survey)", t)
 Table \@ref(tab:loadEc2Survey) reports the final household attribute variables and their internal distributions. The question labels are found in Table \@ref(tab:loadEc2Labels) below.
 
 ```{r summariseHhAttributes}
-Hmisc::describe(hhAttributesDT)
+#Hmisc::describe(hhAttributesDT)
+skimr::skim(hhAttributesDT)
 ```
 
 
