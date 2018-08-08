@@ -6,7 +6,7 @@ params:
 title: 'NZ GREEN Grid project data processing report'
 subtitle: '1 minute electricity power'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
-date: 'Last run at: 2018-08-07 16:57:24'
+date: 'Last run at: 2018-08-08 14:11:53'
 output:
   html_document:
     code_folding: hide
@@ -96,7 +96,7 @@ This work was supported by:
 # Introduction
 
 
-The NZ GREEN Grid project recruited a sample of [c 25 households in each of two regions of New Zealand](ggOverviewReport.html). The first sample was recruited in early 2014 and the second in early 2015. Research data includes:
+The NZ GREEN Grid project recruited a sample of [c 25 households in each of two regions of New Zealand](ggOverviewReport.html) [@stephenson_smart_2017]. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:
 
  * 1 minute electricity power (W) data was collected for each dwelling circuit using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - [gridSpy1mProcessingReport](gridSpy1mProcessingReport.html);
  * Dwelling & appliance surveys. See - [surveyProcessingReport](surveyProcessingReport.html);
@@ -477,7 +477,7 @@ If the above plot and table flag errors then further re-naming of the circuit la
 
 
 
-Analysis completed in 58 seconds ( 0.97 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
+Analysis completed in 33.04 seconds ( 0.55 minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.
 
 # R environment
 
@@ -513,11 +513,11 @@ Session info:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] Hmisc_4.1-1            Formula_1.2-3          survival_2.42-6       
-##  [4] lattice_0.20-35        lubridate_1.7.4        kableExtra_0.9.0      
-##  [7] stringr_1.3.1          knitr_1.20             readr_1.1.1           
-## [10] ggplot2_3.0.0          data.table_1.11.4      rmarkdown_1.10        
-## [13] nzGREENGridDataR_0.1.0
+##  [1] readxl_1.1.0           Hmisc_4.1-1            Formula_1.2-3         
+##  [4] survival_2.42-6        lattice_0.20-35        lubridate_1.7.4       
+##  [7] kableExtra_0.9.0       stringr_1.3.1          knitr_1.20            
+## [10] readr_1.1.1            ggplot2_3.0.0          data.table_1.11.4     
+## [13] rmarkdown_1.10         nzGREENGridDataR_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] httr_1.3.1          maps_3.3.0          viridisLite_0.3.0  
@@ -527,25 +527,24 @@ Session info:
 ## [13] backports_1.1.2     glue_1.3.0          digest_0.6.15      
 ## [16] RColorBrewer_1.1-2  checkmate_1.8.5     rvest_0.3.2        
 ## [19] colorspace_1.3-2    htmltools_0.3.6     Matrix_1.2-14      
-## [22] plyr_1.8.4          pkgconfig_2.0.1     bookdown_0.7       
-## [25] purrr_0.2.5         scales_0.5.0        jpeg_0.1-8         
-## [28] openssl_1.0.2       ggmap_2.6.1         htmlTable_1.12     
-## [31] tibble_1.4.2        withr_2.1.2         nnet_7.3-12        
-## [34] lazyeval_0.2.1      cli_1.0.0           proto_1.0.0        
-## [37] magrittr_1.5        crayon_1.3.4        readxl_1.1.0       
-## [40] evaluate_0.11       fansi_0.2.3         xml2_1.2.0         
-## [43] foreign_0.8-71      tools_3.5.0         prettyunits_1.0.2  
-## [46] hms_0.4.2           geosphere_1.5-7     RgoogleMaps_1.4.2  
-## [49] munsell_0.5.0       cluster_2.0.7-1     bindrcpp_0.2.2     
-## [52] compiler_3.5.0      rlang_0.2.1         grid_3.5.0         
-## [55] rstudioapi_0.7      rjson_0.2.20        htmlwidgets_1.2    
-## [58] labeling_0.3        base64enc_0.1-3     gtable_0.2.0       
-## [61] reshape2_1.4.3      R6_2.2.2            gridExtra_2.3      
-## [64] dplyr_0.7.6         utf8_1.1.4          bindr_0.1.1        
-## [67] rprojroot_1.3-2     nzGREENGrid_0.1.0   stringi_1.2.4      
-## [70] Rcpp_0.12.18        mapproj_1.2.6       rpart_4.1-13       
-## [73] acepack_1.4.1       png_0.1-7           tidyselect_0.2.4   
-## [76] xfun_0.3
+## [22] plyr_1.8.4          pkgconfig_2.0.1     purrr_0.2.5        
+## [25] scales_0.5.0        jpeg_0.1-8          openssl_1.0.2      
+## [28] ggmap_2.6.1         htmlTable_1.12      tibble_1.4.2       
+## [31] withr_2.1.2         nnet_7.3-12         lazyeval_0.2.1     
+## [34] cli_1.0.0           proto_1.0.0         magrittr_1.5       
+## [37] crayon_1.3.4        evaluate_0.11       fansi_0.2.3        
+## [40] xml2_1.2.0          foreign_0.8-71      tools_3.5.0        
+## [43] prettyunits_1.0.2   hms_0.4.2           geosphere_1.5-7    
+## [46] RgoogleMaps_1.4.2   munsell_0.5.0       cluster_2.0.7-1    
+## [49] bindrcpp_0.2.2      compiler_3.5.0      rlang_0.2.1        
+## [52] grid_3.5.0          rstudioapi_0.7      rjson_0.2.20       
+## [55] htmlwidgets_1.2     labeling_0.3        base64enc_0.1-3    
+## [58] gtable_0.2.0        reshape2_1.4.3      R6_2.2.2           
+## [61] gridExtra_2.3       dplyr_0.7.6         utf8_1.1.4         
+## [64] bindr_0.1.1         rprojroot_1.3-2     nzGREENGrid_0.1.0  
+## [67] stringi_1.2.4       Rcpp_0.12.18        mapproj_1.2.6      
+## [70] rpart_4.1-13        acepack_1.4.1       png_0.1-7          
+## [73] tidyselect_0.2.4
 ```
 
 # References

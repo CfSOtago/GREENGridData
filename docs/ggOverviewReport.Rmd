@@ -16,6 +16,10 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
+  bookdown::word_document2:
+    fig_caption: yes
+    toc: yes
+    toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
@@ -108,7 +112,7 @@ This report uses:
 ```{r generic sample, child=ggrParams$sampleGeneric}
 ```
  
-This report provides an overview of the GREEN Grid project research data. The most recent version of this report can be found at https://dataknut.github.io/nzGREENGridDataR/.
+This report provides an overview of the GREEN Grid project [@stephenson_smart_2017] research data. The most recent version of this report can be found at https://dataknut.github.io/nzGREENGridDataR/.
 
 # Study recruitment
 
@@ -122,7 +126,7 @@ gsStatDT <- data.table::as.data.table(readr::read_csv(paste0(ggrParams$statsLoc,
 
 The project research sample comprises `r nrow(hhDT)` households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). 
 
-Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.
+Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances [@stephenson_smart_2017, @jack_minimal_2018, @suomalainen_comparative_2017]. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location [@stephenson_smart_2017].
 
 Table \@ref(tab:sampleTable) shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.
 

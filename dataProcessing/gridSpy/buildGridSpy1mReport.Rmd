@@ -8,19 +8,21 @@ subtitle: '`r params$subtitle`'
 author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
 date: 'Last run at: `r Sys.time()`'
 output:
-  html_document:
+  bookdown::html_document2:
     code_folding: hide
     fig_caption: true
-    keep_md: true
     number_sections: true
     self_contained: no
     toc: true
     toc_float: true
     toc_depth: 2
-  pdf_document:
+  bookdown::pdf_document2:
     fig_caption: yes
-    keep_tex: yes
     number_sections: yes
+    toc: yes
+    toc_depth: 2
+  bookdown::word_document2:
+    fig_caption: yes
     toc: yes
     toc_depth: 2
 bibliography: '`r path.expand("~/bibliography.bib")`'

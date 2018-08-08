@@ -238,7 +238,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">NZ GREEN Grid project: Research data overview</h1>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-07 16:51:02</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-08 12:13:33</em></h4>
 
 </div>
 
@@ -313,18 +313,18 @@ div.tocify {
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
-<p>The NZ GREEN Grid project recruited a sample of <a href="ggOverviewReport.html">c 25 households in each of two regions of New Zealand</a>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
+<p>The NZ GREEN Grid project recruited a sample of <a href="ggOverviewReport.html">c 25 households in each of two regions of New Zealand</a> <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
 <li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">gridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
 <li>Dwelling &amp; appliance surveys. See - <a href="surveyProcessingReport.html">surveyProcessingReport</a>;</li>
 <li>Occupant time-use diaries (focused on energy use).</li>
 </ul>
-<p>This report provides an overview of the GREEN Grid project research data. The most recent version of this report can be found at <a href="https://dataknut.github.io/nzGREENGridDataR/" class="uri">https://dataknut.github.io/nzGREENGridDataR/</a>.</p>
+<p>This report provides an overview of the GREEN Grid project <span class="citation">(Stephenson et al. 2017)</span> research data. The most recent version of this report can be found at <a href="https://dataknut.github.io/nzGREENGridDataR/" class="uri">https://dataknut.github.io/nzGREENGridDataR/</a>.</p>
 </div>
 <div id="study-recruitment" class="section level1">
 <h1><span class="header-section-number">3</span> Study recruitment</h1>
 <p>The project research sample comprises 44 households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison).</p>
-<p>Recruitment was via a non-random sampling method and a number of households were intentionally selected for their ‘complex’ electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.</p>
+<p>Recruitment was via a non-random sampling method and a number of households were intentionally selected for their ‘complex’ electricity consumption (and embedded generation) patterns and appliances <span class="citation">(Stephenson et al. 2017, <span class="citation">M. W. Jack et al. (2018)</span>, <span class="citation">K. Suomalainen et al. (2017)</span>)</span>. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location <span class="citation">(Stephenson et al. 2017)</span>.</p>
 <p>Table <a href="#tab:sampleTable">3.1</a> shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.</p>
 <table>
 <caption>
@@ -1292,7 +1292,7 @@ Figure 4.1: Sample size over time
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 26.6 seconds ( 0.44 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 4.41 seconds ( 0.07 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.0 (2018-04-23) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -1364,8 +1364,17 @@ Figure 4.1: Sample size over time
 <div id="ref-lubridate">
 <p>Grolemund, Garrett, and Hadley Wickham. 2011. “Dates and Times Made Easy with lubridate.” <em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="http://www.jstatsoft.org/v40/i03/" class="uri">http://www.jstatsoft.org/v40/i03/</a>.</p>
 </div>
+<div id="ref-jack_minimal_2018">
+<p>Jack, M. W., K. Suomalainen, J. J. W. Dew, and D. Eyers. 2018. “A Minimal Simulation of the Electricity Demand of a Domestic Hot Water Cylinder for Smart Control.” <em>Applied Energy</em> 211: 104–12.</p>
+</div>
 <div id="ref-baseR">
 <p>R Core Team. 2016. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-stephenson_smart_2017">
+<p>Stephenson, Janet, Rebecca Ford, Nirmal-Kumar Nair, Neville Watson, Alan Wood, and Allan Miller. 2017. “Smart Grid Research in New Zealand–A Review from the GREEN Grid Research Programme.” <em>Renewable and Sustainable Energy Reviews</em> 82 (1): 1636–45. <a href="https://doi.org/10.1016/j.rser.2017.07.010" class="uri">https://doi.org/10.1016/j.rser.2017.07.010</a>.</p>
+</div>
+<div id="ref-suomalainen_comparative_2017">
+<p>Suomalainen, Kiti, Michael Jack, David Byers, Rebecca Ford, and Janet Stephenson. 2017. “Comparative Analysis of Monitored and Self-Reported Data on Electricity Use.” In <em>Environment and Electrical Engineering and 2017 IEEE Industrial and Commercial Power Systems Europe (EEEIC/I&amp;CPS Europe), 2017 IEEE International Conference on</em>, 1–4. IEEE.</p>
 </div>
 <div id="ref-ggplot2">
 <p>Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</p>
