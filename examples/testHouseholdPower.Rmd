@@ -8,20 +8,19 @@ subtitle: '`r paste0(params$subtitle, params$hhID)`'
 author: "Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)"
 date: 'Last run at: `r Sys.time()`'
 output:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: yes
+    number_sections: yes
+    self_contained: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
   bookdown::pdf_document2:
     fig_caption: yes
     number_sections: yes
     toc: yes
     toc_depth: 2
-  bookdown::html_document2:
-    code_folding: hide
-    fig_caption: yes
-    keep_md: yes
-    number_sections: yes
-    self_contained: no
-    toc: yes
-    toc_depth: 2
-    toc_float: TRUE
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
@@ -118,7 +117,9 @@ The data used to generate this report is:
 ```{r hhData}
 hhDT <- data.table::as.data.table(readr::read_csv(hhFile)) # load hh data
 
-t <- hhDT[hhID == params$hhID]
+keepCols <- c("linkID","nAdults", "nTeenagers13_18", "Location", "hasLongSurvey", "hasShortSurvey", "hasApplianceSummary")
+
+t <- hhDT[hhID == params$hhID, ..keepCols]
 
 knitr::kable(t, 
              booktabs = TRUE,

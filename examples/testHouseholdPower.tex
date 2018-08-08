@@ -1,0 +1,640 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={NZ GREEN Grid project example:},
+            pdfauthor={Ben Anderson (b.anderson@soton.ac.uk, @dataknut)},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{NZ GREEN Grid project example:}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \subtitle{Testing power demand: rf\_38}
+  \author{Ben Anderson
+(\href{mailto:b.anderson@soton.ac.uk}{\nolinkurl{b.anderson@soton.ac.uk}},
+\texttt{@dataknut})}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{Last run at: 2018-08-08 16:04:26}
+
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\newpage
+
+\section{About}\label{about}
+
+\subsection{Report circulation:}\label{report-circulation}
+
+\begin{itemize}
+\tightlist
+\item
+  Public - this report is intended to accompany the data release.
+\end{itemize}
+
+\subsection{License}\label{license}
+
+This work is made available under the Creative Commons
+\href{https://creativecommons.org/licenses/by-sa/4.0/}{Attribution-ShareAlike
+4.0 International (CC BY-SA 4.0) License}.
+
+This means you are free to:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Share} --- copy and redistribute the material in any medium or
+  format
+\item
+  \emph{Adapt} --- remix, transform, and build upon the material for any
+  purpose, even commercially.
+\end{itemize}
+
+Under the following terms:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Attribution} --- You must give appropriate credit, provide a
+  link to the license, and indicate if changes were made. You may do so
+  in any reasonable manner, but not in any way that suggests the
+  licensor endorses you or your use.
+\item
+  \emph{ShareAlike} --- If you remix, transform, or build upon the
+  material, you must distribute your contributions under the same
+  license as the original.
+\item
+  \emph{No additional restrictions} --- You may not apply legal terms or
+  technological measures that legally restrict others from doing
+  anything the license permits.
+\end{itemize}
+
+\textbf{Notices:}
+
+\begin{itemize}
+\tightlist
+\item
+  You do not have to comply with the license for elements of the
+  material in the public domain or where your use is permitted by an
+  applicable exception or limitation.
+\item
+  No warranties are given. The license may not give you all of the
+  permissions necessary for your intended use. For example, other rights
+  such as publicity, privacy, or moral rights may limit how you use the
+  material. \#YMMV
+\end{itemize}
+
+For the avoidance of doubt and explanation of terms please refer to the
+full \href{https://creativecommons.org/licenses/by-sa/4.0/}{license
+notice} and
+\href{https://creativecommons.org/licenses/by-sa/4.0/legalcode}{legal
+code}.
+
+\subsection{Citation}\label{citation}
+
+If you wish to use any of the material from this report please cite as:
+
+\begin{itemize}
+\tightlist
+\item
+  Anderson, B. (2018) NZ GREEN Grid project example: Testing power
+  demand: rf\_38
+  \href{http://www.otago.ac.nz/centre-sustainability/}{Centre for
+  Sustainability}, University of Otago: Dunedin.
+\end{itemize}
+
+This work is (c) 2018 the University of Southampton.
+
+\subsection{History}\label{history}
+
+Code history is generally tracked via our github
+\href{https://github.com/dataknut/nzGREENGridDataR}{repo}:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://github.com/dataknut/nzGREENGridDataR/commits/master/examples/testHouseholdPower.Rmd}{Report
+  history}
+\item
+  \href{https://github.com/dataknut/nzGREENGridDataR/issues}{General
+  issues}
+\end{itemize}
+
+\subsection{Requirements:}\label{requirements}
+
+This report uses the safe version of the grid spy 1 minute data which
+has been processed using
+\url{https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R}.
+
+\subsection{Support}\label{support}
+
+This work was supported by:
+
+\begin{itemize}
+\tightlist
+\item
+  The \href{https://www.otago.ac.nz/}{University of Otago};
+\item
+  The \href{https://www.southampton.ac.uk/}{University of Southampton};
+\item
+  The New Zealand \href{http://www.mbie.govt.nz/}{Ministry of Business,
+  Innovation and Employment (MBIE)} through the
+  \href{https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html}{NZ
+  GREEN Grid} project;
+\item
+  \href{http://www.energy.soton.ac.uk/tag/spatialec/}{SPATIALEC} - a
+  \href{http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm}{Marie
+  Skłodowska-Curie Global Fellowship} based at the University of Otago's
+  \href{http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html}{Centre
+  for Sustainability} (2017-2019) \& the University of Southampton's
+  Sustainable Energy Research Group (2019-202).
+\end{itemize}
+
+\newpage
+
+\section{Introduction}\label{introduction}
+
+The NZ GREEN Grid project recruited a sample of
+\href{ggOverviewReport.html}{c 25 households in each of two regions of
+New Zealand} (Stephenson et al. 2017). The first sample was recruited in
+early 2014 and the second in early 2015. Research data includes:
+
+\begin{itemize}
+\tightlist
+\item
+  1 minute electricity power (W) data was collected for each dwelling
+  circuit using \href{https://gridspy.com/}{gridSpy} monitors on each
+  power circuit (and the incoming power). The power values represent
+  mean(W) over the minute preceeding the observation timestamp. See -
+  \href{gridSpy1mProcessingReport.html}{gridSpy1mProcessingReport};
+\item
+  Dwelling \& appliance surveys. See -
+  \href{surveyProcessingReport.html}{surveyProcessingReport};
+\item
+  Occupant time-use diaries (focused on energy use).
+\end{itemize}
+
+This report provides summary analysis of one household as an example.
+
+\section{Load rf\_38 data}\label{load-rf_38-data}
+
+The data used to generate this report is:
+
+\begin{itemize}
+\tightlist
+\item
+  /Volumes/hum-csafe/Research Projects/GREEN
+  Grid/Clean\_data/safe/gridSpy/1min/data/rf\_38\_all\_1min\_data.csv.gz
+\item
+  /Volumes/hum-csafe/Research Projects/GREEN
+  Grid/Clean\_data/safe/survey/ggHouseholdAttributes.csv
+\end{itemize}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_integer(),
+##   linkID = col_character(),
+##   hasLongSurvey = col_character(),
+##   hasShortSurvey = col_character(),
+##   surveyStartDate = col_datetime(format = ""),
+##   hasApplianceSummary = col_character(),
+##   Oven = col_character(),
+##   `Fridge / Freezer 1` = col_character(),
+##   `Fridge / Freezer 2` = col_character(),
+##   `Fridge / Freezer 3` = col_character(),
+##   Dishwasher = col_character(),
+##   Microwave = col_character(),
+##   `Washing Machine` = col_character(),
+##   `Clothes Dryer` = col_character(),
+##   `Hot water cylinder` = col_character(),
+##   `Other Appliance` = col_character(),
+##   `Electric heater ` = col_character(),
+##   `Heated towel rails` = col_character(),
+##   `PV Inverter` = col_character(),
+##   `Energy Storage` = col_character(),
+##   `Other Generation Device` = col_character()
+##   # ... with 4 more columns
+## )
+\end{verbatim}
+
+\begin{verbatim}
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{longtable}[]{@{}lrrllll@{}}
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedright\strut
+linkID\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedleft\strut
+nAdults\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedleft\strut
+nTeenagers13\_18\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
+Location\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright\strut
+hasLongSurvey\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\raggedright\strut
+hasShortSurvey\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+hasApplianceSummary\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
+rf\_38\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedleft\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Hawkes Bay\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\raggedright\strut
+Yes\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+Yes\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:hhData} shows household attributes such as how many
+people live in this household.
+
+\begin{longtable}[]{@{}llllllll@{}}
+\toprule
+\begin{minipage}[b]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
+hhID\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
+linkID\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
+dateTime\_orig\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
+TZ\_orig\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright\strut
+r\_dateTime\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
+circuit\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+powerW\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Length:5319113\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Length:5319113\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Length:5319113\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Length:5319113\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Min. :2015-03-25 03:51:00\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Length:5319113\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Min. :-179.0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Class :character\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Class :character\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Class :character\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Class :character\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1st Qu.:2015-08-28 14:06:00\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Class :character\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+1st Qu.: 0.0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Mode :character\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Mode :character\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Mode :character\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Mode :character\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Median :2016-10-18 01:51:00\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+Mode :character\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Median : 50.8\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Mean :2016-06-21 10:31:25\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Mean : 263.7\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+3rd Qu.:2017-03-21 06:54:00\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+3rd Qu.: 170.2\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.02\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Max. :2017-08-22 06:37:00\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+NA\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Max. :6678.4\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:gsData} shows a summary of the grid spy 1 minute power
+data.
+
+Note that:
+
+\begin{itemize}
+\tightlist
+\item
+  the original dataTime (\texttt{dateTime\_orig}) and TZ
+  (\texttt{TZ\_orig}) have been retained so that the user can check for
+  parsing errors (see
+  \url{https://github.com/dataknut/nzGREENGridDataR/issues/2}) if
+  required;
+\item
+  r\_datetime is the correct dateTime of each observation in UTC and
+  will have loaded as your local timezone. If you are conducting this
+  analysis outside NZ then you will get strange results until you use
+  \href{https://lubridate.tidyverse.org/}{lubridate} to tell R to use tz
+  = ``Pacific/Auckland'' with this variable;
+\end{itemize}
+
+\section{Plot monthly power profiles}\label{plot-monthly-power-profiles}
+
+This section plots overall mean power (W) per minute per month for each
+circuit to show:
+
+\begin{itemize}
+\tightlist
+\item
+  patterns of missing data (no lines)
+\item
+  patterns of consumption
+\item
+  possible dateTime issues (where consumption patterns seem to be
+  stangely shifted in time)
+\item
+  possible PV installation
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics{testHouseholdPower_files/figure-latex/plotProfiles-1.pdf}
+\caption{\label{fig:plotProfiles}Demand profile plot}
+\end{figure}
+
+Figure \ref{fig:plotProfiles} shows the plot for this household
+(rf\_38). Can you see anything interesting or unusual?
+
+\section{Runtime}\label{runtime}
+
+Analysis completed in 31.58 seconds ( 0.53 minutes) using
+\href{https://cran.r-project.org/package=knitr}{knitr} in
+\href{http://www.rstudio.com}{RStudio} with R version 3.5.1 (2018-07-02)
+running on x86\_64-apple-darwin15.6.0.
+
+\section{R environment}\label{r-environment}
+
+R packages used:
+
+\begin{itemize}
+\tightlist
+\item
+  base R - for the basics (R Core Team 2016)
+\item
+  data.table - for fast (big) data handling (Dowle et al. 2015)
+\item
+  lubridate - date manipulation (Grolemund and Wickham 2011)
+\item
+  ggplot2 - for slick graphics (Wickham 2009)
+\item
+  readr - for csv reading/writing (Wickham, Hester, and Francois 2016)
+\item
+  knitr - to create this document \& neat tables (Xie 2016)
+\item
+  nzGREENGridDataR - for local NZ GREEN Grid project utilities
+\end{itemize}
+
+Session info:
+
+\begin{verbatim}
+## R version 3.5.1 (2018-07-02)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] knitr_1.20             readr_1.1.1            ggplot2_3.0.0         
+## [4] lubridate_1.7.4        data.table_1.11.4      nzGREENGridDataR_0.1.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
+##  [4] xfun_0.3          reshape2_1.4.3    purrr_0.2.5      
+##  [7] lattice_0.20-35   colorspace_1.3-2  htmltools_0.3.6  
+## [10] yaml_2.2.0        rlang_0.2.1       pillar_1.3.0     
+## [13] glue_1.3.0        withr_2.1.2       sp_1.3-1         
+## [16] readxl_1.1.0      bindrcpp_0.2.2    jpeg_0.1-8       
+## [19] bindr_0.1.1       plyr_1.8.4        stringr_1.3.1    
+## [22] munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
+## [25] RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.11    
+## [28] labeling_0.3      highr_0.7         proto_1.0.0      
+## [31] Rcpp_0.12.18      geosphere_1.5-7   openssl_1.0.2    
+## [34] backports_1.1.2   scales_0.5.0      rjson_0.2.20     
+## [37] hms_0.4.2         png_0.1-7         digest_0.6.15    
+## [40] stringi_1.2.4     bookdown_0.7      dplyr_0.7.6      
+## [43] rprojroot_1.3-2   grid_3.5.1        tools_3.5.1      
+## [46] magrittr_1.5      maps_3.3.0        lazyeval_0.2.1   
+## [49] tibble_1.4.2      crayon_1.3.4      pkgconfig_2.0.1  
+## [52] prettyunits_1.0.2 assertthat_0.2.0  rmarkdown_1.10   
+## [55] R6_2.2.2          ggmap_2.6.1       compiler_3.5.1
+\end{verbatim}
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\hypertarget{ref-data.table}{}
+Dowle, M, A Srinivasan, T Short, S Lianoglou with contributions from R
+Saporta, and E Antonyan. 2015. \emph{Data.table: Extension of
+Data.frame}. \url{https://CRAN.R-project.org/package=data.table}.
+
+\hypertarget{ref-lubridate}{}
+Grolemund, Garrett, and Hadley Wickham. 2011. ``Dates and Times Made
+Easy with lubridate.'' \emph{Journal of Statistical Software} 40 (3):
+1--25. \url{http://www.jstatsoft.org/v40/i03/}.
+
+\hypertarget{ref-baseR}{}
+R Core Team. 2016. \emph{R: A Language and Environment for Statistical
+Computing}. Vienna, Austria: R Foundation for Statistical Computing.
+\url{https://www.R-project.org/}.
+
+\hypertarget{ref-stephenson_smart_2017}{}
+Stephenson, Janet, Rebecca Ford, Nirmal-Kumar Nair, Neville Watson, Alan
+Wood, and Allan Miller. 2017. ``Smart Grid Research in New Zealand--A
+Review from the GREEN Grid Research Programme.'' \emph{Renewable and
+Sustainable Energy Reviews} 82 (1): 1636--45.
+\url{https://doi.org/10.1016/j.rser.2017.07.010}.
+
+\hypertarget{ref-ggplot2}{}
+Wickham, Hadley. 2009. \emph{Ggplot2: Elegant Graphics for Data
+Analysis}. Springer-Verlag New York. \url{http://ggplot2.org}.
+
+\hypertarget{ref-readr}{}
+Wickham, Hadley, Jim Hester, and Romain Francois. 2016. \emph{Readr:
+Read Tabular Data}. \url{https://CRAN.R-project.org/package=readr}.
+
+\hypertarget{ref-knitr}{}
+Xie, Yihui. 2016. \emph{Knitr: A General-Purpose Package for Dynamic
+Report Generation in R}. \url{https://CRAN.R-project.org/package=knitr}.
+
+
+\end{document}
