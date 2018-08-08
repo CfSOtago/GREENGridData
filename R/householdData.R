@@ -29,14 +29,14 @@ getHouseholdData <- function(f) {
   unisonDT <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "Unison"))
 
   # keep safe data only
-  unisonDT <- unisonDT[, .(company = `Power company`, hhID, linkID,
+  unisonDT <- unisonDT[, .(hhID, linkID,
                            Location, nAdults, nChildren0_12, nTeenagers13_18, notes, stopDate)]
   unisonDT <- unisonDT[, r_stopDate := lubridate::ymd(stopDate)]
   unisonDT$stopDate <- NULL
   #head(unisonDT)
   
   powercoDT <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "Powerco"))
-  powercoDT <- powercoDT[, .(company = `Power Co`, hhID, linkID,
+  powercoDT <- powercoDT[, .(hhID, linkID,
                              Location,nAdults,nChildren0_12,nTeenagers13_18,notes, stopDate)]
   powercoDT <- powercoDT[, r_stopDate := lubridate::ymd(stopDate)]
   powercoDT$stopDate <- NULL
