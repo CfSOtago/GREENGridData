@@ -145,6 +145,7 @@ Table \@ref(tab:loadEc2Survey) shows the response rates to these surveys.
 
 keepShortCols <- c("linkID","hasShortSurvey",
               "StartDate",
+              "Q4",
               "Q7",
               "Q53_1",
               "Q53_2",
@@ -161,13 +162,14 @@ keepShortCols <- c("linkID","hasShortSurvey",
               "Q54_6",
               "Q54_7",
               "Q57",
-              "Q4",
-              "Q55")
+              "Q55",
+              "Q58#2_1")
 keephhEc2ShortDT <- hhEc2ShortDT[!is.na(linkID), ..keepShortCols]
 
 # long ----
 keepLongCols <- c("linkID", "hasLongSurvey",
               "StartDate",
+              "Q4",
               "Q5",
               "Q7",
               "Q10#1_1_1_TEXT",
@@ -208,8 +210,8 @@ keepLongCols <- c("linkID", "hasLongSurvey",
               "Q54_6",
               "Q54_7",
               "Q57",
-              "Q4",
-              "Q55")
+              "Q55",
+              "Q58#2_1")
 keephhEc2LongDT <- hhEc2LongDT[!is.na(linkID), ..keepLongCols] # no point keeping unknown IDs
 
 setkey(keephhEc2ShortDT, linkID)
@@ -221,7 +223,7 @@ hhEc2CombinedDT <- rbind(keephhEc2LongDT,keephhEc2ShortDT, fill=TRUE)
 # uniqueN(hhEc2CombinedDT$linkID)
 
 # set date ----
-hhEc2CombinedDT <- hhEc2CombinedDT[, r_startDate := lubridate::dmy_hms(StartDate)]
+hhEc2CombinedDT <- hhEc2CombinedDT[, surveyStartDate := lubridate::dmy_hms(StartDate)]
 hhEc2CombinedDT$StartDate <- NULL
 setkey(hhEc2CombinedDT, linkID)
 
@@ -327,7 +329,7 @@ sessionInfo()
 ```
 
 # Energy Cultures 2 Long Survey Questions
-Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015] as used in the Unison sample. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [github repo issue](https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest). 
+Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [github repo issue](https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest). 
 
 ```{r loadEc2Labels}
 ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
