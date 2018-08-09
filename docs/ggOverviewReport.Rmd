@@ -120,9 +120,19 @@ hhDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 gsStatDT <- data.table::as.data.table(readr::read_csv(paste0(ggrParams$statsLoc, "hhStatsByDate.csv")))
 ```
 
-The project research sample comprises `r nrow(hhDT)` households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies. 
+The project research sample comprises `r nrow(hhDT)` households who were recruited in two areas: Hawkes Bay starting in May 2014 and New Plymouth starting in November 2014 via the local power lines companies. 
 
-Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances [@stephenson_smart_2017, @jack_minimal_2018, @suomalainen_comparative_2017]. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location [@stephenson_smart_2017].
+Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances [@dianaThesis2015, @stephenson_smart_2017, @jack_minimal_2018, @suomalainen_comparative_2017]. 
+
+The lines companies invited their own employees and those of other local companies to participate in the research and ~80 interested potential participants completed short or long forms of the Energy Cultures 2 household survey [@ec2Survey2015]. Households were then selected from this pool by the project team based on selection criteria relevant to the GREEN Grid project. These included:
+
+ * having the majority of their energy supply from electricity (i.e. not gas heating);
+ * household size;
+ * types of appliances owned.
+
+After informed consent was obtained from each household, an electrician contracted by the two lines companies completed an appliance survey to record detailed information about the appliances in each house. This survey contained information about the number of appliances owned, brand, model number, efficiency and age. The electrician also installed the Grid Spy units which recorded electricity power demand at a circuit level. The Grid Spy units automatically upload the monitoring data to the Grid Spy company's secure database from where it was downloaded by the GREEN Grid research team. 
+
+As a result of this process the sample cannot be assumed to represent the population of customers (or employees) of any of the companies involved, nor of the populations in each location [@stephenson_smart_2017].
 
 Table \@ref(tab:sampleTable) shows the number in each sample.
 
@@ -132,12 +142,6 @@ t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 knitr::kable(t, caption = "Sample location")
 ```
 
-Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
-
-```{r allHhData, fig.cap="Sample details"}
-knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
-
-```
 
 # Data collection duration
 
@@ -172,6 +176,16 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
              xmax = as.Date("2016-04-01"), 
              ymin = yMax, ymax = yMin, alpha = rectAlpha, fill = vLineCol)
 ```
+
+# Key attributes
+
+Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
+
+```{r allHhData, fig.cap="Sample details"}
+knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
+
+```
+
 
 # Runtime
 
