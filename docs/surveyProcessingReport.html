@@ -124,7 +124,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">GREEN Grid Data Processing:</h1>
 <h3 class="subtitle"><em>Household Attributes File</em></h3>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-09 14:49:03</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-09 15:14:03</em></h4>
 
 </div>
 
@@ -369,76 +369,138 @@ $(document).ready(function () {
 <div id="final-household-attribute-data-description" class="section level1">
 <h1><span class="header-section-number">4</span> Final household attribute data description</h1>
 <p>Table <a href="#tab:loadEc2Survey"><strong>??</strong></a> reports the final household attribute variables and their internal distributions. The question labels are found in Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> below.</p>
+<pre><code>## Warning in min(characters, na.rm = TRUE): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(characters, na.rm = TRUE): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in min(characters, na.rm = TRUE): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(characters, na.rm = TRUE): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in min(characters, na.rm = TRUE): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(characters, na.rm = TRUE): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in min(characters, na.rm = TRUE): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(characters, na.rm = TRUE): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in min(characters, na.rm = TRUE): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(characters, na.rm = TRUE): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in min(characters, na.rm = TRUE): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(characters, na.rm = TRUE): no non-missing arguments to max;
+## returning -Inf</code></pre>
 <pre><code>## Skim summary statistics
 ##  n obs: 44 
-##  n variables: 71 
+##  n variables: 109 
 ## 
 ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-##             variable missing complete  n min max empty n_unique
-##        Clothes Dryer      23       21 44   3   3     0        1
-##           Dishwasher      15       29 44   3   3     0        1
-##      Electric heater      30       14 44   3   3     0        1
-##       Energy Storage      43        1 44   3   3     0        1
-##   Fridge / Freezer 1      13       31 44   3   3     0        1
-##   Fridge / Freezer 2      24       20 44   3   3     0        1
-##   Fridge / Freezer 3      38        6 44   3   3     0        1
-##  hasApplianceSummary      13       31 44   3   3     0        1
-##        hasLongSurvey      15       29 44   3   3     0        1
-##       hasShortSurvey      31       13 44   3   3     0        1
-##   Heated towel rails      23       21 44   3   3     0        1
-##                 hhID       0       44 44   5   5     0       42
-##   Hot water cylinder      16       28 44   3   3     0        1
-##               linkID       0       44 44   5   6     0       44
-##             Location       0       44 44  10  12     0        2
-##            Microwave      14       30 44   3   3     0        1
-##                notes      39        5 44   7  81     0        5
-##      Other Appliance      30       14 44   3  42     0        8
-##                 Oven      14       30 44   3   3     0        1
-##          PV Inverter      40        4 44   3   3     0        1
-##       Q10#1_1_1_TEXT      15       29 44   1   1     0        5
-##       Q10#1_1_2_TEXT      16       28 44   1   1     0        6
-##       Q10#1_2_1_TEXT      15       29 44   1   1     0        2
-##       Q10#1_2_2_TEXT      16       28 44   1   1     0        3
-##       Q10#1_3_1_TEXT      15       29 44   1   1     0        1
-##       Q10#1_3_2_TEXT      18       26 44   1   1     0        2
-##       Q10#1_4_1_TEXT      15       29 44   1   1     0        2
-##       Q10#1_4_2_TEXT      26       18 44   1   1     0        2
-##       Q10#1_5_1_TEXT      15       29 44   1   1     0        2
-##       Q10#1_5_2_TEXT      24       20 44   1   1     0        1
-##       Q10#1_6_1_TEXT      15       29 44   1   1     0        3
-##       Q10#1_6_2_TEXT      23       21 44   1   1     0        4
-##       Q10#1_7_1_TEXT      15       29 44   1   1     0        3
-##       Q10#1_7_2_TEXT      26       18 44   1   1     0        2
-##       Q10#1_8_1_TEXT      15       29 44   1   1     0        2
-##       Q10#1_8_2_TEXT      25       19 44   1   1     0        2
-##                Q11_1      15       29 44   1   2     0        7
-##                Q14_1      15       29 44   1   3     0       14
-##                Q15_1      15       29 44   1   2     0       13
-##                Q17_1      28       16 44   2   2     0        6
-##                Q18_1      15       29 44   2   2     0        6
-##                Q30_1      36        8 44   2   2     0        4
-##                Q33_1      28       16 44   2   2     0       10
-##                   Q4       2       42 44   1   2     0        4
-##                   Q5      15       29 44   1   2     0        2
-##                Q53_1       2       42 44   2   3     0       36
-##                Q53_2      25       19 44   1   2     0        9
-##                Q53_3      37        7 44   1   1     0        1
-##                Q53_4      34       10 44   1   1     0        1
-##                Q53_5      28       16 44   1   3     0       11
-##                Q53_6      36        8 44   1   3     0        2
-##                Q53_7      36        8 44   1   1     0        1
-##                Q54_1       2       42 44   2   3     0       33
-##                Q54_2      24       20 44   1   3     0       13
-##                Q54_3      37        7 44   1   1     0        1
-##                Q54_4      28       16 44   1   3     0       13
-##                Q54_5      29       15 44   1   3     0       11
-##                Q54_6      35        9 44   1   3     0        2
-##                Q54_7      37        7 44   1   1     0        1
-##                  Q55       2       42 44   1   2     0       17
-##                  Q57       2       42 44   1   1     0        6
-##              Q58#2_1       2       42 44   2   2     0       27
-##                   Q7       2       42 44   1   1     0        4
-##      Washing Machine      13       31 44   3   3     0        1
+##             variable missing complete  n min  max empty n_unique
+##        Clothes Dryer      23       21 44   3    3     0        1
+##           Dishwasher      15       29 44   3    3     0        1
+##      Electric heater      30       14 44   3    3     0        1
+##       Energy Storage      43        1 44   3    3     0        1
+##   Fridge / Freezer 1      13       31 44   3    3     0        1
+##   Fridge / Freezer 2      24       20 44   3    3     0        1
+##   Fridge / Freezer 3      38        6 44   3    3     0        1
+##  hasApplianceSummary      13       31 44   3    3     0        1
+##        hasLongSurvey      15       29 44   3    3     0        1
+##       hasShortSurvey      31       13 44   3    3     0        1
+##   Heated towel rails      23       21 44   3    3     0        1
+##                 hhID       0       44 44   5    5     0       42
+##   Hot water cylinder      16       28 44   3    3     0        1
+##               linkID       0       44 44   5    6     0       44
+##             Location       0       44 44  10   12     0        2
+##            Microwave      14       30 44   3    3     0        1
+##                notes      39        5 44   7   81     0        5
+##      Other Appliance      30       14 44   3   42     0        8
+##                 Oven      14       30 44   3    3     0        1
+##          PV Inverter      40        4 44   3    3     0        1
+##       Q10#1_1_1_TEXT      15       29 44   1    1     0        5
+##       Q10#1_1_2_TEXT      16       28 44   1    1     0        6
+##       Q10#1_2_1_TEXT      15       29 44   1    1     0        2
+##       Q10#1_2_2_TEXT      16       28 44   1    1     0        3
+##       Q10#1_3_1_TEXT      15       29 44   1    1     0        1
+##       Q10#1_3_2_TEXT      18       26 44   1    1     0        2
+##       Q10#1_4_1_TEXT      15       29 44   1    1     0        2
+##       Q10#1_4_2_TEXT      26       18 44   1    1     0        2
+##       Q10#1_5_1_TEXT      15       29 44   1    1     0        2
+##       Q10#1_5_2_TEXT      24       20 44   1    1     0        1
+##       Q10#1_6_1_TEXT      15       29 44   1    1     0        3
+##       Q10#1_6_2_TEXT      23       21 44   1    1     0        4
+##       Q10#1_7_1_TEXT      15       29 44   1    1     0        3
+##       Q10#1_7_2_TEXT      26       18 44   1    1     0        2
+##       Q10#1_8_1_TEXT      15       29 44   1    1     0        2
+##       Q10#1_8_2_TEXT      25       19 44   1    1     0        2
+##                Q11_1      15       29 44   1    2     0        7
+##                Q14_1      15       29 44   1    3     0       14
+##                Q15_1      15       29 44   1    2     0       13
+##                Q17_1      28       16 44   2    2     0        6
+##                Q18_1      15       29 44   2    2     0        6
+##                Q19_1      28       16 44   1    1     0        1
+##               Q19_10      44        0 44 Inf -Inf     0        0
+##             Q19_10.1      44        0 44 Inf -Inf     0        0
+##               Q19_12      37        7 44   1    1     0        1
+##               Q19_13      42        2 44   1    1     0        1
+##               Q19_14      43        1 44   1    1     0        1
+##               Q19_15      42        2 44   1    1     0        1
+##               Q19_16      40        4 44   1    1     0        1
+##               Q19_17      44        0 44 Inf -Inf     0        0
+##                Q19_2      44        0 44 Inf -Inf     0        0
+##                Q19_3      31       13 44   1    1     0        1
+##                Q19_4      37        7 44   1    1     0        1
+##                Q19_5      44        0 44 Inf -Inf     0        0
+##                Q19_6      29       15 44   1    1     0        1
+##                Q19_7      40        4 44   1    1     0        1
+##                Q19_8      43        1 44   1    1     0        1
+##                Q19_9      44        0 44 Inf -Inf     0        0
+##                Q30_1      36        8 44   2    2     0        4
+##                Q33_1      28       16 44   2    2     0       10
+##                   Q4       2       42 44   1    2     0        4
+##                Q40_1      15       29 44   1    1     0        3
+##               Q40_10      15       29 44   1    1     0        3
+##               Q40_11      15       29 44   1    1     0        3
+##               Q40_12      15       29 44   1    1     0        2
+##               Q40_13      15       29 44   1    1     0        2
+##               Q40_14      15       29 44   1    1     0        3
+##               Q40_15      15       29 44   1    1     0        3
+##               Q40_16      15       29 44   1    1     0        1
+##               Q40_17      15       29 44   1    1     0        2
+##               Q40_18      15       29 44   1    1     0        2
+##               Q40_19      15       29 44   1    1     0        1
+##                Q40_2      15       29 44   1    1     0        2
+##               Q40_20      15       29 44   1    1     0        2
+##               Q40_21      15       29 44   1    1     0        3
+##                Q40_3      15       29 44   1    1     0        3
+##               Q40_38      15       29 44   1    1     0        3
+##                Q40_4      15       29 44   1    1     0        1
+##                Q40_5      15       29 44   1    1     0        3
+##                Q40_6      15       29 44   1    1     0        2
+##                Q40_7      15       29 44   1    1     0        3
+##                Q40_9      15       29 44   1    1     0        3
+##                   Q5      15       29 44   1    2     0        2
+##                Q53_1       2       42 44   2    3     0       36
+##                Q53_2      25       19 44   1    2     0        9
+##                Q53_3      37        7 44   1    1     0        1
+##                Q53_4      34       10 44   1    1     0        1
+##                Q53_5      28       16 44   1    3     0       11
+##                Q53_6      36        8 44   1    3     0        2
+##                Q53_7      36        8 44   1    1     0        1
+##                Q54_1       2       42 44   2    3     0       33
+##                Q54_2      24       20 44   1    3     0       13
+##                Q54_3      37        7 44   1    1     0        1
+##                Q54_4      28       16 44   1    3     0       13
+##                Q54_5      29       15 44   1    3     0       11
+##                Q54_6      35        9 44   1    3     0        2
+##                Q54_7      37        7 44   1    1     0        1
+##                  Q55       2       42 44   1    2     0       17
+##                  Q57       2       42 44   1    1     0        6
+##              Q58#2_1       2       42 44   2    2     0       27
+##                   Q7       2       42 44   1    1     0        4
+##      Washing Machine      13       31 44   3    3     0        1
 ## 
 ## ── Variable type:Date ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##    variable missing complete  n        min        max     median n_unique
@@ -1037,7 +1099,7 @@ $(document).ready(function () {
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">7</span> Runtime</h1>
-<p>Analysis completed in 1.46 seconds ( 0.02 minutes) using <a href="https://cran.r-project.org/package=kableExtra">kableExtra</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 1.86 seconds ( 0.03 minutes) using <a href="https://cran.r-project.org/package=kableExtra">kableExtra</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">8</span> R environment</h1>
