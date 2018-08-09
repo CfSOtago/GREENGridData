@@ -5,7 +5,7 @@ params:
   title: ""
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
-author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+author: '`r ggrParams$Authors`'
 date: 'Last run at: `r Sys.time()`'
 output:
   bookdown::html_document2:
@@ -72,7 +72,7 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggrParams$pubLoc`.
+ * `r ggrParams$Authors` (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggrParams$pubLoc`.
  
 This work is (c) `r lubridate::year(today())` the University of Southampton.
 
