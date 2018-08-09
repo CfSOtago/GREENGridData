@@ -120,7 +120,7 @@ hhDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 gsStatDT <- data.table::as.data.table(readr::read_csv(paste0(ggrParams$statsLoc, "hhStatsByDate.csv")))
 ```
 
-The project research sample comprises `r nrow(hhDT)` households who were recruited in two areas: Hawkes Bay starting in May 2014 and New Plymouth starting in November 2014 via the local power lines companies. 
+The project research sample comprises `r nrow(hhDT)` households who were recruited via the local power lines companies in two areas: New Plymouth starting in May 2014 and Hawkes Bay starting in November 2014. 
 
 Recruitment was via a non-random sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances [@dianaThesis2015, @stephenson_smart_2017, @jack_minimal_2018, @suomalainen_comparative_2017]. 
 
