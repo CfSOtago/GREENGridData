@@ -103,9 +103,7 @@ This report provides summary data quality statistics for the original GREEN grid
 
 # Original Data: Quality checks
 
-The original data files files are stored on `r ggrParams$otagoHCS`. The data used to generate this report was loaded from:
-
- * `r gSpyParams$gSpyInPath`
+The original data files files are stored on `r ggrParams$otagoHCS`.
 
 ```{r getCompleteFileList, include=FALSE}
 # get file list 
@@ -122,7 +120,7 @@ To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteD
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-In addition two of the grid spy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdrawl of the original participants. The grid spy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
+In addition two of the grid spy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdraw of the original participants. The grid spy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
 
 ## Input data file quality checks
 
@@ -152,7 +150,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
 
 ggplot2::ggsave(paste0(plotLoc, "gridSpyAllFileListSizeTilePlot.png"))
 ```
-As we can see, relatively large files were donwloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.
+As we can see, relatively large files were downloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.
 
 The following chart shows the same analysis but _excludes_ files which do not meet the file size threshold and which we therefore assume do not contain data.
 
@@ -175,7 +173,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
   )
 ggplot2::ggsave(paste0(plotLoc, "/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
-As we can see this removes a large number of the autmatically downloaded files.
+As we can see this removes a large number of the automatically downloaded files.
 
 ## Input date format checks
 
@@ -238,14 +236,14 @@ Results to note:
 
 In this section we analyse the data files that have a file size > `r gSpyParams$gSpyFileThreshold` bytes and which have been used to create the safe data. Things to note:
 
- * As inidcated above, we assume that any files smaller than this value have no observations. This is based on:
+ * As indicated above, we assume that any files smaller than this value have no observations. This is based on:
      * Manual inspection of several small files
      * The identical (small) file sizes involved
  * There was substantial duplication of observations, some of which was caused by the different date formats, especially where they run through Daylight Savings Time (DST) changes.
  
 The following table shows the number of files per grid spy ID that are actually processed to make the safe version together with the min/max file save dates (not the observed data dates).
 
-```{r filesToLoadTable, echo=TRUE}
+```{r filesToLoadTable}
 # check files to load
 t <- fListCompleteDT[dateColName %like% "date", .(nFiles = .N,
                        meanSize = mean(fSize),
@@ -352,7 +350,7 @@ knitr::kable(caption = "Summary observation stats by hhID", t)
 ```
 
 
-Finally we plot the total number of households for whom we have data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
+Finally we plot the total number of households for whom we have _any_ data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
 
 ```{r attritionPlot}
 plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]
@@ -399,7 +397,7 @@ knitr::kable(caption = "Circuit labels list by number of files per household", d
 
 Things to note:
 
- * rf_25 has an aditional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
+ * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
  * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/dataknut/nzGREENGridDataR/issues/1) but note that this is the only household to have 13 circuits monitored.
 
 Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets.
