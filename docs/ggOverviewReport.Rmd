@@ -142,7 +142,7 @@ t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 knitr::kable(t, caption = "Sample location")
 ```
 
-Table \@ref(tab:sampleSurveys) shows the number for whom valid appliance and survey data is available in this data package. Note that even those which appear to lake appliance data may have sufficient survey data to deduce appliance ownership (see question numbers `Q19_*` and `Q40_*`).
+Table \@ref(tab:sampleSurveys) shows the number for whom valid appliance and survey data is available in this data package. Note that even those which appear to lack appliance data may have sufficient survey data to deduce appliance ownership (see question numbers `Q19_*` and `Q40_*`).
 
 ```{r sampleSurveys, fig.cap="Sample location"}
 
@@ -153,9 +153,9 @@ knitr::kable(t, caption = "Sample information")
 
 # Data collection duration
 
-Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom grid spy data exists on a given date by sample and indicates that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
+Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom grid spy data exists on a given date by sample. The plot includes _any_ data, not just days where we have completed data and indicates that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
 
-```{r liveDataHouseholds, fig.cap="Sample size over time"}
+```{r liveDataHouseholds, fig.cap="Number of households sending Grid Spy data by date"}
 setkey(gsStatDT, linkID)
 dt <- merge(gsStatDT, hhDT, allow.cartesian=TRUE)
 
@@ -177,7 +177,8 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
                                    vjust = 0.5, 
                                    hjust = 0.5)) + 
   labs(title = "N live households per day for all clean grid spy data",
-       caption = myCaption
+       caption = paste0(myCaption, "\nShaded area indicates 12 month period with largest number of households"),
+       y = "Number of households"
        
   ) + 
   annotate("rect", xmin = as.Date("2015-04-01"),
@@ -194,6 +195,9 @@ knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][orde
 
 ```
 
+# Known issues
+
+We maintain a [known data issues list](https://github.com/dataknut/nzGREENGridDataR/labels/dataIssue) via our github repo. If you think there is a data issue please check the repo list first and then add a new one if appropriate.
 
 # Runtime
 
