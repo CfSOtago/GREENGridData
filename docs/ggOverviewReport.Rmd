@@ -153,7 +153,7 @@ knitr::kable(t, caption = "Sample information")
 
 # Data collection duration
 
-Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom grid spy data exists on a given date by sample. The plot includes _any_ data, not just days where we have completed data and indicates that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
+Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom grid spy data exists on a given date by sample. The plot includes _any_ data, including partial data and suggests that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households. More detail on the partiality of data is to be found in the [grid spy data processing report](gridSpy1mProcessingReport.html).
 
 ```{r liveDataHouseholds, fig.cap="Number of households sending Grid Spy data by date"}
 setkey(gsStatDT, linkID)
