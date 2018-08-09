@@ -371,7 +371,7 @@ t <- proc.time() - startTime
 elapsed <- t[[3]]
 ```
 
-Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [kableExtra](https://cran.r-project.org/package=kableExtra) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
 
 # R environment
 
