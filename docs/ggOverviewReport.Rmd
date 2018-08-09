@@ -2,7 +2,7 @@
 params:
   title: ""
 title: '`r params$title`'
-author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+author: '`r ggrParams$Authors`'
 date: 'Last run at: `r Sys.time()`'
 output:
   bookdown::html_document2:
