@@ -92,14 +92,14 @@ This report uses the original nz GREEN Grid household survey and meta data.
 ```{r generic sample, child=ggrParams$sampleGeneric}
 ```
  
-The prupose of this report is to: 
+The purpose of this report is to: 
 
  * create a household attribute file that can be linked to the project power monitoring data;
  * describe the household attribute data.
 
 The resulting cleaned data has _no_ identifying information such as names, addresses, email addresses, telephone numbers and is therefore safe to share across all partners.
 
-The data contains a unique household id (`linkID`) which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys. With some additional non-disclosure checks it should also be safe to archive all of these linkable datasets for re-use via the UK [reshare](http://reshare.ukdataservice.ac.uk/) service.
+The data contains a unique household id (`linkID`) which can be used to link it to the NZ GREEN Grid time use diaries and dwelling/appliance surveys.
 
 # Load data
 
@@ -300,9 +300,13 @@ kableExtra::kable(caption = "Survey responses (NA indicates no survey)", t)
 
 Table \@ref(tab:loadEc2Survey) reports the final household attribute variables and their internal distributions. The question labels are found in Table \@ref(tab:loadEc2Labels) below.
 
-```{r summariseHhAttributes}
+```{r summariseHhAttributes, include=FALSE}
 #Hmisc::describe(hhAttributesDT)
-skimr::skim(hhAttributesDT)
+t <- skimr::skim(hhAttributesDT)
+```
+
+```{r skimTable}
+kable(caption = "Data description", t)
 ```
 
 
@@ -331,9 +335,9 @@ t <- with(hhAttributesDT, table(nChildren0_12, Location, useNA = "always"))
 kableExtra::kable(caption = "Number of children in household by location", t)
 ```
 
-## Notes
+## Notes variable
 
-These may have been set for any number of reasons and mean the monitoring data should be used with caution.
+`notes` may have been set for any number of reasons and may mean the monitoring data should be used with caution.
 
 ```{r outliers}
 t <- with(hhAttributesDT, table(notes, Location, useNA = "always"))
@@ -346,10 +350,6 @@ kableExtra::kable(caption = "Notes by location", t)
 ofile <- paste0(ggrParams$outPath, "ggHouseholdAttributes.csv")
 readr::write_csv(hhAttributesDT, ofile)
 ```
-
-The cleaned data for the `r nrow(hhAttributesDT)` households has been saved as a .csv file to:
-
- * `r ggrParams$outPath` 
 
 The following table shows the key columns of the household attributes file. The data can be linked to the gridSpy data using `linkID`.
 
