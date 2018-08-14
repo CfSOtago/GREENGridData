@@ -21,7 +21,7 @@ if(localData){
 } else {
   # full monty
   gSpyParams$gSpyInPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/" # location of data
-  gSpyParams$gSpyOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/gridSpy/1min/" # place to save them
+  gSpyParams$gSpyOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/gridSpy/1min/" # place to save them
   msg1 <- paste0("#--- Full run using full data from ", 
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
