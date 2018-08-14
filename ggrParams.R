@@ -7,18 +7,18 @@ ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HCS by
 # Location of basic household data
 ggrParams$gsHHMasterFile <- "~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx"
 
-ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/appliancesSummary.xlsx")
-ggrParams$UnisonShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonShortSurvey_with_house_label.csv")
-ggrParams$UnisonLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonLongSurvey.csv")
-ggrParams$PowercoSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/PowerCo/Household survey results 16.7.14.csv")
-ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/ggHouseholdAttributes/Unison/householdSurveyData/ec2QuestionLabels.xlsx")
+ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/appliancesSummary.xlsx")
+ggrParams$UnisonShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonShortSurvey_with_house_label.csv")
+ggrParams$UnisonLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonLongSurvey.csv")
+ggrParams$PowercoSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/PowerCo/Household survey results 16.7.14.csv")
+ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/ec2QuestionLabels.xlsx")
 
 # Location of stats
-ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "Clean_data/safe/gridSpy/1min/checkStats/")
+ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/checkStats/")
 
 # Location of safe data
-ggrParams$gsSafe <- paste0(ggrParams$dataLoc, "Clean_data/safe/gridSpy/1min/data/")
-ggrParams$hhAttributes <- paste0(ggrParams$dataLoc, "Clean_data/safe/survey/ggHouseholdAttributes.csv")
+ggrParams$gsSafe <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/data/")
+ggrParams$hhAttributes <- paste0(ggrParams$dataLoc, "cleanData/safe/survey/ggHouseholdAttributes.csv")
 
 # Vars for Rmd
 ggrParams$pubLoc <- "[Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin"
