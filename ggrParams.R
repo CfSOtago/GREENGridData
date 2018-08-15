@@ -13,6 +13,8 @@ ggrParams$UnisonLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/household
 ggrParams$PowercoSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/PowerCo/Household survey results 16.7.14.csv")
 ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/ec2QuestionLabels.xlsx")
 
+ggrParams$hhOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/"
+
 # Location of stats
 ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/checkStats/")
 
