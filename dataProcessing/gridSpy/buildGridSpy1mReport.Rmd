@@ -6,7 +6,7 @@ params:
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
-date: 'Last run at: `r Sys.time()`'
+date: 'Last run at: `r Sys.time()` UTC'
 output:
   bookdown::html_document2:
     code_folding: hide
@@ -61,7 +61,7 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 
 ## Report circulation:
 
- * Public - this report is intended to accompany the data release.
+ * Public – this report is intended to accompany the data release.
  
 ## License
 
@@ -78,14 +78,14 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
-Code history is generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
+Code history is generally tracked via our GitHub [repository](https://github.com/dataknut/nzGREENGridDataR):
 
  * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
  * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
  
 ## Requirements:
 
-This report uses data quality statistics produced when processing the original grid spy 1 minute data downloads using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R.
+This report uses data quality statistics produced when processing the original GridSpy 1 minute data downloads using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R.
 
 ## Support
 
@@ -99,7 +99,7 @@ This report uses data quality statistics produced when processing the original g
 ```{r generic sample, child=ggrParams$sampleGeneric}
 ```
  
-This report provides summary data quality statistics for the original GREEN grid Grid Spy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the `r ggrParams$repo` repository.
+This report provides summary data quality statistics for the original GREEN Grid GridSpy household power demand monitoring data. This data was used to create a derived 'safe' dataset using the code in the `r ggrParams$repo` repository.
 
 # Original Data: Quality checks
 
@@ -116,15 +116,15 @@ nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 
 Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (`r file.mtime(gSpyParams$fListAll)`).
 
-To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` unique grid spy IDs.
+To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` unique GridSpy IDs.
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-In addition two of the grid spy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdraw of the original participants. The grid spy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
+In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdraw of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
 
 ## Input data file quality checks
 
-The following chart shows the distribution of the file sizes of _all_ files over time by grid spy ID. Note that white indicates the presence of small files which may not contain observations.
+The following chart shows the distribution of the file sizes of _all_ files over time by GridSpy ID. Note that white indicates the presence of small files which may not contain observations.
 
 ```{r allFileSizesPlot}
 myCaption <- paste0("Data source: ", gSpyParams$gSpyInPath,
@@ -141,8 +141,8 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
   scale_x_date(date_labels = "%Y %b", date_breaks = "1 month") +
   theme(axis.text.x = element_text(angle = 90, 
                                    vjust = 0.5, hjust = 0.5)) + 
-  labs(title = "Mean file size of all grid spy data files received per day",
-       y = "Grid Spy ID",
+  labs(title = "Mean file size of all GridSpy data files received per day",
+       y = "GridSpy ID",
        caption = paste0(myCaption, 
                         "\nLog file size used as some files are full year data and so extremely large")
     
@@ -164,8 +164,8 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
   scale_fill_gradient(low = "white", high = "black") + 
   scale_x_date(date_labels = "%Y %b", date_breaks = "1 month") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
-  labs(title = "Mean file size of loaded grid spy data files received per day",
-       y = "Grid Spy ID",
+  labs(title = "Mean file size of loaded GridSpy data files received per day",
+       y = "GridSpy ID",
        caption = paste0(myCaption, 
                         "\nLog file size used as some files are full year data",
                         "\nFiles loaded if fsize > ", gSpyParams$gSpyFileThreshold, " bytes")
@@ -180,7 +180,7 @@ As we can see this removes a large number of the automatically downloaded files.
 As noted above, the original data was downloaded in two ways:
 
  * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d etc);
- * Automatic download of daily data. In this case the dateTime of the observation is stored as UTC
+ * Automatic download of daily data. In this case the dateTime of the observation is stored as UTC.
 
 Resolving and cleaning these variations and uncertainties have required substantial effort and in some cases the date has had to be inferred from the file names.
 
@@ -230,18 +230,18 @@ Results to note:
 
  * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
  * There are a range of dateTme formats - these are fixed in the data cleaning process and all datesTimes have been set to UTC except where explicitly labelled. Note that R will load UTC data with the local timezone so if you re-use the data in New Zealand this will be correct. If you re-use the data outside New Zealand you will need to set the timezone accordingly or you will get thoroughly confused. We are not great fans of [timezones](https://github.com/dataknut/nzGREENGridDataR/issues/2).
- * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files which are still labelled as having ambiguous dates;
+ * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files which are still labelled as having ambiguous dates.
  
 # Processed Data: Quality checks {#cleanData}
 
 In this section we analyse the data files that have a file size > `r gSpyParams$gSpyFileThreshold` bytes and which have been used to create the safe data. Things to note:
 
  * As indicated above, we assume that any files smaller than this value have no observations. This is based on:
-     * Manual inspection of several small files
-     * The identical (small) file sizes involved
+     * Manual inspection of several small files;
+     * The identical (small) file sizes involved.
  * There was substantial duplication of observations, some of which was caused by the different date formats, especially where they run through Daylight Savings Time (DST) changes.
  
-The following table shows the number of files per grid spy ID that are actually processed to make the safe version together with the min/max file save dates (not the observed data dates).
+The following table shows the number of files per GridSpy ID that are actually processed to make the safe version together with the min/max file save dates (not the observed data dates).
 
 ```{r filesToLoadTable}
 # check files to load
@@ -253,7 +253,7 @@ t <- fListCompleteDT[dateColName %like% "date", .(nFiles = .N,
 knitr::kable(caption = "Summary of household files to load", t)
 ```
 
-## Recoding re-allocated grid spy units {#reallocation}
+## Recoding re-allocated GridSpy units {#reallocation}
 As noted in the introduction, two units were re-allocated to new households during the study. These were:
 
  * rf_15 - allocated to a new household on 20/1/2015
@@ -264,7 +264,7 @@ To avoid confusion the data for each of these units has been split in to rf_XXa/
  * rf_15a and rf_15b
  * rf_17a and rf_17b
 
-Each cleaned safe data file contains both the original hhID (i.e. the gird spy ID) and a new `linkID` which has the same value as hhID except in the case of these four files. The `linkID` variable should always be used to link the grid spy data to the survey or other household level data in the data package.
+Each cleaned safe data file contains both the original hhID (i.e. the GridSpy ID) and a new `linkID` which has the same value as hhID except in the case of these four files. The `linkID` variable should always be used to link the GridSpy data to the survey or other household level data in the data package.
 
 In all subsequent analysis we use `linkID` to give results for each household.
 
@@ -278,7 +278,7 @@ The following plots show the number of observations per day per household. In th
     - duplicate time stamps - i.e. they have the same time stamps but different power (W) values or different circuit labels. These may be expected around the DST changes in April/September. These can be examined on a per household basis using the rf_xx_observationsRatioPlot.png plots to be found in the data package _checkPlots_ folder;
     - observations from files that are in the 'wrong' rf_XX folder and so are included in the 'wrong' household as 'duplicate' time stamps.
 
-If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within it's consolidated household dataset (a _within household absolute duplicate_ check).
+If present both of the latter may have been implied by the table above and would have evaded the de-duplication filter which simply checks each complete row against all others within its consolidated household dataset (a _within household absolute duplicate_ check).
 
 Note that rf_15a is not present as no usable data was obtained from this household.
 
@@ -300,7 +300,7 @@ obsPlot1 <- ggplot2::ggplot(hhStatDT, aes( x = date, y = linkID,
   theme(axis.text.x = element_text(angle = 90, 
                                    vjust = 0.5,
                                    hjust = 0.5)) + 
-  labs(title = "N observations per household per circuit per day for all loaded grid spy data",
+  labs(title = "N observations per household per circuit per day for all loaded GridSpy data",
        caption = myCaption
        
   )
@@ -315,7 +315,7 @@ obsPlot2 <-ggplot2::ggplot(hhStatDT, aes( x = date,
   scale_x_date(date_labels = "%Y %b", date_breaks = "6 months") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, 
                                    hjust = 0.5)) + 
-  labs(title = "N observations per household per circuit per day for all loaded grid spy data",
+  labs(title = "N observations per household per circuit per day for all loaded GridSpy data",
        caption = myCaption
        
   )
@@ -331,7 +331,7 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"), obsPlot2)
 The following table shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
 
  * dates before 2014 or in to the future (indicates date conversion errors);
- * less than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
+ * fewer than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
  * non-integer counts of circuits as it suggests some circuit label errors or changes to the number of circuits monitored over time;
  * NA in any row (indicates date conversion errors).
  
@@ -375,7 +375,7 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
 
 ## Circuit label checks
 
-The following table shows the number of files for each household with different circuit labels. In theory each grid spy id should only have one set of unique circuit labels. If not:
+The following table shows the number of files for each household with different circuit labels. In theory each GridSpy ID should only have one set of unique circuit labels. If not:
 
  * some of the circuit labels for these households may have been changed during the data collection process;
  * some of the circuit labels may have character conversion errors which have changed the labels during the data collection process;
@@ -397,7 +397,7 @@ knitr::kable(caption = "Circuit labels list by number of files per household", d
 
 Things to note:
 
- * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but it's value is always NA so it has been ignored.
+ * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but its value is always NA so it has been ignored.
  * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/dataknut/nzGREENGridDataR/issues/1) but note that this is the only household to have 13 circuits monitored.
 
 Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets.
