@@ -32,7 +32,7 @@ bibliography: '/Users/ben/bibliography.bib'
 
 ## Report circulation:
 
- * Public - this report is intended to accompany the data release.
+ * Public — this report is intended to accompany the data release.
  
 ## License
 
@@ -67,7 +67,7 @@ If you wish to use any of the material from this report please cite as:
 
 ## History
 
-Code history is generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
+Code history is generally tracked via our GitHub [repository](https://github.com/dataknut/nzGREENGridDataR):
 
  * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/docs/ggOverviewReport.Rmd)
  * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
@@ -86,7 +86,7 @@ This work was supported by:
  * The [University of Otago](https://www.otago.ac.nz/);
  * The [University of Southampton](https://www.southampton.ac.uk/);
  * The New Zealand [Ministry of Business, Innovation and Employment (MBIE)](http://www.mbie.govt.nz/) through the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project;
- * [SPATIALEC](http://www.energy.soton.ac.uk/tag/spatialec/) - a [Marie Skłodowska-Curie Global Fellowship](http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm) based at the University of Otago’s [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html) (2017-2019) & the University of Southampton's Sustainable Energy Research Group (2019-202).
+ * [SPATIALEC](http://www.energy.soton.ac.uk/tag/spatialec/) - a [Marie Skłodowska-Curie Global Fellowship](http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm) based at the University of Otago’s [Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html) (2017-2019) & the University of Southampton's Sustainable Energy Research Group (2019-2020).
  
 \newpage
 
@@ -95,7 +95,7 @@ This work was supported by:
 
 The NZ GREEN Grid project recruited a sample of c 25 households in each of two regions of New Zealand. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:
 
- * 1 minute electricity power (W) data was collected for each dwelling circuit using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp.
+ * 1 minute electricity power (W) data was collected for each dwelling circuit using [GridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean (W) over the minute preceeding the observation timestamp.
  * Occupant time-use diaries (focused on energy use)
  * Dwelling & appliance surveys
  
@@ -137,9 +137,9 @@ This report provides an overview of the GREEN Grid project research data. The mo
 ## )
 ```
 
-The project research sample comprises 44 households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). Recruitment was via a non-random (?) sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor of the populations in each location.
+The project research sample comprises 44 households who were recruited in two batches, one starting in May 2014 and the second starting in November 2014 via two local lines companies (Powerco and Unison). Recruitment was via a non-random (?) sampling method and a number of households were intentionally selected for their 'complex' electricity consumption (and embedded generation) patterns and appliances. As a result the sample cannot be assumed to represent the population of customers of either company, nor the populations in each location.
 
-Table \@ref{tab:sampleTable} shows the number in each sample and the dates from which Grid Spy data was collected. As can be seen data is still being collected on some households.
+Table \@ref{tab:sampleTable} shows the number in each sample and the dates from which GridSpy data was collected. As can be seen data is still being collected on some households.
 
 <table>
 <caption>(\#tab:sampleTable)Sample location</caption>
@@ -164,7 +164,7 @@ Table \@ref{tab:sampleTable} shows the number in each sample and the dates from 
 </tbody>
 </table>
 
-Table \@ref{tab:allHhData} shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the clean grid spy data for the relevant households. Linkage between the survey and grid spy data should always use `newID` to avoid errors.
+Table \@ref{tab:allHhData} shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the clean GridSpy data for the relevant households. Linkage between the survey and GridSpy data should always use `newID` to avoid errors.
 
 <table>
 <caption>(\#tab:allHhData)Sample details</caption>
@@ -539,7 +539,7 @@ The households labeled 'NA' were initial pilot/test households who did not form 
 
 # Data collection duration
 
-Figure \@ref{fig:liveDataHouseholds} shows the total number of households for whom grid spy data exists on a given date by sample and indicates that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
+Figure \@ref{fig:liveDataHouseholds} shows the total number of households for whom GridSpy data exists on a given date by sample and indicates that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
 
 <div class="figure">
 <img src="ggOverviewReport_files/figure-html/liveDataHouseholds-1.png" alt="Sample size over time"  />
