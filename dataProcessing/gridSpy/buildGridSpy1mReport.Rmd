@@ -6,7 +6,7 @@ params:
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
-date: 'Last run at: `r Sys.time()`'
+date: 'Last run at: `r getRunDateTime()`'
 output:
   bookdown::html_document2:
     code_folding: hide
