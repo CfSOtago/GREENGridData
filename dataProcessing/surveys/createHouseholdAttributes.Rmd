@@ -42,7 +42,6 @@ nzGREENGridDataR::loadLibraries(rmdLibs)
 
 
 # Local paramaters
-ggrParams$outPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/survey/"
   
 ```
 
@@ -347,7 +346,7 @@ kableExtra::kable(caption = "Notes by location", t)
 # Summary
 
 ```{r saveData}
-ofile <- paste0(ggrParams$outPath, "ggHouseholdAttributes.csv")
+ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributes.csv")
 readr::write_csv(hhAttributesDT, ofile)
 ```
 
