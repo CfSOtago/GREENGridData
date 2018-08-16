@@ -2,7 +2,7 @@
 % Please edit documentation in R/gridSpyData.R
 \name{processHhGridSpyData}
 \alias{processHhGridSpyData}
-\title{Loads and processes a list of gridSpy data files for a given household}
+\title{Loads and processes a list of GridSpy data files for a given household}
 \usage{
 processHhGridSpyData(hh, fileList)
 }

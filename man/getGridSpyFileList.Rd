@@ -2,7 +2,7 @@
 % Please edit documentation in R/gridSpyData.R
 \name{getGridSpyFileList}
 \alias{getGridSpyFileList}
-\title{Gets a list of gridSpy data files matching a pattern}
+\title{Gets a list of GridSpy data files matching a pattern}
 \usage{
 getGridSpyFileList(fpath, pattern, dataThreshold)
 }
