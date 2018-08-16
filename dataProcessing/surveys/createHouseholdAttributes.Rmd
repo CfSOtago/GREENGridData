@@ -51,7 +51,7 @@ nzGREENGridDataR::loadLibraries(rmdLibs)
 
 ## Report circulation:
 
- * Public - this report is intended to accompany the data release.
+ * Public – this report is intended to accompany the data release.
  
 ## License
 
@@ -77,7 +77,7 @@ Specific history of this report:
 
 ## Requirements:
 
-This report uses the original nz GREEN Grid household survey and meta data.
+This report uses the original NZ GREEN Grid household survey and meta data.
 
 ## Support
 
@@ -354,9 +354,9 @@ readr::write_csv(hhAttributesDT, ofile)
 
 The following table (\@ref(tab:dataHeader)) shows the key columns of the household attributes file. The data can be linked to the gridSpy data using `linkID`.
 
-The purpose of the linkID is to enable the flagging of [re-used grid spy units](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units). As an example unit rf_15 was re-used in a different household. We have created `linkID` so that the correct household data (rf_15a or rf_15b) can be linked to the grid spy data (coded rf_15) at the correct date.
+The purpose of the `linkID` is to enable the flagging of [re-used GridSpy units](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units). As an example unit rf_15 was re-used in a different household. We have created `linkID` so that the correct household data (rf_15a or rf_15b) can be linked to the GridSpy data (coded rf_15) at the correct date.
 
-Note also that data exists in the grid spy power demand data for whom no household data exists (e.g. rf_01 & rf_02).
+Note also that data exists in the GridSpy power demand data for whom no household data exists (e.g. rf_01 & rf_02).
 
 ```{r dataHeader}
 knitr::kable(caption = "Household data: key columns", 
@@ -394,7 +394,7 @@ sessionInfo()
 ```
 
 # Energy Cultures 2 Long Survey Questions
-Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [github repo issue](https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest). 
+Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [GitHub repository issue](https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest). 
 
 ```{r loadEc2Labels}
 ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
