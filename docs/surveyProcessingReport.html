@@ -124,7 +124,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">GREEN Grid Data Processing:</h1>
 <h3 class="subtitle"><em>Household Attributes File</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-16 16:55:57 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-16 17:06:13 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -135,7 +135,7 @@ $(document).ready(function () {
 <div id="report-circulation" class="section level2">
 <h2><span class="header-section-number">1.1</span> Report circulation:</h2>
 <ul>
-<li>Public - this report is intended to accompany the data release.</li>
+<li>Public – this report is intended to accompany the data release.</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -176,7 +176,7 @@ $(document).ready(function () {
 </div>
 <div id="requirements" class="section level2">
 <h2><span class="header-section-number">1.5</span> Requirements:</h2>
-<p>This report uses the original nz GREEN Grid household survey and meta data.</p>
+<p>This report uses the original NZ GREEN Grid household survey and meta data.</p>
 </div>
 <div id="support" class="section level2">
 <h2><span class="header-section-number">1.6</span> Support</h2>
@@ -1751,8 +1751,8 @@ n variables: 109</p>
 <div id="summary" class="section level1">
 <h1><span class="header-section-number">6</span> Summary</h1>
 <p>The following table (<a href="#tab:dataHeader"><strong>??</strong></a>) shows the key columns of the household attributes file. The data can be linked to the gridSpy data using <code>linkID</code>.</p>
-<p>The purpose of the linkID is to enable the flagging of <a href="gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units">re-used grid spy units</a>. As an example unit rf_15 was re-used in a different household. We have created <code>linkID</code> so that the correct household data (rf_15a or rf_15b) can be linked to the grid spy data (coded rf_15) at the correct date.</p>
-<p>Note also that data exists in the grid spy power demand data for whom no household data exists (e.g. rf_01 &amp; rf_02).</p>
+<p>The purpose of the <code>linkID</code> is to enable the flagging of <a href="gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units">re-used GridSpy units</a>. As an example unit rf_15 was re-used in a different household. We have created <code>linkID</code> so that the correct household data (rf_15a or rf_15b) can be linked to the GridSpy data (coded rf_15) at the correct date.</p>
+<p>Note also that data exists in the GridSpy power demand data for whom no household data exists (e.g. rf_01 &amp; rf_02).</p>
 <table>
 <colgroup>
 <col width="5%"></col>
@@ -2130,7 +2130,7 @@ n variables: 109</p>
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">7</span> Runtime</h1>
-<p>Analysis completed in 1.82 seconds ( 0.03 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 2.6 seconds ( 0.04 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">8</span> R environment</h1>
@@ -2168,29 +2168,26 @@ n variables: 109</p>
 ## loaded via a namespace (and not attached):
 ##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
 ##  [4] xfun_0.3          reshape2_1.4.3    purrr_0.2.5      
-##  [7] lattice_0.20-35   colorspace_1.3-2  viridisLite_0.3.0
-## [10] htmltools_0.3.6   yaml_2.2.0        utf8_1.1.4       
-## [13] rlang_0.2.1       pillar_1.3.0      withr_2.1.2      
-## [16] glue_1.3.0        sp_1.3-1          jpeg_0.1-8       
-## [19] bindr_0.1.1       plyr_1.8.4        munsell_0.5.0    
-## [22] gtable_0.2.0      cellranger_1.1.0  rvest_0.3.2      
-## [25] RgoogleMaps_1.4.2 mapproj_1.2.6     kableExtra_0.9.0 
-## [28] evaluate_0.11     labeling_0.3      fansi_0.2.3      
-## [31] highr_0.7         proto_1.0.0       Rcpp_0.12.18     
-## [34] geosphere_1.5-7   openssl_1.0.2     backports_1.1.2  
-## [37] scales_0.5.0      rjson_0.2.20      hms_0.4.2        
-## [40] png_0.1-7         digest_0.6.15     stringi_1.2.4    
-## [43] dplyr_0.7.6       rprojroot_1.3-2   grid_3.5.1       
-## [46] cli_1.0.0         tools_3.5.1       magrittr_1.5     
-## [49] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
-## [52] tidyr_0.8.1       crayon_1.3.4      pkgconfig_2.0.1  
-## [55] xml2_1.2.0        prettyunits_1.0.2 httr_1.3.1       
-## [58] assertthat_0.2.0  rstudioapi_0.7    R6_2.2.2         
-## [61] ggmap_2.6.1       compiler_3.5.1</code></pre>
+##  [7] lattice_0.20-35   colorspace_1.3-2  htmltools_0.3.6  
+## [10] yaml_2.2.0        rlang_0.2.1       pillar_1.3.0     
+## [13] withr_2.1.2       glue_1.3.0        sp_1.3-1         
+## [16] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4       
+## [19] munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
+## [22] RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.11    
+## [25] labeling_0.3      highr_0.7         proto_1.0.0      
+## [28] Rcpp_0.12.18      geosphere_1.5-7   openssl_1.0.2    
+## [31] scales_1.0.0      backports_1.1.2   rjson_0.2.20     
+## [34] hms_0.4.2         png_0.1-7         digest_0.6.15    
+## [37] stringi_1.2.4     dplyr_0.7.6       grid_3.5.1       
+## [40] rprojroot_1.3-2   tools_3.5.1       magrittr_1.5     
+## [43] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
+## [46] tidyr_0.8.1       crayon_1.3.4      pkgconfig_2.0.1  
+## [49] prettyunits_1.0.2 assertthat_0.2.0  rstudioapi_0.7   
+## [52] R6_2.2.2          ggmap_2.6.1       compiler_3.5.1</code></pre>
 </div>
 <div id="energy-cultures-2-long-survey-questions" class="section level1">
 <h1><span class="header-section-number">9</span> Energy Cultures 2 Long Survey Questions</h1>
-<p>Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span>. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">github repo issue</a>.</p>
+<p>Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span>. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">GitHub repository issue</a>.</p>
 <table>
 <colgroup>
 <col width="4%"></col>
