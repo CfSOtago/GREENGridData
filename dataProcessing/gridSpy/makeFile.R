@@ -1,5 +1,5 @@
 ### ----- About ---- 
-# Master (make) file for gridSpy data processing. This file lets you:
+# Master (make) file for GridSpy data processing. This file lets you:
 
 # 1: Process the data and update (refresh) all the files. 
 # Only run this if you have substantial new data as it takes a while.
@@ -16,7 +16,7 @@
 # Housekeeping ----
 rm(list=ls(all=TRUE)) # remove all objects from workspace
 
-print(paste0("#--------------- Processing NZ GREEN Grid Grid Spy Data ---------------#"))
+print(paste0("#--------------- Processing NZ GREEN Grid GridSpy Data ---------------#"))
 
 # Load nzGREENGrid package ----
 
