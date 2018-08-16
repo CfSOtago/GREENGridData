@@ -37,9 +37,8 @@ source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
-             "knitr", # for kable
              "stringr", # for str_wrap for long labels on plots
-             "kableExtra" # for extra kable
+             "knitr" # for  kable
 )
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
@@ -452,7 +451,6 @@ R packages used:
  * dplyr - for select and contains [@dplyr]
  * progress - for progress bars [@progress]
  * knitr - to create this document & neat tables [@knitr]
- * kableExtra - for extra neat tables [@kableExtra]
  * nzGREENGridDataR - for local NZ GREEN Grid project utilities
 
 Session info:
