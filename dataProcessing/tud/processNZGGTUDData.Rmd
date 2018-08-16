@@ -78,7 +78,7 @@ If you wish to use any of the material from this report please cite as:
 
 Report circulation:
 
- * Restricted to: [NZ GREEn Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project partners and contractors.
+ * Restricted to: [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project partners and contractors.
 
 ## Purpose
 
@@ -293,7 +293,7 @@ t <- tudUnisonAllDT[, .(nDiaries = .N,
 knitr::kable(caption = "Summary of Unison diaries by household", t)
 ```
 
-Note thaty the tudCodes found in the .csv files are _not_ the gridSpy household ids, we need to create these from the unison sheet in `r linkLUT`.
+Note that the tudCodes found in the .csv files are _not_ the gridSpy household IDs, we need to create these from the unison sheet in `r linkLUT`.
 
 ```{r fixLinkIDs}
 unisonLinkLUTDT <- data.table::as.data.table(read_xlsx(paste0(linkLUT), sheet = "unison"))
