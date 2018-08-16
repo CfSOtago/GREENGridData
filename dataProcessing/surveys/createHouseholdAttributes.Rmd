@@ -292,7 +292,7 @@ hhAttributesDT <- hhAppliancesDT[hhAttributesDT] # why do we need to do this in 
 
 ```{r responseTable}
 t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
-knitr::kable(caption = "Survey responses (NA indicates no survey)", t)
+knitr::kable(t, caption = "Survey responses (NA indicates no survey)")
 ```
 
 # Final household attribute data description

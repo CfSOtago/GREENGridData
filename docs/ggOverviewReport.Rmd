@@ -1,18 +1,9 @@
 ---
 params:
-  title: ""
+ title: ""
 title: '`r params$title`'
 author: '`r ggrParams$Authors`'
 date: 'Last run at: `r getRunDateTime()`'
-output:
-  bookdown::html_document2:
-    code_folding: hide
-    fig_caption: yes
-    number_sections: yes
-    self_contained: yes
-    toc: yes
-    toc_depth: 2
-    toc_float: TRUE
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
@@ -25,7 +16,8 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 
 # Set start time ----
 startTime <- proc.time()
-
+library(nzGREENGridDataR)
+nzGREENGridDataR::setup()
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
@@ -135,7 +127,7 @@ As a result of this process the sample cannot be assumed to represent the popula
 
 Table \@ref(tab:sampleTable) shows the number in each sample.
 
-```{r sampleTable, fig.cap="Sample location"}
+```{r sampleTable}
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 
 knitr::kable(t, caption = "Sample location")
@@ -143,7 +135,7 @@ knitr::kable(t, caption = "Sample location")
 
 Table \@ref(tab:sampleSurveys) shows the number for whom valid appliance and survey data is available in this data package. Note that even those which appear to lack appliance data may have sufficient survey data to deduce appliance ownership (see question numbers `Q19_*` and `Q40_*`).
 
-```{r sampleSurveys, fig.cap="Sample location"}
+```{r sampleSurveys}
 
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location, hasShortSurvey, hasLongSurvey, hasApplianceSummary)]
 
@@ -189,7 +181,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
 
 Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean GridSpy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and GridSpy data should always use `linkID` to avoid errors.
 
-```{r allHhData, fig.cap="Sample details"}
+```{r allHhData}
 knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
 
 ```

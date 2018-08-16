@@ -123,9 +123,9 @@ In addition two of the GridSpy units [were re-used in new households](ggOverview
 
 ## Input data file quality checks
 
-The following chart shows the distribution of the file sizes of _all_ files over time by GridSpy ID. Note that white indicates the presence of small files which may not contain observations.
+The following plot (Figure \@ref(fig:allFileSizesPlot)) shows the distribution of the file sizes of _all_ files over time by GridSpy ID. Note that white indicates the presence of small files which may not contain observations.
 
-```{r allFileSizesPlot}
+```{r allFileSizesPlot, fig.cap="Mean file sizes (all files)"}
 myCaption <- paste0("Data source: ", gSpyParams$gSpyInPath,
                     "\nUsing data received up to ", max(fListCompleteDT$fMDate))
 
@@ -151,9 +151,9 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyAllFileListSizeTilePlot.png"))
 ```
 As we can see, relatively large files were downloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.
 
-The following chart shows the same analysis but _excludes_ files which do not meet the file size threshold and which we therefore assume do not contain data.
+Figure \@ref(fig:loadedFileSizesPlot) shows the same analysis but _excludes_ files which do not meet the file size threshold and which we therefore assume do not contain data.
 
-```{r loadedFileSizesPlot}
+```{r loadedFileSizesPlot, fig.cap="Mean file sizes (file size > threshold)"}
 plotDT <- fListCompleteDT[!is.na(dateFormat), .(nFiles = .N,
                               meanfSize = mean(fSize)), 
                           keyby = .(hhID, date = as.Date(fMDate))]
@@ -172,6 +172,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
   )
 ggplot2::ggsave(paste0(plotLoc, "/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
+
 As we can see this removes a large number of the automatically downloaded files.
 
 ## Input date format checks
@@ -183,7 +184,7 @@ As noted above, the original data was downloaded in two ways:
 
 Resolving and cleaning these variations and uncertainties have required substantial effort and in some cases the date has had to be inferred from the file names.
 
-The following table lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
+Table \@ref(tab:listDefaultDateFilesNZT) lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
 
 ```{r listDefaultDateFilesNZT, echo=TRUE}
 # list default files with NZ time
@@ -196,7 +197,7 @@ cap <- paste0("First 10 (max) of ", nrow(aList),
 knitr::kable(caption = cap, head(aList))
 ```
 
-The following table lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
+Table \@ref(tab:listDefaultDateFilesUTC) lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
 
 ```{r listDefaultDateFilesUTC, echo=TRUE}
 # list default files with UTC time
@@ -209,7 +210,7 @@ cap <- paste0("First 10 (max) of ", nrow(aList),
 knitr::kable(caption = cap, head(aList, 10))
 ```
 
-After final cleaning, the final date formats are:
+After final cleaning, the final date formats are shown in Table \@ref(tab:finalDateFormatTable).
 
 ```{r finalDateFormatTable}
 # See what the date formats look like now
@@ -240,7 +241,7 @@ In this section we analyse the data files that have a file size > `r gSpyParams$
      * The identical (small) file sizes involved.
  * There was substantial duplication of observations, some of which was caused by the different date formats, especially where they run through Daylight Savings Time (DST) changes.
  
-The following table shows the number of files per GridSpy ID that are actually processed to make the safe version together with the min/max file save dates (not the observed data dates).
+Table \@ref(tab:filesToLoadTable) shows the number of files per GridSpy ID that are actually processed to make the safe version together with the min/max file save dates (not the observed data dates).
 
 ```{r filesToLoadTable}
 # check files to load
@@ -285,7 +286,9 @@ Note that rf_15a is not present as no usable data was obtained from this househo
 hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
 ```
 
-```{r obsPlots, fig.height=6}
+Figure \@ref(fig:obsPlotTile) uses a tile plot which is useful for visualising data gaps.
+
+```{r obsPlotTile, fig.height=6, fig.cap="Observations tile plot"}
 myCaption <- paste0(myCaption,
                         "\nOnly files of size > ", 
                         gSpyParams$gSpyFileThreshold, " bytes loaded")
@@ -305,7 +308,11 @@ obsPlot1 <- ggplot2::ggplot(hhStatDT, aes( x = date, y = linkID,
   )
 obsPlot1
 
+```
 
+Figure \@ref(fig:obsPlotPoint) uses a point plot which is useful for visualising days where there was partial data.
+
+```{r obsPlotPoint, fig.height=6, fig.cap="Observations tile plot"}
 # point plot ----
 obsPlot2 <-ggplot2::ggplot(hhStatDT, aes( x = date, 
                                y = nObs/nCircuits, 
@@ -326,8 +333,7 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsTilePlot.png"), obsPlot1)
 ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"), obsPlot2)
 ```
 
-
-The following table shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
+Table \@ref(tab:summaryTable) shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
 
  * dates before 2014 or in to the future (indicates date conversion errors);
  * fewer than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
@@ -336,7 +342,7 @@ The following table shows the min/max number of observations per day and min/max
  
 If we do see any of these then we still have data cleaning work to do!
 
-```{r summaryTable}
+```{r makeSummaryTable}
 # Stats table (so we can pick out the dateTime errors)
 t <- hhStatDT[, .(minObs = min(nObs),
              maxObs = max(nObs), # should not be more than 1440, if so suggests duplicates
@@ -344,14 +350,16 @@ t <- hhStatDT[, .(minObs = min(nObs),
              minDate = min(date),
              maxDate = max(date)),
          keyby = .(linkID)]
+```
 
+```{r summaryTable}
 knitr::kable(caption = "Summary observation stats by hhID", t)
 ```
 
 
-Finally we plot the total number of households for whom we have _any_ data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
+Finally we plot the total number of households for whom we have _any_ data on a given date (Figure \@ref(fig:attritionPlot) This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
 
-```{r attritionPlot}
+```{r attritionPlot, fig.cap="Attrition over time"}
 plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]
 
 # point plot ----
@@ -374,7 +382,7 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
 
 ## Circuit label checks
 
-The following table shows the number of files for each household with different circuit labels. In theory each GridSpy ID should only have one set of unique circuit labels. If not:
+The following table (\@ref(tab:circuitLabelCheck)) shows the number of files for each household with different circuit labels. In theory each GridSpy ID should only have one set of unique circuit labels. If not:
 
  * some of the circuit labels for these households may have been changed during the data collection process;
  * some of the circuit labels may have character conversion errors which have changed the labels during the data collection process;
@@ -399,9 +407,9 @@ Things to note:
  * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but its value is always NA so it has been ignored.
  * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/dataknut/nzGREENGridDataR/issues/1) but note that this is the only household to have 13 circuits monitored.
 
-Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets.
+Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets (see Figure \@ref(fig:plotCircuitLabelIssuesAsTile)).
 
-```{r plotCircuitLabelIssuesAsTile, fig.height=8}
+```{r plotCircuitLabelIssuesAsTile, fig.height=8, fig.cap="Circuit label check plot"}
 
 dt$newx = stringr::str_wrap(dt$circuitLabels, width = 40) #https://stackoverflow.com/questions/21878974/auto-wrapping-of-labels-via-labeller-label-wrap-in-ggplot2
 
@@ -414,9 +422,7 @@ ggplot2::ggplot(dt, aes(y = newx, x = linkID,
   scale_fill_gradient(low="green", high = "red") +
   labs(title = "Circuit label counts for all loaded grid spy data",
        y = "Circuit label sets (as strings)",
-       caption = paste0(myCaption,
-                        "\nOnly files of size > ", 
-                        gSpyParams$gSpyFileThreshold, " bytes loaded")
+       caption = paste0(myCaption)
        
   )
 ```
