@@ -1,5 +1,5 @@
 ### ----- About ---- 
-# R code to process GREEN grid gridSpy data
+# R code to process GREEN grid GridSpy data
 
 # expects to be called from makeFile which will have set parameters used
 
@@ -38,7 +38,7 @@ makePowerPlot  <- function(hh,dt){
     theme(legend.position = "bottom") + 
     labs(title = paste0("Montly mean power profiles by circuit plot: ", hh),
          y = "Mean kW", 
-         caption = paste0("gridSpy data from ", min(dt$r_dateTime), 
+         caption = paste0("GridSpy data from ", min(dt$r_dateTime), 
                           " to ", max(dt$r_dateTime),
                           "\nobsTime = Pacific/Auckland"))
   
@@ -70,7 +70,7 @@ makeObsPlot  <- function(hh,dt){
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
     labs(title = paste0("Expected observations ratio by date & hour plot: ", hh),
          y = "Hour", 
-         caption = paste0("gridSpy data from ", min(dt$r_dateTime), 
+         caption = paste0("GridSpy data from ", min(dt$r_dateTime), 
                           " to ", max(dt$r_dateTime),
                           "\nobsDate = Pacific/Auckland",
                           "\nWe expect ", nExpectedObs, " per hour given ", nCircuits, " circuits",

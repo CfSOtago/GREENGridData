@@ -98,7 +98,7 @@ fixAmbiguousDates <- function(dt){
   return(dt)
 }
 
-#' Gets a list of gridSpy data files matching a pattern
+#' Gets a list of GridSpy data files matching a pattern
 #'
 #' \code{getGridSpyFileList} takes a file path, searches for files matching pattern and returns the filelist as a data.table with metadata.
 #'
@@ -223,7 +223,7 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
   return(dt)
 }
 
-#' Loads and processes a list of gridSpy data files for a given household
+#' Loads and processes a list of GridSpy data files for a given household
 #'
 #' \code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
 #'     
@@ -282,7 +282,7 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 processHhGridSpyData <- function(hh, fileList){
   # Gets all files listed, loads, processes, cleans & merges, saves out in long form
   # Does not check that hh matches file path - XX TO DO XX
-  tempHhDT <- data.table::data.table() # (re)create new hh gridSpy data collector for each loop (hh)
+  tempHhDT <- data.table::data.table() # (re)create new hh GridSpy data collector for each loop (hh)
   pbF <- progress::progress_bar$new(total = length(fileList)) # set progress bar using n files to load
   # X > start of per-file loop ----
   for(f in fileList){ 

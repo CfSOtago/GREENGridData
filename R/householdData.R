@@ -1,4 +1,4 @@
-#' Loads gridSpy household data from .xlsx
+#' Loads GridSpy household data from .xlsx
 #'
 #' \code{getHouseholdData} does what it says. Expects an .xlsx with two sheets, one for each sample.
 #'
@@ -10,7 +10,7 @@
 #'    - n children aged 0-12
 #'    - n chidlren aged 13-18
 #'    - any recruitment or sampling notes
-#'    - date gridSpy monitor disconnected and (potentially) re-used
+#'    - date GridSpy monitor disconnected and (potentially) re-used
 #'    
 #'    Will be extended to include other survey data when available.
 #'
