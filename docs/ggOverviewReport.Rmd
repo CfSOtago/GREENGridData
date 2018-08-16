@@ -3,7 +3,7 @@ params:
   title: ""
 title: '`r params$title`'
 author: '`r ggrParams$Authors`'
-date: 'Last run at: `r Sys.time()`'
+date: 'Last run at: `r getRunDateTime()`'
 output:
   bookdown::html_document2:
     code_folding: hide
@@ -31,7 +31,6 @@ rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
              "lubridate", # for year()
-             "knitr", # for kable
              "stringr", # for str_wrap for long labels on plots
              "knitr" # for kable
 )
@@ -56,7 +55,7 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
 
 ## Report circulation:
 
- * Public - this report is intended to accompany the data release.
+ * Public – this report is intended to accompany the data release.
  
 ## License
 
@@ -75,7 +74,7 @@ This work is (c) `r lubridate::year(today())` the authors and the University of 
 
 ## History
 
-Code history is generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
+Code history is generally tracked via our GitHub [repository](https://github.com/dataknut/nzGREENGridDataR):
 
  * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/docs/ggOverviewReport.Rmd)
  * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
@@ -130,9 +129,9 @@ The lines companies invited their own employees and those of other local compani
  * household size;
  * types of appliances owned.
 
-After informed consent was obtained from each household, an electrician contracted by the two lines companies completed an appliance survey to record detailed information about the appliances in each house. This survey contained information about the number of appliances owned, brand, model number, efficiency and age. The electrician also installed the Grid Spy units which recorded electricity power demand at a circuit level. The Grid Spy units automatically upload the monitoring data to the Grid Spy company's secure database from where it was downloaded by the GREEN Grid research team. 
+After informed consent was obtained from each household, an electrician contracted by the two lines companies completed an appliance survey to record detailed information about the appliances in each house. This survey contained information about the number of appliances owned, brand, model number, efficiency and age. The electrician also installed the GridSpy units which recorded electricity power demand at a circuit level. The GridSpy units automatically upload the monitoring data to the GridSpy company's secure database from where it was downloaded by the GREEN Grid research team. 
 
-As a result of this process the sample cannot be assumed to represent the population of customers (or employees) of any of the companies involved, nor of the populations in each location [@stephenson_smart_2017].
+As a result of this process the sample cannot be assumed to represent the population of customers (or employees) of any of the companies involved, nor the populations in each location [@stephenson_smart_2017].
 
 Table \@ref(tab:sampleTable) shows the number in each sample.
 
@@ -153,9 +152,9 @@ knitr::kable(t, caption = "Sample information")
 
 # Data collection duration
 
-Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom grid spy data exists on a given date by sample. The plot includes _any_ data, including partial data and suggests that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households. More detail on the partiality of data is to be found in the [grid spy data processing report](gridSpy1mProcessingReport.html).
+Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom GridSpy data exists on a given date by sample. The plot includes _any_ data, including partial data and suggests that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households. More detail on the partiality of data is to be found in the [GridSpy data processing report](gridSpy1mProcessingReport.html).
 
-```{r liveDataHouseholds, fig.cap="Number of households sending Grid Spy data by date"}
+```{r liveDataHouseholds, fig.cap="Number of households sending GridSpy data by date"}
 setkey(gsStatDT, linkID)
 dt <- merge(gsStatDT, hhDT, allow.cartesian=TRUE)
 
@@ -176,7 +175,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
   theme(axis.text.x = element_text(angle = 90, 
                                    vjust = 0.5, 
                                    hjust = 0.5)) + 
-  labs(title = "N live households per day for all clean grid spy data",
+  labs(title = "N live households per day for all clean GridSpy data",
        caption = paste0(myCaption, "\nShaded area indicates 12 month period with largest number of households"),
        y = "Number of households"
        
@@ -188,7 +187,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
 
 # Key attributes
 
-Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two grid spy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean grid spy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and grid spy data should always use `linkID` to avoid errors.
+Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean GridSpy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and GridSpy data should always use `linkID` to avoid errors.
 
 ```{r allHhData, fig.cap="Sample details"}
 knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], caption = "Sample details")
@@ -197,7 +196,7 @@ knitr::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][orde
 
 # Known issues
 
-We maintain a [known data issues list](https://github.com/dataknut/nzGREENGridDataR/labels/dataIssue) via our github repo. If you think there is a data issue please check the repo list first and then add a new one if appropriate.
+We maintain a [known data issues list](https://github.com/dataknut/nzGREENGridDataR/labels/dataIssue) via our GitHub repository. If you think there is a data issue please check the repo list first and then add a new one if appropriate.
 
 # Runtime
 
@@ -222,7 +221,6 @@ R packages used:
  * dplyr - for select and contains [@dplyr]
  * progress - for progress bars [@progress]
  * knitr - to create this document & neat tables [@knitr]
- * kableExtra - for extra neat tables [@kableExtra]
  * nzGREENGridDataR - for local NZ GREEN Grid project utilities
 
 Session info:

@@ -5,7 +5,7 @@ params:
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
-date: 'Last run at: `r Sys.time()`'
+date: 'Last run at: `r getRunDateTime()`'
 output:
   bookdown::html_document2:
     code_folding: hide
@@ -35,7 +35,7 @@ rmdLibs <- c("data.table", # data munching
              "readr", # reading/writing csv files
              "readxl", # reading xlsx
              "skimr", # for skim
-             "kableExtra" # for kable
+             "knitr" # for kable & captions
 )
 # load them
 nzGREENGridDataR::loadLibraries(rmdLibs)
@@ -109,7 +109,7 @@ Table \@ref(tab:loadMasterData) shows the number of households in each area.
 hhMasterDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
 setkey(hhMasterDT, linkID)
 t <- with(hhMasterDT, table(Location, useNA = "always"))
-kableExtra::kable(caption = "Sample location (master file)", t)
+knitr::kable(caption = "Sample location (master file)", t)
 ```
 
 In total we have `r nrow(hhMasterDT)` households in two sample areas.
@@ -126,7 +126,7 @@ hhAppliancesDT <- data.table::as.data.table(readxl::read_xlsx(ggrParams$Applianc
 hhAppliancesDT$sample <- NULL # too detailed
 setkey(hhAppliancesDT, linkID)
 t <- with(hhAppliancesDT[hhMasterDT], table(Location, hasApplianceSummary, useNA = "always"))
-kableExtra::kable(caption = "Sample (appliance summary file, NA indicates no data)", t)
+knitr::kable(caption = "Sample (appliance summary file, NA indicates no data)", t)
 ```
 
 The appliances recorded in this summary are shown in Table \@ref(tab:applianceNames).
@@ -134,7 +134,7 @@ The appliances recorded in this summary are shown in Table \@ref(tab:applianceNa
 ```{r applianceNames}
 xcols <- c("linkID", "hasApplianceSummary")
 al <- names(hhAppliancesDT[, -..xcols])
-kableExtra::kable(caption = "Appliances recorded", al)
+knitr::kable(caption = "Appliances recorded", al)
 ```
 
 ## Household survey data
@@ -147,9 +147,9 @@ hhEc2LongDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonLongSur
 hhEc2DT <- data.table::as.data.table(readr::read_csv(ggrParams$PowercoSurveyData))
 ```
 
-Table \@ref(tab:loadEc2Survey) shows the response rates to these surveys.
+Table \@ref(tab:responseTable) shows the response rates to these surveys.
 
-```{r loadEc2Survey}
+```{r loadEc2Survey, include=FALSE}
 # Hawkes Bay short ----
 
 keepShortCols <- c("linkID","hasShortSurvey",
@@ -287,29 +287,31 @@ idDT <- hhEc2CombinedDT[, ..idVars]
 hhAttributesDT <- hhEc2CombinedDT[hhMasterDT]
 hhAttributesDT <- hhAppliancesDT[hhAttributesDT] # why do we need to do this in two steps?
 # if we do it all in one step we get NAs in 'hasShortSurvey' if there is no appliance data?
-# for checking
-idVars <- c("linkID", "hasLongSurvey", "hasShortSurvey")
-idDT <- hhAttributesDT[, ..idVars]
 
+```
+
+```{r responseTable}
 t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
-kableExtra::kable(caption = "Survey responses (NA indicates no survey)", t)
+knitr::kable(caption = "Survey responses (NA indicates no survey)", t)
 ```
 
 # Final household attribute data description
 
-Table \@ref(tab:loadEc2Survey) reports the final household attribute variables and their internal distributions. The question labels are found in Table \@ref(tab:loadEc2Labels) below.
+Table \@ref(tab:skimTable) reports the final household attribute variables and their internal distributions. The question labels are found in Table \@ref(tab:loadEc2Labels) below.
 
 ```{r summariseHhAttributes, include=FALSE}
 #Hmisc::describe(hhAttributesDT)
-t <- skimr::skim(hhAttributesDT)
+skimDF <- skimr::skim(hhAttributesDT)
 ```
 
-```{r skimTable}
-kable(caption = "Data description", t)
+```{r skimTable, results="asis"}
+#https://github.com/ropensci/skimr/blob/master/README.md
+
+skimr::kable(skimDF, caption = "Descriptive summary (all variables)")
 ```
 
 
-# Household attribute tables
+# Household attribute frequency tables
 
 This section reports tables of the key household attributes by sample location. Note that NA usually means not known.
 
@@ -317,21 +319,21 @@ This section reports tables of the key household attributes by sample location. 
 
 ```{r nAdults}
 t <- with(hhAttributesDT, table(nAdults, Location, useNA = "always"))
-kableExtra::kable(caption = "Number of adults in household by location", t)
+knitr::kable(caption = "Number of adults in household by location", t)
 ```
 
 ## Number of teenagers
 
 ```{r nTeens}
 t <- with(hhAttributesDT, table(nTeenagers13_18, Location, useNA = "always"))
-kableExtra::kable(caption = "Number of teenagers in household by location", t)
+knitr::kable(caption = "Number of teenagers in household by location", t)
 ```
 
 ## Number of children
 
 ```{r nChildren}
 t <- with(hhAttributesDT, table(nChildren0_12, Location, useNA = "always"))
-kableExtra::kable(caption = "Number of children in household by location", t)
+knitr::kable(caption = "Number of children in household by location", t)
 ```
 
 ## Notes variable
@@ -340,7 +342,7 @@ kableExtra::kable(caption = "Number of children in household by location", t)
 
 ```{r outliers}
 t <- with(hhAttributesDT, table(notes, Location, useNA = "always"))
-kableExtra::kable(caption = "Notes by location", t)
+knitr::kable(caption = "Notes by location", t)
 ```
 
 # Summary
@@ -350,14 +352,15 @@ ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributes.csv")
 readr::write_csv(hhAttributesDT, ofile)
 ```
 
-The following table shows the key columns of the household attributes file. The data can be linked to the gridSpy data using `linkID`.
+The following table (\@ref(tab:dataHeader)) shows the key columns of the household attributes file. The data can be linked to the gridSpy data using `linkID`.
 
 The purpose of the linkID is to enable the flagging of [re-used grid spy units](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units). As an example unit rf_15 was re-used in a different household. We have created `linkID` so that the correct household data (rf_15a or rf_15b) can be linked to the grid spy data (coded rf_15) at the correct date.
 
 Note also that data exists in the grid spy power demand data for whom no household data exists (e.g. rf_01 & rf_02).
 
-```{r data header}
-kable(caption = "Household data: key columns", hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)])
+```{r dataHeader}
+knitr::kable(caption = "Household data: key columns", 
+             hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)])
 ```
 
 
@@ -379,8 +382,8 @@ R packages used:
  * base R - for the basics [@baseR]
  * data.table - for fast (big) data handling [@data.table]
  * readr - for csv reading/writing [@readr]
- * Hmisc - for describe [@Hmisc]
- * kableExtra - to create neat tables [@kableExtra]
+ * skimr - for skim [@skimr]
+ * knitr - for kable [@knitr]
  * readxl - reading .xlsx [@readxl]
  * nzGREENGridDataR - for local NZ GREEN Grid project utilities
 
@@ -396,7 +399,7 @@ Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Surv
 ```{r loadEc2Labels}
 ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
 
-kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF)
+knitr::kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF)
 ```
 
 # References
