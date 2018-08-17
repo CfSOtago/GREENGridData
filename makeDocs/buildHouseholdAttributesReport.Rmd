@@ -146,7 +146,8 @@ hhAttributesDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttribut
 
 ```{r responseTable}
 t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
-knitr::kable(t, caption = "Survey responses (NA indicates no survey)")
+knitr::kable(t, caption = "Survey responses (NA indicates no survey)") %>%
+  kable_styling()
 ```
 
 # Final household attribute data description
@@ -161,7 +162,8 @@ skimDF <- skimr::skim(hhAttributesDT)
 ```{r skimTable, results="asis"}
 #https://github.com/ropensci/skimr/blob/master/README.md
 
-skimr::kable(skimDF, caption = "Descriptive summary (all variables)")
+skimr::kable(skimDF, caption = "Descriptive summary (all variables)") %>%
+  kable_styling()
 ```
 
 
@@ -173,21 +175,24 @@ This section reports tables of the key household attributes by sample location. 
 
 ```{r nAdults}
 t <- with(hhAttributesDT, table(nAdults, Location, useNA = "always"))
-knitr::kable(caption = "Number of adults in household by location", t)
+knitr::kable(caption = "Number of adults in household by location", t) %>%
+  kable_styling()
 ```
 
 ## Number of teenagers
 
 ```{r nTeens}
 t <- with(hhAttributesDT, table(nTeenagers13_18, Location, useNA = "always"))
-knitr::kable(caption = "Number of teenagers in household by location", t)
+knitr::kable(caption = "Number of teenagers in household by location", t) %>%
+  kable_styling()
 ```
 
 ## Number of children
 
 ```{r nChildren}
 t <- with(hhAttributesDT, table(nChildren0_12, Location, useNA = "always"))
-knitr::kable(caption = "Number of children in household by location", t)
+knitr::kable(caption = "Number of children in household by location", t) %>%
+  kable_styling()
 ```
 
 ## Notes variable
@@ -196,7 +201,8 @@ The `notes` column may have been set for any number of reasons and measn the mon
 
 ```{r outliers}
 t <- with(hhAttributesDT, table(notes, Location, useNA = "always"))
-knitr::kable(caption = "Notes by location", t)
+knitr::kable(caption = "Notes by location", t) %>%
+  kable_styling()
 ```
 
 # Summary
@@ -207,7 +213,8 @@ Note also that data exists in the GridSpy power demand data for whom no househol
 
 ```{r dataHeader}
 knitr::kable(caption = "Household data: key columns", 
-             hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)])
+             hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)]) %>%
+  kable_styling()
 ```
 
 # Runtime
@@ -244,7 +251,8 @@ Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Surv
 ```{r loadEc2Labels}
 ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
 
-knitr::kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF)
+knitr::kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF) %>%
+  kable_styling()
 ```
 
 # References
