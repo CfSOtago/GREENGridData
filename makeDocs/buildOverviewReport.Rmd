@@ -41,7 +41,7 @@ nzGREENGrid::loadLibraries(rmdLibs)
 
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
-plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
+plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/") # where to put the plots
 
   
 # Local functions ----
@@ -138,7 +138,7 @@ Table \@ref(tab:sampleTable) shows the number in each sample.
 ```{r sampleTable}
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 
-knitr::kable(t, caption = "Sample location")
+knitr::kable(t, format = "html", caption = "Sample location")
 ```
 
 Table \@ref(tab:sampleSurveys) shows the number for whom valid appliance and survey data is available in this data package. Note that even those which appear to lack appliance data may have sufficient survey data to deduce appliance ownership (see question numbers `Q19_*` and `Q40_*`).

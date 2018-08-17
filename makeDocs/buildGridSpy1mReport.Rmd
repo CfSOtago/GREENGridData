@@ -20,7 +20,6 @@ bibliography: '`r path.expand("~/bibliography.bib")`'
 
 ```{r knitrSetup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo. Warnings may still be shown.
-options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
 ```
 
 
@@ -116,7 +115,7 @@ Data collection is ongoing and this section reports on the availability of data 
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdrawal of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(tab:reallocation) below.
+In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdrawal of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
 
 ## Input data file quality checks
 
