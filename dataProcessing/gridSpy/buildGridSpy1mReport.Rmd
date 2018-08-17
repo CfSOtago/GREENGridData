@@ -113,17 +113,15 @@ nFiles <- nrow(fListCompleteDT)
 nFilesNotLoaded <- nrow(fListCompleteDT[dateColName %like% "ignore"])
 ```
 
-Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (`r file.mtime(gSpyParams$fListAll)`).
-
-To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` unique GridSpy IDs.
+Data collection is ongoing and this section reports on the availability of data files collected up to the time at which the most recent safe file was created (`r file.mtime(gSpyParams$fListAll)`). To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteDT$hhID))` unique GridSpy IDs.
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdraw of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(tab:reallocation) below.
+In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdrawal of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(tab:reallocation) below.
 
 ## Input data file quality checks
 
-The following plot (Figure \@ref(fig:allFileSizesPlot)) shows the distribution of the file sizes of _all_ files over time by GridSpy ID. Note that white indicates the presence of small files which may not contain observations.
+Figure \@ref(fig:allFileSizesPlot) shows the distribution of the file sizes of _all_ files over time by GridSpy ID. Note that white indicates the presence of small files which may not contain observations.
 
 ```{r allFileSizesPlot, fig.cap="Mean file sizes (all files)"}
 myCaption <- paste0("Data source: ", gSpyParams$gSpyInPath,
@@ -146,12 +144,15 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID,
                         "\nLog file size used as some files are full year data and so extremely large")
     
   )
+```
 
+```{r savePlot1, include=FALSE}
 ggplot2::ggsave(paste0(plotLoc, "gridSpyAllFileListSizeTilePlot.png"))
 ```
+
 As we can see, relatively large files were downloaded (manually) in June and October 2016 before an automated download process was implemented from January 2017. A final manual download appears to have taken place in early December 2017.
 
-Figure \@ref(fig:loadedFileSizesPlot) shows the same analysis but _excludes_ files which do not meet the file size threshold and which we therefore assume do not contain data.
+Figure \@ref(fig:loadedFileSizesPlot) plots the same results but _excludes_ files which do not meet the file size threshold and which we therefore assume do not contain data.
 
 ```{r loadedFileSizesPlot, fig.cap="Mean file sizes (file size > threshold)"}
 plotDT <- fListCompleteDT[!is.na(dateFormat), .(nFiles = .N,
@@ -170,6 +171,9 @@ ggplot2::ggplot(plotDT, aes( x = date, y = hhID, fill = log(meanfSize))) +
                         "\nFiles loaded if fsize > ", gSpyParams$gSpyFileThreshold, " bytes")
     
   )
+```
+
+```{r savePLot2, include=FALSE}
 ggplot2::ggsave(paste0(plotLoc, "/gridSpyLoadedFileListSizeTilePlot.png"))
 ```
 
@@ -194,7 +198,7 @@ aList <- fListCompleteDT[dateColName == "date NZ" & dateFormat %like% "default",
 cap <- paste0("First 10 (max) of ", nrow(aList), 
               " files with dateColName = 'date NZ' and default dateFormat")
 
-knitr::kable(caption = cap, head(aList))
+knitr::kable(caption = cap, head(aList, 10))
 ```
 
 Table \@ref(tab:listDefaultDateFilesUTC) lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...

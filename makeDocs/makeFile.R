@@ -29,7 +29,7 @@ version <- "1.0"
 
 # --- Overview report ----
 title <- paste0("NZ GREEN Grid project: Research data overview (version ", version, ")") 
-rmdFile <- paste0(ggrParams$projLoc, "/docs/ggOverviewReport.Rmd")
+rmdFile <- paste0(ggrParams$projLoc, "makeDocs/ggOverviewReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(title = title),
