@@ -26,11 +26,10 @@ The code in this [repo](https://github.com/dataknut/nzGREENGridDataR) does two t
 Guide to folders:
 
  * data - misc data (not the research data)
- * checkPlots - data quality/check plots for each household produced during processing
- * dataProcessing - r scripts to process data and generate data quality reports
- * examples - r script examples to use on the clean 'safe' data
+ * dataProcessing - r scripts to process data and generate data quality reports (requires access to the original study data)
+ * examples - r script examples to use on the clean anonymised data
  * includes - .Rmd files use in report generation
- * man - r package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/))
+ * man - r package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/) - do not touch!)
  * R - r code implementing the package functions
  * docs - data quality reports published via [githhub pages](https://dataknut.github.io/nzGREENGridDataR/)
  
