@@ -22,10 +22,13 @@ nzGREENGridDataR::loadLibraries(localLibs)
 
 # Local functions ----
 
+# Local parameters ----
+version <- "1.0"
+
 # --- Code ---
 
 # --- Overview report ----
-title <- "NZ GREEN Grid project: Research data overview"
+title <- paste0("NZ GREEN Grid project: Research data overview (Version ", version, ")") 
 rmdFile <- paste0(ggrParams$projLoc, "/docs/ggOverviewReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
@@ -35,7 +38,7 @@ rmarkdown::render(input = rmdFile,
 
 # --- Survey data report ----
 title <- "GREEN Grid Data Processing:"
-subtitle <- "Household Attributes File"
+subtitle <- paste0("Household Attributes File (Version ", version, ")")
 rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/surveys/createHouseholdAttributes.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
@@ -46,7 +49,7 @@ rmarkdown::render(input = rmdFile,
 # --- Grid spy data report ----
 localData <- 0 # 1 = yes
 title <- "NZ GREEN Grid project data processing report"
-subtitle <- "1 minute electricity power"
+subtitle <- paste0("1 minute electricity power (Version ", version, ")")
 rmdFile <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",

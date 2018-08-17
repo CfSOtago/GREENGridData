@@ -1,6 +1,7 @@
 The NZ GREEN Grid project recruited a sample of [c 25 households in each of two regions of New Zealand](ggOverviewReport.html) [@stephenson_smart_2017]. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:
 
- * 1 minute electricity power (W) data was collected for each dwelling circuit using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - [gridSpy1mProcessingReport](gridSpy1mProcessingReport.html);
+ * 1 minute electricity power (W) data was collected for each dwelling circuit using [GridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - [gridSpy1mProcessingReport](gridSpy1mProcessingReport.html);
  * Dwelling & appliance surveys. See - [surveyProcessingReport](surveyProcessingReport.html);
  * Occupant time-use diaries (focused on energy use).
  
+ NB: Version 1 of the data package does not include the time-use diaries.

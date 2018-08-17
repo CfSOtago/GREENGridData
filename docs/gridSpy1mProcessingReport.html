@@ -122,9 +122,9 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">NZ GREEN Grid project data processing report</h1>
-<h3 class="subtitle"><em>1 minute electricity power</em></h3>
+<h3 class="subtitle"><em>1 minute electricity power (Version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-17 10:13:07 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-17 13:03:39 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -163,7 +163,7 @@ $(document).ready(function () {
 <h2><span class="header-section-number">1.3</span> Citation</h2>
 <p>If you wish to use any of the material from this report please cite as:</p>
 <ul>
-<li>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M. (2018) NZ GREEN Grid project data processing report: 1 minute electricity power, <a href="http://www.otago.ac.nz/centre-sustainability/">Centre for Sustainability</a>, University of Otago: Dunedin.</li>
+<li>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M. (2018) NZ GREEN Grid project data processing report: 1 minute electricity power (Version 1.0), <a href="http://www.otago.ac.nz/centre-sustainability/">Centre for Sustainability</a>, University of Otago: Dunedin.</li>
 </ul>
 <p>This work is (c) 2018 the University of Southampton.</p>
 </div>
@@ -185,7 +185,7 @@ $(document).ready(function () {
 <ul>
 <li>The <a href="https://www.otago.ac.nz/">University of Otago</a>;</li>
 <li>The <a href="https://www.southampton.ac.uk/">University of Southampton</a>;</li>
-<li>The New Zealand <a href="http://www.mbie.govt.nz/">Ministry of Business, Innovation and Employment (MBIE)</a> through the <a href="https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html">NZ GREEN Grid</a> project;</li>
+<li>The New Zealand <a href="http://www.mbie.govt.nz/">Ministry of Business, Innovation and Employment (MBIE)</a> through the <a href="https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html">NZ GREEN Grid</a> grant (Contract ID: UOCX1203);</li>
 <li><a href="http://www.energy.soton.ac.uk/tag/spatialec/">SPATIALEC</a> - a <a href="http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm">Marie Skłodowska-Curie Global Fellowship</a> based at the University of Otago’s <a href="http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html">Centre for Sustainability</a> (2017-2019) &amp; the University of Southampton’s Sustainable Energy Research Group (2019-202).</li>
 </ul>
 
@@ -195,10 +195,11 @@ $(document).ready(function () {
 <h1><span class="header-section-number">2</span> Introduction</h1>
 <p>The NZ GREEN Grid project recruited a sample of <a href="ggOverviewReport.html">c 25 households in each of two regions of New Zealand</a> <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
-<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">gridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
+<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">GridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
 <li>Dwelling &amp; appliance surveys. See - <a href="surveyProcessingReport.html">surveyProcessingReport</a>;</li>
 <li>Occupant time-use diaries (focused on energy use).</li>
 </ul>
+<p>NB: Version 1 of the data package does not include the time-use diaries.</p>
 <p>This report provides summary data quality statistics for the original GREEN Grid GridSpy household power demand monitoring data. This data was used to create a derived ‘safe’ dataset using the code in the <a href="https://github.com/dataknut/nzGREENGridDataR">nzGREENGridDataR</a> repository.</p>
 </div>
 <div id="original-data-quality-checks" class="section level1">
@@ -1773,7 +1774,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 34.54 seconds ( 0.58 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 35.1 seconds ( 0.58 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -1815,16 +1816,16 @@ Figure 4.4: Circuit label check plot
 ##  [4] xfun_0.3          reshape2_1.4.3    purrr_0.2.5      
 ##  [7] lattice_0.20-35   colorspace_1.3-2  htmltools_0.3.6  
 ## [10] yaml_2.2.0        utf8_1.1.4        rlang_0.2.1      
-## [13] pillar_1.3.0      glue_1.3.0        withr_2.1.2      
+## [13] pillar_1.3.0      withr_2.1.2       glue_1.3.0       
 ## [16] sp_1.3-1          jpeg_0.1-8        bindr_0.1.1      
 ## [19] plyr_1.8.4        munsell_0.5.0     gtable_0.2.0     
 ## [22] cellranger_1.1.0  RgoogleMaps_1.4.2 mapproj_1.2.6    
 ## [25] evaluate_0.11     labeling_0.3      fansi_0.3.0      
 ## [28] highr_0.7         proto_1.0.0       Rcpp_0.12.18     
-## [31] geosphere_1.5-7   openssl_1.0.2     scales_1.0.0     
-## [34] backports_1.1.2   rjson_0.2.20      hms_0.4.2        
+## [31] geosphere_1.5-7   openssl_1.0.2     backports_1.1.2  
+## [34] scales_1.0.0      rjson_0.2.20      hms_0.4.2        
 ## [37] png_0.1-7         digest_0.6.15     stringi_1.2.4    
-## [40] dplyr_0.7.6       grid_3.5.1        rprojroot_1.3-2  
+## [40] dplyr_0.7.6       rprojroot_1.3-2   grid_3.5.1       
 ## [43] cli_1.0.0         tools_3.5.1       magrittr_1.5     
 ## [46] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
 ## [49] tidyr_0.8.1       crayon_1.3.4      pkgconfig_2.0.1  
