@@ -124,7 +124,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">GREEN Grid Data Processing:</h1>
 <h3 class="subtitle"><em>Household Attributes File (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-17 18:21:12 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-17 18:34:35 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -211,8 +211,9 @@ $(document).ready(function () {
 <h1><span class="header-section-number">3</span> Load data</h1>
 <div id="household-master-dataset" class="section level2">
 <h2><span class="header-section-number">3.1</span> Household master dataset</h2>
-<p>Table <a href="#tab:loadMasterData"><strong>??</strong></a> shows the number of households in each area.</p>
+<p>Table <a href="#tab:loadMasterData">3.1</a> shows the number of households in each area.</p>
 <table>
+<caption><span id="tab:loadMasterData">Table 3.1: </span>Sample location (master file)</caption>
 <thead>
 <tr class="header">
 <th align="left">Location</th>
@@ -238,35 +239,37 @@ $(document).ready(function () {
 </div>
 <div id="appliance-data" class="section level2">
 <h2><span class="header-section-number">3.2</span> Appliance data</h2>
-<p>Household appliance ownership was recorded during recruitment using a detailed survey. However this data is not readily available for all households at present. Table <a href="#tab:applianceTable"><strong>??</strong></a> shows the number of households in each area for whom summary appliance data exists.</p>
+<p>Household appliance ownership was recorded during recruitment using a detailed survey. However this data is not readily available for all households at present. Table <a href="#tab:applianceTable">3.2</a> shows the number of households in each area for whom summary appliance data exists.</p>
 <table>
+<caption><span id="tab:applianceTable">Table 3.2: </span>Sample (appliance summary file, NA indicates no data)</caption>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Yes</th>
 <th align="right">NA</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Hawkes Bay</td>
+<td>Hawkes Bay</td>
 <td align="right">19</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="left">New Plymouth</td>
+<td>New Plymouth</td>
 <td align="right">12</td>
 <td align="right">12</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
+<td>NA</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 </tbody>
 </table>
-<p>The appliances recorded in this summary are shown in Table <a href="#tab:applianceNames"><strong>??</strong></a>.</p>
+<p>The appliances recorded in this summary are shown in Table <a href="#tab:applianceNames">3.3</a>.</p>
 <table>
+<caption><span id="tab:applianceNames">Table 3.3: </span>Appliances recorded</caption>
 <thead>
 <tr class="header">
 <th align="left">x</th>
@@ -328,6 +331,7 @@ $(document).ready(function () {
 <h2><span class="header-section-number">3.3</span> Household survey data</h2>
 <p>The Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span> was used to collect data on household energy and transport attitudes/behaviours and usages for one of the regional samples only. The long form of the survey was used for some households and the short form for others.</p>
 <table>
+<caption><span id="tab:responseTable">Table 3.4: </span>Survey responses (NA indicates no survey)</caption>
 <thead>
 <tr class="header">
 <th align="left">Location</th>
@@ -367,7 +371,7 @@ $(document).ready(function () {
 </div>
 <div id="final-household-attribute-data-description" class="section level1">
 <h1><span class="header-section-number">4</span> Final household attribute data description</h1>
-<p>Table <a href="#tab:skimTable"><strong>??</strong></a> reports the final household attribute variables and their internal distributions. The question labels are found in Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> below.</p>
+<p>Table <a href="#tab:skimTable"><strong>??</strong></a> reports the final household attribute variables and their internal distributions. The question labels are found in Table <a href="#tab:loadEc2Labels">9.1</a> below.</p>
 <p>Skim summary statistics<br />
 n obs: 44<br />
 n variables: 109</p>
@@ -375,296 +379,296 @@ n variables: 109</p>
 <table>
 <thead>
 <tr class="header">
-<th>variable</th>
-<th>missing</th>
-<th>complete</th>
-<th>n</th>
-<th>min</th>
-<th>max</th>
-<th>empty</th>
-<th>n_unique</th>
+<th align="center">variable</th>
+<th align="center">missing</th>
+<th align="center">complete</th>
+<th align="center">n</th>
+<th align="center">min</th>
+<th align="center">max</th>
+<th align="center">empty</th>
+<th align="center">n_unique</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Clothes Dryer</td>
-<td>23</td>
-<td>21</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Clothes Dryer</td>
+<td align="center">23</td>
+<td align="center">21</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>Dishwasher</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Dishwasher</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>Electric heater</td>
-<td>30</td>
-<td>14</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Electric heater</td>
+<td align="center">30</td>
+<td align="center">14</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>Energy Storage</td>
-<td>43</td>
-<td>1</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Energy Storage</td>
+<td align="center">43</td>
+<td align="center">1</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>Fridge / Freezer 1</td>
-<td>13</td>
-<td>31</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Fridge / Freezer 1</td>
+<td align="center">13</td>
+<td align="center">31</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>Fridge / Freezer 2</td>
-<td>24</td>
-<td>20</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Fridge / Freezer 2</td>
+<td align="center">24</td>
+<td align="center">20</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>Fridge / Freezer 3</td>
-<td>38</td>
-<td>6</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Fridge / Freezer 3</td>
+<td align="center">38</td>
+<td align="center">6</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>hasApplianceSummary</td>
-<td>13</td>
-<td>31</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">hasApplianceSummary</td>
+<td align="center">13</td>
+<td align="center">31</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>hasLongSurvey</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">hasLongSurvey</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>hasShortSurvey</td>
-<td>31</td>
-<td>13</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">hasShortSurvey</td>
+<td align="center">31</td>
+<td align="center">13</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>Heated towel rails</td>
-<td>23</td>
-<td>21</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Heated towel rails</td>
+<td align="center">23</td>
+<td align="center">21</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>hhID</td>
-<td>0</td>
-<td>44</td>
-<td>44</td>
-<td>5</td>
-<td>5</td>
-<td>0</td>
-<td>42</td>
+<td align="center">hhID</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">44</td>
+<td align="center">5</td>
+<td align="center">5</td>
+<td align="center">0</td>
+<td align="center">42</td>
 </tr>
 <tr class="odd">
-<td>Hot water cylinder</td>
-<td>16</td>
-<td>28</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Hot water cylinder</td>
+<td align="center">16</td>
+<td align="center">28</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>linkID</td>
-<td>0</td>
-<td>44</td>
-<td>44</td>
-<td>5</td>
-<td>6</td>
-<td>0</td>
-<td>44</td>
+<td align="center">linkID</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">44</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">0</td>
+<td align="center">44</td>
 </tr>
 <tr class="odd">
-<td>Location</td>
-<td>0</td>
-<td>44</td>
-<td>44</td>
-<td>10</td>
-<td>12</td>
-<td>0</td>
-<td>2</td>
+<td align="center">Location</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">44</td>
+<td align="center">10</td>
+<td align="center">12</td>
+<td align="center">0</td>
+<td align="center">2</td>
 </tr>
 <tr class="even">
-<td>Microwave</td>
-<td>14</td>
-<td>30</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Microwave</td>
+<td align="center">14</td>
+<td align="center">30</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>notes</td>
-<td>39</td>
-<td>5</td>
-<td>44</td>
-<td>7</td>
-<td>81</td>
-<td>0</td>
-<td>5</td>
+<td align="center">notes</td>
+<td align="center">39</td>
+<td align="center">5</td>
+<td align="center">44</td>
+<td align="center">7</td>
+<td align="center">81</td>
+<td align="center">0</td>
+<td align="center">5</td>
 </tr>
 <tr class="even">
-<td>Other Appliance</td>
-<td>30</td>
-<td>14</td>
-<td>44</td>
-<td>3</td>
-<td>42</td>
-<td>0</td>
-<td>8</td>
+<td align="center">Other Appliance</td>
+<td align="center">30</td>
+<td align="center">14</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">42</td>
+<td align="center">0</td>
+<td align="center">8</td>
 </tr>
 <tr class="odd">
-<td>Other Generation Device</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Other Generation Device</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td>Oven</td>
-<td>14</td>
-<td>30</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Oven</td>
+<td align="center">14</td>
+<td align="center">30</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="odd">
-<td>PV Inverter</td>
-<td>40</td>
-<td>4</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">PV Inverter</td>
+<td align="center">40</td>
+<td align="center">4</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 <tr class="even">
-<td>Q19_10</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Q19_10</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td>Q19_10.1</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Q19_10.1</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td>Q19_17</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Q19_17</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td>Q19_2</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Q19_2</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td>Q19_5</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Q19_5</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
-<td>Q19_9</td>
-<td>44</td>
-<td>0</td>
-<td>44</td>
-<td>Inf</td>
-<td>-Inf</td>
-<td>0</td>
-<td>0</td>
+<td align="center">Q19_9</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">44</td>
+<td align="center">Inf</td>
+<td align="center">-Inf</td>
+<td align="center">0</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
-<td>Washing Machine</td>
-<td>13</td>
-<td>31</td>
-<td>44</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
+<td align="center">Washing Machine</td>
+<td align="center">13</td>
+<td align="center">31</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
@@ -672,26 +676,26 @@ n variables: 109</p>
 <table>
 <thead>
 <tr class="header">
-<th>variable</th>
-<th>missing</th>
-<th>complete</th>
-<th>n</th>
-<th>min</th>
-<th>max</th>
-<th>median</th>
-<th>n_unique</th>
+<th align="center">variable</th>
+<th align="center">missing</th>
+<th align="center">complete</th>
+<th align="center">n</th>
+<th align="center">min</th>
+<th align="center">max</th>
+<th align="center">median</th>
+<th align="center">n_unique</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>r_stopDate</td>
-<td>41</td>
-<td>3</td>
-<td>44</td>
-<td>2015-01-15</td>
-<td>2016-04-02</td>
-<td>2016-03-28</td>
-<td>3</td>
+<td align="center">r_stopDate</td>
+<td align="center">41</td>
+<td align="center">3</td>
+<td align="center">44</td>
+<td align="center">2015-01-15</td>
+<td align="center">2016-04-02</td>
+<td align="center">2016-03-28</td>
+<td align="center">3</td>
 </tr>
 </tbody>
 </table>
@@ -699,1112 +703,1112 @@ n variables: 109</p>
 <table>
 <thead>
 <tr class="header">
-<th>variable</th>
-<th>missing</th>
-<th>complete</th>
-<th>n</th>
-<th>mean</th>
-<th>sd</th>
-<th>p0</th>
-<th>p25</th>
-<th>p50</th>
-<th>p75</th>
-<th>p100</th>
-<th>hist</th>
+<th align="center">variable</th>
+<th align="center">missing</th>
+<th align="center">complete</th>
+<th align="center">n</th>
+<th align="center">mean</th>
+<th align="center">sd</th>
+<th align="center">p0</th>
+<th align="center">p25</th>
+<th align="center">p50</th>
+<th align="center">p75</th>
+<th align="center">p100</th>
+<th align="center">hist</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Heat pump number</td>
-<td>19</td>
-<td>25</td>
-<td>44</td>
-<td>1.16</td>
-<td>0.55</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Heat pump number</td>
+<td align="center">19</td>
+<td align="center">25</td>
+<td align="center">44</td>
+<td align="center">1.16</td>
+<td align="center">0.55</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>nAdults</td>
-<td>1</td>
-<td>43</td>
-<td>44</td>
-<td>1.93</td>
-<td>0.51</td>
-<td>1</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>3</td>
-<td>▂▁▁▇▁▁▁▁</td>
+<td align="center">nAdults</td>
+<td align="center">1</td>
+<td align="center">43</td>
+<td align="center">44</td>
+<td align="center">1.93</td>
+<td align="center">0.51</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">▂▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>nChildren0_12</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>1.02</td>
-<td>1.02</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>▇▁▅▁▁▅▁▂</td>
+<td align="center">nChildren0_12</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">1.02</td>
+<td align="center">1.02</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">▇▁▅▁▁▅▁▂</td>
 </tr>
 <tr class="even">
-<td>nTeenagers13_18</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>0.26</td>
-<td>0.54</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>▇▁▁▂▁▁▁▁</td>
+<td align="center">nTeenagers13_18</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">0.26</td>
+<td align="center">0.54</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">2</td>
+<td align="center">▇▁▁▂▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_1_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>3.38</td>
-<td>0.9</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>4</td>
-<td>6</td>
-<td>▂▇▁▆▁▁▁▁</td>
+<td align="center">Q10#1_1_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">3.38</td>
+<td align="center">0.9</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">6</td>
+<td align="center">▂▇▁▆▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q10#1_1_2_TEXT</td>
-<td>16</td>
-<td>28</td>
-<td>44</td>
-<td>1.57</td>
-<td>1.4</td>
-<td>0</td>
-<td>0.75</td>
-<td>1.5</td>
-<td>2</td>
-<td>6</td>
-<td>▆▆▇▂▁▁▁▁</td>
+<td align="center">Q10#1_1_2_TEXT</td>
+<td align="center">16</td>
+<td align="center">28</td>
+<td align="center">44</td>
+<td align="center">1.57</td>
+<td align="center">1.4</td>
+<td align="center">0</td>
+<td align="center">0.75</td>
+<td align="center">1.5</td>
+<td align="center">2</td>
+<td align="center">6</td>
+<td align="center">▆▆▇▂▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_2_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.38</td>
-<td>0.49</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>2</td>
-<td>▇▁▁▁▁▁▁▅</td>
+<td align="center">Q10#1_2_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.38</td>
+<td align="center">0.49</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">▇▁▁▁▁▁▁▅</td>
 </tr>
 <tr class="even">
-<td>Q10#1_2_2_TEXT</td>
-<td>16</td>
-<td>28</td>
-<td>44</td>
-<td>1.32</td>
-<td>0.67</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1.25</td>
-<td>4</td>
-<td>▇▁▂▁▁▁▁▁</td>
+<td align="center">Q10#1_2_2_TEXT</td>
+<td align="center">16</td>
+<td align="center">28</td>
+<td align="center">44</td>
+<td align="center">1.32</td>
+<td align="center">0.67</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1.25</td>
+<td align="center">4</td>
+<td align="center">▇▁▂▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_3_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q10#1_3_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q10#1_3_2_TEXT</td>
-<td>18</td>
-<td>26</td>
-<td>44</td>
-<td>0.92</td>
-<td>0.27</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▁▁▁▁▇</td>
+<td align="center">Q10#1_3_2_TEXT</td>
+<td align="center">18</td>
+<td align="center">26</td>
+<td align="center">44</td>
+<td align="center">0.92</td>
+<td align="center">0.27</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_4_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>0.14</td>
-<td>0.35</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q10#1_4_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">0.14</td>
+<td align="center">0.35</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q10#1_4_2_TEXT</td>
-<td>26</td>
-<td>18</td>
-<td>44</td>
-<td>0.11</td>
-<td>0.32</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q10#1_4_2_TEXT</td>
+<td align="center">26</td>
+<td align="center">18</td>
+<td align="center">44</td>
+<td align="center">0.11</td>
+<td align="center">0.32</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_5_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>0.34</td>
-<td>0.48</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>▇▁▁▁▁▁▁▅</td>
+<td align="center">Q10#1_5_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">0.34</td>
+<td align="center">0.48</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▇▁▁▁▁▁▁▅</td>
 </tr>
 <tr class="even">
-<td>Q10#1_5_2_TEXT</td>
-<td>24</td>
-<td>20</td>
-<td>44</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q10#1_5_2_TEXT</td>
+<td align="center">24</td>
+<td align="center">20</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_6_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.62</td>
-<td>0.62</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>2</td>
-<td>3</td>
-<td>▇▁▁▇▁▁▁▁</td>
+<td align="center">Q10#1_6_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.62</td>
+<td align="center">0.62</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q10#1_6_2_TEXT</td>
-<td>23</td>
-<td>21</td>
-<td>44</td>
-<td>0.43</td>
-<td>0.87</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q10#1_6_2_TEXT</td>
+<td align="center">23</td>
+<td align="center">21</td>
+<td align="center">44</td>
+<td align="center">0.43</td>
+<td align="center">0.87</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_7_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>0.69</td>
-<td>0.54</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>▅▁▁▇▁▁▁▁</td>
+<td align="center">Q10#1_7_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">0.69</td>
+<td align="center">0.54</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">▅▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q10#1_7_2_TEXT</td>
-<td>26</td>
-<td>18</td>
-<td>44</td>
-<td>0.056</td>
-<td>0.24</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q10#1_7_2_TEXT</td>
+<td align="center">26</td>
+<td align="center">18</td>
+<td align="center">44</td>
+<td align="center">0.056</td>
+<td align="center">0.24</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q10#1_8_1_TEXT</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>0.83</td>
-<td>0.38</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▂▁▁▁▁▁▁▇</td>
+<td align="center">Q10#1_8_1_TEXT</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">0.83</td>
+<td align="center">0.38</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▂▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q10#1_8_2_TEXT</td>
-<td>25</td>
-<td>19</td>
-<td>44</td>
-<td>0.053</td>
-<td>0.23</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q10#1_8_2_TEXT</td>
+<td align="center">25</td>
+<td align="center">19</td>
+<td align="center">44</td>
+<td align="center">0.053</td>
+<td align="center">0.23</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q11_1</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>7.76</td>
-<td>1.83</td>
-<td>4</td>
-<td>7</td>
-<td>8</td>
-<td>9</td>
-<td>10</td>
-<td>▂▁▂▅▁▅▇▃</td>
+<td align="center">Q11_1</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">7.76</td>
+<td align="center">1.83</td>
+<td align="center">4</td>
+<td align="center">7</td>
+<td align="center">8</td>
+<td align="center">9</td>
+<td align="center">10</td>
+<td align="center">▂▁▂▅▁▅▇▃</td>
 </tr>
 <tr class="even">
-<td>Q15_1</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>14.03</td>
-<td>9.76</td>
-<td>3</td>
-<td>7</td>
-<td>10</td>
-<td>20</td>
-<td>44</td>
-<td>▇▇▃▃▁▂▁▁</td>
+<td align="center">Q15_1</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">14.03</td>
+<td align="center">9.76</td>
+<td align="center">3</td>
+<td align="center">7</td>
+<td align="center">10</td>
+<td align="center">20</td>
+<td align="center">44</td>
+<td align="center">▇▇▃▃▁▂▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q17_1</td>
-<td>28</td>
-<td>16</td>
-<td>44</td>
-<td>20.31</td>
-<td>1.58</td>
-<td>18</td>
-<td>19</td>
-<td>20</td>
-<td>21</td>
-<td>24</td>
-<td>▃▆▇▇▁▃▁▂</td>
+<td align="center">Q17_1</td>
+<td align="center">28</td>
+<td align="center">16</td>
+<td align="center">44</td>
+<td align="center">20.31</td>
+<td align="center">1.58</td>
+<td align="center">18</td>
+<td align="center">19</td>
+<td align="center">20</td>
+<td align="center">21</td>
+<td align="center">24</td>
+<td align="center">▃▆▇▇▁▃▁▂</td>
 </tr>
 <tr class="even">
-<td>Q18_1</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>20.69</td>
-<td>1.58</td>
-<td>18</td>
-<td>20</td>
-<td>20</td>
-<td>22</td>
-<td>23</td>
-<td>▂▂▁▇▃▁▅▅</td>
+<td align="center">Q18_1</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">20.69</td>
+<td align="center">1.58</td>
+<td align="center">18</td>
+<td align="center">20</td>
+<td align="center">20</td>
+<td align="center">22</td>
+<td align="center">23</td>
+<td align="center">▂▂▁▇▃▁▅▅</td>
 </tr>
 <tr class="odd">
-<td>Q19_1</td>
-<td>28</td>
-<td>16</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_1</td>
+<td align="center">28</td>
+<td align="center">16</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q19_12</td>
-<td>37</td>
-<td>7</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_12</td>
+<td align="center">37</td>
+<td align="center">7</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q19_13</td>
-<td>42</td>
-<td>2</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_13</td>
+<td align="center">42</td>
+<td align="center">2</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q19_14</td>
-<td>43</td>
-<td>1</td>
-<td>44</td>
-<td>1</td>
-<td>NA</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_14</td>
+<td align="center">43</td>
+<td align="center">1</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q19_15</td>
-<td>42</td>
-<td>2</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_15</td>
+<td align="center">42</td>
+<td align="center">2</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q19_16</td>
-<td>40</td>
-<td>4</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_16</td>
+<td align="center">40</td>
+<td align="center">4</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q19_3</td>
-<td>31</td>
-<td>13</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_3</td>
+<td align="center">31</td>
+<td align="center">13</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q19_4</td>
-<td>37</td>
-<td>7</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_4</td>
+<td align="center">37</td>
+<td align="center">7</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q19_6</td>
-<td>29</td>
-<td>15</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_6</td>
+<td align="center">29</td>
+<td align="center">15</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q19_7</td>
-<td>40</td>
-<td>4</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_7</td>
+<td align="center">40</td>
+<td align="center">4</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q19_8</td>
-<td>43</td>
-<td>1</td>
-<td>44</td>
-<td>1</td>
-<td>NA</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q19_8</td>
+<td align="center">43</td>
+<td align="center">1</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q30_1</td>
-<td>36</td>
-<td>8</td>
-<td>44</td>
-<td>19</td>
-<td>2.07</td>
-<td>16</td>
-<td>18</td>
-<td>18</td>
-<td>21</td>
-<td>22</td>
-<td>▂▁▇▁▁▁▃▂</td>
+<td align="center">Q30_1</td>
+<td align="center">36</td>
+<td align="center">8</td>
+<td align="center">44</td>
+<td align="center">19</td>
+<td align="center">2.07</td>
+<td align="center">16</td>
+<td align="center">18</td>
+<td align="center">18</td>
+<td align="center">21</td>
+<td align="center">22</td>
+<td align="center">▂▁▇▁▁▁▃▂</td>
 </tr>
 <tr class="odd">
-<td>Q33_1</td>
-<td>28</td>
-<td>16</td>
-<td>44</td>
-<td>57.06</td>
-<td>4.57</td>
-<td>50</td>
-<td>54</td>
-<td>56.5</td>
-<td>60</td>
-<td>65</td>
-<td>▃▂▇▃▂▇▁▃</td>
+<td align="center">Q33_1</td>
+<td align="center">28</td>
+<td align="center">16</td>
+<td align="center">44</td>
+<td align="center">57.06</td>
+<td align="center">4.57</td>
+<td align="center">50</td>
+<td align="center">54</td>
+<td align="center">56.5</td>
+<td align="center">60</td>
+<td align="center">65</td>
+<td align="center">▃▂▇▃▂▇▁▃</td>
 </tr>
 <tr class="even">
-<td>Q4</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>14.45</td>
-<td>3.83</td>
-<td>1</td>
-<td>15</td>
-<td>15</td>
-<td>16</td>
-<td>17</td>
-<td>▁▁▁▁▁▁▇▆</td>
+<td align="center">Q4</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">14.45</td>
+<td align="center">3.83</td>
+<td align="center">1</td>
+<td align="center">15</td>
+<td align="center">15</td>
+<td align="center">16</td>
+<td align="center">17</td>
+<td align="center">▁▁▁▁▁▁▇▆</td>
 </tr>
 <tr class="odd">
-<td>Q40_1</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.31</td>
-<td>0.54</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>▇▁▁▂▁▁▁▁</td>
+<td align="center">Q40_1</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.31</td>
+<td align="center">0.54</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▂▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q40_10</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.55</td>
-<td>0.74</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▂▁▁▂▁▁▁▇</td>
+<td align="center">Q40_10</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.55</td>
+<td align="center">0.74</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▂▁▁▂▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_11</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2</td>
-<td>0.93</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>▇▁▁▃▁▁▁▇</td>
+<td align="center">Q40_11</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2</td>
+<td align="center">0.93</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▃▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q40_12</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.97</td>
-<td>1.02</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▇</td>
+<td align="center">Q40_12</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.97</td>
+<td align="center">1.02</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_13</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.86</td>
-<td>0.52</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▁▁▁▁▁▁▁▇</td>
+<td align="center">Q40_13</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.86</td>
+<td align="center">0.52</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▁▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q40_14</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.28</td>
-<td>0.84</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▃▁▁▃▁▁▁▇</td>
+<td align="center">Q40_14</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.28</td>
+<td align="center">0.84</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▃▁▁▃▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_15</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.1</td>
-<td>0.9</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>▆▁▁▃▁▁▁▇</td>
+<td align="center">Q40_15</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.1</td>
+<td align="center">0.9</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▆▁▁▃▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q40_16</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q40_16</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q40_17</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.76</td>
-<td>0.99</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▅</td>
+<td align="center">Q40_17</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.76</td>
+<td align="center">0.99</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▅</td>
 </tr>
 <tr class="even">
-<td>Q40_18</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.24</td>
-<td>0.99</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▅▁▁▁▁▁▁▇</td>
+<td align="center">Q40_18</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.24</td>
+<td align="center">0.99</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▅▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_19</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>3</td>
-<td>0</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q40_19</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q40_2</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.79</td>
-<td>0.62</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▁▁▁▁▁▁▁▇</td>
+<td align="center">Q40_2</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.79</td>
+<td align="center">0.62</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▁▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_20</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.93</td>
-<td>0.37</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▁▁▁▁▁▁▁▇</td>
+<td align="center">Q40_20</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.93</td>
+<td align="center">0.37</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▁▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q40_21</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.93</td>
-<td>0.96</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>▇▁▁▂▁▁▁▇</td>
+<td align="center">Q40_21</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.93</td>
+<td align="center">0.96</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▂▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_3</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.93</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▇</td>
+<td align="center">Q40_3</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.93</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q40_38</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.24</td>
-<td>0.64</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q40_38</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.24</td>
+<td align="center">0.64</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q40_4</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>3</td>
-<td>0</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q40_4</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q40_5</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.31</td>
-<td>0.85</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▃▁▁▃▁▁▁▇</td>
+<td align="center">Q40_5</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.31</td>
+<td align="center">0.85</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▃▁▁▃▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_6</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>1.9</td>
-<td>1.01</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>▇▁▁▁▁▁▁▆</td>
+<td align="center">Q40_6</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">1.9</td>
+<td align="center">1.01</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▇▁▁▁▁▁▁▆</td>
 </tr>
 <tr class="even">
-<td>Q40_7</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.55</td>
-<td>0.83</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▂▁▁▁▁▁▁▇</td>
+<td align="center">Q40_7</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.55</td>
+<td align="center">0.83</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▂▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q40_9</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>2.14</td>
-<td>0.95</td>
-<td>1</td>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>3</td>
-<td>▆▁▁▂▁▁▁▇</td>
+<td align="center">Q40_9</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">2.14</td>
+<td align="center">0.95</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">▆▁▁▂▁▁▁▇</td>
 </tr>
 <tr class="even">
-<td>Q5</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>9.66</td>
-<td>0.77</td>
-<td>8</td>
-<td>10</td>
-<td>10</td>
-<td>10</td>
-<td>10</td>
-<td>▂▁▁▁▁▁▁▇</td>
+<td align="center">Q5</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">9.66</td>
+<td align="center">0.77</td>
+<td align="center">8</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">▂▁▁▁▁▁▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q53_1</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>157.24</td>
-<td>78.38</td>
-<td>50</td>
-<td>100.5</td>
-<td>140</td>
-<td>197.5</td>
-<td>429</td>
-<td>▆▇▇▃▂▁▁▁</td>
+<td align="center">Q53_1</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">157.24</td>
+<td align="center">78.38</td>
+<td align="center">50</td>
+<td align="center">100.5</td>
+<td align="center">140</td>
+<td align="center">197.5</td>
+<td align="center">429</td>
+<td align="center">▆▇▇▃▂▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q53_2</td>
-<td>25</td>
-<td>19</td>
-<td>44</td>
-<td>31.11</td>
-<td>23.06</td>
-<td>0</td>
-<td>9.5</td>
-<td>40</td>
-<td>50</td>
-<td>60</td>
-<td>▇▁▅▂▁▃▇▅</td>
+<td align="center">Q53_2</td>
+<td align="center">25</td>
+<td align="center">19</td>
+<td align="center">44</td>
+<td align="center">31.11</td>
+<td align="center">23.06</td>
+<td align="center">0</td>
+<td align="center">9.5</td>
+<td align="center">40</td>
+<td align="center">50</td>
+<td align="center">60</td>
+<td align="center">▇▁▅▂▁▃▇▅</td>
 </tr>
 <tr class="odd">
-<td>Q53_3</td>
-<td>37</td>
-<td>7</td>
-<td>44</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q53_3</td>
+<td align="center">37</td>
+<td align="center">7</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q53_4</td>
-<td>34</td>
-<td>10</td>
-<td>44</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q53_4</td>
+<td align="center">34</td>
+<td align="center">10</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q53_5</td>
-<td>28</td>
-<td>16</td>
-<td>44</td>
-<td>224.38</td>
-<td>178.13</td>
-<td>0</td>
-<td>75</td>
-<td>226</td>
-<td>352.5</td>
-<td>500</td>
-<td>▇▃▂▂▆▂▁▇</td>
+<td align="center">Q53_5</td>
+<td align="center">28</td>
+<td align="center">16</td>
+<td align="center">44</td>
+<td align="center">224.38</td>
+<td align="center">178.13</td>
+<td align="center">0</td>
+<td align="center">75</td>
+<td align="center">226</td>
+<td align="center">352.5</td>
+<td align="center">500</td>
+<td align="center">▇▃▂▂▆▂▁▇</td>
 </tr>
 <tr class="even">
-<td>Q53_6</td>
-<td>36</td>
-<td>8</td>
-<td>44</td>
-<td>16.62</td>
-<td>47.02</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>133</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q53_6</td>
+<td align="center">36</td>
+<td align="center">8</td>
+<td align="center">44</td>
+<td align="center">16.62</td>
+<td align="center">47.02</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">133</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q53_7</td>
-<td>36</td>
-<td>8</td>
-<td>44</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q53_7</td>
+<td align="center">36</td>
+<td align="center">8</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q54_1</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>213.62</td>
-<td>100.9</td>
-<td>60</td>
-<td>146.25</td>
-<td>200</td>
-<td>258.75</td>
-<td>485</td>
-<td>▃▇▇▆▃▂▁▂</td>
+<td align="center">Q54_1</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">213.62</td>
+<td align="center">100.9</td>
+<td align="center">60</td>
+<td align="center">146.25</td>
+<td align="center">200</td>
+<td align="center">258.75</td>
+<td align="center">485</td>
+<td align="center">▃▇▇▆▃▂▁▂</td>
 </tr>
 <tr class="odd">
-<td>Q54_2</td>
-<td>24</td>
-<td>20</td>
-<td>44</td>
-<td>56.55</td>
-<td>51.54</td>
-<td>0</td>
-<td>19.75</td>
-<td>50</td>
-<td>80.75</td>
-<td>180</td>
-<td>▇▂▇▃▂▁▁▂</td>
+<td align="center">Q54_2</td>
+<td align="center">24</td>
+<td align="center">20</td>
+<td align="center">44</td>
+<td align="center">56.55</td>
+<td align="center">51.54</td>
+<td align="center">0</td>
+<td align="center">19.75</td>
+<td align="center">50</td>
+<td align="center">80.75</td>
+<td align="center">180</td>
+<td align="center">▇▂▇▃▂▁▁▂</td>
 </tr>
 <tr class="even">
-<td>Q54_3</td>
-<td>37</td>
-<td>7</td>
-<td>44</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q54_3</td>
+<td align="center">37</td>
+<td align="center">7</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q54_4</td>
-<td>28</td>
-<td>16</td>
-<td>44</td>
-<td>87.38</td>
-<td>115.96</td>
-<td>0</td>
-<td>18.75</td>
-<td>56.5</td>
-<td>100.75</td>
-<td>451</td>
-<td>▇▆▁▁▁▁▁▁</td>
+<td align="center">Q54_4</td>
+<td align="center">28</td>
+<td align="center">16</td>
+<td align="center">44</td>
+<td align="center">87.38</td>
+<td align="center">115.96</td>
+<td align="center">0</td>
+<td align="center">18.75</td>
+<td align="center">56.5</td>
+<td align="center">100.75</td>
+<td align="center">451</td>
+<td align="center">▇▆▁▁▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q54_5</td>
-<td>29</td>
-<td>15</td>
-<td>44</td>
-<td>241.8</td>
-<td>172.44</td>
-<td>0</td>
-<td>115</td>
-<td>252</td>
-<td>385</td>
-<td>500</td>
-<td>▆▃▂▂▆▂▁▇</td>
+<td align="center">Q54_5</td>
+<td align="center">29</td>
+<td align="center">15</td>
+<td align="center">44</td>
+<td align="center">241.8</td>
+<td align="center">172.44</td>
+<td align="center">0</td>
+<td align="center">115</td>
+<td align="center">252</td>
+<td align="center">385</td>
+<td align="center">500</td>
+<td align="center">▆▃▂▂▆▂▁▇</td>
 </tr>
 <tr class="odd">
-<td>Q54_6</td>
-<td>35</td>
-<td>9</td>
-<td>44</td>
-<td>15.56</td>
-<td>46.67</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>140</td>
-<td>▇▁▁▁▁▁▁▁</td>
+<td align="center">Q54_6</td>
+<td align="center">35</td>
+<td align="center">9</td>
+<td align="center">44</td>
+<td align="center">15.56</td>
+<td align="center">46.67</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">140</td>
+<td align="center">▇▁▁▁▁▁▁▁</td>
 </tr>
 <tr class="even">
-<td>Q54_7</td>
-<td>37</td>
-<td>7</td>
-<td>44</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>▁▁▁▇▁▁▁▁</td>
+<td align="center">Q54_7</td>
+<td align="center">37</td>
+<td align="center">7</td>
+<td align="center">44</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">▁▁▁▇▁▁▁▁</td>
 </tr>
 <tr class="odd">
-<td>Q55</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>12.88</td>
-<td>4.55</td>
-<td>4</td>
-<td>10</td>
-<td>12.5</td>
-<td>16</td>
-<td>26</td>
-<td>▂▃▇▅▃▅▁▁</td>
+<td align="center">Q55</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">12.88</td>
+<td align="center">4.55</td>
+<td align="center">4</td>
+<td align="center">10</td>
+<td align="center">12.5</td>
+<td align="center">16</td>
+<td align="center">26</td>
+<td align="center">▂▃▇▅▃▅▁▁</td>
 </tr>
 <tr class="even">
-<td>Q57</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>3.17</td>
-<td>1.34</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>6</td>
-<td>▃▇▁▇▇▁▃▂</td>
+<td align="center">Q57</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">3.17</td>
+<td align="center">1.34</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">6</td>
+<td align="center">▃▇▁▇▇▁▃▂</td>
 </tr>
 <tr class="odd">
-<td>Q58#2_1</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>42.07</td>
-<td>9.29</td>
-<td>28</td>
-<td>34.25</td>
-<td>41.5</td>
-<td>49</td>
-<td>64</td>
-<td>▆▇▃▅▇▂▁▂</td>
+<td align="center">Q58#2_1</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">42.07</td>
+<td align="center">9.29</td>
+<td align="center">28</td>
+<td align="center">34.25</td>
+<td align="center">41.5</td>
+<td align="center">49</td>
+<td align="center">64</td>
+<td align="center">▆▇▃▅▇▂▁▂</td>
 </tr>
 <tr class="even">
-<td>Q7</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>2</td>
-<td>1.1</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>▇▁▅▁▁▃▁▂</td>
+<td align="center">Q7</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">2</td>
+<td align="center">1.1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">▇▁▅▁▁▃▁▂</td>
 </tr>
 </tbody>
 </table>
@@ -1812,34 +1816,34 @@ n variables: 109</p>
 <table>
 <thead>
 <tr class="header">
-<th>variable</th>
-<th>missing</th>
-<th>complete</th>
-<th>n</th>
-<th>mean</th>
-<th>sd</th>
-<th>p0</th>
-<th>p25</th>
-<th>p50</th>
-<th>p75</th>
-<th>p100</th>
-<th>hist</th>
+<th align="center">variable</th>
+<th align="center">missing</th>
+<th align="center">complete</th>
+<th align="center">n</th>
+<th align="center">mean</th>
+<th align="center">sd</th>
+<th align="center">p0</th>
+<th align="center">p25</th>
+<th align="center">p50</th>
+<th align="center">p75</th>
+<th align="center">p100</th>
+<th align="center">hist</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Q14_1</td>
-<td>15</td>
-<td>29</td>
-<td>44</td>
-<td>5.28</td>
-<td>5.03</td>
-<td>0</td>
-<td>1</td>
-<td>3.5</td>
-<td>7</td>
-<td>20</td>
-<td>▇▆▅▂▁▁▁▁</td>
+<td align="center">Q14_1</td>
+<td align="center">15</td>
+<td align="center">29</td>
+<td align="center">44</td>
+<td align="center">5.28</td>
+<td align="center">5.03</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">3.5</td>
+<td align="center">7</td>
+<td align="center">20</td>
+<td align="center">▇▆▅▂▁▁▁▁</td>
 </tr>
 </tbody>
 </table>
@@ -1847,26 +1851,26 @@ n variables: 109</p>
 <table>
 <thead>
 <tr class="header">
-<th>variable</th>
-<th>missing</th>
-<th>complete</th>
-<th>n</th>
-<th>min</th>
-<th>max</th>
-<th>median</th>
-<th>n_unique</th>
+<th align="center">variable</th>
+<th align="center">missing</th>
+<th align="center">complete</th>
+<th align="center">n</th>
+<th align="center">min</th>
+<th align="center">max</th>
+<th align="center">median</th>
+<th align="center">n_unique</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>surveyStartDate</td>
-<td>2</td>
-<td>42</td>
-<td>44</td>
-<td>2020-01-06</td>
-<td>2020-12-19</td>
-<td>2020-05-14</td>
-<td>42</td>
+<td align="center">surveyStartDate</td>
+<td align="center">2</td>
+<td align="center">42</td>
+<td align="center">44</td>
+<td align="center">2020-01-06</td>
+<td align="center">2020-12-19</td>
+<td align="center">2020-05-14</td>
+<td align="center">42</td>
 </tr>
 </tbody>
 </table>
@@ -1877,9 +1881,10 @@ n variables: 109</p>
 <div id="number-of-adults" class="section level2">
 <h2><span class="header-section-number">5.1</span> Number of adults</h2>
 <table>
+<caption><span id="tab:nAdults">Table 5.1: </span>Number of adults in household by location</caption>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Hawkes Bay</th>
 <th align="right">New Plymouth</th>
 <th align="right">NA</th>
@@ -1887,25 +1892,25 @@ n variables: 109</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">1</td>
+<td>1</td>
 <td align="right">1</td>
 <td align="right">6</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">2</td>
+<td>2</td>
 <td align="right">15</td>
 <td align="right">17</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">3</td>
+<td>3</td>
 <td align="right">4</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
+<td>NA</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -1916,9 +1921,10 @@ n variables: 109</p>
 <div id="number-of-teenagers" class="section level2">
 <h2><span class="header-section-number">5.2</span> Number of teenagers</h2>
 <table>
+<caption><span id="tab:nTeens">Table 5.2: </span>Number of teenagers in household by location</caption>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Hawkes Bay</th>
 <th align="right">New Plymouth</th>
 <th align="right">NA</th>
@@ -1926,25 +1932,25 @@ n variables: 109</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">0</td>
+<td>0</td>
 <td align="right">14</td>
 <td align="right">19</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">1</td>
+<td>1</td>
 <td align="right">4</td>
 <td align="right">3</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2</td>
+<td>2</td>
 <td align="right">2</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
+<td>NA</td>
 <td align="right">0</td>
 <td align="right">2</td>
 <td align="right">0</td>
@@ -1955,9 +1961,10 @@ n variables: 109</p>
 <div id="number-of-children" class="section level2">
 <h2><span class="header-section-number">5.3</span> Number of children</h2>
 <table>
+<caption><span id="tab:nChildren">Table 5.3: </span>Number of children in household by location</caption>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Hawkes Bay</th>
 <th align="right">New Plymouth</th>
 <th align="right">NA</th>
@@ -1965,31 +1972,31 @@ n variables: 109</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">0</td>
+<td>0</td>
 <td align="right">6</td>
 <td align="right">11</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">1</td>
+<td>1</td>
 <td align="right">4</td>
 <td align="right">7</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2</td>
+<td>2</td>
 <td align="right">7</td>
 <td align="right">3</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">3</td>
+<td>3</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
+<td>NA</td>
 <td align="right">0</td>
 <td align="right">2</td>
 <td align="right">0</td>
@@ -2001,15 +2008,10 @@ n variables: 109</p>
 <h2><span class="header-section-number">5.4</span> Notes variable</h2>
 <p>The <code>notes</code> column may have been set for any number of reasons and measn the monitoring data for a given household should be used with caution.</p>
 <table>
-<colgroup>
-<col width="73%"></col>
-<col width="10%"></col>
-<col width="12%"></col>
-<col width="3%"></col>
-</colgroup>
+<caption><span id="tab:outliers">Table 5.4: </span>Notes by location</caption>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Hawkes Bay</th>
 <th align="right">New Plymouth</th>
 <th align="right">NA</th>
@@ -2017,37 +2019,37 @@ n variables: 109</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Disconnected 15/01/2015. Re-used</td>
+<td>Disconnected 15/01/2015. Re-used</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Re-user</td>
+<td>Re-user</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Re-user. Then disconnected 02/04/2016</td>
+<td>Re-user. Then disconnected 02/04/2016</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Unusual &amp; specialist energy tech configuration. Disconnected 28/03/2016. Re-used.</td>
+<td>Unusual &amp; specialist energy tech configuration. Disconnected 28/03/2016. Re-used.</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">very large number of circuits</td>
+<td>very large number of circuits</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
+<td>NA</td>
 <td align="right">19</td>
 <td align="right">20</td>
 <td align="right">0</td>
@@ -2058,17 +2060,10 @@ n variables: 109</p>
 </div>
 <div id="summary" class="section level1">
 <h1><span class="header-section-number">6</span> Summary</h1>
-<p>The following table (<a href="#tab:dataHeader"><strong>??</strong></a>) shows the key columns of the household attributes file. The data can be linked to the gridSpy data using <code>linkID</code>. <code>linkID</code> is used to flag the two <a href="gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units">re-used GridSpy units</a>. As an example, unit rf_15 was re-used in a different household. We have therefore created <code>linkID</code> so that the correct household data (rf_15a or rf_15b) can be linked to the GridSpy data (coded rf_15) at the correct date.</p>
+<p>The following table (<a href="#tab:dataHeader">6.1</a>) shows the key columns of the household attributes file. The data can be linked to the gridSpy data using <code>linkID</code>. <code>linkID</code> is used to flag the two <a href="gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units">re-used GridSpy units</a>. As an example, unit rf_15 was re-used in a different household. We have therefore created <code>linkID</code> so that the correct household data (rf_15a or rf_15b) can be linked to the GridSpy data (coded rf_15) at the correct date.</p>
 <p>Note also that data exists in the GridSpy power demand data for whom no household data exists (e.g. rf_01 &amp; rf_02).</p>
 <table>
-<colgroup>
-<col width="5%"></col>
-<col width="6%"></col>
-<col width="10%"></col>
-<col width="6%"></col>
-<col width="9%"></col>
-<col width="62%"></col>
-</colgroup>
+<caption><span id="tab:dataHeader">Table 6.1: </span>Household data: key columns</caption>
 <thead>
 <tr class="header">
 <th align="left">hhID</th>
@@ -2437,7 +2432,7 @@ n variables: 109</p>
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">7</span> Runtime</h1>
-<p>Analysis completed in 12.66 seconds ( 0.21 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 11.94 seconds ( 0.2 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">8</span> R environment</h1>
@@ -2468,7 +2463,7 @@ n variables: 109</p>
 ## 
 ## other attached packages:
 ##  [1] bindrcpp_0.2.2         skimr_1.0.3            readxl_1.1.0          
-##  [4] knitr_1.20             stringr_1.3.1          lubridate_1.7.4       
+##  [4] knitr_1.20.13          stringr_1.3.1          lubridate_1.7.4       
 ##  [7] readr_1.1.1            ggplot2_3.0.0          data.table_1.11.4     
 ## [10] bookdown_0.7           rmarkdown_1.10         nzGREENGridDataR_0.1.0
 ## 
@@ -2476,32 +2471,29 @@ n variables: 109</p>
 ##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
 ##  [4] xfun_0.3          reshape2_1.4.3    purrr_0.2.5      
 ##  [7] lattice_0.20-35   colorspace_1.3-2  htmltools_0.3.6  
-## [10] yaml_2.2.0        utf8_1.1.4        rlang_0.2.1      
-## [13] pillar_1.3.0      withr_2.1.2       glue_1.3.0       
-## [16] sp_1.3-1          jpeg_0.1-8        bindr_0.1.1      
-## [19] plyr_1.8.4        munsell_0.5.0     gtable_0.2.0     
-## [22] cellranger_1.1.0  RgoogleMaps_1.4.2 mapproj_1.2.6    
-## [25] evaluate_0.11     labeling_0.3      fansi_0.3.0      
-## [28] highr_0.7         proto_1.0.0       Rcpp_0.12.18     
-## [31] geosphere_1.5-7   openssl_1.0.2     backports_1.1.2  
-## [34] scales_1.0.0      rjson_0.2.20      hms_0.4.2        
-## [37] png_0.1-7         digest_0.6.15     stringi_1.2.4    
-## [40] dplyr_0.7.6       rprojroot_1.3-2   grid_3.5.1       
-## [43] cli_1.0.0         tools_3.5.1       magrittr_1.5     
+## [10] yaml_2.2.0        rlang_0.2.2       pillar_1.3.0     
+## [13] glue_1.3.0        withr_2.1.2       sp_1.3-1         
+## [16] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4       
+## [19] munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
+## [22] devtools_1.13.6   RgoogleMaps_1.4.2 mapproj_1.2.6    
+## [25] evaluate_0.11     memoise_1.1.0     labeling_0.3     
+## [28] curl_3.2          highr_0.7         proto_1.0.0      
+## [31] Rcpp_0.12.18      geosphere_1.5-7   backports_1.1.2  
+## [34] openssl_1.0.2     scales_1.0.0      rjson_0.2.20     
+## [37] hms_0.4.2         png_0.1-7         digest_0.6.15    
+## [40] stringi_1.2.4     dplyr_0.7.6       rprojroot_1.3-2  
+## [43] grid_3.5.1        tools_3.5.1       magrittr_1.5     
 ## [46] maps_3.3.0        lazyeval_0.2.1    tibble_1.4.2     
-## [49] tidyr_0.8.1       crayon_1.3.4      pkgconfig_2.0.1  
-## [52] prettyunits_1.0.2 assertthat_0.2.0  rstudioapi_0.7   
-## [55] R6_2.2.2          ggmap_2.6.1       compiler_3.5.1</code></pre>
+## [49] tidyr_0.8.1       crayon_1.3.4      pkgconfig_2.0.2  
+## [52] prettyunits_1.0.2 assertthat_0.2.0  httr_1.3.1       
+## [55] rstudioapi_0.7    R6_2.2.2          ggmap_2.6.1      
+## [58] git2r_0.23.0      compiler_3.5.1</code></pre>
 </div>
 <div id="energy-cultures-2-long-survey-questions" class="section level1">
 <h1><span class="header-section-number">9</span> Energy Cultures 2 Long Survey Questions</h1>
-<p>Table <a href="#tab:loadEc2Labels"><strong>??</strong></a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span>. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">GitHub repository issue</a>.</p>
+<p>Table <a href="#tab:loadEc2Labels">9.1</a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span>. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">GitHub repository issue</a>.</p>
 <table>
-<colgroup>
-<col width="4%"></col>
-<col width="91%"></col>
-<col width="4%"></col>
-</colgroup>
+<caption><span id="tab:loadEc2Labels">Table 9.1: </span>Energy Cultures 2 Survey labels (long)</caption>
 <thead>
 <tr class="header">
 <th align="left">question</th>

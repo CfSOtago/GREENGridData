@@ -8,13 +8,12 @@ author: '`r ggrParams$Authors`'
 date: 'Last run at: `r getRunDateTime()`'
 output:
   bookdown::html_document2:
+    fig_caption: yes
     code_folding: hide
+    number_sections: yes
+  bookdown::pdf_document2:
     fig_caption: yes
     number_sections: yes
-    self_contained: yes
-    toc: yes
-    toc_depth: 2
-    toc_float: TRUE
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 
