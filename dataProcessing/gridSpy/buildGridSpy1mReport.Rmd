@@ -119,7 +119,7 @@ To date we have `r tidyNum(nFiles)` files from `r tidyNum(uniqueN(fListCompleteD
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdraw of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
+In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdraw of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(tab:reallocation) below.
 
 ## Input data file quality checks
 
@@ -333,15 +333,6 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsTilePlot.png"), obsPlot1)
 ggplot2::ggsave(paste0(plotLoc, "gridSpyLoadedFileNobsPointPlot.png"), obsPlot2)
 ```
 
-Table \@ref(tab:summaryTable) shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
-
- * dates before 2014 or in to the future (indicates date conversion errors);
- * fewer than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
- * non-integer counts of circuits as it suggests some circuit label errors or changes to the number of circuits monitored over time;
- * NA in any row (indicates date conversion errors).
- 
-If we do see any of these then we still have data cleaning work to do!
-
 ```{r makeSummaryTable}
 # Stats table (so we can pick out the dateTime errors)
 t <- hhStatDT[, .(minObs = min(nObs),
@@ -356,8 +347,16 @@ t <- hhStatDT[, .(minObs = min(nObs),
 knitr::kable(caption = "Summary observation stats by hhID", t)
 ```
 
+Table \@ref(tab:summaryTable) shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
 
-Finally we plot the total number of households for whom we have _any_ data on a given date (Figure \@ref(fig:attritionPlot) This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
+ * dates before 2014 or in to the future (indicates date conversion errors);
+ * fewer than 1440 observations per day (since we should have at least 1 circuit monitored for 24 * 60 = 1440 minutes);
+ * non-integer counts of circuits as it suggests some circuit label errors or changes to the number of circuits monitored over time;
+ * NA in any row (indicates date conversion errors).
+ 
+If we do see any of these then we still have data cleaning work to do!
+
+Finally Figure \@ref(fig:attritionPlot) plots the total number of households for whom we have _any_ data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
 
 ```{r attritionPlot, fig.cap="Attrition over time"}
 plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]
