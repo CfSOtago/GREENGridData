@@ -4,6 +4,15 @@ params:
 title: '`r params$title`'
 author: '`r ggrParams$Authors`'
 date: 'Last run at: `r getRunDateTime()`'
+output:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: yes
+    number_sections: yes
+    self_contained: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
 bibliography: '`r path.expand("~/bibliography.bib")`'
 ---
 

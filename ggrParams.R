@@ -20,7 +20,7 @@ ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/che
 
 # Location of safe data
 ggrParams$gsSafe <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/data/")
-ggrParams$hhAttributes <- paste0(ggrParams$dataLoc, "cleanData/safe/survey/ggHouseholdAttributes.csv")
+ggrParams$hhAttributes <- paste0(ggrParams$dataLoc, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv")
 
 # Vars for Rmd
 ggrParams$pubLoc <- "[Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin"

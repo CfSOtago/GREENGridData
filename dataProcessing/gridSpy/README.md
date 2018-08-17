@@ -18,7 +18,7 @@ The code here processes the original Grid Spy data files to produce a 'safe' for
  * cleans the data
  * saves the data for each household to 1 file
  * saves meta data on each file processed
- * saves two [checkPlots](../../checkPlots) for each household as a very useful eye-ball of data quality and power demand profiles
+ * saves two checkPlots for each household as a very useful eye-ball of data quality and power demand profiles
 
 The code maked extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done.
 

@@ -16,7 +16,7 @@ NB: Version 1 of the data archive does not include the time-use diaries.
 
 The most recent versions of the data documentation:
 
- * [Project and research data overview](ggOverviewReport.html) report
+ * [Project and research data overview](overviewReport.html) report
  * [Grid Spy data processing](gridSpy1mProcessingReport.html) report
  * [Survey data processing](surveyProcessingReport.html) report
  
