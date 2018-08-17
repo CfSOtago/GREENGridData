@@ -196,7 +196,7 @@ aList <- fListCompleteDT[dateColName == "date NZ" & dateFormat %like% "default",
 cap <- paste0("First 10 (max) of ", nrow(aList), 
               " files with dateColName = 'date NZ' and default dateFormat")
 
-knitr::kable(caption = cap, head(aList, 10))
+knitr::kable(caption = cap, head(aList, 10), digits = 2)
 ```
 
 Table \@ref(tab:listDefaultDateFilesUTC) lists up to 10 of the 'date UTC' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
@@ -209,7 +209,7 @@ aList <- fListCompleteDT[dateColName == "date UTC" & dateFormat %like% "default"
 cap <- paste0("First 10 (max) of ", nrow(aList), 
               " files with dateColName = 'date UTC' and default dateFormat")
 
-knitr::kable(caption = cap, head(aList, 10))
+knitr::kable(caption = cap, head(aList, 10), digits = 2)
 ```
 
 After final cleaning, the final date formats are shown in Table \@ref(tab:finalDateFormatTable).
@@ -225,7 +225,7 @@ t <- fListCompleteDT[, .(nFiles = .N,
                      keyby = .(dateColName, dateFormat)]
 
 knitr::kable(t,
-             caption = "Number of files & min/max dates (as char) with given date column names by final imputed date format")
+             caption = "Number of files & min/max dates (as char) with given date column names by final imputed date format", digits = 2)
 ```
 
 Results to note:
@@ -252,7 +252,7 @@ t <- fListCompleteDT[dateColName %like% "date", .(nFiles = .N,
                        minFileDate = min(fMDate),
                        maxFileDate = max(fMDate)), keyby = .(gridSpyID = hhID)]
 
-knitr::kable(caption = "Summary of household files to load", t)
+knitr::kable(t, caption = "Summary of household files to load", digits = 2)
 ```
 
 ## Recoding re-allocated GridSpy units {#reallocation}
@@ -346,7 +346,7 @@ t <- hhStatDT[, .(minObs = min(nObs),
 ```
 
 ```{r summaryTable}
-knitr::kable(caption = "Summary observation stats by hhID", t)
+knitr::kable(t,caption = "Summary observation stats by hhID", digits = 2)
 ```
 
 Table \@ref(tab:summaryTable) shows the min/max number of observations per day and min/max dates for each household. As above, we should not see:
@@ -400,7 +400,7 @@ dt <- hhStatDT[!is.na(circuitLabels),
                        maxDailyPowerkW = round(max(maxPowerW)/1000,2)),
                      keyby = .(linkID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
 
-knitr::kable(caption = "Circuit labels list by number of files per household", dt)
+knitr::kable(dt, caption = "Circuit labels list by number of files per household", digits = 2)
 ```
 
 Things to note:

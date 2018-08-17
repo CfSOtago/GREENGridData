@@ -32,7 +32,8 @@ rmdLibs <- c("data.table", # data munching
              "readr", # for reading & parsing .csv files
              "lubridate", # for year()
              "stringr", # for str_wrap for long labels on plots
-             "knitr" # for kable
+             "knitr", # for kable
+             "kableExtra" # for cleaner tables
 )
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
