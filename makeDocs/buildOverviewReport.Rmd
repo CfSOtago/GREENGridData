@@ -30,10 +30,7 @@ nzGREENGridDataR::setup()
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
-             "lubridate", # for year()
-             "stringr", # for str_wrap for long labels on plots
-             "knitr", # for kable
-             "kableExtra" # for fancier tables
+             "lubridate" # for year()
 )
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
@@ -139,7 +136,7 @@ Table \@ref(tab:sampleTable) shows the number in each sample.
 ```{r sampleTable}
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 
-kable(t, format = "html", caption = "Sample location") %>%
+kableExtra::kable(t, format = "html", caption = "Sample location") %>%
   kable_styling()
 ```
 
@@ -149,7 +146,7 @@ Table \@ref(tab:sampleSurveys) shows the number for whom valid appliance and sur
 
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location, hasShortSurvey, hasLongSurvey, hasApplianceSummary)]
 
-kable(t, caption = "Sample information") %>%
+kableExtra::kable(t, caption = "Sample information") %>%
   kable_styling()
 ```
 
@@ -193,7 +190,7 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
 Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean GridSpy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and GridSpy data should always use `linkID` to avoid errors.
 
 ```{r allHhData}
-kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], 
+kableExtra::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], 
              caption = "Sample details") %>%
   kable_styling()
 

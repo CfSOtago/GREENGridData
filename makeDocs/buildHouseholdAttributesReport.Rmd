@@ -33,9 +33,7 @@ rmdLibs <- c("data.table", # data munching
              "lubridate", # date & time processing
              "readr", # reading/writing csv files
              "readxl", # reading xlsx
-             "skimr", # for skim
-             "knitr", # for kable & captions
-             "kableExtra" # for fancier tables
+             "skimr" # for skim
 )
 # load them
 nzGREENGridDataR::loadLibraries(rmdLibs)
@@ -109,7 +107,7 @@ Table \@ref(tab:loadMasterData) shows the number of households in each area.
 hhMasterDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
 setkey(hhMasterDT, linkID)
 t <- with(hhMasterDT, table(Location, useNA = "always"))
-kable(caption = "Sample location (master file)", t) %>%
+kableExtra::kable(caption = "Sample location (master file)", t) %>% 
   kable_styling()
 ```
 
@@ -127,7 +125,7 @@ hhAppliancesDT <- data.table::as.data.table(readxl::read_xlsx(ggrParams$Applianc
 hhAppliancesDT$sample <- NULL # too detailed
 setkey(hhAppliancesDT, linkID)
 t <- with(hhAppliancesDT[hhMasterDT], table(Location, hasApplianceSummary, useNA = "always"))
-kable(caption = "Sample (appliance summary file, NA indicates no data)", t) %>%
+kableExtra::kable(caption = "Sample (appliance summary file, NA indicates no data)", t) %>%
   kable_styling()
 ```
 
@@ -136,7 +134,7 @@ The appliances recorded in this summary are shown in Table \@ref(tab:applianceNa
 ```{r applianceNames}
 xcols <- c("linkID", "hasApplianceSummary")
 al <- names(hhAppliancesDT[, -..xcols])
-kable(caption = "Appliances recorded", al) %>%
+kableExtra::kable(caption = "Appliances recorded", al) %>%
   kable_styling()
 ```
 
@@ -150,7 +148,7 @@ hhAttributesDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttribut
 
 ```{r responseTable}
 t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
-kable(t, caption = "Survey responses (NA indicates no survey)") %>%
+kableExtra::kable(t, caption = "Survey responses (NA indicates no survey)") %>%
   kable_styling()
 ```
 
@@ -166,8 +164,7 @@ skimDF <- skimr::skim(hhAttributesDT)
 ```{r skimTable, results="asis"}
 #https://github.com/ropensci/skimr/blob/master/README.md
 
-skimr::kable(skimDF, caption = "Descriptive summary (all variables)") %>%
-  kable_styling()
+skimr::kable(skimDF, caption = "Descriptive summary (all variables)")
 ```
 
 
@@ -179,7 +176,7 @@ This section reports tables of the key household attributes by sample location. 
 
 ```{r nAdults}
 t <- with(hhAttributesDT, table(nAdults, Location, useNA = "always"))
-kable(caption = "Number of adults in household by location", t) %>%
+kableExtra::kable(caption = "Number of adults in household by location", t) %>%
   kable_styling()
 ```
 
@@ -187,7 +184,7 @@ kable(caption = "Number of adults in household by location", t) %>%
 
 ```{r nTeens}
 t <- with(hhAttributesDT, table(nTeenagers13_18, Location, useNA = "always"))
-kable(caption = "Number of teenagers in household by location", t) %>%
+kableExtra::kable(caption = "Number of teenagers in household by location", t) %>%
   kable_styling()
 ```
 
@@ -195,7 +192,7 @@ kable(caption = "Number of teenagers in household by location", t) %>%
 
 ```{r nChildren}
 t <- with(hhAttributesDT, table(nChildren0_12, Location, useNA = "always"))
-kable(caption = "Number of children in household by location", t) %>%
+kableExtra::kable(caption = "Number of children in household by location", t) %>%
   kable_styling()
 ```
 
@@ -205,7 +202,7 @@ The `notes` column may have been set for any number of reasons and measn the mon
 
 ```{r outliers}
 t <- with(hhAttributesDT, table(notes, Location, useNA = "always"))
-kable(caption = "Notes by location", t) %>%
+kableExtra::kable(caption = "Notes by location", t) %>%
   kable_styling()
 ```
 
@@ -216,7 +213,7 @@ The following table (\@ref(tab:dataHeader)) shows the key columns of the househo
 Note also that data exists in the GridSpy power demand data for whom no household data exists (e.g. rf_01 & rf_02).
 
 ```{r dataHeader}
-kable(caption = "Household data: key columns", 
+kableExtra::kable(caption = "Household data: key columns", 
              hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)]) %>%
   kable_styling()
 ```
@@ -239,7 +236,7 @@ R packages used:
  * data.table - for fast (big) data handling [@data.table]
  * readr - for csv reading/writing [@readr]
  * skimr - for skim [@skimr]
- * knitr - for kable [@knitr]
+ * kableExtra - for fancy kables [@kableExtra]
  * readxl - reading .xlsx [@readxl]
  * nzGREENGridDataR - for local NZ GREEN Grid project utilities
 
@@ -255,7 +252,7 @@ Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Surv
 ```{r loadEc2Labels}
 ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
 
-kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF) %>%
+kableExtra::kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF) %>%
   kable_styling()
 ```
 

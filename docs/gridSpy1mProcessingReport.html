@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid project data processing report</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-17 19:53:49 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-20 10:37:44 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -244,7 +244,7 @@ aList &lt;- fListCompleteDT[dateColName == &quot;date NZ&quot; &amp; dateFormat 
 cap &lt;- paste0(&quot;First 10 (max) of &quot;, nrow(aList), 
               &quot; files with dateColName = 'date NZ' and default dateFormat&quot;)
 
-kable(caption = cap, head(aList, 10), digits = 2) %&gt;%
+kableExtra::kable(caption = cap, head(aList, 10), digits = 2) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -450,7 +450,7 @@ aList &lt;- fListCompleteDT[dateColName == &quot;date UTC&quot; &amp; dateFormat
 cap &lt;- paste0(&quot;First 10 (max) of &quot;, nrow(aList), 
               &quot; files with dateColName = 'date UTC' and default dateFormat&quot;)
 
-kable(caption = cap, head(aList, 10), digits = 2) %&gt;%
+kableExtra::kable(caption = cap, head(aList, 10), digits = 2) %&gt;%
   kable_styling()</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -3841,7 +3841,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 56.2 seconds ( 0.94 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 27.25 seconds ( 0.45 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -3873,11 +3873,10 @@ Figure 4.4: Circuit label check plot
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] kableExtra_0.9.0       bindrcpp_0.2.2         skimr_1.0.3           
-##  [4] readxl_1.1.0           knitr_1.20.13          stringr_1.3.1         
-##  [7] lubridate_1.7.4        readr_1.1.1            ggplot2_3.0.0         
-## [10] data.table_1.11.4      bookdown_0.7           rmarkdown_1.10        
-## [13] nzGREENGridDataR_0.1.0
+##  [1] stringr_1.3.1          bindrcpp_0.2.2         skimr_1.0.3           
+##  [4] readxl_1.1.0           lubridate_1.7.4        readr_1.1.1           
+##  [7] ggplot2_3.0.0          data.table_1.11.4      kableExtra_0.9.0      
+## [10] bookdown_0.7           rmarkdown_1.10         nzGREENGridDataR_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.18      nzGREENGrid_0.1.0 lattice_0.20-35  
@@ -3887,21 +3886,20 @@ Figure 4.4: Circuit label check plot
 ## [13] plyr_1.8.4        backports_1.1.2   evaluate_0.11    
 ## [16] httr_1.3.1        highr_0.7         pillar_1.3.0     
 ## [19] RgoogleMaps_1.4.2 rlang_0.2.2       progress_1.2.0   
-## [22] lazyeval_0.2.1    curl_3.2          rstudioapi_0.7   
-## [25] geosphere_1.5-7   proto_1.0.0       labeling_0.3     
-## [28] devtools_1.13.6   munsell_0.5.0     compiler_3.5.1   
-## [31] xfun_0.3          pkgconfig_2.0.2   htmltools_0.3.6  
-## [34] openssl_1.0.2     tidyselect_0.2.4  tibble_1.4.2     
-## [37] viridisLite_0.3.0 fansi_0.3.0       crayon_1.3.4     
-## [40] dplyr_0.7.6       withr_2.1.2       grid_3.5.1       
-## [43] gtable_0.2.0      git2r_0.23.0      magrittr_1.5     
-## [46] scales_1.0.0      cli_1.0.0         stringi_1.2.4    
-## [49] mapproj_1.2.6     reshape2_1.4.3    sp_1.3-1         
-## [52] xml2_1.2.0        rjson_0.2.20      tools_3.5.1      
-## [55] ggmap_2.6.1       glue_1.3.0        purrr_0.2.5      
-## [58] maps_3.3.0        hms_0.4.2         jpeg_0.1-8       
-## [61] yaml_2.2.0        colorspace_1.3-2  rvest_0.3.2      
-## [64] memoise_1.1.0     bindr_0.1.1</code></pre>
+## [22] lazyeval_0.2.1    rstudioapi_0.7    geosphere_1.5-7  
+## [25] proto_1.0.0       labeling_0.3      munsell_0.5.0    
+## [28] compiler_3.5.1    xfun_0.3          pkgconfig_2.0.2  
+## [31] htmltools_0.3.6   openssl_1.0.2     tidyselect_0.2.4 
+## [34] tibble_1.4.2      fansi_0.3.0       viridisLite_0.3.0
+## [37] crayon_1.3.4      dplyr_0.7.6       withr_2.1.2      
+## [40] grid_3.5.1        gtable_0.2.0      magrittr_1.5     
+## [43] scales_1.0.0      cli_1.0.0         stringi_1.2.4    
+## [46] mapproj_1.2.6     reshape2_1.4.3    sp_1.3-1         
+## [49] xml2_1.2.0        rjson_0.2.20      tools_3.5.1      
+## [52] ggmap_2.6.1       glue_1.3.0        purrr_0.2.5      
+## [55] maps_3.3.0        hms_0.4.2         jpeg_0.1-8       
+## [58] yaml_2.2.0        colorspace_1.3-2  rvest_0.3.2      
+## [61] knitr_1.20.13     bindr_0.1.1</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>

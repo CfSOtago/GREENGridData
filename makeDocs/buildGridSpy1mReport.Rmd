@@ -35,9 +35,7 @@ source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
-             "stringr", # for str_wrap for long labels on plots
-             "knitr", # for kable & captions
-             "kableExtra" # for fancier tables (load after knitr)
+             "stringr" # for str_wrap for long labels on plots
 )
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
@@ -197,7 +195,7 @@ aList <- fListCompleteDT[dateColName == "date NZ" & dateFormat %like% "default",
 cap <- paste0("First 10 (max) of ", nrow(aList), 
               " files with dateColName = 'date NZ' and default dateFormat")
 
-kable(caption = cap, head(aList, 10), digits = 2) %>%
+kableExtra::kable(caption = cap, head(aList, 10), digits = 2) %>%
   kable_styling()
 ```
 
@@ -211,7 +209,7 @@ aList <- fListCompleteDT[dateColName == "date UTC" & dateFormat %like% "default"
 cap <- paste0("First 10 (max) of ", nrow(aList), 
               " files with dateColName = 'date UTC' and default dateFormat")
 
-kable(caption = cap, head(aList, 10), digits = 2) %>%
+kableExtra::kable(caption = cap, head(aList, 10), digits = 2) %>%
   kable_styling()
 ```
 
@@ -227,7 +225,7 @@ t <- fListCompleteDT[, .(nFiles = .N,
                          maxFDate = max(fMDate)), 
                      keyby = .(dateColName, dateFormat)]
 
-kable(t,
+kableExtra::kable(t,
              caption = "Number of files & min/max dates (as char) with given date column names by final imputed date format", digits = 2) %>%
   kable_styling()
 ```
@@ -256,7 +254,7 @@ t <- fListCompleteDT[dateColName %like% "date", .(nFiles = .N,
                        minFileDate = min(fMDate),
                        maxFileDate = max(fMDate)), keyby = .(gridSpyID = hhID)]
 
-kable(t, caption = "Summary of household files to load", digits = 2) %>%
+kableExtra::kable(t, caption = "Summary of household files to load", digits = 2) %>%
   kable_styling()
 ```
 
@@ -351,7 +349,7 @@ t <- hhStatDT[, .(minObs = min(nObs),
 ```
 
 ```{r summaryTable}
-kable(t,caption = "Summary observation stats by hhID", digits = 2) %>%
+kableExtra::kable(t,caption = "Summary observation stats by hhID", digits = 2) %>%
   kable_styling()
 ```
 
@@ -406,7 +404,7 @@ dt <- hhStatDT[!is.na(circuitLabels),
                        maxDailyPowerkW = round(max(maxPowerW)/1000,2)),
                      keyby = .(linkID,circuitLabels)] # ignore NA - it is files not loaded due to size thresholds
 
-kable(dt, caption = "Circuit labels list by number of files per household", digits = 2) %>%
+kableExtra::kable(dt, caption = "Circuit labels list by number of files per household", digits = 2) %>%
   kable_styling()
 ```
 

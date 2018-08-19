@@ -1,4 +1,4 @@
-### ----- About ---- 
+### ----- About ----
 # Master (make) file for documentation
 ####
 
@@ -17,7 +17,10 @@ nzGREENGridDataR::setup()
 print(paste0("#-> Done "))
 
 # Load libraries needed in this .r file ----
-localLibs <- c("rmarkdown", "bookdown")
+localLibs <- c("rmarkdown",
+               "bookdown",
+               "kableExtra" # for fancier tables
+               )
 nzGREENGridDataR::loadLibraries(localLibs)
 
 # Local functions ----
@@ -28,7 +31,7 @@ version <- "1.0"
 # --- Code ---
 
 # --- Overview report ----
-title <- paste0("NZ GREEN Grid Household Electricity Demand Study: Research data overview (version ", version, ")") 
+title <- paste0("NZ GREEN Grid Household Electricity Demand Study: Research data overview (version ", version, ")")
 rmdFile <- paste0(ggrParams$projLoc, "/makeDocs/buildOverviewReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
