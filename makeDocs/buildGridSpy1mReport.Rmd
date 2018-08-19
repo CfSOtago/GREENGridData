@@ -37,7 +37,7 @@ rmdLibs <- c("data.table", # data munching
              "readr", # for reading & parsing .csv files
              "stringr", # for str_wrap for long labels on plots
              "knitr", # for kable & captions
-             "kableExtra" # for fancier tables
+             "kableExtra" # for fancier tables (load after knitr)
 )
 # load them
 nzGREENGrid::loadLibraries(rmdLibs)
