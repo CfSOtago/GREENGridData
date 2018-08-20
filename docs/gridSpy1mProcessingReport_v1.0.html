@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid project data processing report</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-20 10:37:44 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-20 13:43:33 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -170,18 +170,13 @@ $(document).ready(function () {
 </div>
 <div id="history" class="section level2">
 <h2><span class="header-section-number">1.4</span> History</h2>
-<p>Code history is generally tracked via our GitHub <a href="https://github.com/dataknut/nzGREENGridDataR">repository</a>:</p>
+<p>Specific history of this report:</p>
 <ul>
-<li><a href="https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd">Report history</a></li>
-<li><a href="https://github.com/dataknut/nzGREENGridDataR/issues">General issues</a></li>
+<li><a href="https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd">Report history</a></li>
 </ul>
 </div>
-<div id="requirements" class="section level2">
-<h2><span class="header-section-number">1.5</span> Requirements:</h2>
-<p>This report uses data quality statistics produced when processing the original GridSpy 1 minute data downloads using <a href="https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R" class="uri">https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R</a>.</p>
-</div>
 <div id="support" class="section level2">
-<h2><span class="header-section-number">1.6</span> Support</h2>
+<h2><span class="header-section-number">1.5</span> Support</h2>
 <p>This work was supported by:</p>
 <ul>
 <li>The <a href="https://www.otago.ac.nz/">University of Otago</a>;</li>
@@ -194,14 +189,14 @@ $(document).ready(function () {
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
-<p>The NZ GREEN Grid project recruited a sample of <a href="overviewReport.html">c 25 households in each of two regions of New Zealand</a> <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
+<p>The <a href="https://cfsotago.github.io/GREENGridData/">NZ GREEN Grid household electricity demand study</a> recruited a sample of c 25 households in each of two regions of New Zealand <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
-<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">GridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
-<li>Dwelling &amp; appliance surveys. See - <a href="surveyProcessingReport.html">surveyProcessingReport</a>;</li>
+<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">GridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp;</li>
+<li>Dwelling &amp; appliance surveys;</li>
 <li>Occupant time-use diaries (focused on energy use).</li>
 </ul>
 <p>NB: Version 1 of the data package does not include the time-use diaries.</p>
-<p>This report provides summary data quality statistics for the original GREEN Grid GridSpy household power demand monitoring data. This data was used to create a derived ‘safe’ dataset using the code in the <a href="https://github.com/dataknut/nzGREENGridDataR">nzGREENGridDataR</a> repository.</p>
+<p>This report provides summary data quality statistics for the original GREEN Grid GridSpy household power demand monitoring data. This data was used to create a derived ‘safe’ dataset using the code in the <a href="https://github.com/CfSOtago/GREENGridData">GREENGridData</a> repository.</p>
 </div>
 <div id="original-data-quality-checks" class="section level1">
 <h1><span class="header-section-number">3</span> Original Data: Quality checks</h1>
@@ -921,7 +916,7 @@ ymd - definite
 <p>Results to note:</p>
 <ul>
 <li>The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data.</li>
-<li>There are a range of dateTme formats - these are fixed in the data cleaning process and all datesTimes have been set to UTC except where explicitly labelled. Note that R will load UTC data with the local timezone so if you re-use the data in New Zealand this will be correct. If you re-use the data outside New Zealand you will need to set the timezone accordingly or you will get thoroughly confused. We are not great fans of <a href="https://github.com/dataknut/nzGREENGridDataR/issues/2">timezones</a>.</li>
+<li>There are a range of dateTme formats - these are fixed in the data cleaning process and all datesTimes have been set to UTC except where explicitly labelled. Note that R will load UTC data with the local timezone so if you re-use the data in New Zealand this will be correct. If you re-use the data outside New Zealand you will need to set the timezone accordingly or you will get thoroughly confused. We are not great fans of <a href="https://github.com/CfSOtago/GREENGridData/issues/2">timezones</a>.</li>
 <li>Following detailed checks there are now 0 files which are still labelled as having ambiguous dates.</li>
 </ul>
 </div>
@@ -1719,7 +1714,7 @@ rf_47
 <li>rf_15 - allocated to a new household on 20/1/2015</li>
 <li>rf_17 - allocated to a new household on</li>
 </ul>
-<p>To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during <a href="https://github.com/dataknut/nzGREENGridDataR/issues/3">data processing</a>. The clean data therefore contains data files for:</p>
+<p>To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during <a href="https://github.com/CfSOtago/GREENGridData/issues/3">data processing</a>. The clean data therefore contains data files for:</p>
 <ul>
 <li>rf_15a and rf_15b</li>
 <li>rf_17a and rf_17b</li>
@@ -3827,7 +3822,7 @@ Wall Oven$4169, Incomer - All$4170, Heat Pump &amp; 2 x Bathroom Heat$4171, Ligh
 <p>Things to note:</p>
 <ul>
 <li>rf_25 has an additional unexpected “Incomer 1 - Uncontrolled$2757” circuit in some files but its value is always NA so it has been ignored.</li>
-<li>rf_46 had multiple circuit labels caused by apparent typos. These have been <a href="https://github.com/dataknut/nzGREENGridDataR/issues/1">re-labelled</a> but note that this is the only household to have 13 circuits monitored.</li>
+<li>rf_46 had multiple circuit labels caused by apparent typos. These have been <a href="https://github.com/CfSOtago/GREENGridData/issues/1">re-labelled</a> but note that this is the only household to have 13 circuits monitored.</li>
 </ul>
 <p>Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets (see Figure <a href="#fig:plotCircuitLabelIssuesAsTile">4.4</a>).</p>
 <div class="figure"><span id="fig:plotCircuitLabelIssuesAsTile"></span>
@@ -3841,7 +3836,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 27.25 seconds ( 0.45 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 26.75 seconds ( 0.45 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -3854,8 +3849,8 @@ Figure 4.4: Circuit label check plot
 <li>readr - for csv reading/writing <span class="citation">(Wickham, Hester, and Francois 2016)</span></li>
 <li>dplyr - for select and contains <span class="citation">(Wickham and Francois 2016)</span></li>
 <li>progress - for progress bars <span class="citation">(Csárdi and FitzJohn 2016)</span></li>
-<li>knitr - to create this document &amp; neat tables <span class="citation">(Xie 2016)</span></li>
-<li>nzGREENGridDataR - for local NZ GREEN Grid project utilities</li>
+<li>kableExtra - for neat kables <span class="citation">(Zhu 2018)</span></li>
+<li>GREENGridData - for local NZ GREEN Grid project utilities</li>
 </ul>
 <p>Session info:</p>
 <pre><code>## R version 3.5.1 (2018-07-02)
@@ -3873,16 +3868,16 @@ Figure 4.4: Circuit label check plot
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] stringr_1.3.1          bindrcpp_0.2.2         skimr_1.0.3           
-##  [4] readxl_1.1.0           lubridate_1.7.4        readr_1.1.1           
-##  [7] ggplot2_3.0.0          data.table_1.11.4      kableExtra_0.9.0      
-## [10] bookdown_0.7           rmarkdown_1.10         nzGREENGridDataR_0.1.0
+##  [1] stringr_1.3.1       bindrcpp_0.2.2      skimr_1.0.3        
+##  [4] readxl_1.1.0        lubridate_1.7.4     readr_1.1.1        
+##  [7] ggplot2_3.0.0       data.table_1.11.4   kableExtra_0.9.0   
+## [10] bookdown_0.7        rmarkdown_1.10      GREENGridData_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.18      nzGREENGrid_0.1.0 lattice_0.20-35  
 ##  [4] tidyr_0.8.1       prettyunits_1.0.2 png_0.1-7        
-##  [7] assertthat_0.2.0  rprojroot_1.3-2   digest_0.6.15    
-## [10] utf8_1.1.4        R6_2.2.2          cellranger_1.1.0 
+##  [7] utf8_1.1.4        assertthat_0.2.0  rprojroot_1.3-2  
+## [10] digest_0.6.15     R6_2.2.2          cellranger_1.1.0 
 ## [13] plyr_1.8.4        backports_1.1.2   evaluate_0.11    
 ## [16] httr_1.3.1        highr_0.7         pillar_1.3.0     
 ## [19] RgoogleMaps_1.4.2 rlang_0.2.2       progress_1.2.0   
@@ -3928,8 +3923,8 @@ Figure 4.4: Circuit label check plot
 <div id="ref-readr">
 <p>Wickham, Hadley, Jim Hester, and Romain Francois. 2016. <em>Readr: Read Tabular Data</em>. <a href="https://CRAN.R-project.org/package=readr" class="uri">https://CRAN.R-project.org/package=readr</a>.</p>
 </div>
-<div id="ref-knitr">
-<p>Xie, Yihui. 2016. <em>Knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://CRAN.R-project.org/package=knitr" class="uri">https://CRAN.R-project.org/package=knitr</a>.</p>
+<div id="ref-kableExtra">
+<p>Zhu, Hao. 2018. <em>KableExtra: Construct Complex Table with ’Kable’ and Pipe Syntax</em>. <a href="https://CRAN.R-project.org/package=kableExtra" class="uri">https://CRAN.R-project.org/package=kableExtra</a>.</p>
 </div>
 </div>
 </div>

@@ -7,13 +7,13 @@ rm(list=ls(all=TRUE)) # remove all objects from workspace
 
 # Load nzGREENGrid package ----
 
-print(paste0("#-> Load nzGREENGridDataR package"))
-library(nzGREENGridDataR) # local utilities
+print(paste0("#-> Load GREENGridData package"))
+library(GREENGridData) # local utilities
 print(paste0("#-> Done "))
 
 # Set global package parameters ----
-print(paste0("#-> Set up nzGREENGridDataR package "))
-nzGREENGridDataR::setup()
+print(paste0("#-> Set up GREENGridData package "))
+GREENGridData::setup()
 print(paste0("#-> Done "))
 
 # Load libraries needed in this .r file ----
@@ -21,7 +21,7 @@ localLibs <- c("rmarkdown",
                "bookdown",
                "kableExtra" # for fancier tables
                )
-nzGREENGridDataR::loadLibraries(localLibs)
+GREENGridData::loadLibraries(localLibs)
 
 # Local functions ----
 

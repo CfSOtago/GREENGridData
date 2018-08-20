@@ -8,6 +8,6 @@
 #' @export
 #'
 setup <- function(){
-  pLoc <- nzGREENGridDataR::findParentDirectory("nzGREENGridDataR") # R project location
+  pLoc <- findParentDirectory("GREENGridData") # R project location
   source(paste0(pLoc, "/ggrParams.R"))
 }

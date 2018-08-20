@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">GREEN Grid Data Processing:</h1>
 <h3 class="subtitle"><em>Household Attributes File (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-20 10:36:00 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-20 13:43:27 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -172,15 +172,11 @@ $(document).ready(function () {
 <h2><span class="header-section-number">1.4</span> History</h2>
 <p>Specific history of this report:</p>
 <ul>
-<li><a href="https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/surveys/createHouseholdAttributes.Rmd" class="uri">https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/surveys/createHouseholdAttributes.Rmd</a></li>
+<li><a href="https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/surveys/buildHouseholdAttributesReport.Rmd" class="uri">https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/surveys/buildHouseholdAttributesReport.Rmd</a></li>
 </ul>
 </div>
-<div id="requirements" class="section level2">
-<h2><span class="header-section-number">1.5</span> Requirements:</h2>
-<p>This report uses the original NZ GREEN Grid household survey and meta data.</p>
-</div>
 <div id="support" class="section level2">
-<h2><span class="header-section-number">1.6</span> Support</h2>
+<h2><span class="header-section-number">1.5</span> Support</h2>
 <p>This work was supported by:</p>
 <ul>
 <li>The <a href="https://www.otago.ac.nz/">University of Otago</a>;</li>
@@ -193,10 +189,10 @@ $(document).ready(function () {
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
-<p>The NZ GREEN Grid project recruited a sample of <a href="overviewReport.html">c 25 households in each of two regions of New Zealand</a> <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
+<p>The <a href="https://cfsotago.github.io/GREENGridData/">NZ GREEN Grid household electricity demand study</a> recruited a sample of c 25 households in each of two regions of New Zealand <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
-<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">GridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
-<li>Dwelling &amp; appliance surveys. See - <a href="surveyProcessingReport.html">surveyProcessingReport</a>;</li>
+<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">GridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp;</li>
+<li>Dwelling &amp; appliance surveys;</li>
 <li>Occupant time-use diaries (focused on energy use).</li>
 </ul>
 <p>NB: Version 1 of the data package does not include the time-use diaries.</p>
@@ -5756,7 +5752,7 @@ NA
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">7</span> Runtime</h1>
-<p>Analysis completed in 1.65 seconds ( 0.03 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 1.58 seconds ( 0.03 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">8</span> R environment</h1>
@@ -5768,7 +5764,7 @@ NA
 <li>skimr - for skim <span class="citation">(Arino de la Rubia et al. 2017)</span></li>
 <li>kableExtra - for fancy kables <span class="citation">(Zhu 2018)</span></li>
 <li>readxl - reading .xlsx <span class="citation">(Wickham and Bryan 2017)</span></li>
-<li>nzGREENGridDataR - for local NZ GREEN Grid project utilities</li>
+<li>GREENGridData - for local NZ GREEN Grid project utilities</li>
 </ul>
 <p>Session info:</p>
 <pre><code>## R version 3.5.1 (2018-07-02)
@@ -5786,10 +5782,10 @@ NA
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] bindrcpp_0.2.2         skimr_1.0.3            readxl_1.1.0          
-##  [4] lubridate_1.7.4        readr_1.1.1            ggplot2_3.0.0         
-##  [7] data.table_1.11.4      kableExtra_0.9.0       bookdown_0.7          
-## [10] rmarkdown_1.10         nzGREENGridDataR_0.1.0
+##  [1] bindrcpp_0.2.2      skimr_1.0.3         readxl_1.1.0       
+##  [4] lubridate_1.7.4     readr_1.1.1         ggplot2_3.0.0      
+##  [7] data.table_1.11.4   kableExtra_0.9.0    bookdown_0.7       
+## [10] rmarkdown_1.10      GREENGridData_0.1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
@@ -5798,8 +5794,8 @@ NA
 ## [10] viridisLite_0.3.0 yaml_2.2.0        rlang_0.2.2      
 ## [13] pillar_1.3.0      withr_2.1.2       glue_1.3.0       
 ## [16] sp_1.3-1          jpeg_0.1-8        bindr_0.1.1      
-## [19] plyr_1.8.4        stringr_1.3.1     munsell_0.5.0    
-## [22] gtable_0.2.0      cellranger_1.1.0  rvest_0.3.2      
+## [19] plyr_1.8.4        stringr_1.3.1     gtable_0.2.0     
+## [22] munsell_0.5.0     cellranger_1.1.0  rvest_0.3.2      
 ## [25] mapproj_1.2.6     RgoogleMaps_1.4.2 evaluate_0.11    
 ## [28] labeling_0.3      knitr_1.20.13     highr_0.7        
 ## [31] proto_1.0.0       Rcpp_0.12.18      geosphere_1.5-7  
@@ -5815,7 +5811,7 @@ NA
 </div>
 <div id="energy-cultures-2-long-survey-questions" class="section level1">
 <h1><span class="header-section-number">9</span> Energy Cultures 2 Long Survey Questions</h1>
-<p>Table <a href="#tab:loadEc2Labels">9.1</a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span>. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest">GitHub repository issue</a>.</p>
+<p>Table <a href="#tab:loadEc2Labels">9.1</a> lists the full Energy Cultures 2 survey <span class="citation">(Wooliscroft 2015)</span>. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a <a href="https://github.com/CfSOtago/GREENGridData/labels/variableRequest">GitHub repository issue</a>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:loadEc2Labels">Table 9.1: </span>Energy Cultures 2 Survey labels (long)

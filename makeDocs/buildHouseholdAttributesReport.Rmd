@@ -37,7 +37,7 @@ rmdLibs <- c("data.table", # data munching
              "skimr" # for skim
 )
 # load them
-nzGREENGridDataR::loadLibraries(rmdLibs)
+GREENGridData::loadLibraries(rmdLibs)
 
 
 # Local paramaters
@@ -101,7 +101,7 @@ The data contains a unique household id (`linkID`) which can be used to link it 
 Table \@ref(tab:loadMasterData) shows the number of households in each area. 
 
 ```{r loadMasterData}
-hhMasterDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
+hhMasterDT <- GREENGridData::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
 setkey(hhMasterDT, linkID)
 t <- with(hhMasterDT, table(Location, useNA = "always"))
 kableExtra::kable(caption = "Sample location (master file)", t) %>% 
@@ -235,7 +235,7 @@ R packages used:
  * skimr - for skim [@skimr]
  * kableExtra - for fancy kables [@kableExtra]
  * readxl - reading .xlsx [@readxl]
- * nzGREENGridDataR - for local NZ GREEN Grid project utilities
+ * GREENGridData - for local NZ GREEN Grid project utilities
 
 Session info:
 
@@ -244,7 +244,7 @@ sessionInfo()
 ```
 
 # Energy Cultures 2 Long Survey Questions
-Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [GitHub repository issue](https://github.com/dataknut/nzGREENGridDataR/labels/variableRequest). 
+Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [GitHub repository issue](https://github.com/CfSOtago/GREENGridData/labels/variableRequest). 
 
 ```{r loadEc2Labels}
 ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")

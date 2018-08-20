@@ -9,12 +9,17 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
  * Occupant time-use diaries (focused on energy use)
 
 ----
+## Data
 
+Access to the data:
+
+ * Link to anonymised data archive (when live via [ReShare](http://reshare.ukdataservice.ac.uk/))
+ 
 ## Documentation
 
 Check that the versions of the reports match the version of the data you have access to.
 
-### Data archive version 1
+### Archive version 1
 
 Details:
  * [Research data overview](overviewReport_v1.0.html) report;
@@ -22,12 +27,6 @@ Details:
  * [Survey data](surveyProcessingReport_v1.0.html) processing and documentation report.
 
 Version 1 of the data package does not include the time-use diaries. 
-
-## Data
-
-Access to the data:
-
- * Link to anonymised data archive (when live via [ReShare](http://reshare.ukdataservice.ac.uk/))
 
 ## Code
 

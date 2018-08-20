@@ -1,4 +1,4 @@
-Package: nzGREENGridDataR
+Package: GREENGridData
 Type: Package
 Title: Collection of functions and scripts used to process NZ GREEN Grid project data to create a 'safe' version for data archiving and re-use.
 Version: 0.1.0

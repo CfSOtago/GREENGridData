@@ -25,8 +25,7 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 
 # Set start time ----
 startTime <- proc.time()
-library(nzGREENGridDataR)
-nzGREENGridDataR::setup()
+
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
@@ -91,7 +90,7 @@ See:
 ```{r generic sample, child=ggrParams$sampleGeneric}
 ```
  
-This report provides an overview of the GREEN Grid project [@stephenson_smart_2017] research data. The most recent version of this report can be found at https://dataknut.github.io/nzGREENGridDataR/.
+This report provides an overview of the GREEN Grid project [@stephenson_smart_2017] research data.
 
 # Data Package
 
@@ -194,7 +193,7 @@ kableExtra::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")]
 
 # Known issues
 
-We maintain a [known data issues list](https://github.com/dataknut/nzGREENGridDataR/labels/dataIssue) via our GitHub repository. If you think there is a data issue please check the repo list first and then add a new one if appropriate.
+We maintain a [known data issues list](https://github.com/CfSOtago/GREENGridData/labels/dataIssue) via our GitHub repository. If you think there is a data issue please check the repo list first and then add a new one if appropriate.
 
 # Runtime
 
@@ -219,7 +218,7 @@ R packages used:
  * dplyr - for select and contains [@dplyr]
  * progress - for progress bars [@progress]
  * knitr - to create this document & neat tables [@knitr]
- * nzGREENGridDataR - for local NZ GREEN Grid project utilities
+ * GREENGridData - for local NZ GREEN Grid project utilities
 
 Session info:
 

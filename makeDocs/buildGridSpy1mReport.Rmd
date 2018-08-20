@@ -39,7 +39,7 @@ rmdLibs <- c("data.table", # data munching
              "stringr" # for str_wrap for long labels on plots
 )
 # load them
-nzGREENGrid::loadLibraries(rmdLibs)
+loadLibraries(rmdLibs)
 
 # Local parameters ----
 
@@ -232,7 +232,7 @@ kableExtra::kable(t,
 Results to note:
 
  * The non-loaded files only have 2 distinct file sizes, confirming that they are unlikely to contain useful data. 
- * There are a range of dateTme formats - these are fixed in the data cleaning process and all datesTimes have been set to UTC except where explicitly labelled. Note that R will load UTC data with the local timezone so if you re-use the data in New Zealand this will be correct. If you re-use the data outside New Zealand you will need to set the timezone accordingly or you will get thoroughly confused. We are not great fans of [timezones](https://github.com/dataknut/nzGREENGridDataR/issues/2).
+ * There are a range of dateTme formats - these are fixed in the data cleaning process and all datesTimes have been set to UTC except where explicitly labelled. Note that R will load UTC data with the local timezone so if you re-use the data in New Zealand this will be correct. If you re-use the data outside New Zealand you will need to set the timezone accordingly or you will get thoroughly confused. We are not great fans of [timezones](https://github.com/CfSOtago/GREENGridData/issues/2).
  * Following detailed checks there are now `r nrow(fListCompleteDT[dateFormat == "ambiguous"])` files which are still labelled as having ambiguous dates.
  
 # Processed Data: Quality checks {#cleanData}
@@ -263,7 +263,7 @@ As noted in the introduction, two units were re-allocated to new households duri
  * rf_15 - allocated to a new household on 20/1/2015
  * rf_17 - allocated to a new household on 
 
-To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during [data processing](https://github.com/dataknut/nzGREENGridDataR/issues/3). The clean data therefore contains data files for:
+To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during [data processing](https://github.com/CfSOtago/GREENGridData/issues/3). The clean data therefore contains data files for:
 
  * rf_15a and rf_15b
  * rf_17a and rf_17b
@@ -410,7 +410,7 @@ kableExtra::kable(dt, caption = "Circuit labels list by number of files per hous
 Things to note:
 
  * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but its value is always NA so it has been ignored.
- * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/dataknut/nzGREENGridDataR/issues/1) but note that this is the only household to have 13 circuits monitored.
+ * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/CfSOtago/GREENGridData/issues/1) but note that this is the only household to have 13 circuits monitored.
 
 Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets (see Figure \@ref(fig:plotCircuitLabelIssuesAsTile)).
 
@@ -461,8 +461,8 @@ R packages used:
  * readr - for csv reading/writing [@readr]
  * dplyr - for select and contains [@dplyr]
  * progress - for progress bars [@progress]
- * knitr - to create this document & neat tables [@knitr]
- * nzGREENGridDataR - for local NZ GREEN Grid project utilities
+ * kableExtra - for neat kables [@kableExtra]
+ * GREENGridData - for local NZ GREEN Grid project utilities
 
 Session info:
 
