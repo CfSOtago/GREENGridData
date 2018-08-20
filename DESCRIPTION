@@ -6,8 +6,8 @@ Author: Ben Anderson
 Maintainer: Ben Anderson <b.anderson@soton.ac.uk>
 Description: Code here includes functions to:
     - load, clean and save power monitoring (Grid Spy) data from c 50 NZ households
-    - load, clean & pseudonymise Time Use Diary (TUD) data
-    - load, clean & pseudonymise appliance/dwelling data 
+    - load, clean & anonymise appliance/dwelling data
+    - load, clean & anonymise Time Use Diary (TUD) data (tbc)
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 Imports: 
   data.table,
