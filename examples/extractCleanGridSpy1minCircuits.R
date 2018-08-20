@@ -31,7 +31,7 @@ fullFb <- 0 # switch on (1) or off (0) full feedback
 localTest <- 0 # test using local (1) or full (0) data?
 refresh <- 1 # refresh data even if it seems to already exsit
 
-b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
+b2Kb <- 1024 # http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
 
 # Amend these to suit your data storage location ----
