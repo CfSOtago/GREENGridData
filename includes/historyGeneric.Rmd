@@ -1,1 +1,4 @@
-This may not be the most recent version of thias report. Please check the [package documentation](https://dataknut.github.io/nzGREENGridDataR/) for updates.
+Code history is generally tracked via our GitHub [repository](https://github.com/CfSOtago/GREENGridData/commits/master).
+
+You may not be reading the most recent version of this report. Please check the [package documentation](https://cfsotago.github.io/GREENGridData/) for updates.
+
