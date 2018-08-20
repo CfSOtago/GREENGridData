@@ -9,18 +9,16 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
  * Occupant time-use diaries (focused on energy use)
 
 ----
-## Data
+## Data archives
+
+Check that the versions of the reports match the version of the data you have access to.
+
+### Version 1 - August 2018
 
 Access to the data:
 
  * Link to anonymised data archive (when live via [ReShare](http://reshare.ukdataservice.ac.uk/))
  
-## Documentation
-
-Check that the versions of the reports match the version of the data you have access to.
-
-### Archive version 1
-
 Details:
 
  * [Research data overview](overviewReport_v1.0.html) report;
