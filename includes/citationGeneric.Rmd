@@ -1,0 +1,5 @@
+If you wish to use any of the material from this report please cite as:
+
+ * `r ggrParams$Authors` (`r lubridate::year(today())`) `r params$title`: `r params$subtitle` , `r ggrParams$pubLoc`. 
+ 
+This work is (c) `r lubridate::year(today())` the authors.

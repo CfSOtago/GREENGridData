@@ -31,17 +31,17 @@ version <- "1.0"
 # --- Code ---
 
 # --- Overview report ----
-title <- paste0("NZ GREEN Grid Household Electricity Demand Study: Research data overview (version ", version, ")")
+title <- paste0("NZ GREEN Grid Household Electricity Demand Study")
+subtitle <- paste0("Research data overview (version ", version, ")")
 rmdFile <- paste0(ggrParams$projLoc, "/makeDocs/buildOverviewReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
-                  params = list(title = title, version = version),
+                  params = list(title = title, subtitle = subtitle, version = version),
                   output_file = paste0(ggrParams$projLoc,"/docs/overviewReport_v", version, ".html")
 )
 
 # --- Survey data report ----
-title <- "GREEN Grid Data Processing:"
-subtitle <- paste0("Household Attributes File (version ", version, ")")
+subtitle <- paste0("Household attributes (version ", version, ")")
 rmdFile <- paste0(ggrParams$projLoc, "/makeDocs/buildHouseholdAttributesReport.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
@@ -51,7 +51,6 @@ rmarkdown::render(input = rmdFile,
 
 # --- Grid spy data report ----
 localData <- 0 # 1 = yes
-title <- "NZ GREEN Grid project data processing report"
 subtitle <- paste0("1 minute electricity power (version ", version, ")")
 rmdFile <- paste0(ggrParams$projLoc, "/makeDocs/buildGridSpy1mReport.Rmd")
 rmarkdown::render(input = rmdFile,

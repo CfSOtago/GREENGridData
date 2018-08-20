@@ -1,8 +1,10 @@
 ---
 params:
- title: ""
- version: ""
+  subtitle: ""
+  title: ""
+  version: ""
 title: '`r params$title`'
+subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
 date: 'Last run at: `r getRunDateTime()`'
 output:
@@ -62,13 +64,8 @@ plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/") # where to put the plots
  
 ## Citation
 
-If you wish to use any of the material from this report please cite as:
-
- * `r ggrParams$Authors` (`r 1900 + as.POSIXlt(Sys.Date())$year`) NZ GREEN Grid project: Research data overview, `r ggrParams$pubLoc`. 
- 
-> XX replace with UKDA DOI when available XX
-
-This work is (c) `r lubridate::year(today())` the authors and the University of Southampton.
+```{r citation, child=ggrParams$citation}
+```
 
 ## History
 
@@ -129,7 +126,7 @@ Table \@ref(tab:sampleTable) shows the number in each sample.
 ```{r sampleTable}
 t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
 
-kableExtra::kable(t, format = "html", caption = "Sample location") %>%
+kableExtra::kable(t, caption = "Sample location") %>%
   kable_styling()
 ```
 

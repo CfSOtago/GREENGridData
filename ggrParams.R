@@ -34,6 +34,7 @@ ggrParams$licenseCCBY <- paste0(ggrParams$projLoc, "/includes/licenseCCBY.Rmd")
 ggrParams$supportGeneric <- paste0(ggrParams$projLoc, "/includes/supportGeneric.Rmd")
 ggrParams$sampleGeneric <- paste0(ggrParams$projLoc, "/includes/sampleGeneric.Rmd")
 ggrParams$history <- paste0(ggrParams$projLoc, "/includes/historyGeneric.Rmd")
+ggrParams$citation <- paste0(ggrParams$projLoc, "/includes/citationGeneric.Rmd")
 
 # Misc
 ggrParams$b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
