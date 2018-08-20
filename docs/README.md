@@ -8,19 +8,20 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
  * Dwelling & appliance surveys
  * Occupant time-use diaries (focused on energy use)
 
-NB: Version 1 of the data archive does not include the time-use diaries.
-
 ----
 
 ## Documentation
 
-The most recent versions of the data documentation:
-
- * [Project and research data overview](overviewReport.html) report
- * [Grid Spy data processing](gridSpy1mProcessingReport.html) report
- * [Survey data processing](surveyProcessingReport.html) report
- 
 Check that the versions of the reports match the version of the data you have access to.
+
+### Data archive version 1
+
+Details:
+ * [Research data overview](overviewReport_v1.0.html) report;
+ * [Grid Spy data](gridSpy1mProcessingReport_v1.0.html) processing and documentation report;
+ * [Survey data](surveyProcessingReport_v1.0.html) processing and documentation report.
+
+Version 1 of the data package does not include the time-use diaries. 
 
 ## Data
 

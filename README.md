@@ -1,4 +1,4 @@
-# NZ GREEN Grid Household Electricity Demand Study Data: R Package
+# NZ GREEN Grid Household Electricity Demand Study: Data R Package
 
 Code to process data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project.
 
@@ -8,13 +8,13 @@ Code to process data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sus
  * Occupant time-use diaries (focused on energy use)
  * Dwelling & appliance surveys
 
-NB: *None* of the data is held in this [repo](https://github.com/dataknut/nzGREENGridDataR) so *none* of the code here will work unless you also have access to the data. 
+NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
 
 ----
 
 ## About
 
-The code in this [repo](https://github.com/dataknut/nzGREENGridDataR) does two things:
+The code in this repo does two things:
 
  * Data processing and reporting:
     - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data). As it does so it creates two check plots for each household: monthly mean power profiles & the number of observations over time. The are found in the archived dataset for error checking purposes;
@@ -28,7 +28,7 @@ Guide to folders:
 
  * data - external data used in data cleaning and processing (*not* the research data);
  * dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
- * docs - the data archive documentation published via [githhub pages](https://dataknut.github.io/nzGREENGridDataR/);
+ * docs - the data archive documentation published via [githhub pages](https://cfsotago.github.io/GREENGridData/);
  * examples - R script examples to show how the clean anonymised data can be analysed;
  * includes - .Rmd files used in report generation;
  * makeDocs - makefile and .Rmd files used to produce the most recent versions of the data documentation;
