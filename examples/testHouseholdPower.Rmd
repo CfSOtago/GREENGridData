@@ -21,7 +21,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
-bibliography: '`r path.expand("~/bibliography.bib")`'
+bibliography: '`r paste0(GREENGridData::findParentDirectory("GREENGridData"), "/bibliography.bib")`'
 ---
 
 ```{r knitrSetup, include=FALSE}
