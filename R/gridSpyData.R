@@ -512,6 +512,43 @@ fixCircuitLabels_rf_46 <- function(dt){
   return(dt)
 }
 
+#' Loads cleaned grid spy power data into a data.table
+#'
+#' \code{getCleanGsFile} 
+#' 
+#'  Loads a clean Grid Spy data file using \code{readr::read_csv} to enable .gz files to be autoloaded.
+#'  
+#'  We force a col_character on the dateTime_orig to prevent readr attempting to parse it (incorrectly).
+#'  
+#'  We allow readr to auto-parse the r_dateTime column but note that this will set the timezone etc to the
+#'  timezone correct for the current location. This may not be what you intend.
+#'  
+#'  We force col_double on powerW to stop readr assuming an integer.
+#'  
+#' @param f file to load
+#'
+#' @import data.table
+#' @import readr
+#'
+#' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
+#' @export
+#'
+#'
+getCleanGridSpyFile <- function(f){
+  dt <- data.table::as.data.table(readr::read_csv(f, 
+                                                    col_types = cols(hhID = col_character(),
+                                                                     linkID = col_character(),
+                                                                     dateTime_orig = col_character(), # <- this is crucial otherwise readr attempts to parse this as a dateTime and FAILS (see https://github.com/dataknut/nzGREENGridDataR/issues/2)
+                                                                     TZ_orig = col_character(),
+                                                                     r_dateTime = col_datetime(format = ""),
+                                                                     circuit = col_character(),
+                                                                     powerW = col_double() # <- also crucial otherwise readr seems to assume an integer
+                                                    )
+  )
+  ) 
+  return(dt)
+}
+
 #' Loads cleaned grid spy power data for a given circuit between two dates into a data.table
 #'
 #' \code{extractCleanGridSpyCircuit} loops over all clean household grid spy data files and loads each in turn using \code{readr::read_csv}. It filters each file to
@@ -567,12 +604,9 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
   # file load loop ----
   for(f in filesToLoad){# should use lapply but...
     print(paste0("#--> Loading ", f))
-    df <- readr::read_csv(f,
-                          progress = FALSE
-    ) # decodes .gz on the fly, requires readr
-    dt <- as.data.table(df)
+    dt <- getCleanGridSpyFile(f)
     # check household id
-    hh <- unique(dt$hhID)
+    hh <- unique(dt$linkID)
     # remove cols we don't need & which break the rbind if they parsed differently due to different TZs
     dt$dateTime_orig <- NULL
     dt$TZ_orig <- NULL
@@ -597,7 +631,7 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
     
     print(paste0("#-> Found ", tidyNum(nrow(dataDT)),
                  " observations matching -> ", circuitPattern, " <- in ",
-                 uniqueN(dataDT$hhID), " households between ", dateFrom, " and ", dateTo))
+                 uniqueN(dataDT$linkID), " households between ", dateFrom, " and ", dateTo))
     
     print("#-> Summary of all extracted rows:")
     print(summary(dataDT))
