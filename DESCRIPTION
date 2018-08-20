@@ -1,7 +1,7 @@
 Package: GREENGridData
 Type: Package
 Title: Collection of functions and scripts used to process NZ GREEN Grid project data to create a 'safe' version for data archiving and re-use.
-Version: 0.1.0
+Version: 1.0
 Author: Ben Anderson
 Maintainer: Ben Anderson <b.anderson@soton.ac.uk>
 Description: Code here includes functions to:
@@ -9,7 +9,6 @@ Description: Code here includes functions to:
     - load, clean & pseudonymise Time Use Diary (TUD) data
     - load, clean & pseudonymise appliance/dwelling data 
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
-Depends: R
 Imports: 
   data.table,
   dplyr,
