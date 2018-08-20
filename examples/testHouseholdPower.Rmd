@@ -52,8 +52,8 @@ loadLibraries(rmdLibs)
 
 # Local parameters ----
 # change this to suit your data location & to use a different household
-gsFile <- paste0(ggrParams$dataLoc, "Clean_data/safe/gridSpy/1min/data/", params$hhID,"_all_1min_data.csv.gz")
-hhFile <- paste0(ggrParams$dataLoc, "Clean_data/safe/survey/ggHouseholdAttributes.csv")
+gsFile <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/data/", params$hhID,"_all_1min_data.csv.gz")
+hhFile <- ggrParams$hhAttributes
 
 # Local functions ----
 
