@@ -1,4 +1,4 @@
-Code history is generally tracked via our GitHub [repository](https://github.com/CfSOtago/GREENGridData/commits/master).
+You may not be reading the most recent version of this report. Please check:
 
-You may not be reading the most recent version of this report. Please check the [package documentation](https://cfsotago.github.io/GREENGridData/) for updates.
+ * the overall [package documentation](https://cfsotago.github.io/GREENGridData/);
 

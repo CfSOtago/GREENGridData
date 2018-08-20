@@ -67,12 +67,9 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
-```{r includeHistory, child=ggrParams$historyGenericRmd}
+```{r history, child=ggrParams$history}
 ```
- 
-Specific history of this report:
-
- * https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/surveys/buildHouseholdAttributesReport.Rmd
+ * this [report's edit history](https://github.com/CfSOtago/GREENGridData/commits/master/makeDocs/buildHouseholdAttributesReport.Rmd)
 
 ## Support
 

@@ -74,9 +74,7 @@ This work is (c) `r lubridate::year(today())` the authors and the University of 
 
 ```{r history, child=ggrParams$history}
 ```
- 
-See:
- * [Report history](https://github.com/cfsotago/GREENGridData/commits/master/docs/buildOverviewReport.Rmd)
+ * this [report's edit history](https://github.com/CfSOtago/GREENGridData/commits/master/makeDocs/buildOverviewReport.Rmd)
  
 ## Support
 

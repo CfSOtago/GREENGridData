@@ -75,12 +75,10 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
-```{r includeHistory, child=ggrParams$historyGenericRmd}
-```
- 
-Specific history of this report:
 
- * [Report history](https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
+```{r history, child=ggrParams$history}
+```
+ * this [report's edit history](https://github.com/CfSOtago/GREENGridData/commits/master/makeDocs/buildGridSpy1mReport.Rmd)
  
 ## Support
 
