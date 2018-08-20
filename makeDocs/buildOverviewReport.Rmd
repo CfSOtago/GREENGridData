@@ -1,6 +1,7 @@
 ---
 params:
  title: ""
+ version: ""
 title: '`r params$title`'
 author: '`r ggrParams$Authors`'
 date: 'Last run at: `r getRunDateTime()`'
@@ -72,17 +73,12 @@ This work is (c) `r lubridate::year(today())` the authors and the University of 
 
 ## History
 
-Code history is generally tracked via our GitHub [repository](https://github.com/dataknut/nzGREENGridDataR):
-
- * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/docs/ggOverviewReport.Rmd)
- * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
+```{r history, child=ggrParams$history}
+```
  
-## Requirements:
-
-This report uses:
+See:
+ * [Report history](https://github.com/cfsotago/GREENGridData/commits/master/docs/buildOverviewReport.Rmd)
  
- * safe versions of the project research data and associated data quality statistics produced during processing of the original data. 
-
 ## Support
 
 ```{r generic support, child=ggrParams$supportGeneric}
@@ -99,7 +95,7 @@ This report provides an overview of the GREEN Grid project [@stephenson_smart_20
 
 # Data Package
 
-Version 1.0 of the data package contains:
+Version `r params$version` of the data package contains:
 
  * checkPlots: 
     - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;

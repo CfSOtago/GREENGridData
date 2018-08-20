@@ -2,6 +2,7 @@
 params:
  title: ""
  subtitle: ""
+ version: ""
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
@@ -71,11 +72,7 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
  
 Specific history of this report:
 
- * https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/surveys/createHouseholdAttributes.Rmd
-
-## Requirements:
-
-This report uses the original NZ GREEN Grid household survey and meta data.
+ * https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/surveys/buildHouseholdAttributesReport.Rmd
 
 ## Support
 

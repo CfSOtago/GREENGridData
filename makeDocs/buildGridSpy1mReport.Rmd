@@ -3,6 +3,7 @@ params:
   localData: ""
   subtitle: ""
   title: ""
+  version: ""
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
@@ -74,15 +75,13 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
-Code history is generally tracked via our GitHub [repository](https://github.com/dataknut/nzGREENGridDataR):
-
- * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
- * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
+```{r includeHistory, child=ggrParams$historyGenericRmd}
+```
  
-## Requirements:
+Specific history of this report:
 
-This report uses data quality statistics produced when processing the original GridSpy 1 minute data downloads using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R.
-
+ * [Report history](https://github.com/cfsotago/GREENGridData/commits/master/dataProcessing/gridSpy/buildGridSpy1mReport.Rmd)
+ 
 ## Support
 
 ```{r generic support, child=ggrParams$supportGeneric}
