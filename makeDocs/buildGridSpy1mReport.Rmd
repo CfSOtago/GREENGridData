@@ -111,7 +111,7 @@ Data collection is ongoing and this section reports on the availability of data 
 
 However a large number of files (`r tidyNum(nFilesNotLoaded)` or `r round(100*(nFilesNotLoaded/nFiles))`%) have 1 of two file sizes (43 or 2751 bytes) and we have determined that they contain no data as the monitoring devices have either been removed (households have moved or withdrawn from the study) or data transfer has failed. We therefore flag these files as 'to be ignored'.
 
-In addition two of the GridSpy units [were re-used in new households](ggOverviewReport.html#3_study_recruitment) following withdrawal of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
+In addition two of the GridSpy units were re-used in new households following withdrawal of the original participants. The GridSpy IDs (rf_XX) remained unchanged despite allocation to different households. The original input data does not therefore distinguish between these households and we discuss how this is resolved in the clean safe data in Section \@ref(reallocation) below.
 
 ## Input data file quality checks
 
@@ -359,7 +359,7 @@ Table \@ref(tab:summaryTable) shows the min/max number of observations per day a
  
 If we do see any of these then we still have data cleaning work to do!
 
-Finally Figure \@ref(fig:attritionPlot) plots the total number of households for whom we have _any_ data on a given date. This gives an indication of the attrition rate. This chart is re-plotted in the [overall data package summary](ggOverviewReport.html#fig:liveDataHouseholds) coded by sample.
+Finally Figure \@ref(fig:attritionPlot) plots the total number of households for whom we have _any_ data on a given date. This gives an indication of the attrition rate.
 
 ```{r attritionPlot, fig.cap="Attrition over time"}
 plotDT <- hhStatDT[, .(nHH = uniqueN(linkID)), keyby = .(date)]

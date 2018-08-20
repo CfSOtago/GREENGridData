@@ -142,7 +142,7 @@ kableExtra::kable(t, caption = "Sample information") %>%
 
 # Data collection duration
 
-Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom GridSpy data exists on a given date by sample. The plot includes _any_ data, including partial data and suggests that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households. More detail on the partiality of data is to be found in the [GridSpy data processing report](gridSpy1mProcessingReport.html).
+Figure \@ref(fig:liveDataHouseholds) shows the total number of households for whom GridSpy data exists on a given date by sample. The plot includes _any_ data, including partial data and suggests that for analytic purposes the period from April 2015 to March 2016 (indicated) would offer the maximum number of households.
 
 ```{r liveDataHouseholds, fig.cap="Number of households sending GridSpy data by date"}
 setkey(gsStatDT, linkID)
