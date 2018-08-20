@@ -26,7 +26,6 @@ bibliography: '`r path.expand("~/bibliography.bib")`'
 
 ```{r knitrSetup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
-options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
 ```
 
 
@@ -37,9 +36,9 @@ startTime <- proc.time()
 
 
 # Load nzGREENGrid package ----
-library(nzGREENGridDataR) # local utilities
+library(GREENGridData) # local utilities
 
-nzGREENGridDataR::setup()
+GREENGridData::setup()
 
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
@@ -49,7 +48,7 @@ rmdLibs <- c("data.table", # data munching
              "knitr" # for kable
 )
 # load them
-nzGREENGrid::loadLibraries(rmdLibs)
+loadLibraries(rmdLibs)
 
 # Local parameters ----
 # change this to suit your data location & to use a different household
@@ -84,14 +83,11 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
-Code history is generally tracked via our github [repo](https://github.com/dataknut/nzGREENGridDataR):
-
- * [Report history](https://github.com/dataknut/nzGREENGridDataR/commits/master/examples/testHouseholdPower.Rmd)
- * [General issues](https://github.com/dataknut/nzGREENGridDataR/issues)
+ * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/testHouseholdPower.Rmd)
  
 ## Requirements:
 
-This report uses the safe version of the grid spy 1 minute data which has been processed using https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R.
+This report uses the safe version of the grid spy 1 minute data which has been processed using https://github.com/CfSOtago/GREENGridData/tree/master/dataProcessing/gridSpy.
 
 ## Support
 
@@ -131,16 +127,7 @@ knitr::kable(t,
 Table \@ref(tab:hhData) shows household attributes such as how many people live in this household.
 
 ```{r gsData}
-gsDT <- data.table::as.data.table(readr::read_csv(gsFile, 
-                                                  col_types = cols(hhID = col_character(),
-                                                                   dateTime_orig = col_character(), # <- this is crucial otherwise readr attempts to parse this as a dateTime and FAILS (see https://github.com/dataknut/nzGREENGridDataR/issues/2)
-                                                                   TZ_orig = col_character(),
-                                                                   r_dateTime = col_datetime(format = ""),
-                                                                   circuit = col_character(),
-                                                                   powerW = col_double() # <- also crucial otherwise readr seems to assume an integer
-                                                                   )
-                                                  )
-                                  ) # load gs data
+gsDT <- getCleanGridSpyFile(gsFile) # load gs data
 
 t <- summary(gsDT)
 
