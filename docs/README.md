@@ -32,12 +32,9 @@ Access to the data:
 
 NB: *None* of the data is held in this repo so *none* of the code below will work unless you also have access to the data. 
 
- * The [GREEN Grid Data R Package](https://github.com/dataknut/nzGREENGridDataR) can be forked, cloned or installed as an R package. It contains:
-   - dataProcessing: r scripts to process data and generate data quality reports (requires access to the original study data)
-   - examples: r script examples to use on the anonymised data archive
-   - includes: .Rmd files use in report generation
-   - man - r package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/) - do not touch!)
-   - R - r code implementing the package functions
-   - docs - data quality reports published via [the githhub pages](https://dataknut.github.io/nzGREENGridDataR/) you are now reading
+ * The [GREEN Grid Data R Package](https://github.com/dataknut/nzGREENGridDataR) can be forked, cloned or installed as an R package. Amongst other things it contains:
+    - dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
+    - docs - the data archive documentation published via [githhub pages](https://dataknut.github.io/nzGREENGridDataR/) that you are now reading;
+    - examples - R script examples to show how the clean anonymised data can be analysed.
 
- We encourage feedback and contributions but inevitably #YMMV.
+We encourage [feedback](https://github.com/dataknut/nzGREENGridDataR/issues) and [contributions](https://github.com/dataknut/nzGREENGridDataR/pulls) but inevitably #[YMMV](https://en.wiktionary.org/wiki/YMMV).

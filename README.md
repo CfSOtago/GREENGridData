@@ -26,14 +26,14 @@ The code in this [repo](https://github.com/dataknut/nzGREENGridDataR) does two t
 
 Guide to folders:
 
- * data - misc data (not the research data)
- * dataProcessing - r scripts to process data and generate data quality reports (requires access to the original study data)
- * docs - the data archive documentation published via [githhub pages](https://dataknut.github.io/nzGREENGridDataR/)
- * examples - r script examples to show how the clean anonymised data can be analysed
- * includes - .Rmd files use in report generation
- * makeDocs - contains a makefile and a .Rmd file to produce the most recent versions of the data documentation
- * man - r package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/) - do not touch!)
- * R - r code implementing the package functions
+ * data - external data used in data cleaning and processing (*not* the research data);
+ * dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
+ * docs - the data archive documentation published via [githhub pages](https://dataknut.github.io/nzGREENGridDataR/);
+ * examples - R script examples to show how the clean anonymised data can be analysed;
+ * includes - .Rmd files used in report generation;
+ * makeDocs - makefile and .Rmd files used to produce the most recent versions of the data documentation;
+ * man - R package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/) - do not touch!);
+ * R - R code implementing the package functions.
  
 ## Data Access
 
