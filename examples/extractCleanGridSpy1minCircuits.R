@@ -73,18 +73,23 @@ if(file.exists(exFileTest) & refresh == 0){
   print(paste0("=> You may need to check your circuit label pattern (",
                circuitPattern ,") and date filter settings (",
                dateFrom, " - ", dateTo, ") if this is not what you expected."))
+  
+  
 } else {
   print(paste0(exFileTest, " does not exist & refresh == 1 so running extraction.")) # prevents the file load in the function
-  extractedDT <- extractCleanGridSpyCircuit(iPath, exFile,circuitPattern, dateFrom, dateTo)
+  extractedDT <- extractCleanGridSpyCircuit(iPath, 
+                                            exFile,
+                                            circuitPattern, 
+                                            dateFrom, 
+                                            dateTo)
   print(paste0("Done - look for data in: ", exFileTest))
+  t <- proc.time() - startTime
+  elapsed <- t[[3]]
+  print(paste0("Extraction of ", circuitPattern," circuit data completed in ",
+               round(elapsed,2),
+               " seconds ( ",
+               round(elapsed/60,2), " minutes) using ",
+               R.version.string , " running on ", R.version$platform , "."))
 }
 
-t <- proc.time() - startTime
 
-elapsed <- t[[3]]
-
-print(paste0("Extraction of ", circuitPattern," circuit data completed in ",
-             round(elapsed,2),
-             " seconds ( ",
-             round(elapsed/60,2), " minutes) using ",
-             R.version.string , " running on ", R.version$platform , "."))
