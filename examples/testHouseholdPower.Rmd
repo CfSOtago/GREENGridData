@@ -8,6 +8,11 @@ subtitle: '`r paste0(params$subtitle, params$hhID)`'
 author: "Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)"
 date: 'Last run at: `r Sys.time()`'
 output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
   bookdown::html_document2:
     code_folding: hide
     fig_caption: yes
@@ -16,11 +21,6 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: TRUE
-  bookdown::pdf_document2:
-    fig_caption: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
 bibliography: '`r paste0(GREENGridData::findParentDirectory("GREENGridData"), "/bibliography.bib")`'
 ---
 

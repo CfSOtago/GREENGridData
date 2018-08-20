@@ -239,7 +239,7 @@ div.tocify {
 <h1 class="title toc-ignore">NZ GREEN Grid project example:</h1>
 <h3 class="subtitle"><em>Testing power demand: rf_38</em></h3>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-08 16:05:29</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-20 22:53:21</em></h4>
 
 </div>
 
@@ -284,15 +284,13 @@ div.tocify {
 </div>
 <div id="history" class="section level2">
 <h2><span class="header-section-number">1.4</span> History</h2>
-<p>Code history is generally tracked via our github <a href="https://github.com/dataknut/nzGREENGridDataR">repo</a>:</p>
 <ul>
-<li><a href="https://github.com/dataknut/nzGREENGridDataR/commits/master/examples/testHouseholdPower.Rmd">Report history</a></li>
-<li><a href="https://github.com/dataknut/nzGREENGridDataR/issues">General issues</a></li>
+<li><a href="https://github.com/CfSOtago/GREENGridData/commits/master/examples/testHouseholdPower.Rmd">Report history</a></li>
 </ul>
 </div>
 <div id="requirements" class="section level2">
 <h2><span class="header-section-number">1.5</span> Requirements:</h2>
-<p>This report uses the safe version of the grid spy 1 minute data which has been processed using <a href="https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R" class="uri">https://github.com/dataknut/nzGREENGridDataR/blob/master/dataProcessing/gridSpy/processGridSpy1mData.R</a>.</p>
+<p>This report uses the safe version of the grid spy 1 minute data which has been processed using <a href="https://github.com/CfSOtago/GREENGridData/tree/master/dataProcessing/gridSpy" class="uri">https://github.com/CfSOtago/GREENGridData/tree/master/dataProcessing/gridSpy</a>.</p>
 </div>
 <div id="support" class="section level2">
 <h2><span class="header-section-number">1.6</span> Support</h2>
@@ -300,7 +298,7 @@ div.tocify {
 <ul>
 <li>The <a href="https://www.otago.ac.nz/">University of Otago</a>;</li>
 <li>The <a href="https://www.southampton.ac.uk/">University of Southampton</a>;</li>
-<li>The New Zealand <a href="http://www.mbie.govt.nz/">Ministry of Business, Innovation and Employment (MBIE)</a> through the <a href="https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html">NZ GREEN Grid</a> project;</li>
+<li>The New Zealand <a href="http://www.mbie.govt.nz/">Ministry of Business, Innovation and Employment (MBIE)</a> through the <a href="https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html">NZ GREEN Grid</a> grant (Contract ID: UOCX1203);</li>
 <li><a href="http://www.energy.soton.ac.uk/tag/spatialec/">SPATIALEC</a> - a <a href="http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm">Marie Skłodowska-Curie Global Fellowship</a> based at the University of Otago’s <a href="http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html">Centre for Sustainability</a> (2017-2019) &amp; the University of Southampton’s Sustainable Energy Research Group (2019-202).</li>
 </ul>
 
@@ -308,28 +306,26 @@ div.tocify {
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
-<p>The NZ GREEN Grid project recruited a sample of <a href="ggOverviewReport.html">c 25 households in each of two regions of New Zealand</a> <span class="citation">(Stephenson et al. 2017)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
+<p>The <a href="https://cfsotago.github.io/GREENGridData/">NZ GREEN Grid household electricity demand study</a> recruited a sample of c 25 households in each of two regions of New Zealand <span class="citation">(<span class="citeproc-not-found" data-reference-id="stephenson_smart_2017"><strong>???</strong></span>)</span>. The first sample was recruited in early 2014 and the second in early 2015. Research data includes:</p>
 <ul>
-<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">gridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp. See - <a href="gridSpy1mProcessingReport.html">gridSpy1mProcessingReport</a>;</li>
-<li>Dwelling &amp; appliance surveys. See - <a href="surveyProcessingReport.html">surveyProcessingReport</a>;</li>
+<li>1 minute electricity power (W) data was collected for each dwelling circuit using <a href="https://gridspy.com/">GridSpy</a> monitors on each power circuit (and the incoming power). The power values represent mean(W) over the minute preceeding the observation timestamp;</li>
+<li>Dwelling &amp; appliance surveys;</li>
 <li>Occupant time-use diaries (focused on energy use).</li>
 </ul>
+<p>NB: Version 1 of the data package does not include the time-use diaries.</p>
 <p>This report provides summary analysis of one household as an example.</p>
 </div>
 <div id="load-rf_38-data" class="section level1">
 <h1><span class="header-section-number">3</span> Load rf_38 data</h1>
 <p>The data used to generate this report is:</p>
 <ul>
-<li>/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/gridSpy/1min/data/rf_38_all_1min_data.csv.gz</li>
-<li>/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/survey/ggHouseholdAttributes.csv</li>
+<li>/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/gridSpy/1min/data/rf_38_all_1min_data.csv.gz</li>
+<li>/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/ggHouseholdAttributesSafe.csv</li>
 </ul>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_integer(),
 ##   linkID = col_character(),
-##   hasLongSurvey = col_character(),
-##   hasShortSurvey = col_character(),
-##   surveyStartDate = col_datetime(format = &quot;&quot;),
 ##   hasApplianceSummary = col_character(),
 ##   Oven = col_character(),
 ##   `Fridge / Freezer 1` = col_character(),
@@ -339,26 +335,21 @@ div.tocify {
 ##   Microwave = col_character(),
 ##   `Washing Machine` = col_character(),
 ##   `Clothes Dryer` = col_character(),
-##   `Hot water cylinder` = col_character(),
+##   `Hot water cylinder` = col_character(),
 ##   `Other Appliance` = col_character(),
-##   `Electric heater ` = col_character(),
+##   `Electric heater` = col_character(),
 ##   `Heated towel rails` = col_character(),
 ##   `PV Inverter` = col_character(),
 ##   `Energy Storage` = col_character(),
-##   `Other Generation Device` = col_character()
-##   # ... with 4 more columns
+##   `Other Generation Device` = col_character(),
+##   hasLongSurvey = col_character(),
+##   Q14_1 = col_double(),
+##   Q19_2 = col_character()
+##   # ... with 11 more columns
 ## )</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%"></col>
-<col width="9%"></col>
-<col width="17%"></col>
-<col width="12%"></col>
-<col width="15%"></col>
-<col width="16%"></col>
-<col width="21%"></col>
-</colgroup>
+<table>
+<caption><span id="tab:hhData">Table 3.1: </span>Summary of household data forrf_38</caption>
 <thead>
 <tr class="header">
 <th align="left">linkID</th>
@@ -382,94 +373,85 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p>Table <a href="#tab:hhData"><strong>??</strong></a> shows household attributes such as how many people live in this household.</p>
-<table style="width:100%;">
-<colgroup>
-<col width="2%"></col>
-<col width="12%"></col>
-<col width="12%"></col>
-<col width="12%"></col>
-<col width="12%"></col>
-<col width="20%"></col>
-<col width="12%"></col>
-<col width="11%"></col>
-</colgroup>
+<p>Table <a href="#tab:hhData">3.1</a> shows household attributes such as how many people live in this household.</p>
+<table>
+<caption><span id="tab:gsData">Table 3.2: </span>Summary of grid spy data forrf_38</caption>
 <thead>
 <tr class="header">
-<th align="left"></th>
-<th align="left">hhID</th>
-<th align="left">linkID</th>
+<th></th>
+<th align="center">hhID</th>
+<th align="center">linkID</th>
 <th align="left">dateTime_orig</th>
-<th align="left">TZ_orig</th>
-<th align="left">r_dateTime</th>
-<th align="left">circuit</th>
-<th align="left">powerW</th>
+<th align="center">TZ_orig</th>
+<th align="center">r_dateTime</th>
+<th align="center">circuit</th>
+<th align="center">powerW</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"></td>
+<td></td>
+<td align="center">Length:5319113</td>
+<td align="center">Length:5319113</td>
 <td align="left">Length:5319113</td>
-<td align="left">Length:5319113</td>
-<td align="left">Length:5319113</td>
-<td align="left">Length:5319113</td>
-<td align="left">Min. :2015-03-25 03:51:00</td>
-<td align="left">Length:5319113</td>
-<td align="left">Min. :-179.0</td>
+<td align="center">Length:5319113</td>
+<td align="center">Min. :2015-03-25 03:51:00</td>
+<td align="center">Length:5319113</td>
+<td align="center">Min. :-179.0</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
+<td></td>
+<td align="center">Class :character</td>
+<td align="center">Class :character</td>
 <td align="left">Class :character</td>
-<td align="left">Class :character</td>
-<td align="left">Class :character</td>
-<td align="left">Class :character</td>
-<td align="left">1st Qu.:2015-08-28 14:06:00</td>
-<td align="left">Class :character</td>
-<td align="left">1st Qu.: 0.0</td>
+<td align="center">Class :character</td>
+<td align="center">1st Qu.:2015-08-28 14:06:00</td>
+<td align="center">Class :character</td>
+<td align="center">1st Qu.: 0.0</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
+<td></td>
+<td align="center">Mode :character</td>
+<td align="center">Mode :character</td>
 <td align="left">Mode :character</td>
-<td align="left">Mode :character</td>
-<td align="left">Mode :character</td>
-<td align="left">Mode :character</td>
-<td align="left">Median :2016-10-18 01:51:00</td>
-<td align="left">Mode :character</td>
-<td align="left">Median : 50.8</td>
+<td align="center">Mode :character</td>
+<td align="center">Median :2016-10-18 01:51:00</td>
+<td align="center">Mode :character</td>
+<td align="center">Median : 50.8</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
+<td></td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">Mean :2016-06-21 10:31:25</td>
-<td align="left">NA</td>
-<td align="left">Mean : 263.7</td>
+<td align="center">NA</td>
+<td align="center">Mean :2016-06-21 10:31:25</td>
+<td align="center">NA</td>
+<td align="center">Mean : 263.7</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
+<td></td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">3rd Qu.:2017-03-21 06:54:00</td>
-<td align="left">NA</td>
-<td align="left">3rd Qu.: 170.2</td>
+<td align="center">NA</td>
+<td align="center">3rd Qu.:2017-03-21 06:54:00</td>
+<td align="center">NA</td>
+<td align="center">3rd Qu.: 170.2</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
+<td></td>
+<td align="center">NA</td>
+<td align="center">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">Max. :2017-08-22 06:37:00</td>
-<td align="left">NA</td>
-<td align="left">Max. :6678.4</td>
+<td align="center">NA</td>
+<td align="center">Max. :2017-08-22 06:37:00</td>
+<td align="center">NA</td>
+<td align="center">Max. :6678.4</td>
 </tr>
 </tbody>
 </table>
-<p>Table <a href="#tab:gsData"><strong>??</strong></a> shows a summary of the grid spy 1 minute power data.</p>
+<p>Table <a href="#tab:gsData">3.2</a> shows a summary of the grid spy 1 minute power data.</p>
 <p>Note that:</p>
 <ul>
 <li>the original dataTime (<code>dateTime_orig</code>) and TZ (<code>TZ_orig</code>) have been retained so that the user can check for parsing errors (see <a href="https://github.com/dataknut/nzGREENGridDataR/issues/2" class="uri">https://github.com/dataknut/nzGREENGridDataR/issues/2</a>) if required;</li>
@@ -495,7 +477,7 @@ Figure 4.1: Demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 31.32 seconds ( 0.52 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 54.57 seconds ( 0.91 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -519,35 +501,31 @@ Figure 4.1: Demand profile plot
 ## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
-## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## [1] en_NZ.UTF-8/en_NZ.UTF-8/en_NZ.UTF-8/C/en_NZ.UTF-8/en_NZ.UTF-8
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] knitr_1.20             readr_1.1.1            ggplot2_3.0.0         
-## [4] lubridate_1.7.4        data.table_1.11.4      nzGREENGridDataR_0.1.0
+## [1] knitr_1.20        readr_1.1.1       ggplot2_3.0.0     lubridate_1.7.4  
+## [5] data.table_1.11.4 GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
-##  [4] xfun_0.3          reshape2_1.4.3    purrr_0.2.5      
-##  [7] lattice_0.20-35   colorspace_1.3-2  htmltools_0.3.6  
-## [10] yaml_2.2.0        rlang_0.2.1       pillar_1.3.0     
-## [13] glue_1.3.0        withr_2.1.2       sp_1.3-1         
-## [16] readxl_1.1.0      bindrcpp_0.2.2    jpeg_0.1-8       
-## [19] bindr_0.1.1       plyr_1.8.4        stringr_1.3.1    
-## [22] munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
-## [25] RgoogleMaps_1.4.2 mapproj_1.2.6     evaluate_0.11    
-## [28] labeling_0.3      highr_0.7         proto_1.0.0      
-## [31] Rcpp_0.12.18      geosphere_1.5-7   openssl_1.0.2    
-## [34] backports_1.1.2   scales_0.5.0      rjson_0.2.20     
-## [37] hms_0.4.2         png_0.1-7         digest_0.6.15    
-## [40] stringi_1.2.4     bookdown_0.7      dplyr_0.7.6      
-## [43] rprojroot_1.3-2   grid_3.5.1        tools_3.5.1      
-## [46] magrittr_1.5      maps_3.3.0        lazyeval_0.2.1   
-## [49] tibble_1.4.2      crayon_1.3.4      pkgconfig_2.0.1  
-## [52] prettyunits_1.0.2 assertthat_0.2.0  rmarkdown_1.10   
-## [55] R6_2.2.2          ggmap_2.6.1       compiler_3.5.1</code></pre>
+##  [1] Rcpp_0.12.18      highr_0.7         pillar_1.3.0     
+##  [4] compiler_3.5.1    cellranger_1.1.0  plyr_1.8.4       
+##  [7] bindr_0.1.1       prettyunits_1.0.2 tools_3.5.1      
+## [10] progress_1.2.0    digest_0.6.15     gtable_0.2.0     
+## [13] evaluate_0.11     tibble_1.4.2      pkgconfig_2.0.1  
+## [16] rlang_0.2.1       rstudioapi_0.7    yaml_2.2.0       
+## [19] xfun_0.3          bindrcpp_0.2.2    withr_2.1.2      
+## [22] dplyr_0.7.6       stringr_1.3.1     hms_0.4.2        
+## [25] grid_3.5.1        rprojroot_1.3-2   tidyselect_0.2.4 
+## [28] glue_1.3.0        R6_2.2.2          readxl_1.1.0     
+## [31] rmarkdown_1.10    bookdown_0.7      purrr_0.2.5      
+## [34] reshape2_1.4.3    magrittr_1.5      scales_0.5.0     
+## [37] backports_1.1.2   htmltools_0.3.6   assertthat_0.2.0 
+## [40] colorspace_1.3-2  labeling_0.3      stringi_1.2.4    
+## [43] lazyeval_0.2.1    munsell_0.5.0     crayon_1.3.4</code></pre>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
@@ -560,9 +538,6 @@ Figure 4.1: Demand profile plot
 </div>
 <div id="ref-baseR">
 <p>R Core Team. 2016. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
-</div>
-<div id="ref-stephenson_smart_2017">
-<p>Stephenson, Janet, Rebecca Ford, Nirmal-Kumar Nair, Neville Watson, Alan Wood, and Allan Miller. 2017. “Smart Grid Research in New Zealand–A Review from the GREEN Grid Research Programme.” <em>Renewable and Sustainable Energy Reviews</em> 82 (1): 1636–45. <a href="https://doi.org/10.1016/j.rser.2017.07.010" class="uri">https://doi.org/10.1016/j.rser.2017.07.010</a>.</p>
 </div>
 <div id="ref-ggplot2">
 <p>Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</p>
