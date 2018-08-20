@@ -42,6 +42,10 @@ if(localTest == 1){
   # full clean data
   dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/gridSpy/1min/" # Otago HCS
 }
+if(Sys.info()[4] == "gridcrawler"){
+  # we're on the CS RStudio server
+  dPath <- path.expand("~/greenGridData/cleanData/safe/gridSpy/1min/")
+}
 
 # Code ----
 
