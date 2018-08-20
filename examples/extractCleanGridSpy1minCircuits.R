@@ -23,7 +23,7 @@ rmdLibs <- c("data.table", # data munching
 loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Heat Pump"
+circuitPattern <- "Hot Water"
 dateFrom <- "2015-04-01"
 dateTo <- "2016-03-31"
 
@@ -76,7 +76,7 @@ if(file.exists(exFileTest) & refresh == 0){
   
   
 } else {
-  print(paste0(exFileTest, " does not exist & refresh == 1 so running extraction.")) # prevents the file load in the function
+  print(paste0(exFileTest, " does not exist or refresh == 1 so running extraction.")) # prevents the file load in the function
   extractedDT <- extractCleanGridSpyCircuit(iPath, 
                                             exFile,
                                             circuitPattern, 
