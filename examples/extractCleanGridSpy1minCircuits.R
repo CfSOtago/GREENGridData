@@ -11,8 +11,8 @@ rm(list=ls(all=TRUE)) # remove all objects from workspace
 #> Set start time ----
 startTime <- proc.time()
 
-#> Load nzGREENGrid package ----
-library(nzGREENGridDataR) # local utilities
+#> Load GREENGrid package ----
+library(GREENGridData) # local utilities
 
 #> Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
@@ -20,10 +20,10 @@ rmdLibs <- c("data.table", # data munching
              "readr"
 )
 # load them
-nzGREENGridDataR::loadLibraries(rmdLibs)
+loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Lighting"
+circuitPattern <- "Heat Pump"
 dateFrom <- "2015-04-01"
 dateTo <- "2016-03-31"
 
@@ -61,7 +61,7 @@ print(msg)
 
 oFile <- paste0(circuitPattern, "_", dateFrom, "_", dateTo, "_observations.csv")
 
-exFile <- paste0(dPath, "dataExtracts/", oFile) # place to save them
+exFile <- paste0(dPath, "dataExtracts/", oFile) # place to save them
 exFileTest <- paste0(exFile, ".gz")
 
 if(file.exists(exFileTest) & refresh == 0){
@@ -71,8 +71,7 @@ if(file.exists(exFileTest) & refresh == 0){
                dateFrom, " - ", dateTo, ") if this is not what you expected."))
 } else {
   print(paste0(exFileTest, " does not exist & refresh == 1 so running extraction.")) # prevents the file load in the function
-  extractedDT <- nzGREENGridDataR::extractCleanGridSpyCircuit(iPath, exFile,
-                                                         circuitPattern, dateFrom, dateTo)
+  extractedDT <- extractCleanGridSpyCircuit(iPath, exFile,circuitPattern, dateFrom, dateTo)
   print(paste0("Done - look for data in: ", exFileTest))
 }
 
