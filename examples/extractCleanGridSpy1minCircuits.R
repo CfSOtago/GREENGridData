@@ -40,7 +40,7 @@ if(localTest == 1){
   dPath <- "~/Data/NZGreenGrid/safe/gridSpy/1min/" # local test set
 } else {
   # full clean data
-  dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/Clean_data/safe/gridSpy/1min/" # Otago HCS
+  dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/gridSpy/1min/" # Otago HCS
 }
 
 # Code ----
