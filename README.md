@@ -37,9 +37,9 @@ Guide to folders:
  
 ## Data Access
 
-A link to the archived 'safe' version of the data will appear here soon. 
+A link to the anonymised, archived 'safe' version of the data will appear here soon. 
 
-Access to the original data which is stored on the University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html) is restricted.
+The original project data is stored on the restricted-access University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
 
 ## Using the code
 This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in two ways:
