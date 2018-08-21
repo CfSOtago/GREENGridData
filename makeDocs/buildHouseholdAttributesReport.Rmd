@@ -226,6 +226,7 @@ Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` min
 ## R packages used
 
  * base R [@baseR]
+ * bookdown [@bookdown]
  * GREENGridData [@GREENGridData] which depends on:
     - data.table [@data.table]
     - dplyr [@dplyr]
@@ -237,6 +238,7 @@ Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` min
     - reshape2 [@reshape2]
  * kableExtra [@kableExtra]
  * knitr [@knitr]
+ * rmarkdown [@rmarkdown]
  * skimr [@skimr]
  
 ## Session info

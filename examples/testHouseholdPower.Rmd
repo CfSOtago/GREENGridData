@@ -8,11 +8,6 @@ subtitle: '`r paste0(params$subtitle, params$hhID)`'
 author: "Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)"
 date: 'Last run at: `r Sys.time()`'
 output:
-  bookdown::pdf_document2:
-    fig_caption: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
   bookdown::html_document2:
     code_folding: hide
     fig_caption: yes
@@ -21,6 +16,11 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: TRUE
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
 bibliography: '`r paste0(GREENGridData::findParentDirectory("GREENGridData"), "/bibliography.bib")`'
 ---
 
@@ -45,7 +45,7 @@ rmdLibs <- c("data.table", # data munching
              "lubridate", # date & time stuff
              "ggplot2", # for fancy graphs
              "readr", # for reading & parsing .csv files
-             "knitr" # for kable
+             "kableExtra" # for pretty kable
 )
 # load them
 loadLibraries(rmdLibs)
@@ -117,9 +117,10 @@ keepCols <- c("linkID","nAdults", "nTeenagers13_18", "Location", "hasLongSurvey"
 
 t <- hhDT[hhID == params$hhID, ..keepCols]
 
-knitr::kable(t, 
+kableExtra::kable(t, 
              booktabs = TRUE,
-             caption = paste0("Summary of household data for", params$hhID))
+             caption = paste0("Summary of household data for", params$hhID)) %>%
+  kable_styling()
 
 # Guide to markdown cross-refs: https://bookdown.org/yihui/rmarkdown/bookdown-markdown.html#bookdown-markdown
 ```
@@ -131,7 +132,8 @@ gsDT <- getCleanGridSpyFile(gsFile) # load gs data
 
 t <- summary(gsDT)
 
-knitr::kable(t, caption = paste0("Summary of grid spy data for", params$hhID))
+kableExtra::kable(t, caption = paste0("Summary of grid spy data for", params$hhID)) %>%
+  kable_styling()
 
 gsDT <- gsDT[, month := lubridate::month(r_dateTime, label = TRUE)]
 gsDT <- gsDT[, year := lubridate::year(r_dateTime)]
@@ -203,17 +205,24 @@ Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` min
 
 # R environment
 
-R packages used:
+## R packages used
 
- * base R - for the basics [@baseR]
- * data.table - for fast (big) data handling [@data.table]
- * lubridate - date manipulation [@lubridate]
- * ggplot2 - for slick graphics [@ggplot2]
- * readr - for csv reading/writing [@readr]
- * knitr - to create this document & neat tables [@knitr]
- * nzGREENGridDataR - for local NZ GREEN Grid project utilities
+ * base R [@baseR]
+ * bookdown [@bookdown]
+ * GREENGridData [@GREENGridData] which depends on:
+    - data.table [@data.table]
+    - dplyr [@dplyr]
+    - hms [@hms]
+    - lubridate [@lubridate]
+    - progress [@progress]
+    - readr [@readr]
+    - readxl [@readxl]
+    - reshape2 [@reshape2]
+ * kableExtra [@kableExtra]
+ * knitr [@knitr]
+ * rmarkdown [@rmarkdown]
 
-Session info:
+## Session info
 
 ```{r sessionInfo, echo=FALSE}
 sessionInfo()
