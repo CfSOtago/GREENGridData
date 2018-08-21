@@ -232,7 +232,7 @@ R packages used:
  * skimr - for skim [@skimr]
  * kableExtra - for fancy kables [@kableExtra]
  * readxl - reading .xlsx [@readxl]
- * GREENGridData - for local NZ GREEN Grid project utilities
+ * GREENGridData - for NZ GREEN Grid project data utilities [@GREENGridData] 
 
 Session info:
 

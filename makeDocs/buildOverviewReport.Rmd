@@ -213,7 +213,7 @@ R packages used:
  * dplyr - for select and contains [@dplyr]
  * progress - for progress bars [@progress]
  * knitr - to create this document & neat tables [@knitr]
- * GREENGridData - for local NZ GREEN Grid project utilities
+ * GREENGridData - for NZ GREEN Grid project data utilities [@GREENGridData]
 
 Session info:
 

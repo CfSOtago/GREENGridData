@@ -460,7 +460,7 @@ R packages used:
  * dplyr - for select and contains [@dplyr]
  * progress - for progress bars [@progress]
  * kableExtra - for neat kables [@kableExtra]
- * GREENGridData - for local NZ GREEN Grid project utilities
+ * GREENGridData - for NZ GREEN Grid project data utilities [@GREENGridData] 
 
 Session info:
 
