@@ -225,6 +225,7 @@ Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` min
 
 R packages used:
 
+<<<<<<< HEAD
  * base R [@baseR]
  * GREENGridData [@GREENGridData] which depends on:
    - data.table [@data.table]
@@ -239,6 +240,16 @@ R packages used:
  * knitr [@knitr]
  * skimr [@skimr]
  
+=======
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * readr - for csv reading/writing [@readr]
+ * skimr - for skim [@skimr]
+ * kableExtra - for fancy kables [@kableExtra]
+ * readxl - reading .xlsx [@readxl]
+ * GREENGridData - for NZ GREEN Grid project data utilities [@GREENGridData] 
+
+>>>>>>> 94c79c02146fe7d4b92cdd3f798dd3af3cffceb0
 Session info:
 
 ```{r sessionInfo, echo=FALSE}
