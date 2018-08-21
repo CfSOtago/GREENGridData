@@ -15,7 +15,7 @@ output:
   bookdown::pdf_document2:
     fig_caption: yes
     number_sections: yes
-bibliography: '`r path.expand("~/bibliography.bib")`'
+bibliography: '`r paste0(GREENGridData::findParentDirectory("GREENGridData"), "/bibliography.bib")`'
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +30,6 @@ startTime <- proc.time()
 
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
-             "ggplot2", # for fancy graphs
              "lubridate", # date & time processing
              "readr", # reading/writing csv files
              "readxl", # reading xlsx
@@ -226,14 +225,20 @@ Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` min
 
 R packages used:
 
- * base R - for the basics [@baseR]
- * data.table - for fast (big) data handling [@data.table]
- * readr - for csv reading/writing [@readr]
- * skimr - for skim [@skimr]
- * kableExtra - for fancy kables [@kableExtra]
- * readxl - reading .xlsx [@readxl]
- * GREENGridData - for local NZ GREEN Grid project utilities
-
+ * base R [@baseR]
+ * GREENGridData [@GREENGridData] which depends on:
+   - data.table [@data.table]
+   - dplyr [@dplyr]
+   - hms [@hms]
+   - lubridate [@lubridate]
+   - progress [@progress]
+   - readr [@readr]
+   - readxl [@readxl]
+   - reshape2 [@reshape2]
+ * kableExtra [@kableExtra]
+ * knitr [@knitr]
+ * skimr [@skimr]
+ 
 Session info:
 
 ```{r sessionInfo, echo=FALSE}

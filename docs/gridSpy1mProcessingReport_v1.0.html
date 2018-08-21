@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-20 15:08:33 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-21 17:58:24 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -3837,21 +3837,26 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 24.64 seconds ( 0.41 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 41.1 seconds ( 0.69 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
 <p>R packages used:</p>
 <ul>
-<li>base R - for the basics <span class="citation">(R Core Team 2016)</span></li>
-<li>data.table - for fast (big) data handling <span class="citation">(Dowle et al. 2015)</span></li>
-<li>lubridate - date manipulation <span class="citation">(Grolemund and Wickham 2011)</span></li>
-<li>ggplot2 - for slick graphics <span class="citation">(Wickham 2009)</span></li>
-<li>readr - for csv reading/writing <span class="citation">(Wickham, Hester, and Francois 2016)</span></li>
-<li>dplyr - for select and contains <span class="citation">(Wickham and Francois 2016)</span></li>
-<li>progress - for progress bars <span class="citation">(Csárdi and FitzJohn 2016)</span></li>
-<li>kableExtra - for neat kables <span class="citation">(Zhu 2018)</span></li>
-<li>GREENGridData - for local NZ GREEN Grid project utilities</li>
+<li>base R <span class="citation">(R Core Team 2016)</span></li>
+<li>GREENGridData <span class="citation">(Anderson and Eyers 2018)</span> which depends on:</li>
+<li>data.table <span class="citation">(Dowle et al. 2015)</span></li>
+<li>dplyr <span class="citation">(Wickham and Francois 2016)</span></li>
+<li>hms <span class="citation">(Müller 2018)</span></li>
+<li>lubridate <span class="citation">(Grolemund and Wickham 2011)</span></li>
+<li>progress <span class="citation">(Csárdi and FitzJohn 2016)</span></li>
+<li>readr <span class="citation">(Wickham, Hester, and Francois 2016)</span></li>
+<li>readxl <span class="citation">(Wickham and Bryan 2017)</span></li>
+<li>reshape2 <span class="citation">(Wickham 2007)</span></li>
+<li>ggplot2 <span class="citation">(Wickham 2009)</span></li>
+<li>kableExtra <span class="citation">(Zhu 2018)</span></li>
+<li>knitr <span class="citation">(Xie 2016)</span></li>
+<li>stringr <span class="citation">(Wickham 2016)</span></li>
 </ul>
 <p>Session info:</p>
 <pre><code>## R version 3.5.1 (2018-07-02)
@@ -3869,16 +3874,16 @@ Figure 4.4: Circuit label check plot
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] stringr_1.3.1       bindrcpp_0.2.2      skimr_1.0.3        
-##  [4] readxl_1.1.0        lubridate_1.7.4     readr_1.1.1        
-##  [7] ggplot2_3.0.0       data.table_1.11.4   kableExtra_0.9.0   
-## [10] bookdown_0.7        rmarkdown_1.10      GREENGridData_0.1.0
+##  [1] stringr_1.3.1     bindrcpp_0.2.2    skimr_1.0.3      
+##  [4] readxl_1.1.0      lubridate_1.7.4   readr_1.1.1      
+##  [7] ggplot2_3.0.0     data.table_1.11.4 kableExtra_0.9.0 
+## [10] bookdown_0.7      rmarkdown_1.10    GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.18      nzGREENGrid_0.1.0 lattice_0.20-35  
 ##  [4] tidyr_0.8.1       prettyunits_1.0.2 png_0.1-7        
-##  [7] utf8_1.1.4        assertthat_0.2.0  rprojroot_1.3-2  
-## [10] digest_0.6.15     R6_2.2.2          cellranger_1.1.0 
+##  [7] assertthat_0.2.0  rprojroot_1.3-2   digest_0.6.15    
+## [10] utf8_1.1.4        R6_2.2.2          cellranger_1.1.0 
 ## [13] plyr_1.8.4        backports_1.1.2   evaluate_0.11    
 ## [16] httr_1.3.1        highr_0.7         pillar_1.3.0     
 ## [19] RgoogleMaps_1.4.2 rlang_0.2.2       progress_1.2.0   
@@ -3900,6 +3905,9 @@ Figure 4.4: Circuit label check plot
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
 <div id="refs" class="references">
+<div id="ref-GREENGridData">
+<p>Anderson, Ben, and David Eyers. 2018. <em>GREENGridData: Processing Nz Green Grid Project Data to Create a ’Safe’ Version for Data Archiving and Re-Use</em>. <a href="https://github.com/CfSOtago/GREENGridData" class="uri">https://github.com/CfSOtago/GREENGridData</a>.</p>
+</div>
 <div id="ref-progress">
 <p>Csárdi, Gábor, and Rich FitzJohn. 2016. <em>Progress: Terminal Progress Bars</em>. <a href="https://CRAN.R-project.org/package=progress" class="uri">https://CRAN.R-project.org/package=progress</a>.</p>
 </div>
@@ -3909,20 +3917,35 @@ Figure 4.4: Circuit label check plot
 <div id="ref-lubridate">
 <p>Grolemund, Garrett, and Hadley Wickham. 2011. “Dates and Times Made Easy with lubridate.” <em>Journal of Statistical Software</em> 40 (3): 1–25. <a href="http://www.jstatsoft.org/v40/i03/" class="uri">http://www.jstatsoft.org/v40/i03/</a>.</p>
 </div>
+<div id="ref-hms">
+<p>Müller, Kirill. 2018. <em>Hms: Pretty Time of Day</em>. <a href="https://CRAN.R-project.org/package=hms" class="uri">https://CRAN.R-project.org/package=hms</a>.</p>
+</div>
 <div id="ref-baseR">
 <p>R Core Team. 2016. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
 </div>
 <div id="ref-stephenson_smart_2017">
 <p>Stephenson, Janet, Rebecca Ford, Nirmal-Kumar Nair, Neville Watson, Alan Wood, and Allan Miller. 2017. “Smart Grid Research in New Zealand–A Review from the GREEN Grid Research Programme.” <em>Renewable and Sustainable Energy Reviews</em> 82 (1): 1636–45. <a href="https://doi.org/10.1016/j.rser.2017.07.010" class="uri">https://doi.org/10.1016/j.rser.2017.07.010</a>.</p>
 </div>
+<div id="ref-reshape2">
+<p>Wickham, Hadley. 2007. “Reshaping Data with the reshape Package.” <em>Journal of Statistical Software</em> 21 (12): 1–20. <a href="http://www.jstatsoft.org/v21/i12/" class="uri">http://www.jstatsoft.org/v21/i12/</a>.</p>
+</div>
 <div id="ref-ggplot2">
-<p>Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</p>
+<p>———. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</p>
+</div>
+<div id="ref-stringr">
+<p>———. 2016. <em>Stringr: Simple, Consistent Wrappers for Common String Operations</em>. <a href="https://CRAN.R-project.org/package=stringr" class="uri">https://CRAN.R-project.org/package=stringr</a>.</p>
+</div>
+<div id="ref-readxl">
+<p>Wickham, Hadley, and Jennifer Bryan. 2017. <em>Readxl: Read Excel Files</em>. <a href="https://CRAN.R-project.org/package=readxl" class="uri">https://CRAN.R-project.org/package=readxl</a>.</p>
 </div>
 <div id="ref-dplyr">
 <p>Wickham, Hadley, and Romain Francois. 2016. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://CRAN.R-project.org/package=dplyr" class="uri">https://CRAN.R-project.org/package=dplyr</a>.</p>
 </div>
 <div id="ref-readr">
 <p>Wickham, Hadley, Jim Hester, and Romain Francois. 2016. <em>Readr: Read Tabular Data</em>. <a href="https://CRAN.R-project.org/package=readr" class="uri">https://CRAN.R-project.org/package=readr</a>.</p>
+</div>
+<div id="ref-knitr">
+<p>Xie, Yihui. 2016. <em>Knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://CRAN.R-project.org/package=knitr" class="uri">https://CRAN.R-project.org/package=knitr</a>.</p>
 </div>
 <div id="ref-kableExtra">
 <p>Zhu, Hao. 2018. <em>KableExtra: Construct Complex Table with ’Kable’ and Pipe Syntax</em>. <a href="https://CRAN.R-project.org/package=kableExtra" class="uri">https://CRAN.R-project.org/package=kableExtra</a>.</p>

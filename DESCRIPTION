@@ -1,14 +1,20 @@
 Package: GREENGridData
 Type: Package
-Title: Collection of functions and scripts used to process NZ GREEN Grid project data to create a 'safe' version for data archiving and re-use.
+Title: Processing NZ GREEN Grid project data to create a 'safe' version for data archiving and re-use
 Version: 1.0
-Author: Ben Anderson
+Date: 2018-08-21
+Authors@R: c(person("Ben", "Anderson", email = "b.anderson@soton.ac.uk",
+                  role = c("aut", "cre")),
+                  person("David", "Eyers", email = "dme@cs.otago.ac.nz",
+                  role = c("aut")))
 Maintainer: Ben Anderson <b.anderson@soton.ac.uk>
-Description: Code here includes functions to:
+Description: Code includes functions to:
     - load, clean and save power monitoring (Grid Spy) data from c 50 NZ households
     - load, clean & anonymise appliance/dwelling data
-    - load, clean & anonymise Time Use Diary (TUD) data (tbc)
+    - load, clean & anonymise Time Use Diary (TUD) data (To Do)
+    - load and analyse the anonymised data
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+URL: https://github.com/CfSOtago/GREENGridData
 Imports: 
   data.table,
   dplyr,
