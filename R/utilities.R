@@ -1,10 +1,10 @@
 #' Add NZ season to a data.table
 #'
 #' \code{addNZSeason} returns a dt with SOUTHERN hemisphere season added.
-#'    
+#'
 #' @param dt the data table
 #' @param r_dateTime the column in the dt which is a date that lubridate::month() will work on
-#' 
+#'
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
 #' @export
 #'
@@ -14,6 +14,8 @@ addNZSeason <- function(dt,r_dateTime = r_dateTime){
   dt <- dt[tmpM >= 3 & tmpM <= 5, season := "Autumn"]
   dt <- dt[tmpM >= 6 & tmpM <= 8 , season := "Winter"]
   dt <- dt[tmpM >= 9 & tmpM <= 11, season := "Spring"]
+  # re-order to make sense
+  dt <- dt[, season := factor(season, levels = c("Spring", "Summer", "Autumn", "Winter"))]
   table(dt$season, lubridate::month(dt$r_dateTime, label = TRUE))
   dt$tmpM <- NULL
   return(dt)
@@ -22,7 +24,7 @@ addNZSeason <- function(dt,r_dateTime = r_dateTime){
 #' Get dateTime
 #'
 #' \code{getRunDateTime} returns a formated run dateTime.
-#'    
+#'
 #'
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
 #' @export
@@ -34,15 +36,15 @@ getRunDateTime <- function(){
 
 #' Get duration
 #'
-#' \code{getDuration} takes a timediff created using (e.g.) 
-#' 
+#' \code{getDuration} takes a timediff created using (e.g.)
+#'
 #'    startTime <- proc.time()
 #'    .....
 #'    endTime <- proc.time()
 #'    t <- endTime - startTime
 #'
 #'    and returns a formrated extraction of seconds & minutes for use in feedback.
-#'    
+#'
 #' @param t a duration
 #'
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
@@ -50,8 +52,8 @@ getRunDateTime <- function(){
 #'
 getDuration <- function(t){
   elapsed <- t[[3]]
-  msg <- paste0(round(elapsed,2), 
-                     " seconds ( ", 
+  msg <- paste0(round(elapsed,2),
+                     " seconds ( ",
                      round(elapsed/60,2),
                      " minutes)"
   )
