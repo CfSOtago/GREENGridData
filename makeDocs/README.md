@@ -8,4 +8,4 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
 
 Contains a makefile and a .Rmd file to produce the most recent versions of the data documentation.
 
-In theory, if you have installed this package and you have access to the University of Otago's HCS folders you should just be able to run the code in the makefile and it will update all the documentation.
+In theory, if you have installed this package and you have access to the University of Otago's HCS folders you should just be able to edit the file paths in the makefile and run it to update all the documentation.
