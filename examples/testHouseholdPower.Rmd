@@ -110,31 +110,50 @@ The data used to generate this report is:
  * `r gsFile`
  * `r hhFile`
 
-```{r hhData}
+```{r loadHhData}
 hhDT <- data.table::as.data.table(readr::read_csv(hhFile)) # load hh data
+```
 
+```{r summaryTable}
 keepCols <- c("linkID","nAdults", "nTeenagers13_18", "Location", "hasLongSurvey", "hasShortSurvey", "hasApplianceSummary")
 
+# just keep the above columns for reporting
 t <- hhDT[hhID == params$hhID, ..keepCols]
 
 kableExtra::kable(t, 
              booktabs = TRUE,
-             caption = paste0("Summary of household data for", params$hhID)) %>%
+             caption = paste0("Summary of household data for ", params$hhID)) %>%
   kable_styling()
 
-# Guide to markdown cross-refs: https://bookdown.org/yihui/rmarkdown/bookdown-markdown.html#bookdown-markdown
 ```
 
-Table \@ref(tab:hhData) shows household attributes such as how many people live in this household.
+Table \@ref(tab:summaryTable) shows key household attributes such as how many people live in this household.
 
-```{r gsData}
-gsDT <- getCleanGridSpyFile(gsFile) # load gs data
+```{r applianceTable}
+# just keep the appliance columns for reporting
+t <- hhDT[hhID == params$hhID, 1:17]
+
+tt <- data.table(variable = names(t), value = transpose(t))
+
+kableExtra::kable(tt, 
+             booktabs = TRUE,
+             caption = paste0("Summary of appliances recorded for ", params$hhID)) %>%
+  kable_styling()
+
+```
+
+Table \@ref(tab:applianceTable) shows the appliances recorded for this household.
+
+
+```{r loadGsData}
+gsDT <- GREENGridData::getCleanGridSpyFile(gsFile) # load gs data
 
 t <- summary(gsDT)
 
 kableExtra::kable(t, caption = paste0("Summary of grid spy data for", params$hhID)) %>%
   kable_styling()
 
+# create some useful derived date & time variables
 gsDT <- gsDT[, month := lubridate::month(r_dateTime, label = TRUE)]
 gsDT <- gsDT[, year := lubridate::year(r_dateTime)]
 gsDT <- gsDT[, obsHour := lubridate::hour(r_dateTime)]
@@ -142,8 +161,7 @@ gsDT <- gsDT[, obsDate := lubridate::date(r_dateTime)]
 gsDT <- gsDT[, obsTime := hms::as.hms(r_dateTime)]
 ```
 
-
-Table \@ref(tab:gsData) shows a summary of the grid spy 1 minute power data. 
+Table \@ref(tab:loadGsData) shows a summary of the grid spy 1 minute power data. 
 
 Note that:
 
@@ -163,6 +181,8 @@ This section plots overall mean power (W) per minute per month for each circuit 
 plotDT <- gsDT[, .(meanW = mean(powerW)), keyby = .(circuit, month, year, obsTime)
              ] # aggregate by circuit to preserve unique circuit labels in households 
 # (e.g. rf_46) where names are re-used but with different ids. see ?fixCircuitLabels_rf_46
+
+# set attributes for plot
 vLineAlpha <- 0.4
 vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
 timeBreaks <- c(hms::as.hms("04:00:00"), 

@@ -240,7 +240,7 @@ div.tocify {
 <h1 class="title toc-ignore">NZ GREEN Grid project example:</h1>
 <h3 class="subtitle"><em>Testing power demand: rf_38</em></h3>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-21 18:28:45</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-27 14:40:43</em></h4>
 
 </div>
 
@@ -351,7 +351,7 @@ div.tocify {
 <pre><code>## See spec(...) for full column specifications.</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:hhData">Table 3.1: </span>Summary of household data forrf_38
+<span id="tab:summaryTable">Table 3.1: </span>Summary of household data for rf_38
 </caption>
 <thead>
 <tr>
@@ -404,10 +404,164 @@ Yes
 </tr>
 </tbody>
 </table>
-<p>Table <a href="#tab:hhData">3.1</a> shows household attributes such as how many people live in this household.</p>
+<p>Table <a href="#tab:summaryTable">3.1</a> shows key household attributes such as how many people live in this household.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:gsData">Table 3.2: </span>Summary of grid spy data forrf_38
+<span id="tab:applianceTable">Table 3.2: </span>Summary of appliances recorded for rf_38
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:left;">
+value.V1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+linkID
+</td>
+<td style="text-align:left;">
+rf_38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hasApplianceSummary
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oven
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fridge / Freezer 1
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fridge / Freezer 2
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fridge / Freezer 3
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dishwasher
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Microwave
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Washing Machine
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clothes Dryer
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hot water cylinder
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Other Appliance
+</td>
+<td style="text-align:left;">
+ventilation system
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Electric heater
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Heated towel rails
+</td>
+<td style="text-align:left;">
+yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Heat pump number
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PV Inverter
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Energy Storage
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+</tbody>
+</table>
+<p>Table <a href="#tab:applianceTable">3.2</a> shows the appliances recorded for this household.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:loadGsData">Table 3.3: </span>Summary of grid spy data forrf_38
 </caption>
 <thead>
 <tr>
@@ -586,7 +740,7 @@ Max. :6678.4
 </tr>
 </tbody>
 </table>
-<p>Table <a href="#tab:gsData">3.2</a> shows a summary of the grid spy 1 minute power data.</p>
+<p>Table <a href="#tab:loadGsData">3.3</a> shows a summary of the grid spy 1 minute power data.</p>
 <p>Note that:</p>
 <ul>
 <li>the original dataTime (<code>dateTime_orig</code>) and TZ (<code>TZ_orig</code>) have been retained so that the user can check for parsing errors (see <a href="https://github.com/dataknut/nzGREENGridDataR/issues/2" class="uri">https://github.com/dataknut/nzGREENGridDataR/issues/2</a>) if required;</li>
@@ -612,7 +766,7 @@ Figure 4.1: Demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 31.18 seconds ( 0.52 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 43.54 seconds ( 0.73 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
