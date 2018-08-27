@@ -543,9 +543,10 @@ getCleanGridSpyFile <- function(f){
                                                                      r_dateTime = col_datetime(format = ""),
                                                                      circuit = col_character(),
                                                                      powerW = col_double() # <- also crucial otherwise readr seems to assume an integer
-                                                    )
-  )
-  ) 
+                                                    ),
+                                                  progress = FALSE # no feedback
+                                                  )
+                                  ) 
   return(dt)
 }
 
