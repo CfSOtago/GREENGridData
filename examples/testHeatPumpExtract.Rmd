@@ -1,0 +1,278 @@
+---
+params:
+  circuit: 'Heat Pump'
+  title: 'GREENGrid Household Electricity Demand Data Circuit Extract Test: '
+title: '`r paste0(params$title, params$circuit)`'
+subtitle: '`r paste0(params$subtitle, params$hhID)`'
+author: "Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)"
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: yes
+    number_sections: yes
+    self_contained: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+bibliography: '`r paste0(GREENGridData::findParentDirectory("GREENGridData"), "/bibliography.bib")`'
+---
+
+```{r knitrSetup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+```
+
+
+```{r codeSetup, include=FALSE}
+
+# Set start time ----
+startTime <- proc.time()
+
+
+# Load nzGREENGrid package ----
+library(GREENGridData) # local utilities
+
+GREENGridData::setup()
+
+# Packages needed in this .Rmd file ----
+rmdLibs <- c("data.table", # data munching
+             "lubridate", # date & time stuff
+             "ggplot2", # for fancy graphs
+             "readr", # for reading & parsing .csv files
+             "kableExtra" # for pretty kable
+)
+# load them
+loadLibraries(rmdLibs)
+
+# Local parameters ----
+# change this to suit your data location 
+
+gsFile <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/dataExtracts/",
+                 params$circuit, # change the circuit and you change the data used :-)
+                 "_2015-04-01_2016-03-31_observations.csv.gz")
+hhFile <- ggrParams$hhAttributes
+
+# Local functions ----
+
+
+```
+
+\newpage
+
+# About
+
+## Report circulation:
+
+ * Public - this report is intended to accompany the data release.
+ 
+## License
+
+```{r ccby license, child=ggrParams$licenseCCBY}
+```
+ 
+## Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r lubridate::year(today())`) `r paste0(params$title,params$circuit)`. `r ggrParams$pubLoc`.
+
+This work is (c) `r lubridate::year(today())` the University of Southampton.
+
+## History
+
+ * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/testHeatPumpExtract.Rmd)
+ 
+## Requirements:
+
+This report uses the safe version of the grid spy 1 minute data which has been processed using the code in https://github.com/CfSOtago/GREENGridData/tree/master/dataProcessing/gridSpy. It also assumes you have already run the example circuit extraction script using circuit = `r params$circuit`.
+
+## Support
+
+```{r generic support, child=ggrParams$supportGeneric}
+```
+ 
+\newpage
+
+# Introduction
+
+```{r generic sample, child=ggrParams$sampleGeneric}
+```
+ 
+This report provides summary analysis of one circuit type (`r params$circuit`) across all households as an example.
+
+# Load data
+
+The data used to generate this report is:
+
+ * `r gsFile`
+ * `r hhFile`
+
+First we load the household data. `readr` will give some feedback on the columns.
+
+```{r loadHhData}
+if(file.exists(hhFile)){
+  hhDT <- data.table::as.data.table(readr::read_csv(hhFile)) # load hh data
+  data.table::setkey(hhDT, linkID)
+} else {
+  print(paste0("Failed to find ", hhFile," - is the data source available?"))
+  } 
+
+```
+
+Next we load the Grid Spy extract for `r params$circuit`. This uses a `GREENGridData` package function intended to load the cleaned individual household data which warns that two of the column names are not found. These columns were dropped during the extraction process so we can safely ignore these warnings
+
+```{r loadGsData}
+gsDT <- GREENGridData::getCleanGridSpyFile(gsFile) # load Grid Spy data
+data.table::setkey(gsDT, linkID)
+t <- head(gsDT)
+
+kableExtra::kable(t, caption = paste0("First few rows of grid spy data")) %>%
+  kable_styling()
+```
+
+Table \@ref(tab:loadGsData) shows the first few rows of the Grid Spy 1 minute power data. 
+
+```{r summaryGsData}
+t <- summary(gsDT)
+
+kableExtra::kable(t, caption = paste0("Summary of grid spy data")) %>%
+  kable_styling()
+
+# create some useful derived date & time variables
+gsDT <- gsDT[, month := lubridate::month(r_dateTime, label = TRUE)]
+gsDT <- gsDT[, year := lubridate::year(r_dateTime)]
+gsDT <- gsDT[, obsHour := lubridate::hour(r_dateTime)]
+gsDT <- gsDT[, obsDate := lubridate::date(r_dateTime)]
+gsDT <- gsDT[, obsTime := hms::as.hms(r_dateTime)]
+```
+
+Table \@ref(tab:summaryGsData) shows a summary of the Grid Spy 1 minute power data. 
+
+Note that:
+
+ * r_datetime is the correct dateTime of each observation in UTC and will have loaded as your local timezone. If you are conducting this analysis outside NZ then you will get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
+ * there can be 0 Wh observations.
+
+# Plot seasonal mean power profiles
+
+This section plots overall mean power (W) per minute by season and number of children aged 0-12 as an illustration of how to link the Grid Spy and household data. We will go through the steps with commentary and showing the code...
+
+First we create a _Southern_ Hemisphere season variable. Luckily we have a function to do this in the `GREENGridData` package. We print a check table to ensure we are all happy with the coding of `season`.
+
+```{r addSeason, echo = TRUE}
+gsDT <- GREENGridData::addNZSeason(gsDT)
+table(lubridate::month(gsDT$r_dateTime, label = TRUE), gsDT$season)
+```
+
+Table \@ref(tab:hhTable) the number of households who have different number sof children aged 0-12 so we know how many households make up each line on the chart. This table includes households where we do not know the number of children (NA) but we do have electricity demand data.
+
+```{r hhTable}
+t <- hhDT[, .(Freq = .N), keyby = nChildren0_12]
+
+kableExtra::kable(t, caption = paste0("Number of households with children aged 0-12")) %>%
+  kable_styling()
+```
+
+Now we link (join) the Grid Spy and household data.tables and aggregate (summarise) by season and number of children aged 0-12. You can do this using `data.table`'s on the fly [join](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html#MergeDiff) but we have found pre-joining of the columns you want to be much faster. We have wrapped both methods inside `system.time()` calls for comparison.
+
+You can probably also do this in `dplyr` etc but we haven't tried. 
+
+```{r aggregateData, echo=TRUE}
+print("data.table join on the fly (version 1 - slow):")
+system.time(plotDT <- gsDT[hhDT][, .(meanW = mean(powerW)), keyby = .(season, obsTime, nChildren0_12)
+             ]) # aggregate by season, time and n children aged 0 - 12
+
+# print("data.table join on the fly (version 2):")
+# # appears to be as specified in https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html#MergeDiff
+# # but fails to find nChildren0_12
+# system.time(plotDT <- gsDT[hhDT, .(meanW = mean(powerW)), keyby = .(season, obsTime, nChildren0_12)
+#              ]) # aggregate by season, time and n children aged 0 - 12
+
+aggFunc <- function(gsDT, hhDT){
+  # do it in stages instead
+  keepCols <- c("linkID", "nChildren0_12")
+  mergedDT <- gsDT[hhDT[, ..keepCols]]
+  dt <- mergedDT[, .(meanW = mean(powerW)), keyby = .(season, obsTime, nChildren0_12)]
+  return(dt)
+}
+print("data.table merge then aggregate:")
+system.time(plotDT <- aggFunc(gsDT, hhDT))
+```
+
+Now use the aggregated `data.table` to make the plot. Note that as specified this will add a line for nChildren0_12 == NA (household(s).
+
+```{r makePlot, fig.height=8, fig.cap="Demand profile plot", echo = TRUE}
+# set attributes for plot
+vLineAlpha <- 0.4
+vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+timeBreaks <- c(hms::as.hms("04:00:00"), 
+                hms::as.hms("08:00:00"),
+                hms::as.hms("12:00:00"),
+                hms::as.hms("16:00:00"),
+                hms::as.hms("20:00:00"),
+                hms::as.hms("24:00:00")
+)
+
+myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = as.factor(nChildren0_12))) +
+  geom_line() + 
+  facet_grid(season  ~ .) + 
+  theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  theme(legend.position = "bottom") + 
+  theme(legend.title=element_blank()) + 
+  labs(title = paste0("Seasonal mean power demand profiles by n children aged 0-12: ", params$circuit),
+       y = "Mean kW", 
+       caption = paste0("GREENGrid Grid Spy household electricity demand data",
+                        "\n", min(gsDT$r_dateTime), 
+                        " to ", max(gsDT$r_dateTime),
+                        "\nobsTime = Pacific/Auckland"))
+
+myPlot + 
+  scale_x_time(breaks = timeBreaks) +
+  geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
+```
+
+Figure \@ref(fig:makePlot) shows the plot for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+## R packages used
+
+ * base R [@baseR]
+ * bookdown [@bookdown]
+ * GREENGridData [@GREENGridData] which depends on:
+    - data.table [@data.table]
+    - dplyr [@dplyr]
+    - hms [@hms]
+    - lubridate [@lubridate]
+    - progress [@progress]
+    - readr [@readr]
+    - readxl [@readxl]
+    - reshape2 [@reshape2]
+ * kableExtra [@kableExtra]
+ * knitr [@knitr]
+ * rmarkdown [@rmarkdown]
+
+## Session info
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References
