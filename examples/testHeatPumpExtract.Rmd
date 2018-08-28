@@ -221,9 +221,9 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
   facet_grid(season  ~ .) + 
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
-  theme(legend.position = "bottom") + 
-  theme(legend.title=element_blank()) + 
-  labs(title = paste0("Seasonal mean power demand profiles by n children aged 0-12: ", params$circuit),
+  guides(colour = guide_legend(title = "Number of children aged 0 - 12: ")) +
+  theme(legend.position = "bottom")  + 
+  labs(title = paste0(params$circuit, ": seasonal mean power demand profiles by n children aged 0-12"),
        y = "Mean kW", 
        caption = paste0("GREENGrid Grid Spy household electricity demand data",
                         "\n", min(gsDT$r_dateTime), 
