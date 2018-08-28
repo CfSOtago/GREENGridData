@@ -16,11 +16,11 @@ NB: *None* of the data is held in this repo so *none* of the code here will work
 
 The code in this repo does two things:
 
- * Data processing and reporting:
+ * _Data processing and reporting_:
     - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data). As it does so it creates two check plots for each household: monthly mean power profiles & the number of observations over time. The are found in the archived dataset for error checking purposes;
     - produces original data processing reports and documentation (code will only work if you have the original data);
     - produces cleaned 'safe' data reports and documentation (code will only work if you have the original data).
- * Provides examples of code to:
+ * _Provides examples of code_ to:
     - load and analyse electricity 'safe' demand data for one household
     - extract power data for circuits matching a given string (e.g. `Heat Pump`) from the 'safe' data between two dates;
     - link the household survey and extracted 'Heat Pump' data for analysis.
@@ -32,7 +32,7 @@ Guide to folders:
  * docs - the data archive documentation published via [githhub pages](https://cfsotago.github.io/GREENGridData/);
  * examples - R script examples to show how the clean anonymised data can be analysed;
  * includes - .Rmd files used in report generation;
- * makeDocs - makefile and .Rmd files used to produce the most recent versions of the data documentation;
+ * makeDocs - makefile and .Rmd files used to produce the most recent versions of the data documentation. These require data quality summaries produced by the dataProcessing code;
  * man - R package documentation (auto-created using [roxygen](https://cran.r-project.org/web/packages/roxygen2/) - do not touch!);
  * R - R code implementing the package functions.
  
