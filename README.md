@@ -21,6 +21,7 @@ The code in this repo does two things:
     - produces original data processing reports and documentation (code will only work if you have the original data);
     - produces cleaned 'safe' data reports and documentation (code will only work if you have the original data).
  * Provides examples of code to:
+    - load and analyse electricity 'safe' demand data for one household
     - extract power data for circuits matching a given string (e.g. `Heat Pump`) from the 'safe' data between two dates;
     - link the household survey and extracted 'Heat Pump' data for analysis.
 
