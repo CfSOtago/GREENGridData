@@ -144,11 +144,7 @@ kableExtra::kable(t, caption = paste0("Summary of grid spy data")) %>%
   kable_styling()
 
 # create some useful derived date & time variables
-gsDT <- gsDT[, month := lubridate::month(r_dateTime, label = TRUE)]
-gsDT <- gsDT[, year := lubridate::year(r_dateTime)]
-gsDT <- gsDT[, obsHour := lubridate::hour(r_dateTime)]
-gsDT <- gsDT[, obsDate := lubridate::date(r_dateTime)]
-gsDT <- gsDT[, obsTime := hms::as.hms(r_dateTime)]
+gsDT <- gsDT[, obsTime := hms::as.hms(r_dateTime)] # HH:MM for demand profile plots
 ```
 
 Table \@ref(tab:summaryGsData) shows a summary of the Grid Spy 1 minute power data. 
@@ -166,10 +162,10 @@ First we create a _Southern_ Hemisphere season variable. Luckily we have a funct
 
 ```{r addSeason, echo = TRUE}
 gsDT <- GREENGridData::addNZSeason(gsDT)
-table(lubridate::month(gsDT$r_dateTime, label = TRUE), gsDT$season)
+table(lubridate::month(gsDT$r_dateTime, label = TRUE), gsDT$season, useNA = "always")
 ```
 
-Table \@ref(tab:hhTable) the number of households who have different number sof children aged 0-12 so we know how many households make up each line on the chart. This table includes households where we do not know the number of children (NA) but we do have electricity demand data.
+Table \@ref(tab:hhTable) the number of households who have different numbers of children aged 0-12 so we know how many households make up each line on the plot. This table includes households where we do not know the number of children (NA) but we do have electricity demand data.
 
 ```{r hhTable}
 t <- hhDT[, .(Freq = .N), keyby = nChildren0_12]
@@ -200,11 +196,11 @@ aggFunc <- function(gsDT, hhDT){
   dt <- mergedDT[, .(meanW = mean(powerW)), keyby = .(season, obsTime, nChildren0_12)]
   return(dt)
 }
-print("data.table merge then aggregate:")
+print("data.table join then aggregate:")
 system.time(plotDT <- aggFunc(gsDT, hhDT))
 ```
 
-Now use the aggregated `data.table` to make the plot. Note that as specified this will add a line for nChildren0_12 == NA (household(s).
+Now use the aggregated `data.table` to make the plot. Note that as specified this will add a line for nChildren0_12 == NA household(s) - see Table \@ref(tab:hhTable).
 
 ```{r makePlot, fig.height=8, fig.cap="Demand profile plot", echo = TRUE}
 # set attributes for plot
@@ -218,7 +214,9 @@ timeBreaks <- c(hms::as.hms("04:00:00"),
                 hms::as.hms("24:00:00")
 )
 
-myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = as.factor(nChildren0_12))) +
+myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
+                          aes(x = obsTime, y = meanW/1000, 
+                              colour = as.factor(nChildren0_12))) +
   geom_line() + 
   facet_grid(season  ~ .) + 
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
