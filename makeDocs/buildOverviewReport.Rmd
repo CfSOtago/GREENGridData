@@ -28,14 +28,6 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 # Set start time ----
 startTime <- proc.time()
 
-# Packages needed in this .Rmd file ----
-rmdLibs <- c("data.table", # data munching
-             "ggplot2", # for fancy graphs
-             "readr" # for reading & parsing .csv files
-)
-# load them
-nzGREENGrid::loadLibraries(rmdLibs)
-
 # Local parameters ----
 
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
@@ -90,11 +82,12 @@ This report provides an overview of the GREEN Grid project [@stephenson_smart_20
 
 Version `r params$version` of the data package contains:
 
+ 
+ * powerData: 1 minute power demand data for each household. One file per household;
+ * surveyData: anonymised household attribute data;
  * checkPlots: 
     - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;
-    - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check;
- * powerData: 1 minute power demand data for each household. One file per household;
- * surveyData: anonymised household attribute data.
+    - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
 
 # Study recruitment
 
@@ -176,10 +169,11 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
 
 # Key attributes
 
-Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the [clean GridSpy data](gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units) for the relevant households. Linkage between the survey and GridSpy data should always use `linkID` to avoid errors.
+Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set  from the date of re-use using the `linkID` variable. This is explained in more detail in the [GridSpy  processing](gridSpy1mProcessingReport_v1.0.html#reallocation) report. Linkage between the survey and GridSpy data should therefore always use `linkID` to avoid errors.
 
 ```{r allHhData}
-kableExtra::kable(hhDT[, c("hhID", "linkID", "Location", "notes", "r_stopDate")][order(linkID)], 
+kableExtra::kable(hhDT[, c("hhID", "linkID", "Location", "surveyStartDate", "nAdults", "nChildren0_12","nTeenagers13_18",
+                           "notes", "r_stopDate", "hasApplianceSummary")][order(linkID)], 
              caption = "Sample details") %>%
   kable_styling()
 
