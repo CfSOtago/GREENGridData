@@ -29,10 +29,7 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 startTime <- proc.time()
 
 # Packages needed in this .Rmd file ----
-rmdLibs <- c("data.table", # data munching
-             "lubridate", # date & time processing
-             "readr", # reading/writing csv files
-             "readxl", # reading xlsx
+rmdLibs <- c("readxl", # reading xlsx
              "skimr" # for skim
 )
 # load them
