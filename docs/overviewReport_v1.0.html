@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>Research data overview (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-21 18:29:34 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 11:19:33 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -203,13 +203,13 @@ $(document).ready(function () {
 <h1><span class="header-section-number">3</span> Data Package</h1>
 <p>Version 1.0 of the data package contains:</p>
 <ul>
+<li>powerData: 1 minute power demand data for each household. One file per household;</li>
+<li>surveyData: anonymised household attribute data;</li>
 <li>checkPlots:
 <ul>
 <li>simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;</li>
-<li>tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check;</li>
+<li>tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check…</li>
 </ul></li>
-<li>powerData: 1 minute power demand data for each household. One file per household;</li>
-<li>surveyData: anonymised household attribute data.</li>
 </ul>
 </div>
 <div id="study-recruitment" class="section level1">
@@ -400,7 +400,7 @@ Figure 5.1: Number of households sending GridSpy data by date
 </div>
 <div id="key-attributes" class="section level1">
 <h1><span class="header-section-number">6</span> Key attributes</h1>
-<p>Table <a href="#tab:allHhData">6.1</a> shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the dates given. This has already been done in the <a href="gridSpy1mProcessingReport.html#41_recoding_re-allocated_grid_spy_units">clean GridSpy data</a> for the relevant households. Linkage between the survey and GridSpy data should always use <code>linkID</code> to avoid errors.</p>
+<p>Table <a href="#tab:allHhData">6.1</a> shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set from the date of re-use using the <code>linkID</code> variable. This is explained in more detail in the <a href="gridSpy1mProcessingReport_v1.0.html#reallocation">GridSpy processing</a> report. Linkage between the survey and GridSpy data should therefore always use <code>linkID</code> to avoid errors.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:allHhData">Table 6.1: </span>Sample details
@@ -417,10 +417,25 @@ linkID
 Location
 </th>
 <th style="text-align:left;">
+surveyStartDate
+</th>
+<th style="text-align:right;">
+nAdults
+</th>
+<th style="text-align:right;">
+nChildren0_12
+</th>
+<th style="text-align:right;">
+nTeenagers13_18
+</th>
+<th style="text-align:left;">
 notes
 </th>
 <th style="text-align:left;">
 r_stopDate
+</th>
+<th style="text-align:left;">
+hasApplianceSummary
 </th>
 </tr>
 </thead>
@@ -436,6 +451,21 @@ rf_06
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-19 14:09:49
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
@@ -451,6 +481,21 @@ rf_07
 </td>
 <td style="text-align:left;">
 New Plymouth
+</td>
+<td style="text-align:left;">
+2020-06-23 14:21:25
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -470,6 +515,21 @@ rf_08
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-14 14:12:21
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
@@ -485,6 +545,21 @@ rf_09
 </td>
 <td style="text-align:left;">
 New Plymouth
+</td>
+<td style="text-align:left;">
+2020-06-19 14:11:33
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -504,10 +579,25 @@ rf_10
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-20 14:17:01
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -521,10 +611,25 @@ rf_11
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-06-06 14:12:16
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -536,6 +641,21 @@ rf_12
 </td>
 <td style="text-align:left;">
 New Plymouth
+</td>
+<td style="text-align:left;">
+2020-06-16 14:07:34
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -555,10 +675,25 @@ rf_13
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-14 14:12:07
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -572,10 +707,25 @@ rf_14
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-06-10 14:11:51
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -589,10 +739,25 @@ rf_15a
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-06-17 14:15:38
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 Disconnected 15/01/2015. Re-used
 </td>
 <td style="text-align:left;">
 2015-01-15
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -606,10 +771,25 @@ rf_15b
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-16 14:17:36
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 Re-user. Then disconnected 02/04/2016
 </td>
 <td style="text-align:left;">
 2016-04-02
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -621,6 +801,21 @@ rf_16
 </td>
 <td style="text-align:left;">
 New Plymouth
+</td>
+<td style="text-align:left;">
+2020-06-10 14:15:29
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -640,10 +835,25 @@ rf_17a
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-14 14:20:04
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 Unusual &amp; specialist energy tech configuration. Disconnected 28/03/2016. Re-used.
 </td>
 <td style="text-align:left;">
 2016-03-28
+</td>
+<td style="text-align:left;">
+NA
 </td>
 </tr>
 <tr>
@@ -657,11 +867,26 @@ rf_17b
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-22 14:09:16
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
 Re-user
 </td>
 <td style="text-align:left;">
 NA
 </td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -672,6 +897,21 @@ rf_18
 </td>
 <td style="text-align:left;">
 New Plymouth
+</td>
+<td style="text-align:left;">
+2020-05-14 14:11:20
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -691,10 +931,25 @@ rf_19
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-22 14:13:37
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -706,6 +961,21 @@ rf_20
 </td>
 <td style="text-align:left;">
 New Plymouth
+</td>
+<td style="text-align:left;">
+2020-05-14 14:11:46
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -725,10 +995,25 @@ rf_21
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-20 14:16:30
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -742,10 +1027,25 @@ rf_22
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-14 14:11:39
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -759,10 +1059,25 @@ rf_23
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-15 14:15:51
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -776,10 +1091,25 @@ rf_24
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-05-14 14:11:36
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -793,10 +1123,25 @@ rf_25
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-06-18 14:13:57
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -810,10 +1155,25 @@ rf_26
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-06-11 14:13:34
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -827,10 +1187,25 @@ rf_27
 New Plymouth
 </td>
 <td style="text-align:left;">
+2020-07-03 14:15:37
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -844,10 +1219,25 @@ rf_28
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-01-20 15:12:15
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -861,10 +1251,25 @@ rf_29
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-10 15:11:39
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -878,10 +1283,25 @@ rf_30
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-03 15:10:58
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -895,10 +1315,25 @@ rf_31
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-09 15:08:05
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -912,10 +1347,25 @@ rf_32
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-09 15:08:35
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -929,10 +1379,25 @@ rf_33
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-09 15:16:05
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -946,10 +1411,25 @@ rf_34
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-01-06 15:10:50
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -963,10 +1443,25 @@ rf_35
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-05 15:16:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -980,10 +1475,25 @@ rf_36
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-10 15:20:25
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -997,10 +1507,25 @@ rf_37
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-09 15:18:49
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1012,6 +1537,18 @@ rf_38
 </td>
 <td style="text-align:left;">
 Hawkes Bay
+</td>
+<td style="text-align:left;">
+2020-02-05 15:15:30
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
 </td>
 <td style="text-align:left;">
 very large number of circuits
@@ -1019,6 +1556,9 @@ very large number of circuits
 <td style="text-align:left;">
 NA
 </td>
+<td style="text-align:left;">
+Yes
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1031,10 +1571,25 @@ rf_39
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-05 15:15:43
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1050,8 +1605,23 @@ Hawkes Bay
 <td style="text-align:left;">
 NA
 </td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1065,10 +1635,25 @@ rf_41
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-01-12 15:13:16
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1082,10 +1667,25 @@ rf_42
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-10 15:18:04
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1097,6 +1697,21 @@ rf_43
 </td>
 <td style="text-align:left;">
 Hawkes Bay
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:left;">
 NA
@@ -1116,10 +1731,25 @@ rf_44
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-04 15:20:47
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1133,10 +1763,25 @@ rf_45
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-02-09 15:13:26
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1150,10 +1795,25 @@ rf_46
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-12-19 14:08:40
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 <tr>
@@ -1167,10 +1827,25 @@ rf_47
 Hawkes Bay
 </td>
 <td style="text-align:left;">
+2020-01-06 15:09:01
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+Yes
 </td>
 </tr>
 </tbody>
@@ -1182,7 +1857,7 @@ NA
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">8</span> Runtime</h1>
-<p>Analysis completed in 8.91 seconds ( 0.15 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 3.54 seconds ( 0.06 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">9</span> R environment</h1>
@@ -1225,33 +1900,31 @@ NA
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] stringr_1.3.1     bindrcpp_0.2.2    skimr_1.0.3      
-##  [4] readxl_1.1.0      lubridate_1.7.4   readr_1.1.1      
-##  [7] ggplot2_3.0.0     data.table_1.11.4 kableExtra_0.9.0 
-## [10] bookdown_0.7      rmarkdown_1.10    GREENGridData_1.0
+## [1] lubridate_1.7.4   readr_1.1.1       ggplot2_3.0.0     data.table_1.11.4
+## [5] kableExtra_0.9.0  bookdown_0.7      rmarkdown_1.10    GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.18      nzGREENGrid_0.1.0 lattice_0.20-35  
-##  [4] tidyr_0.8.1       prettyunits_1.0.2 png_0.1-7        
-##  [7] assertthat_0.2.0  rprojroot_1.3-2   digest_0.6.15    
-## [10] utf8_1.1.4        R6_2.2.2          cellranger_1.1.0 
-## [13] plyr_1.8.4        backports_1.1.2   evaluate_0.11    
-## [16] httr_1.3.1        highr_0.7         pillar_1.3.0     
-## [19] RgoogleMaps_1.4.2 rlang_0.2.2       progress_1.2.0   
-## [22] lazyeval_0.2.1    rstudioapi_0.7    geosphere_1.5-7  
-## [25] proto_1.0.0       labeling_0.3      munsell_0.5.0    
-## [28] compiler_3.5.1    xfun_0.3          pkgconfig_2.0.2  
-## [31] htmltools_0.3.6   openssl_1.0.2     tidyselect_0.2.4 
-## [34] tibble_1.4.2      fansi_0.3.0       viridisLite_0.3.0
-## [37] crayon_1.3.4      dplyr_0.7.6       withr_2.1.2      
-## [40] grid_3.5.1        gtable_0.2.0      magrittr_1.5     
-## [43] scales_1.0.0      cli_1.0.0         stringi_1.2.4    
-## [46] mapproj_1.2.6     reshape2_1.4.3    sp_1.3-1         
-## [49] xml2_1.2.0        rjson_0.2.20      tools_3.5.1      
-## [52] ggmap_2.6.1       glue_1.3.0        purrr_0.2.5      
-## [55] maps_3.3.0        hms_0.4.2         jpeg_0.1-8       
-## [58] yaml_2.2.0        colorspace_1.3-2  rvest_0.3.2      
-## [61] knitr_1.20.13     bindr_0.1.1</code></pre>
+##  [1] nzGREENGrid_0.1.0 progress_1.2.0    tidyselect_0.2.4 
+##  [4] xfun_0.3          reshape2_1.4.3    purrr_0.2.5      
+##  [7] lattice_0.20-35   colorspace_1.3-2  htmltools_0.3.6  
+## [10] viridisLite_0.3.0 yaml_2.2.0        rlang_0.2.2      
+## [13] pillar_1.3.0      withr_2.1.2       glue_1.3.0       
+## [16] sp_1.3-1          readxl_1.1.0      bindrcpp_0.2.2   
+## [19] jpeg_0.1-8        bindr_0.1.1       plyr_1.8.4       
+## [22] stringr_1.3.1     gtable_0.2.0      munsell_0.5.0    
+## [25] cellranger_1.1.0  rvest_0.3.2       mapproj_1.2.6    
+## [28] RgoogleMaps_1.4.2 evaluate_0.11     labeling_0.3     
+## [31] knitr_1.20.13     highr_0.7         proto_1.0.0      
+## [34] Rcpp_0.12.18      geosphere_1.5-7   openssl_1.0.2    
+## [37] backports_1.1.2   scales_1.0.0      rjson_0.2.20     
+## [40] hms_0.4.2         png_0.1-7         digest_0.6.15    
+## [43] stringi_1.2.4     dplyr_0.7.6       rprojroot_1.3-2  
+## [46] grid_3.5.1        tools_3.5.1       maps_3.3.0       
+## [49] magrittr_1.5      lazyeval_0.2.1    tibble_1.4.2     
+## [52] crayon_1.3.4      pkgconfig_2.0.2   xml2_1.2.0       
+## [55] prettyunits_1.0.2 skimr_1.0.3       assertthat_0.2.0 
+## [58] httr_1.3.1        rstudioapi_0.7    R6_2.2.2         
+## [61] ggmap_2.6.1       compiler_3.5.1</code></pre>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
