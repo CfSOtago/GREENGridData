@@ -16,9 +16,13 @@ print(paste0("#-> Set up GREENGridData package "))
 GREENGridData::setup()
 print(paste0("#-> Done "))
 
-# Load libraries needed in this .r file ----
+# Load libraries needed across all .Rmd files ----
 localLibs <- c("rmarkdown",
                "bookdown",
+               "data.table", # data munching
+               "ggplot2", # for fancy graphs
+               "readr", # data loading
+               "lubridate", # fixing dates & times
                "kableExtra" # for fancier tables
                )
 GREENGridData::loadLibraries(localLibs)
