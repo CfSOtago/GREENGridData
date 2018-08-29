@@ -172,8 +172,9 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = Location)) +
 Table \@ref(tab:allHhData) shows key attributes for the recruited sample. Note that two GridSpy monitors were re-used and so require new hhIDs to be set  from the date of re-use using the `linkID` variable. This is explained in more detail in the [GridSpy  processing](gridSpy1mProcessingReport_v1.0.html#reallocation) report. Linkage between the survey and GridSpy data should therefore always use `linkID` to avoid errors.
 
 ```{r allHhData}
-kableExtra::kable(hhDT[, c("hhID", "linkID", "Location", "surveyStartDate", "nAdults", "nChildren0_12","nTeenagers13_18",
-                           "notes", "r_stopDate", "hasApplianceSummary")][order(linkID)], 
+keyCols <- c("hhID", "linkID", "Location", "surveyStartDate", "nAdults", "nChildren0_12","nTeenagers13_18",
+                           "notes", "r_stopDate", "hasApplianceSummary")
+kableExtra::kable(hhDT[, ..keyCols ][order(linkID)], 
              caption = "Sample details") %>%
   kable_styling()
 
