@@ -1,18 +1,14 @@
-
-# Housekeeping ----
-rm(list=ls(all=TRUE)) # remove all objects from workspace
-
 print(paste0("#--------------- Processing NZ GREEN Grid Grid Survey Data ---------------#"))
 
 # Load nzGREENGrid package ----
 
-print(paste0("#-> Load nzGREENGridDataR package"))
-library(nzGREENGridDataR) # local utilities
+print(paste0("#-> Load GREENGridData package"))
+library(GREENGridData) # local utilities
 print(paste0("#-> Done "))
 
 # Set global package parameters ----
-print(paste0("#-> Set up nzGREENGridDataR package "))
-nzGREENGridDataR::setup()
+print(paste0("#-> Set up GREENGridData package "))
+GREENGridData::setup()
 print(paste0("#-> Done "))
 
 # Load libraries needed in this .r file ----
@@ -25,7 +21,7 @@ rmdLibs <- c("data.table", # data munching
              "knitr" # for kable & captions
 )
 # load them
-nzGREENGridDataR::loadLibraries(rmdLibs)
+GREENGridData::loadLibraries(rmdLibs)
 
 # Local functions ----
 
@@ -36,7 +32,7 @@ startTime <- proc.time()
 
 # Load data ----
 
-hhMasterDT <- nzGREENGridDataR::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
+hhMasterDT <- GREENGridData::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
 setkey(hhMasterDT, linkID)
 t <- with(hhMasterDT, table(Location, useNA = "always"))
 
@@ -186,12 +182,12 @@ nrow(allHhEc2SafeDT)
 data.table::uniqueN(allHhEc2SafeDT$linkID)
 
 # set date ----
-allHhEc2FullDT <- allHhEc2FullDT[, surveyStartDate := lubridate::dmy_hms(StartDate)]
-allHhEc2FullDT$StartDate <- NULL
+allHhEc2FullDT <- allHhEc2FullDT[, surveyStartDate := lubridate::dmy_hm(StartDate)]
+#allHhEc2FullDT$StartDate <- NULL
 setkey(allHhEc2FullDT, linkID)
 
-allHhEc2SafeDT <- allHhEc2SafeDT[, surveyStartDate := lubridate::dmy_hms(StartDate)]
-allHhEc2SafeDT$StartDate <- NULL
+allHhEc2SafeDT <- allHhEc2SafeDT[, surveyStartDate := lubridate::dmy_hm(StartDate)]
+#allHhEc2SafeDT$StartDate <- NULL
 setkey(allHhEc2SafeDT, linkID)
 
 # create combined DT ----
