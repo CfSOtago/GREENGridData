@@ -33,10 +33,7 @@ startTime <- proc.time()
 source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 
 # Packages needed in this .Rmd file ----
-rmdLibs <- c("data.table", # data munching
-             "ggplot2", # for fancy graphs
-             "readr", # for reading & parsing .csv files
-             "stringr" # for str_wrap for long labels on plots
+rmdLibs <- c("stringr" # for str_wrap for long labels on plots
 )
 # load them
 loadLibraries(rmdLibs)
@@ -177,7 +174,7 @@ As we can see this removes a large number of the automatically downloaded files.
 
 As noted above, the original data was downloaded in two ways:
 
- * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d etc);
+ * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d and even in some cases the [inexplicable m/d/y](https://speakerdeck.com/jennybc/how-to-name-files?slide=22));
  * Automatic download of daily data. In this case the dateTime of the observation is stored as UTC.
 
 Resolving and cleaning these variations and uncertainties have required substantial effort and in some cases the date has had to be inferred from the file names.
@@ -256,6 +253,7 @@ kableExtra::kable(t, caption = "Summary of household files to load", digits = 2)
 ```
 
 ## Recoding re-allocated GridSpy units {#reallocation}
+
 As noted in the introduction, two units were re-allocated to new households during the study. These were:
 
  * rf_15 - allocated to a new household on 20/1/2015
