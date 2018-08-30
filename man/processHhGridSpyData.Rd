@@ -12,47 +12,47 @@ processHhGridSpyData(hh, fileList)
 \item{fileList}{list of files to load (assumed to be all from hh)}
 }
 \description{
-\code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
-    
-    What it does:
-    
-    - Updates the per input file metadata as it loops over each file
-    
-    - Fixes circuit labels for rf_46
-    
-    - Concatenates (rbinds) the files into a data.table and converts to long form for easier re-use
-    
-    - Splits original circuit name by $ into a label (first string) and an id (second string)
-    
-    - Attempts to create a correct r_dateTime in UTC but with tz set to "Pacific/Auckland"
-    
-    - Removes duplicates by r_dateTime <-> circuit <-> power caused by data from duplicate files. Note that this will retain the DST induced duplicate dateTimes if the power values are different (see below)
-    
-    - Removes any cases where power = NA
-    
-    - Returns the data.table
+\code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving.
 }
 \details{
+What it does:
+
+- Updates the per input file metadata as it loops over each file
+
+- Fixes circuit labels for rf_46
+
+- Concatenates (rbinds) the files into a data.table and converts to long form for easier re-use
+
+- Splits original circuit name by $ into a label (first string) and an id (second string)
+
+- Attempts to create a correct r_dateTime in UTC but with tz set to "Pacific/Auckland"
+
+- Removes duplicates by r_dateTime <-> circuit <-> power caused by data from duplicate files. Note that this will retain the DST induced duplicate dateTimes if the power values are different (see below)
+
+- Removes any cases where power = NA
+
+- Returns the data.table
+
 Things to note...
-   
-     The function assumes all data in the fileList is for one household (can only be detected from input file path)
-   
-     The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads). 
-   
-     If the original data was actually NZ time then we parse it with tz = Pacific/Auckland. It is not clear what will happen at the DST break.
-     
-     If the original data was actually UTC then we parse it with the default tz = UTC and then set to Pacific/Auckland. Note that this will create 
+
+The function assumes all data in the fileList is for one household (can only be detected from input file path)
+
+The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads).
+
+If the original data was actually NZ time then we parse it with tz = Pacific/Auckland. It is not clear what will happen at the DST break.
+
+If the original data was actually UTC then we parse it with the default tz = UTC and then set to Pacific/Auckland. Note that this will create
      duplicate r_dateTimes during the DST break when there is an extra hour and thus two moments of time with the same r_dateTime.
-     
-     Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files. 
-     However this will also remove observations around the DST break which are different moments of time but have the same 
+
+Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files.
+     However this will also remove observations around the DST break which are different moments of time but have the same
      r_dateTime (as one of them is in the DST break hour) and by chance the same power values in the same circuits. Got that?
-     
-     Due to uncertainties over the timezones and dateTimes, we recommend that analysis should exclude the days on which DST changes occur.
-     
-     #YMMV
-   
-     Loading the resulting saved data from .csv will probably set the tz of r_dateTime to your local time. Be sure to set it to
+
+Due to uncertainties over the timezones and dateTimes, we recommend that analysis should exclude the days on which DST changes occur.
+
+#YMMV
+
+Loading the resulting saved data from .csv will probably set the tz of r_dateTime to your local time. Be sure to set it to
      correctly using lubridate::with_tz(r_dateTime, tzone = "Pacific/Auckland")
 }
 \author{

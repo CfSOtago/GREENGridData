@@ -73,7 +73,7 @@ checkDates <- function(dt) {
   # Setting ambiguous to dmy seems OK as this only seems to happen with UTC which is dmy by default
   dt <- dt[dateFormat == "ambiguous",
            dateFormat := "dmy - inferred"]
-  
+
   return(dt)
 }
 
@@ -93,7 +93,7 @@ fixAmbiguousDates <- function(dt){
   dt <- dt[dateFormat == "ambiguous",
            dateFormat := "dmy - inferred"]
   # Get an example date
-  
+
   print(paste0("#-> Fixed ", nrow(aList), " files with an ambiguous dateFormat"))
   return(dt)
 }
@@ -123,7 +123,7 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
   fList <- list.files(path = fpath, pattern = pattern, # use to filter e.g. 1m from 30s files
                       recursive = TRUE)
   if(length(fList) == 0){ # if there are no files in the list...
-    print(paste0("#--> No matching data files found, please check your path (", fpath, 
+    print(paste0("#--> No matching data files found, please check your path (", fpath,
                  ") or your search pattern (", pattern, ")"))
     dt <- data.table::as.data.table(NULL)
   } else {
@@ -154,18 +154,18 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
       dt <- dt[fullPath == f, fSize := fsize]
       dt <- dt[fullPath == f, fMTime := fmtime]
       dt <- dt[fullPath == f, fMDate := as.Date(fmtime)]
-      dt <- dt[fullPath == f, dateColName := paste0("Unknown - ignore as fsize ( ", 
-                                                    fsize, " ) < dataThreshold ( ", 
+      dt <- dt[fullPath == f, dateColName := paste0("Unknown - ignore as fsize ( ",
+                                                    fsize, " ) < dataThreshold ( ",
                                                     dataThreshold, " )")]
       # only try to read files where we think there might be data
-      loadThis <- ifelse(fsize > dataThreshold, 
+      loadThis <- ifelse(fsize > dataThreshold,
                          paste0("Loading (fsize (", fsize, ") > ", dataThreshold, ")"),
                          paste0("Skipping (fsize (", fsize, ") < ", dataThreshold, ")")
                          )
       if(gSpyParams$fullFb){print(paste0("Checking file ", loopCount, " of ", nFiles ,
                               " (", round(100*(loopCount/nFiles),2), "% checked): ", loadThis))}
       if(fsize > dataThreshold){
-        if(gSpyParams$fullFb){print(paste0("fSize (", fsize, ") > ", 
+        if(gSpyParams$fullFb){print(paste0("fSize (", fsize, ") > ",
                                            dataThreshold, ") -> loading ", f))}
         row1DT <- fread(f, nrows = 1)
         # what is the date column called?
@@ -225,48 +225,48 @@ getGridSpyFileList <- function(fpath, pattern, dataThreshold){
 
 #' Loads and processes a list of GridSpy data files for a given household
 #'
-#' \code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving. 
-#'     
+#' \code{processHhGridSpyData} takes a file list and loads & processes data before returning the data.table for checks & saving.
+#'
 #'     What it does:
-#'     
+#'
 #'     - Updates the per input file metadata as it loops over each file
-#'     
+#'
 #'     - Fixes circuit labels for rf_46
-#'     
+#'
 #'     - Concatenates (rbinds) the files into a data.table and converts to long form for easier re-use
-#'     
+#'
 #'     - Splits original circuit name by $ into a label (first string) and an id (second string)
-#'     
+#'
 #'     - Attempts to create a correct r_dateTime in UTC but with tz set to "Pacific/Auckland"
-#'     
+#'
 #'     - Removes duplicates by r_dateTime <-> circuit <-> power caused by data from duplicate files. Note that this will retain the DST induced duplicate dateTimes if the power values are different (see below)
-#'     
+#'
 #'     - Removes any cases where power = NA
-#'     
+#'
 #'     - Returns the data.table
-#' 
+#'
 #'     Things to note...
-#'    
+#'
 #'      The function assumes all data in the fileList is for one household (can only be detected from input file path)
-#'    
-#'      The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads). 
-#'    
+#'
+#'      The original data is sometimes stored as UTC (auto-downloads) & sometimes as NZ time (manual downloads).
+#'
 #'      If the original data was actually NZ time then we parse it with tz = Pacific/Auckland. It is not clear what will happen at the DST break.
-#'      
-#'      If the original data was actually UTC then we parse it with the default tz = UTC and then set to Pacific/Auckland. Note that this will create 
+#'
+#'      If the original data was actually UTC then we parse it with the default tz = UTC and then set to Pacific/Auckland. Note that this will create
 #'      duplicate r_dateTimes during the DST break when there is an extra hour and thus two moments of time with the same r_dateTime.
-#'      
-#'      Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files. 
-#'      However this will also remove observations around the DST break which are different moments of time but have the same 
+#'
+#'      Any true duplicates by r_dateTime <-> circuit <-> power are then removed (see above) to deal with duplicate data files.
+#'      However this will also remove observations around the DST break which are different moments of time but have the same
 #'      r_dateTime (as one of them is in the DST break hour) and by chance the same power values in the same circuits. Got that?
-#'      
+#'
 #'      Due to uncertainties over the timezones and dateTimes, we recommend that analysis should exclude the days on which DST changes occur.
-#'      
+#'
 #'      #YMMV
-#'    
+#'
 #'      Loading the resulting saved data from .csv will probably set the tz of r_dateTime to your local time. Be sure to set it to
 #'      correctly using lubridate::with_tz(r_dateTime, tzone = "Pacific/Auckland")
-#'      
+#'
 #' @param hh the household id
 #' @param fileList list of files to load (assumed to be all from hh)
 #'
@@ -285,14 +285,14 @@ processHhGridSpyData <- function(hh, fileList){
   tempHhDT <- data.table::data.table() # (re)create new hh GridSpy data collector for each loop (hh)
   pbF <- progress::progress_bar$new(total = length(fileList)) # set progress bar using n files to load
   # X > start of per-file loop ----
-  for(f in fileList){ 
+  for(f in fileList){
     if(gSpyParams$fullFb){print(paste0("#--> Loading ", f))}
     fDT <- data.table::fread(f)
     pbF$tick()
-    
+
     # add hhid for ease of future loading etc
     fDT <- fDT[, hhID := hh]
-    
+
     # Fix labels in households where strange things seemed to have happened
     if(hh == "rf_24"){
       # rf_24 has an additional circuit in some files but value is always NA
@@ -304,28 +304,28 @@ processHhGridSpyData <- function(hh, fileList){
       #print(paste0("#--> ", hh, ": Fixing rf_46 labels"))
       fDT <- fixCircuitLabels_rf_46(fDT)
     }
-    
-    
+
+
     # >> set default dateTimes ----
-    
+
     # This will also have consequences for time - esp related to DST:
     # smb://storage.hcs-p01.otago.ac.nz/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/GridSpyData/README.txt says:
     # "Note that the timestamps may well be problematic - the GridSpy source data used local time,
     # and thus there's instability of data around daylight savings time changes."
-    
+
     # e.g. rf_01 file 1Jan2014-24May2014at1.csv at DST switch on April 6th 2014 simply repeats the 02:00 - 03:00 hour.
     # So this day has 25 hours in it. The date column is named 'date NZ'
-    
+
     # Large files which seem to have been manually downloaded use 'date NZ' and this
     # appears to be local (lived) time with/without DST as appropriate
-    
+
     # The small daily files which were set to auto-download have 'date UTC' as a column name
     # and do indeed appear to be UTC. Where this has DST change, no hours are repeated (as the time is UTC)
     # See e.g. rf_06 1Apr2018-2Apr2018at1.csv (DST @ 02:00 1st April 2018 Pacific/Auckland)
-    
+
     # Using the pre-inferred dateFormat
     fDT <- fDT[, dateFormat := fListToLoadDT[fullPath == f, dateFormat]]
-    
+
     # what is the date column called?
     # Use this to work out which TZ is being applied
     if(nrow(dplyr::select(fDT, dplyr::contains("NZ"))) > 0){ # requires dplyr
@@ -361,16 +361,16 @@ processHhGridSpyData <- function(hh, fileList){
       fDT <- fDT[, r_dateTime := lubridate::with_tz(r_dateTimeUTC, tzone = "Pacific/Auckland")] # set to NZ
       fDT$r_dateTimeUTC <- NULL # not needed, also messes up the reshape as it may/not be present
     }
-    
+
     fDT$dateFormat <- NULL # no longer needed
-    
+
     # >> set some file stats ----
     #print("Getting file stats")
     fileStat <- list()
     fileStat$hhID <- hh
-    
+
     fileStat$fullPath <- f
-    
+
     fileStat$nObs <- nrow(fDT) # could include duplicates
     fileStat$minDateTime <- min(fDT$r_dateTime)
     fileStat$maxDateTime <- max(fDT$r_dateTime)
@@ -378,25 +378,25 @@ processHhGridSpyData <- function(hh, fileList){
     fileStat$dateFormat <- fListToLoadDT[fullPath == f, dateFormat]
     fileStat$mDateTime <- fListToLoadDT[fullPath == f, fMTime]
     fileStat$fSize <- fListToLoadDT[fullPath == f, fSize]
-    
+
     # check for the number of circuits - all seem to contain "$"
     fileStat$nCircuits <- ncol(dplyr::select(fDT, dplyr::contains("$")))
-    
-    # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them 
+
+    # check the names of circuits - all seem to contain "$"; sort them to make it easier to compare them
     # - this is the only way we have to check if data from different households has been placed in the wrong folder.
     fileStat$circuitLabels <- toString(sort(colnames(dplyr::select(fDT, dplyr::contains("$")))))
-    
+
     # >> save file stats ----
     #print("Saving file stats")
     ofile <- gSpyParams$fLoadedStats
     #print(paste0("Saving ", ofile, "..."))
     data.table::fwrite(data.table::as.data.table(fileStat), # convert to DT for writing out
-                       ofile, 
+                       ofile,
                        append = TRUE) # will only write out col names on first pass
-    
+
     # >> rbind data to the hh data collector ----
     tempHhDT <- rbind(tempHhDT, fDT, fill = TRUE) # fill just in case there are different numbers of columns or columns with different names (quite likely - crcuit labels may vary!)
-  
+
   } # X > end of per file loop ----
   print(paste0("#--> ", hh, ": Done, cleaning rbound files"))
 
@@ -408,18 +408,18 @@ processHhGridSpyData <- function(hh, fileList){
   hhLongDT <- reshape2::melt(tempHhDT, id=c("hhID","dateTime_orig", "TZ_orig", "r_dateTime"))
   data.table::setnames(hhLongDT, "value", "power")
   data.table::setnames(hhLongDT, "variable", "circuit")
-  
+
   print(paste0("#--> ", hh, ": converted to long form"))
-  
+
   # > Force power to be numeric ----
   hhLongDT <- hhLongDT[, powerW := as.numeric(power)]
-  
+
   # remove NA after conversion to numeric if present
   hhLongDT <- hhLongDT[!is.na(powerW)]
   hhLongDT$power <- NULL # remove to save space/memory
-  
+
   print(paste0("#--> ", hh, ": removed powerW = NA"))
-  
+
   # > Remove any duplicates by dateTime, circuit & power ----
 
   dupsBy <- c("r_dateTime", "circuit", "powerW")
@@ -427,18 +427,18 @@ processHhGridSpyData <- function(hh, fileList){
   pcDups <- round(100*(nDups/nrow(hhLongDT)), 2)
   print(paste0("#--> ", hh, ": removing ", nDups, " (", pcDups,"%) duplicates by ", toString(dupsBy)))
   hhLongDT <- unique(hhLongDT, by=dupsBy)
-  
+
   setkey(hhLongDT, r_dateTime, circuit) # force dateTime & circuit order
   print(paste0("#--> ", hh, ": final long form variables -> ", toString(names(hhLongDT))))
-  
+
   return(hhLongDT) # for saving etc
 }
 
 #' Fixes circuit labels in rf_24
-#'    
+#'
 #' \code{fixCircuitLabels_rf_24} is a stub that could be used to fix circuit labels.
 #'     rf_24 has an additional circuit in some files but value is always NA so we ignore them (no fix).
-#'    
+#'
 #' @param dt wide-form (original) datat table to fix & return
 #'
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
@@ -453,20 +453,20 @@ fixCircuitLabels_rf_24 <- function(dt){
 #' Fixes circuit labels in rf_46
 #'
 #' \code{fixCircuitLabels_rf_46} is used to fix circuit labels.
-#' 
+#'
 #'     Inspection of the raw data shows that rf_46 has 3 different versions of the circuit labels:
 #'     1: Heat Pumps (2x) & Power$4232, Heat Pumps (2x) & Power$4399, Hot Water - Controlled$4231, Hot Water - Controlled$4400, Incomer - Uncontrolled$4230, Incomer - Uncontrolled$4401, Incomer Voltage$4405, Kitchen & Bedrooms$4229, Kitchen & Bedrooms$4402, Laundry & Bedrooms$4228, Laundry & Bedrooms$4403, Lighting$4233, Lighting$4404
 #'     2: Heat Pumps (2x) & Power1$4232, Heat Pumps (2x) & Power2$4399, Hot Water - Controlled1$4231, Hot Water - Controlled2$4400, Incomer - Uncontrolled1$4230, Incomer - Uncontrolled2$4401, Incomer Voltage$4405, Kitchen & Bedrooms1$4229, Kitchen & Bedrooms2$4402, Laundry & Bedrooms1$4228, Laundry & Bedrooms2$4403, Lighting1$4233, Lighting2$4404
 #'     3: Heat Pumps (2x) & Power_Imag$4399, Heat Pumps (2x) & Power$4232, Hot Water - Controlled_Imag$4400, Hot Water - Controlled$4231, Incomer - Uncontrolled_Imag$4401, Incomer - Uncontrolled$4230, Incomer Voltage$4405, Kitchen & Bedrooms_Imag$4402, Kitchen & Bedrooms$4229, Laundry & Bedrooms_Imag$4403, Laundry & Bedrooms$4228, Lighting_Imag$4404, Lighting$4233
-#'     
-#'     rf_46 was not re-used and the similarity of the label-sets seems to indicate typos. 
-#'     
-#'     We might also wonder if rf_46 really did have 13 circuits monitored as some of the labels seem to duplicate within label-sets but 
+#'
+#'     rf_46 was not re-used and the similarity of the label-sets seems to indicate typos.
+#'
+#'     We might also wonder if rf_46 really did have 13 circuits monitored as some of the labels seem to duplicate within label-sets but
 #'     inspection of the data suggests there are different (non-zero) W values for similarly labelled circuits at a given
 #'     dateTime.
-#'     
+#'
 #'     This function fixes the labels to just the first label-set.
-#'    
+#'
 #' @param dt wide-form (original) datat table to fix & return
 #'
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk}
@@ -514,17 +514,17 @@ fixCircuitLabels_rf_46 <- function(dt){
 
 #' Loads cleaned grid spy power data into a data.table
 #'
-#' \code{getCleanGsFile} 
-#' 
+#' \code{getCleanGsFile}
+#'
 #'  Loads a clean Grid Spy data file using \code{readr::read_csv} to enable .gz files to be autoloaded.
-#'  
+#'
 #'  We force a col_character on the dateTime_orig to prevent readr attempting to parse it (incorrectly).
-#'  
+#'
 #'  We allow readr to auto-parse the r_dateTime column but note that this will set the timezone etc to the
 #'  timezone correct for the current location. This may not be what you intend.
-#'  
+#'
 #'  We force col_double on powerW to stop readr assuming an integer.
-#'  
+#'
 #' @param f file to load
 #'
 #' @import data.table
@@ -535,10 +535,10 @@ fixCircuitLabels_rf_46 <- function(dt){
 #'
 #'
 getCleanGridSpyFile <- function(f){
-  dt <- data.table::as.data.table(readr::read_csv(f, 
+  dt <- data.table::as.data.table(readr::read_csv(f,
                                                     col_types = cols(hhID = col_character(),
                                                                      linkID = col_character(),
-                                                                     dateTime_orig = col_character(), # <- this is crucial otherwise readr attempts to parse this as a dateTime and FAILS (see https://github.com/dataknut/nzGREENGridDataR/issues/2)
+                                                                     dateTime_orig = col_character(), # <- this is crucial otherwise readr attempts to parse this as a dateTime and FAILS
                                                                      TZ_orig = col_character(),
                                                                      r_dateTime = col_datetime(format = ""),
                                                                      circuit = col_character(),
@@ -546,7 +546,7 @@ getCleanGridSpyFile <- function(f){
                                                     ),
                                                   progress = FALSE # no feedback
                                                   )
-                                  ) 
+                                  )
   return(dt)
 }
 
@@ -584,17 +584,17 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
   #> Get the file list as a data.table ----
   # This will list all the individual household data files
   fListDT <- data.table::as.data.table(list.files(path = fPath, pattern = fPattern))
-  
+
   nFiles <- nrow(fListDT)
   print(paste0("#-> Found ", tidyNum(nFiles), " files"))
-  
+
   fListDT <- fListDT[, fullPath := paste0(fPath, V1)] # add in full path as it doesn't return in list.files()
-  
+
   filesToLoad <- fListDT[, fullPath]
-  
+
   print(paste0("#-> Looking for circuits matching: ", circuitPattern))
   print(paste0("#-> Filtering on date range: ", dateFrom, " - ", dateTo))
-  
+
   # loop over household files in list and rbind them
   # rbind  into a single data.table
   nFiles <- length(filesToLoad)
@@ -618,7 +618,7 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
     print(paste0("#--> ", hh," : Found ", tidyNum(nrow(filteredDT)), " that match -> ", circuitPattern,
                  " <- between ", dateFrom, " and ", dateTo,
                  " out of ", tidyNum(nrow(dt))))
-    
+
     if(nrow(filteredDT) > 0){# if any matches...
       print("#--> Summary of extracted rows:")
       print(summary(filteredDT))
@@ -629,14 +629,14 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
   print("#-> Finished extraction")
   if(nrow(dataDT) > 0){
     # we got a match
-    
+
     print(paste0("#-> Found ", tidyNum(nrow(dataDT)),
                  " observations matching -> ", circuitPattern, " <- in ",
                  uniqueN(dataDT$linkID), " households between ", dateFrom, " and ", dateTo))
-    
+
     print("#-> Summary of all extracted rows:")
     print(summary(dataDT))
-    
+
     #> Save the data out for future re-use ----
     print(paste0("#-> Saving ", exFile))
     data.table::fwrite(dataDT, exFile)
@@ -649,9 +649,9 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
     stop(paste0("#-> No matching data found, please check your search pattern (", circuitPattern,
                 ") or your dates..."))
   }
-  
+
   print(paste0("#-> Extracted ", tidyNum(nrow(dataDT)), " rows of data"))
-  
+
   # return summary table of DT
   print(summary(dataDT))
   return(dataDT) # for testing
@@ -686,17 +686,17 @@ loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
   print(paste0("Looking for data using pattern = ", fPattern, " in ", fPath, " - could take a while..."))
   #> Get the file list as a data.table ----
   fListDT <- data.table::as.data.table(list.files(path = fPath, pattern = fPattern))
-  
+
   nFiles <- nrow(fListDT)
   print(paste0("Found ", tidyNum(nFiles), " files"))
-  
+
   fListDT <- fListDT[, fullPath := paste0(fPath, V1)] # add in full path as it doesn't return in list.files()
-  
+
   filesToLoad <- fListDT[, fullPath]
-  
+
   print(paste0("# Looking for circuits matching: ", circuitPattern))
   print(paste0("# Filtering on date range: ", dateFrom, " - ", dateTo))
-  
+
   # loop over files in list and rbind them
   # load into a single data.table
   nFiles <- length(filesToLoad)
@@ -718,7 +718,7 @@ loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
     print(paste0("# Found: ", tidyNum(nrow(filteredDT)),
                  " between ", dateFrom, " and ", dateTo,
                  " out of ", tidyNum(nrow(dt))))
-    
+
     if(nrow(filteredDT) > 0){# if any matches...
       print("Summary of extracted rows:")
       print(summary(filteredDT))
@@ -733,14 +733,14 @@ loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
     dataDT <- dataDT[, timeAsChar := format(r_dateTime, format = "%H:%M:%S")] # creates a char
     dataDT <- dataDT[, obsHourMin := hms::as.hms(timeAsChar)] # creates an hms time, makes graphs easier
     dataDT$timeAsChar <- NULL # drop to save space
-    
+
     print(paste0("# Found ", tidyNum(nrow(dataDT)),
                  " observations in ", uniqueN(dataDT$hhID),
                  " households between ", dateFrom, " and ", dateTo))
-    
+
     print("Summary of all extracted rows:")
     print(summary(dataDT))
-    
+
     #> Save the data out for future re-use ----
     fName <- paste0(circuitPattern, "_", dateFrom, "_", dateTo, "_observations.csv")
     ofile <- paste0(outPath, "dataExtracts/", fName)
@@ -752,9 +752,9 @@ loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
     stop(paste0("No matching data found, please check your search pattern (", circuitPattern,
                 ") or your dates..."))
   }
-  
+
   print(paste0("# Loaded ", tidyNum(nrow(dataDT)), " rows of data"))
-  
+
   # return DT
   return(dataDT)
 }

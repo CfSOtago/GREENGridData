@@ -14,13 +14,13 @@ getCleanGridSpyFile(f)
 }
 \details{
 Loads a clean Grid Spy data file using \code{readr::read_csv} to enable .gz files to be autoloaded.
- 
- We force a col_character on the dateTime_orig to prevent readr attempting to parse it (incorrectly).
- 
- We allow readr to auto-parse the r_dateTime column but note that this will set the timezone etc to the
+
+We force a col_character on the dateTime_orig to prevent readr attempting to parse it (incorrectly).
+
+We allow readr to auto-parse the r_dateTime column but note that this will set the timezone etc to the
  timezone correct for the current location. This may not be what you intend.
- 
- We force col_double on powerW to stop readr assuming an integer.
+
+We force col_double on powerW to stop readr assuming an integer.
 }
 \author{
 Ben Anderson, \email{b.anderson@soton.ac.uk}

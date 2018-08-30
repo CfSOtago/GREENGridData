@@ -165,7 +165,7 @@ Table \@ref(tab:loadGsData) shows a summary of the grid spy 1 minute power data.
 
 Note that:
 
- * the original dataTime (`dateTime_orig`) and TZ (`TZ_orig`) have been retained so that the user can check for parsing errors (see https://github.com/dataknut/nzGREENGridDataR/issues/2) if required;
+ * the original dataTime (`dateTime_orig`) and TZ (`TZ_orig`) have been retained so that the user can check for parsing errors (see https://cfsotago.github.io/GREENGridData/gridSpy1mProcessingReport_v1.0.html#dateTimeChecks) if required;
  * r_datetime is the correct dateTime of each observation in UTC and will have loaded as your local timezone. If you are conducting this analysis outside NZ then you will get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
 
 # Plot monthly power profiles

@@ -1,4 +1,4 @@
-### ----- About ---- 
+### ----- About ----
 # R code to process GREEN grid GridSpy data
 
 # expects to be called from makeFile which will have set parameters used
@@ -9,21 +9,21 @@ localLibs <- c("data.table",
                "hms",
                "ggplot2")
 
-nzGREENGridDataR::loadLibraries(localLibs)
+GREENGridData::loadLibraries(localLibs)
 
 # Local functions ----
 makePowerPlot  <- function(hh,dt){
   # make plot of power by month, year & circuit
-  # These will show us when the household was consuming electricity 
+  # These will show us when the household was consuming electricity
   # - do they look OK?
   # - can you spot the households with PV?
-  
+
   plotDT <- dt[, .(meanW = mean(powerW)), keyby = .(circuit, month, year, obsTime)
-               ] # aggregate by circuit to preserve unique circuit labels in households 
+               ] # aggregate by circuit to preserve unique circuit labels in households
   # (e.g. rf_46) where names are re-used but with different ids. see ?fixCircuitLabels_rf_46
   vLineAlpha <- 0.4
   vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
-  timeBreaks <- c(hms::as.hms("02:00:00"), hms::as.hms("04:00:00"), 
+  timeBreaks <- c(hms::as.hms("02:00:00"), hms::as.hms("04:00:00"),
                   hms::as.hms("06:00:00"), hms::as.hms("08:00:00"),
                   hms::as.hms("10:00:00"), hms::as.hms("12:00:00"),
                   hms::as.hms("14:00:00"), hms::as.hms("16:00:00"),
@@ -31,21 +31,21 @@ makePowerPlot  <- function(hh,dt){
                   hms::as.hms("22:00:00")
   )
   myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = circuit)) +
-    geom_line() + 
-    facet_grid(month  ~ year) + 
-    theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
-    theme(legend.position = "bottom") + 
+    geom_line() +
+    facet_grid(month  ~ year) +
+    theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+    theme(legend.position = "bottom") +
     labs(title = paste0("Montly mean power profiles by circuit plot: ", hh),
-         y = "Mean kW", 
-         caption = paste0("GridSpy data from ", min(dt$r_dateTime), 
+         y = "Mean kW",
+         caption = paste0("GridSpy data from ", min(dt$r_dateTime),
                           " to ", max(dt$r_dateTime),
                           "\nobsTime = Pacific/Auckland"))
-  
-  myPlot + 
+
+  myPlot +
     scale_x_time(breaks = timeBreaks) +
     geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
-  
+
   ofile <- paste0(gSpyParams$checkPlots, hh, "_monthlyPowerPlot.png")
   ggplot2::ggsave(ofile, height = 10)
 }
@@ -60,7 +60,7 @@ makeObsPlot  <- function(hh,dt){
   nExpectedObs <- nCircuits * 60
   t <- dt[, .(nObs = .N), keyby = .(obsDate, obsHour)]
   t$ratio <- t$nObs/nExpectedObs
-  myPlot <- ggplot2::ggplot(t, aes(x = obsDate, y = obsHour, fill = ratio)) + 
+  myPlot <- ggplot2::ggplot(t, aes(x = obsDate, y = obsHour, fill = ratio)) +
     geom_tile() +
     # https://ggplot2.tidyverse.org/reference/scale_brewer.html
     # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
@@ -69,13 +69,13 @@ makeObsPlot  <- function(hh,dt){
     scale_x_date(date_breaks = "2 months") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
     labs(title = paste0("Expected observations ratio by date & hour plot: ", hh),
-         y = "Hour", 
-         caption = paste0("GridSpy data from ", min(dt$r_dateTime), 
+         y = "Hour",
+         caption = paste0("GridSpy data from ", min(dt$r_dateTime),
                           " to ", max(dt$r_dateTime),
                           "\nobsDate = Pacific/Auckland",
                           "\nWe expect ", nExpectedObs, " per hour given ", nCircuits, " circuits",
                           "\nRatio = nObs/nExpectedObs so a value of 2 means we have duplicate hours (usualy at DST changes)"))
-  
+
   # Add DST labels. We add all labels as it helps to show which households have ongoing data collection
   for(d in unique(dstDT$date)){
     obsDate <- lubridate::dmy(d)
@@ -85,8 +85,8 @@ makeObsPlot  <- function(hh,dt){
                y = 7,size = 3, angle = 90,
                label = label)
   }
-  myPlot 
-  
+  myPlot
+
   ofile <- paste0(gSpyParams$checkPlots, hh, "_observationsRatioPlot.png")
   ggplot2::ggsave(ofile, height = 10)
 }
@@ -122,25 +122,25 @@ dstDT <- data.table::fread(gSpyParams$dstNZDates)
 
 # > Get file list ----
 testFile <- file.exists(gSpyParams$fListAll) # does it exist?
-  
+
 if(testFile){
   mTime <- file.mtime(gSpyParams$fListAll)
   mDate <- as.Date(file.mtime(gSpyParams$fListAll))
   if(mDate == today() & !gSpyParams$refreshFileList){
-    # Already ran today but 
+    # Already ran today but
     print(paste0("#-> Re-using saved file list"))
     fListAllDT <- data.table::fread(gSpyParams$fListAll)
-  } 
+  }
 }
 if(!testFile | gSpyParams$refreshFileList) {
       print(paste0("#-> Refreshing file list"))
-      fListAllDT <- nzGREENGridDataR::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
+      fListAllDT <- GREENGridData::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
                                                      gSpyParams$pattern, # what to look for
                                                      gSpyParams$gSpyFileThreshold # file size threshold
       )
-      # > Fix ambiguous dates in meta data derived from file listing 
-      fListAllDT <- nzGREENGridDataR::fixAmbiguousDates(fListAllDT)
-      # > Save the full list listing 
+      # > Fix ambiguous dates in meta data derived from file listing
+      fListAllDT <- GREENGridData::fixAmbiguousDates(fListAllDT)
+      # > Save the full list listing
       ofile <- gSpyParams$fListAll #  set in global
       print(paste0("#-> Saving full list of 1 minute data files with metadata to ", ofile))
       data.table::fwrite(fListAllDT, ofile)
@@ -154,9 +154,9 @@ fListToLoadDT <- fListAllDT[!(dateColName %like% "ignore")] # based on fsize che
 
 
 # See what the date formats look like now
-t <- fListToLoadDT[, .(nFiles = .N, 
+t <- fListToLoadDT[, .(nFiles = .N,
                          minDate = min(dateExample), # may not make much sense
-                         maxDate = max(dateExample)), 
+                         maxDate = max(dateExample)),
                      keyby = .(dateColName, dateFormat)]
 
 print("#-> Test inferred date formats")
@@ -164,8 +164,8 @@ t
 
 pcFiles <- round(100*(nrow(fListToLoadDT)/nrow(fListAllDT)))
 
-print(paste0("#-> Loading the ", nrow(fListToLoadDT), 
-             " files (", pcFiles, " % of all ", 
+print(paste0("#-> Loading the ", nrow(fListToLoadDT),
+             " files (", pcFiles, " % of all ",
              nrow(fListAllDT), " files) which we think have data (from ",
              uniqueN(fListToLoadDT$hhID), " of ",uniqueN(fListAllDT$hhID), " households)"))
 
@@ -182,11 +182,11 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
   t <- proc.time() - startTime
   print(paste0("#--> ",hh, ": ", nFiles ," data files loaded in ", getDuration(t)))
-  
+
   # > Create clean circuit labels ----
   # dt <- dt[, c("circuitLabel", "circuitID") := tstrsplit(circuit, "$", fixed = TRUE)]
   # don't do this as it can lead to confusion due to re-use of labels with differing IDs
-  
+
   # > Run basic tests ----
   print(paste0("#--> ",hh, ": deriving test vars"))
   # set some vars to aggregate by
@@ -200,13 +200,13 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   # > Fix the re-used rf_XX before we test or save anything ----
   if(hh == "rf_15"){
     print(paste0("#--> ",hh, ": Fixing rf_15 re-use"))
-    # rf_15a up to 2015-01-15 then rf_15b to 2016-04-02 # see https://dataknut.github.io/nzGREENGridDataR/surveyProcessingReport.html
+    # rf_15a up to 2015-01-15 then rf_15b to 2016-04-02 # see https://cfsotago.github.io/GREENGridData/
     hh <- "rf_15a"
     dt <- dt[, linkID := hh] # set default
     # GS master file notes disconnected 2015-01-15 but in fact there is no data before this date so
     # we assume the new household's data started on this date.
     dt <- dt[lubridate::date(r_dateTime) >= as.Date("2015-01-15"), linkID := "rf_15b"] # set to re-user
-    # dt[, .(nObs = .N, 
+    # dt[, .(nObs = .N,
     #            minDate = min(as.Date(r_dateTime)),
     #            maxDate = max(as.Date(r_dateTime))), keyby = .(linkID)]
     dta <- dt[linkID == hh]
@@ -261,7 +261,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     makeObsPlot(hh,dt)
     saveFinalDT(hh,dt)
   }
-  
+
   # > Set household level stats by date ----
   statDT <- dt[, .(nObs = .N,
                    meanPower = mean(powerW),
@@ -271,12 +271,12 @@ for(hh in hhIDs){ # X >> start of per household loop ----
                    circuitLabels = toString(unique(circuit)),
                    nCircuits = uniqueN(circuit)), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
                keyby = .(linkID, date = lubridate::date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
-  
+
   # > Add fStats to end of stats file stats collector
-  ofile <- gSpyParams$hhStatsByDate 
+  ofile <- gSpyParams$hhStatsByDate
   print(paste0("#--> ",hh, ": Adding hh stats by date list stats to ", ofile))
   data.table::fwrite(statDT, ofile, append=TRUE) # this will only write out column names once when file is created see ?fwrite
-  
+
 } # << X end per household loop ----
 
 # End

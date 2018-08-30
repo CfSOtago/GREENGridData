@@ -2,10 +2,7 @@
 % Please edit documentation in R/gridSpyData.R
 \name{fixCircuitLabels_rf_24}
 \alias{fixCircuitLabels_rf_24}
-\title{Fixes circuit labels in rf_24
-   
-\code{fixCircuitLabels_rf_24} is a stub that could be used to fix circuit labels.
-    rf_24 has an additional circuit in some files but value is always NA so we ignore them (no fix).}
+\title{Fixes circuit labels in rf_24}
 \usage{
 fixCircuitLabels_rf_24(dt)
 }
@@ -13,8 +10,6 @@ fixCircuitLabels_rf_24(dt)
 \item{dt}{wide-form (original) datat table to fix & return}
 }
 \description{
-Fixes circuit labels in rf_24
-   
 \code{fixCircuitLabels_rf_24} is a stub that could be used to fix circuit labels.
     rf_24 has an additional circuit in some files but value is always NA so we ignore them (no fix).
 }

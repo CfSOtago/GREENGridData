@@ -1,7 +1,7 @@
-### ----- About ---- 
+### ----- About ----
 # Master (make) file for GridSpy data processing. This file lets you:
 
-# 1: Process the data and update (refresh) all the files. 
+# 1: Process the data and update (refresh) all the files.
 # Only run this if you have substantial new data as it takes a while.
 
 # Best run using Rscript to avoid RStudio lock-up: http://www.cureffi.org/2014/01/15/running-r-batch-mode-linux/
@@ -13,20 +13,20 @@ rm(list=ls(all=TRUE)) # remove all objects from workspace
 
 print(paste0("#--------------- Processing NZ GREEN Grid GridSpy Data ---------------#"))
 
-# Load nzGREENGrid package ----
+# Load GREENGridData package ----
 
-print(paste0("#-> Load nzGREENGridDataR package"))
-library(nzGREENGridDataR) # local utilities
+print(paste0("#-> Load GREENGridData package"))
+library(GREENGridData) # local utilities
 print(paste0("#-> Done "))
 
 # Set global package parameters ----
-print(paste0("#-> Set up nzGREENGridDataR package "))
-nzGREENGridDataR::setup()
+print(paste0("#-> Set up GREENGridData package "))
+GREENGridData::setup()
 print(paste0("#-> Done "))
 
 # Load libraries needed in this .r file ----
 localLibs <- c("rmarkdown", "bookdown")
-nzGREENGridDataR::loadLibraries(localLibs)
+GREENGridData::loadLibraries(localLibs)
 
 
 # Set local (this script) parameters ----
@@ -51,9 +51,9 @@ if(refreshData){
   sourceF <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/processGridSpy1mData.R")
   print(paste0("#-> Running ", sourceF))
   source(sourceF)
-  print("#-> Data refresh complete") 
+  print("#-> Data refresh complete")
   t <- proc.time() - startTime
-  print(paste0("#-> Data refresh completed in ", nzGREENGridDataR::getDuration(t)))
+  print(paste0("#-> Data refresh completed in ", GREENGridData::getDuration(t)))
   print(paste0("Non-fatal data processing warnings may follow"))
 }
 
