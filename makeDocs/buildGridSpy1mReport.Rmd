@@ -501,10 +501,10 @@ If the above plot and table flag errors then further re-naming of the circuit la
 
 ## Calculating total household power demand
 
-Unfortunately this is not as straightforward as one would wish because many households have seperately controlled (and thus monitored) hot water circuits which do not feed from the 'Incomer'. We have provided some example code to attempt to correctly sum the relevant circuits in each house. This make use of a .csv data table which specifies the circuits within each house:
+Unfortunately this is not as straightforward as one would wish because many households have seperately controlled (and thus monitored) hot water circuits which do not feed from the 'Incomer'. We have provided some example code to attempt to correctly sum the relevant circuits in each house. This make use of a circuits.csv file which specifies the circuits to use in each case:
 
- * code: kindly provided by Jason Mair
- * circuits.csv data table (see package data folder)
+ * [code](https://github.com/CfSOtago/GREENGridData/blob/master/examples/extract_per_house_totals.r): kindly provided by Jason Mair
+ * circuits.csv (see package [data folder](https://github.com/CfSOtago/GREENGridData/tree/master/data))
 
 # Runtime
 

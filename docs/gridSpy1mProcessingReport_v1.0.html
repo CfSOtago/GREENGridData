@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-30 13:18:46 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 13:38:01 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -3985,10 +3985,18 @@ Figure 4.4: Circuit label check plot
 </div>
 <p>If the above plot and table flag errors then further re-naming of the circuit labels may be necessary.</p>
 </div>
+<div id="calculating-total-household-power-demand" class="section level2">
+<h2><span class="header-section-number">4.5</span> Calculating total household power demand</h2>
+<p>Unfortunately this is not as straightforward as one would wish because many households have seperately controlled (and thus monitored) hot water circuits which do not feed from the ‘Incomer’. We have provided some example code to attempt to correctly sum the relevant circuits in each house. This make use of a circuits.csv file which specifies the circuits to use in each case:</p>
+<ul>
+<li><a href="https://github.com/CfSOtago/GREENGridData/blob/master/examples/extract_per_house_totals.r">code</a>: kindly provided by Jason Mair</li>
+<li>circuits.csv (see package <a href="https://github.com/CfSOtago/GREENGridData/tree/master/data">data folder</a>)</li>
+</ul>
+</div>
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 43.47 seconds ( 0.72 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 36.82 seconds ( 0.61 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
