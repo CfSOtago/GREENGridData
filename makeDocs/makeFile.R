@@ -50,7 +50,7 @@ rmdFile <- paste0(ggrParams$projLoc, "/makeDocs/buildHouseholdAttributesReport.R
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(title = title, subtitle = subtitle, version = version),
-                  output_file = paste0(ggrParams$projLoc,"/docs/surveyProcessingReport_v", version, ".html")
+                  output_file = paste0(ggrParams$projLoc,"/docs/householdAttributeProcessingReport_v", version, ".html")
 )
 
 # --- Grid spy data report ----
