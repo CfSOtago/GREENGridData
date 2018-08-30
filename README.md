@@ -23,7 +23,8 @@ The code in this repo does two things:
  * _Provides examples of code_ to:
     - load and analyse electricity 'safe' demand data for one household
     - extract power data for circuits matching a given string (e.g. `Heat Pump`) from the 'safe' data between two dates;
-    - link the household survey and extracted 'Heat Pump' data for analysis.
+    - link the household survey and extracted 'Heat Pump' data for analysis;
+    - calculate total household power demand from the relevant circuits.
 
 Guide to folders:
 
