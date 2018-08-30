@@ -424,7 +424,7 @@ Did it work?
 
 Yes.
 
-Now set a dateTime that does not exist as it lies inside the DST break (see \@ref(tab:dstBreaks)):
+Now set a dateTime that does not exist as it lies inside the DST break (see Table \@ref(tab:dstBreaks)):
 
 `> dateTimeNZT2 <- lubridate::ymd_hm("2014-09-28 02:01", tz = "Pacific/Auckland")`
 
@@ -438,7 +438,9 @@ Boom. Lubridate knows it does not exist in local (_civil_) time. But of course i
 
 `[1] "2014-09-28 02:01:00 UTC"`
 
-Yes, we love timezones and DST. So:
+Yes, we love timezones and DST. 
+
+So:
 
 > If in doubt load the data without any auto-parsing and have a good look at it!
 
@@ -467,8 +469,9 @@ kableExtra::kable(dt, caption = "Circuit labels list by number of files per hous
 
 Things to note:
 
- * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but its value is always NA so it has been ignored.
- * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/CfSOtago/GREENGridData/issues/1) but note that this is the only household to have 13 circuits monitored.
+ * rf_25 has an additional unexpected "Incomer 1 - Uncontrolled$2757" circuit in some files but its value is always NA so it has been ignored;
+ * rf_46 had multiple circuit labels caused by apparent typos. These have been [re-labelled](https://github.com/CfSOtago/GREENGridData/issues/1) but note that this is the only household to have 13 circuits monitored;
+ * there can be negative power.
 
 Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets (see Figure \@ref(fig:plotCircuitLabelIssuesAsTile)).
 

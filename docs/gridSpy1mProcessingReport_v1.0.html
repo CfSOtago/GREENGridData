@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-30 13:13:36 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 13:18:46 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -2835,14 +2835,15 @@ label
 <p><code>&gt; dateTimeNZT1</code></p>
 <p><code>[1] &quot;2014-09-28 01:50:00 NZST&quot;</code></p>
 <p>Yes.</p>
-<p>Now set a dateTime that does not exist as it lies inside the DST break (see <a href="#tab:dstBreaks">4.3</a>):</p>
+<p>Now set a dateTime that does not exist as it lies inside the DST break (see Table <a href="#tab:dstBreaks">4.3</a>):</p>
 <p><code>&gt; dateTimeNZT2 &lt;- lubridate::ymd_hm(&quot;2014-09-28 02:01&quot;, tz = &quot;Pacific/Auckland&quot;)</code></p>
 <p><code>Warning message: 1 failed to parse.</code></p>
 <p>Boom. Lubridate knows it does not exist in local (<em>civil</em>) time. But of course it does exist as UTC:</p>
 <p><code>&gt; dateTimeUTC &lt;- lubridate::ymd_hm(&quot;2014-09-28 02:01&quot;, tz = &quot;UTC&quot;)</code></p>
 <p><code>&gt; dateTimeUTC</code></p>
 <p><code>[1] &quot;2014-09-28 02:01:00 UTC&quot;</code></p>
-<p>Yes, we love timezones and DST. So:</p>
+<p>Yes, we love timezones and DST.</p>
+<p>So:</p>
 <blockquote>
 <p>If in doubt load the data without any auto-parsing and have a good look at it!</p>
 </blockquote>
@@ -3971,8 +3972,9 @@ Wall Oven$4169, Incomer - All$4170, Heat Pump &amp; 2 x Bathroom Heat$4171, Ligh
 </table>
 <p>Things to note:</p>
 <ul>
-<li>rf_25 has an additional unexpected “Incomer 1 - Uncontrolled$2757” circuit in some files but its value is always NA so it has been ignored.</li>
-<li>rf_46 had multiple circuit labels caused by apparent typos. These have been <a href="https://github.com/CfSOtago/GREENGridData/issues/1">re-labelled</a> but note that this is the only household to have 13 circuits monitored.</li>
+<li>rf_25 has an additional unexpected “Incomer 1 - Uncontrolled$2757” circuit in some files but its value is always NA so it has been ignored;</li>
+<li>rf_46 had multiple circuit labels caused by apparent typos. These have been <a href="https://github.com/CfSOtago/GREENGridData/issues/1">re-labelled</a> but note that this is the only household to have 13 circuits monitored;</li>
+<li>there can be negative power.</li>
 </ul>
 <p>Errors are easier to spot in the following plot where a household spans 2 or more circuit label sets (see Figure <a href="#fig:plotCircuitLabelIssuesAsTile">4.4</a>).</p>
 <div class="figure"><span id="fig:plotCircuitLabelIssuesAsTile"></span>
@@ -3986,7 +3988,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 32.34 seconds ( 0.54 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 43.47 seconds ( 0.72 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
