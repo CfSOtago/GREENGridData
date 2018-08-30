@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-30 12:48:45 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 13:05:32 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -2706,11 +2706,11 @@ Figure 4.3: Attrition over time
 <div id="dateTimeChecks" class="section level2">
 <h2><span class="header-section-number">4.3</span> Date and time checks</h2>
 <p>As we noted above the original data had a variety of date formats. The data processing code does as good a job as it can of <a href="https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309">parsing non-UTC dateTimes</a> (i.e. the observations with time as NZT) to force the <code>r_dateTime</code> variable to always record as UTC.</p>
-<p>Any duplicate observations were then removed using <code>linkID</code> &lt;-&gt; <code>r_dateTime</code> &lt;-&gt; <code>circuit</code> &lt;-&gt; <code>powerW</code></p>
+<p>Any duplicate observations were then removed by checking for exact repeats of the <code>linkID</code> &lt;-&gt; <code>r_dateTime</code> &lt;-&gt; <code>circuit</code> &lt;-&gt; <code>powerW</code> tuple. Note that this only checks for duplicates in terms of UTC…</p>
 <p>This has consequences for Daylight Savings Time changes as follows:</p>
 <ul>
 <li>data which was originally stored as UTC (<code>dateTime_orig</code> is UTC so <code>TZ_orig</code> == “date UTC”) is still recorded as UTC. If you load the data using a function which auto-parses dateTimes into your local time (e.g. <code>readr::read_csv()</code>) you will find the parser will (correctly) produce duplicate (or missing) time values during the relevant DST break. The underlying UTC dateTime will <em>not</em> have duplicates or missing observations (unless the data really is missing!), only the super-imposed local time representation used for printing, charts etc. This may cause confusion.</li>
-<li>data which was originally stored as NZT (<code>dateTime_orig</code> is NZT so <code>TZ_orig</code> == “date NZ”) will already have had duplicate (or missing) times during the DST breaks. The data processing code will have attempted to convert the duplicates to identical UTC moments in time and any <em>exact</em> duplicates will have been ‘accidentally’ removed as above. This may also cause confusion.</li>
+<li>data which was originally stored as NZT (<code>dateTime_orig</code> is NZT so <code>TZ_orig</code> == “date NZ”) will already have had duplicate (or missing) times during the DST breaks. The data processing code will have attempted to convert the duplicates to identical UTC moments in time and any <em>exact</em> duplicates will have been ‘accidentally’ removed during the duplicate checking process described above. This may also cause confusion.</li>
 </ul>
 <p>To add even more confusion it is <em>possible</em> that attempts were made to ‘correct’ the time stamps in the DST breaks in the original data before it was downloaded by the research team. As it is almost iumpossible for us to determine what was, or should be done to correct this we:</p>
 <ul>
@@ -3982,7 +3982,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 40.76 seconds ( 0.68 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 35.78 seconds ( 0.6 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>

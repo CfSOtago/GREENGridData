@@ -389,12 +389,12 @@ ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
 
 As we noted above the original data had a variety of date formats. The data processing code does as good a job as it can of [parsing non-UTC dateTimes](https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309) (i.e. the observations with time as NZT) to force the `r_dateTime` variable to always record as UTC.
 
-Any duplicate observations were then removed using `linkID` <-> `r_dateTime` <-> `circuit` <-> `powerW`
+Any duplicate observations were then removed by checking for exact repeats of the `linkID` <-> `r_dateTime` <-> `circuit` <-> `powerW` tuple. Note that this only checks for duplicates in terms of UTC...
 
 This has consequences for Daylight Savings Time changes as follows:
 
  * data which was originally stored as UTC (`dateTime_orig` is UTC so `TZ_orig` == "date UTC") is still recorded as UTC. If you load the data using a function which auto-parses dateTimes into your local time (e.g. `readr::read_csv()`) you will find the parser will (correctly) produce duplicate (or missing) time values during the relevant DST break. The underlying UTC dateTime will _not_ have duplicates or missing observations (unless the data really is missing!), only the super-imposed local time representation used for printing, charts etc. This may cause confusion.
- * data which was originally stored as NZT (`dateTime_orig` is NZT so `TZ_orig` == "date NZ") will already have had duplicate (or missing) times during the DST breaks. The data processing code will have attempted to convert the duplicates to identical UTC moments in time and any _exact_ duplicates will have been 'accidentally' removed as above. This may also cause confusion.
+ * data which was originally stored as NZT (`dateTime_orig` is NZT so `TZ_orig` == "date NZ") will already have had duplicate (or missing) times during the DST breaks. The data processing code will have attempted to convert the duplicates to identical UTC moments in time and any _exact_ duplicates will have been 'accidentally' removed during the duplicate checking process described above. This may also cause confusion.
 
 To add even more confusion it is _possible_ that attempts were made to 'correct' the time stamps in the DST breaks in the original data before it was downloaded by the research team. As it is almost iumpossible for us to determine what was, or should be done to correct this we:
 
