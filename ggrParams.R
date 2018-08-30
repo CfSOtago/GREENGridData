@@ -15,6 +15,9 @@ ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdA
 
 ggrParams$hhOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/"
 
+# Location of misc data
+ggrParams$dstNZDates <- paste0(ggrParams$projLoc, "/data/dstNZDates.csv")
+
 # Location of stats
 ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/checkStats/")
 
