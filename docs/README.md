@@ -17,15 +17,20 @@ Check that the versions of the reports match the version of the data you have ac
 
 Access to the data:
 
- * Link to anonymised data archive (when live via [ReShare](http://reshare.ukdataservice.ac.uk/))
- 
-Details:
+ * Link to anonymised data archive (when live via [ReShare](http://reshare.ukdataservice.ac.uk/)) which includes:
+   - powerData.zip: 1 minute power demand data for each household. One file per household;
+   - ggHouseholdAttributesSafe.csv.zip: anonymised household attribute data;
+   - checkPlots.zip: 
+      - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;
+      - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
+
+Documentation:
 
  * [Research data overview](overviewReport_v1.0.html) report;
  * [Grid Spy data](gridSpy1mProcessingReport_v1.0.html) processing and documentation report;
  * [Survey data](surveyProcessingReport_v1.0.html) processing and documentation report.
 
-Version 1 of the data package does not include the time-use diaries. 
+> NB: Version 1 of the data package does not include any time-use diary data. 
 
 ## Code
 
