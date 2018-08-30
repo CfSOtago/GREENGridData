@@ -170,14 +170,14 @@ ggplot2::ggsave(paste0(plotLoc, "/gridSpyLoadedFileListSizeTilePlot.png"))
 
 As we can see this removes a large number of the automatically downloaded files.
 
-## Input date format checks
+## Input date format checks {#getItRightFirstTime}
 
 As noted above, the original data was downloaded in two ways:
 
  * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d and even in some cases the [inexplicable m/d/y](https://speakerdeck.com/jennybc/how-to-name-files?slide=22));
- * Automatic download of daily data. In this case the dateTime of the observation is stored as UTC.
+ * Automatic download of daily data. In this case the origial dateTime of the observation was stored as UTC.
 
-Resolving and cleaning these variations and uncertainties have required substantial effort and in some cases the date has had to be inferred from the file names.
+Resolving and cleaning these variations and uncertainties have required substantial [effort](https://github.com/CfSOtago/GREENGridData/issues/2) and in some cases the date format (and thus time when timezones are set) has had to be inferred from the file names. A key lesson for future projects is always to ensure that one [and only one dateTime format](https://speakerdeck.com/jennybc/how-to-name-files?slide=21) is used, files are named so that met data is easily [parsed](https://speakerdeck.com/jennybc/how-to-name-files?slide=10) and only one timezone (UTC).
 
 Table \@ref(tab:listDefaultDateFilesNZT) lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
 
@@ -259,12 +259,14 @@ As noted in the introduction, two units were re-allocated to new households duri
  * rf_15 - allocated to a new household on 20/1/2015
  * rf_17 - allocated to a new household on 
 
-To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during [data processing](https://github.com/CfSOtago/GREENGridData/issues/3). The clean data therefore contains data files for:
+To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during [data processing](https://github.com/CfSOtago/GREENGridData/issues/3). In principle therefore the clean data should contain data files for:
 
  * rf_15a and rf_15b
  * rf_17a and rf_17b
 
-Each cleaned safe data file contains both the original hhID (i.e. the GridSpy ID) and a new `linkID` which has the same value as hhID except in the case of these four files. The `linkID` variable should always be used to link the GridSpy data to the survey or other household level data in the data package.
+However rf_15a did not collect usable data before the unit was re-allocated so only files for rf_15b, rf_17a and rf_17b exist in the archive.
+
+Each cleaned safe data file contains both the original hhID (i.e. the GridSpy ID) and a new `linkID` which has the same value as hhID except in the case of these three files. The `linkID` variable should **always** be used to link the GridSpy data to the survey or other household level data in the data package.
 
 In all subsequent analysis we use `linkID` to give results for each household.
 
@@ -379,6 +381,60 @@ ggplot2::ggplot(plotDT, aes( x = date, y = nHH)) +
 # own chunk to hide warning
 ggplot2::ggsave(paste0(plotLoc, "gridSpyLiveHouseholdsToDate.png"))
 ```
+
+## Date and time checks {#dateTimeChecks}
+
+As we noted above the original data had a variety of date formats. The data processing code does as good a job as it can of [parsing non-UTC dateTimes](https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309) (i.e. the observations with time as NZT) to force the `r_dateTime` variable to always record as UTC.
+
+Any duplicate observations were then removed using `linkID` <-> `r_dateTime` <-> `circuit` <-> `powerW`
+
+This has consequences for Daylight Savings Time changes as follows:
+
+ * data which was originally stored as UTC (`dateTime_orig` is UTC so `TZ_orig` == "date UTC") is still recorded as UTC. If you load the data using a function which auto-parses dateTimes into your local time (e.g. `readr::read_csv()`) you will find the parser will (correctly) produce duplicate (or missing) time values during the relevant DST break. The underlying UTC dateTime will _not_ have duplicates or missing observations (unless the data really is missing!), only the super-imposed local time representation used for printing, charts etc. This may cause confusion.
+ * data which was originally stored as NZT (`dateTime_orig` is NZT so `TZ_orig` == "date NZ") will already have had duplicate (or missing) times during the DST breaks. The data processing code will have attempted to convert the duplicates to identical UTC moments in time and any _exact_ duplicates will have been 'accidentally' removed as above. This may also cause confusion.
+
+To add even more confusion it is _possible_ that attempts were made to 'correct' the time stamps in the DST breaks in the original data before it was downloaded by the research team. As it is almost iumpossible for us to determine what was, or should be done to correct this we:
+
+ * have retained the original timestamp in the data in the `dateTime_orig` column;
+ * have flagged the original date format in the data in the `TZ_orig` column;
+ * suggest that users carefully check these columns against the `r_dateTime` column if they see strange errors around the DST breaks;
+ * suggest that users learn how to use [lubridate](https://lubridate.tidyverse.org/reference/lubridate-package.html) to manipulate dates, time and time zones and thus [what lubridate did during data processing](https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309);
+ * **strongly** suggest that if at all possible, users _avoid_ using data from the days when there are DTS breaks (see Table \@ref(tab:dstBreaks)).
+
+```{r dstBreaks}
+dstBreaks <- fread(ggrParams$dstNZDates)
+kableExtra::kable(dstBreaks, caption = "NZ DST breaks", digits = 2) %>%
+  kable_styling()
+```
+
+We do not like timezones but we like DST even less. As an example, consider what happens in the following R code:
+
+First set a dateTime and tell lubridate (and R) it is NZT:
+
+`> dateTimeNZT1 <- lubridate::ymd_hm("2014-09-28 01:50", tz = "Pacific/Auckland")`
+
+Did it work?
+
+`> dateTimeNZT1`
+`[1] "2014-09-28 01:50:00 NZST"`
+
+Yes.
+
+Now set a dateTime that does not exist as it lies inside the DST break (see \@ref(tab:dstBreaks)):
+
+`> dateTimeNZT2 <- lubridate::ymd_hm("2014-09-28 02:01", tz = "Pacific/Auckland")`
+`Warning message:`
+` 1 failed to parse. `
+
+Boom. Lubridate knows it does not exist in local (_civil_) time. But of course it does exist as UTC:
+
+`> dateTimeUTC <- lubridate::ymd_hm("2014-09-28 02:01", tz = "UTC")`
+`> dateTimeUTC`
+`[1] "2014-09-28 02:01:00 UTC"`
+
+Yes, we love timezones and DST. So:
+
+> If in doubt load the data without any auto-parsing and have a good look at it!
 
 ## Circuit label checks
 
