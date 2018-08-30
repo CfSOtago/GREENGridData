@@ -82,10 +82,9 @@ This report provides an overview of the GREEN Grid project [@stephenson_smart_20
 
 Version `r params$version` of the data package contains:
 
- 
- * powerData: 1 minute power demand data for each household. One file per household;
- * surveyData: anonymised household attribute data;
- * checkPlots: 
+ * powerData.zip: 1 minute power demand data for each household. One file per household;
+ * ggHouseholdAttributesSafe.csv.zip: anonymised household attribute data;
+ * checkPlots.zip: 
     - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;
     - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
 
