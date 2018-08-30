@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-30 12:39:52 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 12:48:45 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -231,7 +231,11 @@ Figure 3.2: Mean file sizes (file size &gt; threshold)
 <li>Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d and even in some cases the <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=22">inexplicable m/d/y</a>);</li>
 <li>Automatic download of daily data. In this case the origial dateTime of the observation was stored as UTC.</li>
 </ul>
-<p>Resolving and cleaning these variations and uncertainties have required substantial <a href="https://github.com/CfSOtago/GREENGridData/issues/2">effort</a> and in some cases the date format (and thus time when timezones are set) has had to be inferred from the file names. A key lesson for future projects is always to ensure that one <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=21">and only one dateTime format</a> is used, files are named so that met data is easily <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=10">parsed</a> and only one timezone (UTC).</p>
+<p>Resolving and cleaning these variations and uncertainties have required substantial <a href="https://github.com/CfSOtago/GREENGridData/issues/2">effort</a> and in some cases the date format (and thus time when timezones are set) has had to be inferred from the file names. A key lesson for future projects is always to ensure that files are named so that meta data is easily <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=10">parsed</a> and that there can be one <em>and only one</em>:</p>
+<ul>
+<li><a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=21">dateTime format</a> (YYY-MM-DD HH:MM:SS);</li>
+<li><a href="https://lubridate.tidyverse.org/reference/#section-other-modification-functions">timezone</a> (UTC)</li>
+</ul>
 <p>Table <a href="#tab:listDefaultDateFilesNZT">3.1</a> lists up to 10 of the ‘date NZ’ files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample…</p>
 <pre class="r"><code># list default files with NZ time
 aList &lt;- fListCompleteDT[dateColName == &quot;date NZ&quot; &amp; dateFormat %like% &quot;default&quot;, 
@@ -3978,7 +3982,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 26.22 seconds ( 0.44 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 40.76 seconds ( 0.68 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>

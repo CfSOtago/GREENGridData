@@ -177,7 +177,10 @@ As noted above, the original data was downloaded in two ways:
  * Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d and even in some cases the [inexplicable m/d/y](https://speakerdeck.com/jennybc/how-to-name-files?slide=22));
  * Automatic download of daily data. In this case the origial dateTime of the observation was stored as UTC.
 
-Resolving and cleaning these variations and uncertainties have required substantial [effort](https://github.com/CfSOtago/GREENGridData/issues/2) and in some cases the date format (and thus time when timezones are set) has had to be inferred from the file names. A key lesson for future projects is always to ensure that one [and only one dateTime format](https://speakerdeck.com/jennybc/how-to-name-files?slide=21) is used, files are named so that met data is easily [parsed](https://speakerdeck.com/jennybc/how-to-name-files?slide=10) and only one timezone (UTC).
+Resolving and cleaning these variations and uncertainties have required substantial [effort](https://github.com/CfSOtago/GREENGridData/issues/2) and in some cases the date format (and thus time when timezones are set) has had to be inferred from the file names. A key lesson for future projects is always to ensure that files are named so that meta data is easily [parsed](https://speakerdeck.com/jennybc/how-to-name-files?slide=10) and that there can be one _and only one_:
+
+ * [dateTime format](https://speakerdeck.com/jennybc/how-to-name-files?slide=21) (YYY-MM-DD HH:MM:SS);
+ * [timezone](https://lubridate.tidyverse.org/reference/#section-other-modification-functions) (UTC)
 
 Table \@ref(tab:listDefaultDateFilesNZT) lists up to 10 of the 'date NZ' files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample...
 
