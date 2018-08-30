@@ -24,6 +24,14 @@ Access to the data:
       - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;
       - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
 
+Terms of Use:
+
+This is _not_ open access data. It is, however, licensed under the minimally restrictive:
+
+ * Safeguarded data: licenced under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded)
+
+In using the data you (will) agree to these T&Cs.
+
 Documentation:
 
  * [Research data overview](overviewReport_v1.0.html) report;
