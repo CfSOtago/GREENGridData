@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>Research data overview (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-30 14:23:38 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 14:37:25 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -203,7 +203,7 @@ $(document).ready(function () {
 <h1><span class="header-section-number">3</span> Data Package</h1>
 <p>Version 1.0 of the data package contains:</p>
 <ul>
-<li>powerData.zip: 1 minute power demand data for each household. One file per household;</li>
+<li>powerData.zip: 1 minute power demand data for each circuit in each household. One file per household;</li>
 <li>ggHouseholdAttributesSafe.csv.zip: anonymised household attribute data;</li>
 <li>checkPlots.zip:
 <ul>
@@ -1851,18 +1851,22 @@ Yes
 </tbody>
 </table>
 </div>
+<div id="code-examples" class="section level1">
+<h1><span class="header-section-number">7</span> Code examples</h1>
+<p>We have provided a number of <a href="https://github.com/CfSOtago/GREENGridData/tree/master/examples">code examples</a> for suggestions on how to load, further process and analyse the data.</p>
+</div>
 <div id="known-issues" class="section level1">
-<h1><span class="header-section-number">7</span> Known issues</h1>
+<h1><span class="header-section-number">8</span> Known issues</h1>
 <p>We maintain a <a href="https://github.com/CfSOtago/GREENGridData/labels/dataIssue">known data issues list</a> via our GitHub repository. If you think there is a data issue please check the repo list first and then add a new one if appropriate.</p>
 </div>
 <div id="runtime" class="section level1">
-<h1><span class="header-section-number">8</span> Runtime</h1>
-<p>Analysis completed in 4.46 seconds ( 0.07 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<h1><span class="header-section-number">9</span> Runtime</h1>
+<p>Analysis completed in 3.39 seconds ( 0.06 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
-<h1><span class="header-section-number">9</span> R environment</h1>
+<h1><span class="header-section-number">10</span> R environment</h1>
 <div id="r-packages-used" class="section level2">
-<h2><span class="header-section-number">9.1</span> R packages used</h2>
+<h2><span class="header-section-number">10.1</span> R packages used</h2>
 <ul>
 <li>base R <span class="citation">(R Core Team 2016)</span></li>
 <li>bookdown <span class="citation">(Xie 2016a)</span></li>
@@ -1884,7 +1888,7 @@ Yes
 </ul>
 </div>
 <div id="session-info" class="section level2">
-<h2><span class="header-section-number">9.2</span> Session info</h2>
+<h2><span class="header-section-number">10.2</span> Session info</h2>
 <pre><code>## R version 3.5.1 (2018-07-02)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
 ## Running under: macOS High Sierra 10.13.6
