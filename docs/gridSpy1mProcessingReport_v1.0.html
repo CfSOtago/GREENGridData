@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>1 minute electricity power (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-08-30 11:19:46 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-08-30 12:39:52 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -224,14 +224,14 @@ Figure 3.2: Mean file sizes (file size &gt; threshold)
 </div>
 <p>As we can see this removes a large number of the automatically downloaded files.</p>
 </div>
-<div id="input-date-format-checks" class="section level2">
+<div id="getItRightFirstTime" class="section level2">
 <h2><span class="header-section-number">3.2</span> Input date format checks</h2>
 <p>As noted above, the original data was downloaded in two ways:</p>
 <ul>
 <li>Manual download of large samples of data. In this case the dateTime of the observation appears to have been stored in NZ time and appears also to have varying dateTime formats (d/m/y, y/m/d and even in some cases the <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=22">inexplicable m/d/y</a>);</li>
-<li>Automatic download of daily data. In this case the dateTime of the observation is stored as UTC.</li>
+<li>Automatic download of daily data. In this case the origial dateTime of the observation was stored as UTC.</li>
 </ul>
-<p>Resolving and cleaning these variations and uncertainties have required substantial effort and in some cases the date has had to be inferred from the file names.</p>
+<p>Resolving and cleaning these variations and uncertainties have required substantial <a href="https://github.com/CfSOtago/GREENGridData/issues/2">effort</a> and in some cases the date format (and thus time when timezones are set) has had to be inferred from the file names. A key lesson for future projects is always to ensure that one <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=21">and only one dateTime format</a> is used, files are named so that met data is easily <a href="https://speakerdeck.com/jennybc/how-to-name-files?slide=10">parsed</a> and only one timezone (UTC).</p>
 <p>Table <a href="#tab:listDefaultDateFilesNZT">3.1</a> lists up to 10 of the ‘date NZ’ files which are set by default - do they look OK to assume the default dateFormat? Compare the file names with the dateExample…</p>
 <pre class="r"><code># list default files with NZ time
 aList &lt;- fListCompleteDT[dateColName == &quot;date NZ&quot; &amp; dateFormat %like% &quot;default&quot;, 
@@ -1715,12 +1715,13 @@ rf_47
 <li>rf_15 - allocated to a new household on 20/1/2015</li>
 <li>rf_17 - allocated to a new household on</li>
 </ul>
-<p>To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during <a href="https://github.com/CfSOtago/GREENGridData/issues/3">data processing</a>. The clean data therefore contains data files for:</p>
+<p>To avoid confusion the data for each of these units has been split in to rf_XXa/rf_XXb files on the appropriate dates during <a href="https://github.com/CfSOtago/GREENGridData/issues/3">data processing</a>. In principle therefore the clean data should contain data files for:</p>
 <ul>
 <li>rf_15a and rf_15b</li>
 <li>rf_17a and rf_17b</li>
 </ul>
-<p>Each cleaned safe data file contains both the original hhID (i.e. the GridSpy ID) and a new <code>linkID</code> which has the same value as hhID except in the case of these four files. The <code>linkID</code> variable should always be used to link the GridSpy data to the survey or other household level data in the data package.</p>
+<p>However rf_15a did not collect usable data before the unit was re-allocated so only files for rf_15b, rf_17a and rf_17b exist in the archive.</p>
+<p>Each cleaned safe data file contains both the original hhID (i.e. the GridSpy ID) and a new <code>linkID</code> which has the same value as hhID except in the case of these three files. The <code>linkID</code> variable should <strong>always</strong> be used to link the GridSpy data to the survey or other household level data in the data package.</p>
 <p>In all subsequent analysis we use <code>linkID</code> to give results for each household.</p>
 </div>
 <div id="observations" class="section level2">
@@ -2698,9 +2699,149 @@ Figure 4.3: Attrition over time
 </p>
 </div>
 </div>
+<div id="dateTimeChecks" class="section level2">
+<h2><span class="header-section-number">4.3</span> Date and time checks</h2>
+<p>As we noted above the original data had a variety of date formats. The data processing code does as good a job as it can of <a href="https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309">parsing non-UTC dateTimes</a> (i.e. the observations with time as NZT) to force the <code>r_dateTime</code> variable to always record as UTC.</p>
+<p>Any duplicate observations were then removed using <code>linkID</code> &lt;-&gt; <code>r_dateTime</code> &lt;-&gt; <code>circuit</code> &lt;-&gt; <code>powerW</code></p>
+<p>This has consequences for Daylight Savings Time changes as follows:</p>
+<ul>
+<li>data which was originally stored as UTC (<code>dateTime_orig</code> is UTC so <code>TZ_orig</code> == “date UTC”) is still recorded as UTC. If you load the data using a function which auto-parses dateTimes into your local time (e.g. <code>readr::read_csv()</code>) you will find the parser will (correctly) produce duplicate (or missing) time values during the relevant DST break. The underlying UTC dateTime will <em>not</em> have duplicates or missing observations (unless the data really is missing!), only the super-imposed local time representation used for printing, charts etc. This may cause confusion.</li>
+<li>data which was originally stored as NZT (<code>dateTime_orig</code> is NZT so <code>TZ_orig</code> == “date NZ”) will already have had duplicate (or missing) times during the DST breaks. The data processing code will have attempted to convert the duplicates to identical UTC moments in time and any <em>exact</em> duplicates will have been ‘accidentally’ removed as above. This may also cause confusion.</li>
+</ul>
+<p>To add even more confusion it is <em>possible</em> that attempts were made to ‘correct’ the time stamps in the DST breaks in the original data before it was downloaded by the research team. As it is almost iumpossible for us to determine what was, or should be done to correct this we:</p>
+<ul>
+<li>have retained the original timestamp in the data in the <code>dateTime_orig</code> column;</li>
+<li>have flagged the original date format in the data in the <code>TZ_orig</code> column;</li>
+<li>suggest that users carefully check these columns against the <code>r_dateTime</code> column if they see strange errors around the DST breaks;</li>
+<li>suggest that users learn how to use <a href="https://lubridate.tidyverse.org/reference/lubridate-package.html">lubridate</a> to manipulate dates, time and time zones and thus <a href="https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309">what lubridate did during data processing</a>;</li>
+<li><strong>strongly</strong> suggest that if at all possible, users <em>avoid</em> using data from the days when there are DTS breaks (see Table <a href="#tab:dstBreaks">4.3</a>).</li>
+</ul>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:dstBreaks">Table 4.3: </span>NZ DST breaks
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:left;">
+time
+</th>
+<th style="text-align:left;">
+label
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+28/09/2014
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST starts
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+05/04/2015
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST ends
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+27/09/2015
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST starts
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+03/04/2016
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST ends
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25/09/2016
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST starts
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+02/04/2017
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST ends
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+24/09/2017
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST starts
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+01/04/2018
+</td>
+<td style="text-align:left;">
+02:00
+</td>
+<td style="text-align:left;">
+&lt;- DST ends
+</td>
+</tr>
+</tbody>
+</table>
+<p>We do not like timezones but we like DST even less. As an example, consider what happens in the following R code:</p>
+<p>First set a dateTime and tell lubridate (and R) it is NZT:</p>
+<p><code>&gt; dateTimeNZT1 &lt;- lubridate::ymd_hm(&quot;2014-09-28 01:50&quot;, tz = &quot;Pacific/Auckland&quot;)</code></p>
+<p>Did it work?</p>
+<p><code>&gt; dateTimeNZT1</code> <code>[1] &quot;2014-09-28 01:50:00 NZST&quot;</code></p>
+<p>Yes.</p>
+<p>Now set a dateTime that does not exist as it lies inside the DST break (see <a href="#tab:dstBreaks">4.3</a>):</p>
+<p><code>&gt; dateTimeNZT2 &lt;- lubridate::ymd_hm(&quot;2014-09-28 02:01&quot;, tz = &quot;Pacific/Auckland&quot;)</code> <code>Warning message:</code> <code>1 failed to parse.</code></p>
+<p>Boom. Lubridate knows it does not exist in local (<em>civil</em>) time. But of course it does exist as UTC:</p>
+<p><code>&gt; dateTimeUTC &lt;- lubridate::ymd_hm(&quot;2014-09-28 02:01&quot;, tz = &quot;UTC&quot;)</code> <code>&gt; dateTimeUTC</code> <code>[1] &quot;2014-09-28 02:01:00 UTC&quot;</code></p>
+<p>Yes, we love timezones and DST. So:</p>
+<blockquote>
+<p>If in doubt load the data without any auto-parsing and have a good look at it!</p>
+</blockquote>
+</div>
 <div id="circuit-label-checks" class="section level2">
-<h2><span class="header-section-number">4.3</span> Circuit label checks</h2>
-<p>The following table (<a href="#tab:circuitLabelCheck">4.3</a>) shows the number of files for each household with different circuit labels. In theory each GridSpy ID should only have one set of unique circuit labels. If not:</p>
+<h2><span class="header-section-number">4.4</span> Circuit label checks</h2>
+<p>The following table (<a href="#tab:circuitLabelCheck">4.4</a>) shows the number of files for each household with different circuit labels. In theory each GridSpy ID should only have one set of unique circuit labels. If not:</p>
 <ul>
 <li>some of the circuit labels for these households may have been changed during the data collection process;</li>
 <li>some of the circuit labels may have character conversion errors which have changed the labels during the data collection process;</li>
@@ -2709,7 +2850,7 @@ Figure 4.3: Attrition over time
 <p>Some or all of these may be true at any given time.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:circuitLabelCheck">Table 4.3: </span>Circuit labels list by number of files per household
+<span id="tab:circuitLabelCheck">Table 4.4: </span>Circuit labels list by number of files per household
 </caption>
 <thead>
 <tr>
@@ -3837,7 +3978,7 @@ Figure 4.4: Circuit label check plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 25.78 seconds ( 0.43 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 26.22 seconds ( 0.44 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -3881,33 +4022,29 @@ Figure 4.4: Circuit label check plot
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] stringr_1.3.1     bindrcpp_0.2.2    skimr_1.0.3      
-##  [4] readxl_1.1.0      lubridate_1.7.4   readr_1.1.1      
-##  [7] ggplot2_3.0.0     data.table_1.11.4 kableExtra_0.9.0 
-## [10] bookdown_0.7      rmarkdown_1.10    GREENGridData_1.0
+##  [1] stringr_1.3.1     bindrcpp_0.2.2    kableExtra_0.9.0 
+##  [4] bookdown_0.7      rmarkdown_1.10    knitr_1.20.13    
+##  [7] skimr_1.0.3       readxl_1.1.0      readr_1.1.1      
+## [10] lubridate_1.7.4   ggplot2_3.0.0     data.table_1.11.4
+## [13] GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.18      nzGREENGrid_0.1.0 lattice_0.20-35  
-##  [4] tidyr_0.8.1       prettyunits_1.0.2 png_0.1-7        
-##  [7] utf8_1.1.4        assertthat_0.2.0  rprojroot_1.3-2  
-## [10] digest_0.6.15     R6_2.2.2          cellranger_1.1.0 
-## [13] plyr_1.8.4        backports_1.1.2   evaluate_0.11    
-## [16] httr_1.3.1        highr_0.7         pillar_1.3.0     
-## [19] RgoogleMaps_1.4.2 rlang_0.2.2       progress_1.2.0   
-## [22] lazyeval_0.2.1    rstudioapi_0.7    geosphere_1.5-7  
-## [25] proto_1.0.0       labeling_0.3      munsell_0.5.0    
-## [28] compiler_3.5.1    xfun_0.3          pkgconfig_2.0.2  
-## [31] htmltools_0.3.6   openssl_1.0.2     tidyselect_0.2.4 
-## [34] tibble_1.4.2      fansi_0.3.0       viridisLite_0.3.0
-## [37] crayon_1.3.4      dplyr_0.7.6       withr_2.1.2      
-## [40] grid_3.5.1        gtable_0.2.0      magrittr_1.5     
-## [43] scales_1.0.0      cli_1.0.0         stringi_1.2.4    
-## [46] mapproj_1.2.6     reshape2_1.4.3    sp_1.3-1         
-## [49] xml2_1.2.0        rjson_0.2.20      tools_3.5.1      
-## [52] ggmap_2.6.1       glue_1.3.0        purrr_0.2.5      
-## [55] maps_3.3.0        hms_0.4.2         jpeg_0.1-8       
-## [58] yaml_2.2.0        colorspace_1.3-2  rvest_0.3.2      
-## [61] knitr_1.20.13     bindr_0.1.1</code></pre>
+##  [1] progress_1.2.0    tidyselect_0.2.4  xfun_0.3         
+##  [4] reshape2_1.4.3    purrr_0.2.5       colorspace_1.3-2 
+##  [7] htmltools_0.3.6   viridisLite_0.3.0 yaml_2.2.0       
+## [10] utf8_1.1.4        rlang_0.2.2       pillar_1.3.0     
+## [13] glue_1.3.0        withr_2.1.2       bindr_0.1.1      
+## [16] plyr_1.8.4        munsell_0.5.0     gtable_0.2.0     
+## [19] cellranger_1.1.0  rvest_0.3.2       evaluate_0.11    
+## [22] labeling_0.3      fansi_0.3.0       highr_0.7        
+## [25] Rcpp_0.12.18      scales_1.0.0      backports_1.1.2  
+## [28] hms_0.4.2         digest_0.6.15     stringi_1.2.4    
+## [31] dplyr_0.7.6       grid_3.5.1        rprojroot_1.3-2  
+## [34] cli_1.0.0         tools_3.5.1       magrittr_1.5     
+## [37] lazyeval_0.2.1    tibble_1.4.2      crayon_1.3.4     
+## [40] tidyr_0.8.1       pkgconfig_2.0.2   xml2_1.2.0       
+## [43] prettyunits_1.0.2 assertthat_0.2.0  httr_1.3.1       
+## [46] rstudioapi_0.7    R6_2.2.2          compiler_3.5.1</code></pre>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
