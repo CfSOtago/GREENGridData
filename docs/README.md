@@ -23,7 +23,7 @@ Please document any errors, problems or queries by raising a [github issue](http
 
 _Access to the data_:
 
-Version 1 of the [data](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
+Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
  
  * powerData.zip: 1 minute power demand data for each circuit in each household. One file per household;
  * ggHouseholdAttributesSafe.csv.zip: anonymised household attribute data;
