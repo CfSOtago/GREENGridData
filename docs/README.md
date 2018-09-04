@@ -48,10 +48,10 @@ _Documentation_:
 
 NB: *None* of the data is held in this repo so *none* of the code below will work unless you also have access to the data. 
 
- * The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can be forked, cloned or installed as an R package. Amongst other things it contains:
-    - dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
-    - docs - the data archive documentation published via the [github pages](https://cfsotago.github.io/GREENGridData/) that you are now reading;
-    - examples - R script examples to show how the clean anonymised data can be analysed.
+The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can be forked, cloned or installed as an R package. Amongst other things it contains:
+ * dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
+ * docs - the data archive documentation published via the [github pages](https://cfsotago.github.io/GREENGridData/) that you are now reading;
+ * examples - R script examples to show how the clean anonymised data can be analysed.
 
 We encourage [feedback](https://github.com/CfSOtago/GREENGridData/issues) and [contributions](https://github.com/CfSOtago/GREENGridData/pulls) but inevitably #[YMMV](https://en.wiktionary.org/wiki/YMMV).
 
