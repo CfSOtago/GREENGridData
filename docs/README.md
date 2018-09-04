@@ -23,19 +23,18 @@ Please document any errors, problems or queries by raising a [github issue](http
 
 _Access to the data_:
 
-Version 1 of the [data](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
+Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
  
  * powerData.zip: 1 minute power demand data for each circuit in each household. One file per household;
  * ggHouseholdAttributesSafe.csv.zip: anonymised household attribute data;
  * checkPlots.zip: 
    - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;
    - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
+ * PDF snapshots of the _live documentation_ found below. 
 
 _Terms of Use_:
 
-This is _not_ open access data. It is, however, licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded).
-
-In using the data you (will) agree to these T&Cs.
+This is _not_ open access data. It is, however, licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
 
 _Documentation_:
 
@@ -45,7 +44,7 @@ _Documentation_:
 
 > NB: Version 1 of the data package does not include any time-use diary data. 
 
-## Code
+## Code repository
 
 NB: *None* of the data is held in this repo so *none* of the code below will work unless you also have access to the data. 
 
