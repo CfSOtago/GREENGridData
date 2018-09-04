@@ -9,6 +9,14 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
  * Occupant time-use diaries (focused on energy use)
 
 ----
+## Publications to date
+
+ * Giraldo Ocampo, Diana. 2015. “Developing an Energy-Related Time-Use Diary for Gaining Insights into New Zealand Households’ Electricity Consumption.” Master’s thesis, Centre for Sustainability: University of Otago. http://hdl.handle.net/10523/5957;
+ * Jack, M. W., K. Suomalainen, J. J. W. Dew, and D. Eyers. 2018. “A Minimal Simulation of the Electricity Demand of a Domestic Hot Water Cylinder for Smart Control.” Applied Energy 211: 104–12. https://www.sciencedirect.com/science/article/pii/S0306261917316197;
+ * Stephenson, Janet, Rebecca Ford, Nirmal-Kumar Nair, Neville Watson, Alan Wood, and Allan Miller. 2017. “Smart Grid Research in New Zealand–A Review from the GREEN Grid Research Programme.” Renewable and Sustainable Energy Reviews 82 (1): 1636–45. https://doi.org/10.1016/j.rser.2017.07.010;
+ * Suomalainen, Kiti, Michael Jack, David Byers, Rebecca Ford, and Janet Stephenson. 2017. “Comparative Analysis of Monitored and Self-Reported Data on Electricity Use.” In Environment and Electrical Engineering and 2017 IEEE Industrial and Commercial Power Systems Europe (EEEIC/I&CPS Europe), 2017 IEEE International Conference on, 1–4. IEEE. https://ieeexplore.ieee.org/document/7977557/;
+ * Wooliscroft, B. 2015. “National Household Survey of Energy and Transportation: Energy Cultures Two.” Centre for Sustainability: University of Otago. http://hdl.handle.net/10523/5634.
+
 ## Data archives
 
 Check that the versions of the reports match the version of the data you have access to.
