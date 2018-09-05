@@ -291,7 +291,7 @@ Note that rf_15a is not present as no usable data was obtained from this househo
 hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
 ```
 
-Figure \@ref(fig:obsPlotTile) uses a tile plot which is useful for visualising data gaps.
+Figure \@ref(fig:obsPlotTile) uses a tile plot which is useful for visualising data gaps. Note that there are indications of missing observations around the end of March caused by [DST clock-changes](#dateTimeChecks).
 
 ```{r obsPlotTile, fig.height=6, fig.cap="Observations tile plot"}
 myCaption <- paste0(myCaption,
@@ -315,7 +315,7 @@ obsPlot1
 
 ```
 
-Figure \@ref(fig:obsPlotPoint) uses a point plot which is useful for visualising days where there was partial data.
+Figure \@ref(fig:obsPlotPoint) uses a point plot which is useful for visualising days where there was partial or duplicate data. Note that there are indications of duplicate observations in late October (and, strangely, the end of March 2015) caused by [DST clock-changes](#dateTimeChecks).
 
 ```{r obsPlotPoint, fig.height=6, fig.cap="Observations tile plot"}
 # point plot ----
