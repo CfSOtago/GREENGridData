@@ -167,7 +167,7 @@ table(lubridate::month(gsDT$r_dateTime, label = TRUE), gsDT$season, useNA = "alw
 
 This section plots overall mean power per minute by season.
 
-```{r makePlot, fig.height=8, fig.cap="Demand profile plot", echo = TRUE}
+```{r makePlot, fig.cap="Demand profile plot", echo = TRUE}
 plotDT <- gsDT[, .(meanW = mean(powerW)), keyby = .(season, obsTime)
              ]
 
@@ -187,10 +187,11 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
   geom_line() + 
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
-  guides(colour = guide_legend(title = "Number of children aged 0 - 12: ")) +
+  guides(colour = guide_legend(title = "Season: ")) +
   theme(legend.position = "bottom")  + 
   labs(title = paste0(params$circuit, ": seasonal mean power demand profiles"),
-       y = "Mean kW", 
+       y = "Mean kW per minute", 
+       x = "Time of day",
        caption = paste0("GREENGrid Grid Spy household electricity demand data",
                         "\n", min(gsDT$r_dateTime), 
                         " to ", max(gsDT$r_dateTime),
@@ -199,9 +200,11 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
 myPlot + 
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
+
+ggsave(paste0(params$circuit, "_meankWperminBySeason.png"))
 ```
 
-Figure \@ref(fig:makePlot) shows the plot for this circuit (`r params$circuit`).
+Figure \@ref(fig:makePlot) shows the overall mean kW per minute in each season for this circuit (`r params$circuit`).
 
 ## Profiles by linked household attributes
 
@@ -255,7 +258,8 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
   guides(colour = guide_legend(title = "Number of children aged 0 - 12: ")) +
   theme(legend.position = "bottom")  + 
   labs(title = paste0(params$circuit, ": seasonal mean power demand profiles by n children aged 0-12"),
-       y = "Mean kW", 
+       y = "Mean kW per minute",
+       x = "Time of day",
        caption = paste0("GREENGrid Grid Spy household electricity demand data",
                         "\n", min(gsDT$r_dateTime), 
                         " to ", max(gsDT$r_dateTime),
@@ -264,9 +268,11 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
 myPlot + 
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
+
+ggsave(paste0(params$circuit, "_meankWperminBySeason_nKids0-12.png"))
 ```
 
-Figure \@ref(fig:makeKidsPlot) shows the plot for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?
+Figure \@ref(fig:makeKidsPlot) shows the mean kW per minute per season by presence of young children for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?
 
 # Runtime
 
