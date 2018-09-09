@@ -291,11 +291,9 @@ Note that rf_15a is not present as no usable data was obtained from this househo
 hhStatDT <- data.table::as.data.table(readr::read_csv(gSpyParams$hhStatsByDate))
 ```
 
-<<<<<<< HEAD
+
 Figure \@ref(fig:obsPlotTile) uses a tile plot which is useful for visualising data gaps. Note that there are indications of missing observations in April possibly caused by [DST clock-changes](#dateTimeChecks) when clocks go back 1 hour in NZ.
-=======
-Figure \@ref(fig:obsPlotTile) uses a tile plot which is useful for visualising data gaps. Note that there are indications of missing observations around the end of March caused by [DST clock-changes](#dateTimeChecks).
->>>>>>> f1343d6cf871d54075a25e644924872771a480c5
+
 
 ```{r obsPlotTile, fig.height=6, fig.cap="Observations tile plot"}
 myCaption <- paste0(myCaption,
@@ -319,11 +317,8 @@ obsPlot1
 
 ```
 
-<<<<<<< HEAD
+
 Figure \@ref(fig:obsPlotPoint) uses a point plot which is useful for visualising days where there was partial or duplicate data. Note that there are indications of duplicate observations in late September (and April 2015) possibly caused by [DST clock-changes](#dateTimeChecks) when clocks go forward 1 hour in NZ.
-=======
-Figure \@ref(fig:obsPlotPoint) uses a point plot which is useful for visualising days where there was partial or duplicate data. Note that there are indications of duplicate observations in late October (and, strangely, the end of March 2015) caused by [DST clock-changes](#dateTimeChecks).
->>>>>>> f1343d6cf871d54075a25e644924872771a480c5
 
 ```{r obsPlotPoint, fig.height=6, fig.cap="Observations tile plot"}
 # point plot ----

@@ -156,14 +156,56 @@ Note that:
 
 # Plot seasonal mean power profiles
 
-This section plots overall mean power (W) per minute by season and number of children aged 0-12 as an illustration of how to link the Grid Spy and household data. We will go through the steps with commentary and showing the code...
-
 First we create a _Southern_ Hemisphere season variable. Luckily we have a function to do this in the `GREENGridData` package. We print a check table to ensure we are all happy with the coding of `season`.
 
 ```{r addSeason, echo = TRUE}
 gsDT <- GREENGridData::addNZSeason(gsDT)
 table(lubridate::month(gsDT$r_dateTime, label = TRUE), gsDT$season, useNA = "always")
 ```
+
+## Overall profiles
+
+This section plots overall mean power per minute by season.
+
+```{r makePlot, fig.height=8, fig.cap="Demand profile plot", echo = TRUE}
+plotDT <- gsDT[, .(meanW = mean(powerW)), keyby = .(season, obsTime)
+             ]
+
+# set attributes for plot
+vLineAlpha <- 0.4
+vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+timeBreaks <- c(hms::as.hms("04:00:00"), 
+                hms::as.hms("08:00:00"),
+                hms::as.hms("12:00:00"),
+                hms::as.hms("16:00:00"),
+                hms::as.hms("20:00:00"),
+                hms::as.hms("24:00:00")
+)
+
+myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
+                          aes(x = obsTime, y = meanW/1000, colour = season)) +
+  geom_line() + 
+  theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+  guides(colour = guide_legend(title = "Number of children aged 0 - 12: ")) +
+  theme(legend.position = "bottom")  + 
+  labs(title = paste0(params$circuit, ": seasonal mean power demand profiles"),
+       y = "Mean kW", 
+       caption = paste0("GREENGrid Grid Spy household electricity demand data",
+                        "\n", min(gsDT$r_dateTime), 
+                        " to ", max(gsDT$r_dateTime),
+                        "\nobsTime = Pacific/Auckland"))
+
+myPlot + 
+  scale_x_time(breaks = timeBreaks) +
+  geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
+```
+
+Figure \@ref(fig:makePlot) shows the plot for this circuit (`r params$circuit`).
+
+## Profiles by linked household attributes
+
+This section plots overall mean power per minute by season and number of children aged 0-12 as an illustration of how to link the Grid Spy and household data. We will go through the steps with commentary and showing the code...
 
 Table \@ref(tab:hhTable) the number of households who have different numbers of children aged 0-12 so we know how many households make up each line on the plot. This table includes households where we do not know the number of children (NA) but we do have electricity demand data.
 
@@ -202,18 +244,7 @@ system.time(plotDT <- aggFunc(gsDT, hhDT))
 
 Now use the aggregated `data.table` to make the plot. Note that as specified this will add a line for nChildren0_12 == NA household(s) - see Table \@ref(tab:hhTable).
 
-```{r makePlot, fig.height=8, fig.cap="Demand profile plot", echo = TRUE}
-# set attributes for plot
-vLineAlpha <- 0.4
-vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
-timeBreaks <- c(hms::as.hms("04:00:00"), 
-                hms::as.hms("08:00:00"),
-                hms::as.hms("12:00:00"),
-                hms::as.hms("16:00:00"),
-                hms::as.hms("20:00:00"),
-                hms::as.hms("24:00:00")
-)
-
+```{r makeKidsPlot, fig.height=8, fig.cap="Demand profile plot", echo = TRUE}
 myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
                           aes(x = obsTime, y = meanW/1000, 
                               colour = as.factor(nChildren0_12))) +
@@ -235,7 +266,7 @@ myPlot +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 ```
 
-Figure \@ref(fig:makePlot) shows the plot for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?
+Figure \@ref(fig:makeKidsPlot) shows the plot for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?
 
 # Runtime
 
