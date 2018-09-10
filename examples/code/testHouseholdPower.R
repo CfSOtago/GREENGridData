@@ -38,5 +38,5 @@ rmdFile <- paste0(ggrParams$projLoc, "/examples/code/testHouseholdPower.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(hhID = hhID, gsFile = gsFile, hhFile = hhFile),
-                  output_file = paste0(ggrParams$projLoc,"/examples/results/testHouseholdPower_", hhID, ".html")
+                  output_file = paste0(ggrParams$projLoc,"/examples/outputs/testHouseholdPower_", hhID, ".html")
 )

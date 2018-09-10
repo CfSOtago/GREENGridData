@@ -173,6 +173,7 @@ myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https
 myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
                           aes(x = obsTime, y = meanW/1000, colour = season)) +
   geom_line() + 
+  scale_colour_manual(values=ggrParams$cbPalette) + # use colour-blind friendly palette
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
   guides(colour = guide_legend(title = "Season: ")) +
@@ -187,7 +188,7 @@ myPlot +
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/results/", params$circuit, "_meankWperminBySeason.png"))
+ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/outputs/", params$circuit, "_meankWperminBySeason.png"))
 ```
 
 Figure \@ref(fig:makePlot) shows the overall mean kW per minute in each season for this circuit (`r params$circuit`).
@@ -238,6 +239,7 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
                           aes(x = obsTime, y = meanW/1000, 
                               colour = as.factor(nChildren0_12))) +
   geom_line() + 
+  scale_colour_manual(values=ggrParams$cbPalette) + # use colour-blind friendly palette
   facet_grid(season  ~ .) + 
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
@@ -253,7 +255,7 @@ myPlot +
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/results/", params$circuit, "_meankWperminBySeason_nKids0-12.png"))
+ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/outputs/", params$circuit, "_meankWperminBySeason_nKids0-12.png"))
 ```
 
 Figure \@ref(fig:makeKidsPlot) shows the mean kW per minute per season by presence of young children for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?

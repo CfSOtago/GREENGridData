@@ -186,6 +186,7 @@ myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https
 
 myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = circuit)) +
   geom_line() + 
+  scale_colour_manual(values=ggrParams$cbPalette) + # use colour-blind friendly palette
   facet_grid(month  ~ year) + 
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
@@ -199,7 +200,7 @@ myPlot +
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/results/", params$hhID, "_testHouseholdPower.png"))
+ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/outputs/", params$hhID, "_testHouseholdPower.png"))
 ```
 
 Figure \@ref(fig:plotProfiles) shows the plot for this household (`r params$hhID`). Can you see anything interesting or unusual?

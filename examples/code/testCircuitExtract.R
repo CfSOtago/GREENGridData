@@ -37,5 +37,5 @@ rmdFile <- paste0(ggrParams$projLoc, "/examples/code/testCircuitExtract.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(circuit = circuit, gsFile = gsFile, hhFile = hhFile),
-                  output_file = paste0(ggrParams$projLoc,"/examples/results/testCircuitExtract_", circuit, ".html")
+                  output_file = paste0(ggrParams$projLoc,"/examples/outputs/testCircuitExtract_", circuit, ".html")
 )
