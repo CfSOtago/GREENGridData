@@ -13,7 +13,7 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
 
 The data is archived as:
 
-Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [_New Zealand grid household electricity demand study 2014-2018_](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
+Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [_New Zealand GREEn Grid household electricity demand study 2014-2018_](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
 
 You will need to register for a (free) account before you can download it. Please check that the versions of the reports (below) match the version of the data you have access to.
 
@@ -58,6 +58,7 @@ We encourage [feedback](https://github.com/CfSOtago/GREENGridData/issues) and [c
 ## Publications to date
 
  * Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [_New Zealand grid household electricity demand study 2014-2018_](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
+ * Jack, Michael & Suomalainen, Kiti (2018). [Potential future changes to residential electricity load profiles – findings from the GridSpy dataset](http://hdl.handle.net/10523/8074). NZ GREEN Grid Technical Report, University of Otago.
  * Jack, M. W., K. Suomalainen, J. J. W. Dew, and D. Eyers. 2018. “[A Minimal Simulation of the Electricity Demand of a Domestic Hot Water Cylinder for Smart Control]((https://www.sciencedirect.com/science/article/pii/S0306261917316197)).” Applied Energy 211: 104–12;
  * Stephenson, Janet, Rebecca Ford, Nirmal-Kumar Nair, Neville Watson, Alan Wood, and Allan Miller. 2017. “[Smart Grid Research in New Zealand–A Review from the GREEN Grid Research Programme](https://doi.org/10.1016/j.rser.2017.07.010).” Renewable and Sustainable Energy Reviews 82 (1): 1636–45;
  * Suomalainen, Kiti, Michael Jack, David Byers, Rebecca Ford, and Janet Stephenson. 2017. “[Comparative Analysis of Monitored and Self-Reported Data on Electricity Use](https://ieeexplore.ieee.org/document/7977557/).” In Environment and Electrical Engineering and 2017 IEEE Industrial and Commercial Power Systems Europe (EEEIC/I&CPS Europe), 2017 IEEE International Conference on 6-9 June 2017. IEEE;
