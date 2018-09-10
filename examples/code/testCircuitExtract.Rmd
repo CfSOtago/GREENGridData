@@ -66,7 +66,7 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
- * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/testCircuitExtract.Rmd)
+ * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/code/testCircuitExtract.Rmd)
  
 ## Requirements:
 

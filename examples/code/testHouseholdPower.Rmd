@@ -67,7 +67,7 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
- * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/testHouseholdPower.Rmd)
+ * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/code/testHouseholdPower.Rmd)
  
 ## Requirements:
 
