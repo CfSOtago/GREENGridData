@@ -13,7 +13,7 @@ This package contains the code used to prepare a cleaned, anonymised data archiv
 
 The data is archived as:
 
-Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [_New Zealand GREEN Grid household electricity demand study 2014-2018_](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
+Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [New Zealand GREEN Grid household electricity demand study 2014-2018](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
 
 You will need to register for a (free) account before you can download it. Please check that the versions of the reports (below) match the version of the data you have access to.
 
