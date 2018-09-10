@@ -1,6 +1,8 @@
 ---
 params:
-  circuit: 'Heat Pump'
+  circuit: ''
+  gsFile: ''
+  hhFile: ''
   title: 'GREENGrid Household Electricity Demand Data Circuit Extract Test: '
 title: '`r paste0(params$title, params$circuit)`'
 subtitle: '`r paste0(params$subtitle, params$hhID)`'
@@ -33,29 +35,8 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 # Set start time ----
 startTime <- proc.time()
 
-
-# Load nzGREENGrid package ----
-library(GREENGridData) # local utilities
-
-GREENGridData::setup()
-
-# Packages needed in this .Rmd file ----
-rmdLibs <- c("data.table", # data munching
-             "lubridate", # date & time stuff
-             "ggplot2", # for fancy graphs
-             "readr", # for reading & parsing .csv files
-             "kableExtra" # for pretty kable
-)
-# load them
-loadLibraries(rmdLibs)
-
 # Local parameters ----
-# change this to suit your data location 
 
-gsFile <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/dataExtracts/",
-                 params$circuit, # change the circuit and you change the data used :-)
-                 "_2015-04-01_2016-03-31_observations.csv.gz")
-hhFile <- ggrParams$hhAttributes
 
 # Local functions ----
 
@@ -85,7 +66,7 @@ This work is (c) `r lubridate::year(today())` the University of Southampton.
 
 ## History
 
- * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/testHeatPumpExtract.Rmd)
+ * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/testCircuitExtract.Rmd)
  
 ## Requirements:
 
@@ -182,6 +163,13 @@ timeBreaks <- c(hms::as.hms("04:00:00"),
                 hms::as.hms("24:00:00")
 )
 
+# create default caption
+myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https://dx.doi.org/10.5255/UKDA-SN-853334)",
+                        "\n", min(gsDT$r_dateTime), 
+                        " to ", max(gsDT$r_dateTime),
+                        "\nTime = Pacific/Auckland",
+                        "\n (c) ", lubridate::year(now())," University of Otago")
+
 myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
                           aes(x = obsTime, y = meanW/1000, colour = season)) +
   geom_line() + 
@@ -192,16 +180,14 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
   labs(title = paste0(params$circuit, ": seasonal mean power demand profiles"),
        y = "Mean kW per minute", 
        x = "Time of day",
-       caption = paste0("GREENGrid Grid Spy household electricity demand data",
-                        "\n", min(gsDT$r_dateTime), 
-                        " to ", max(gsDT$r_dateTime),
-                        "\nobsTime = Pacific/Auckland"))
+       caption = myCaption
+       )
 
 myPlot + 
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggsave(paste0(params$circuit, "_meankWperminBySeason.png"))
+ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/results/", params$circuit, "_meankWperminBySeason.png"))
 ```
 
 Figure \@ref(fig:makePlot) shows the overall mean kW per minute in each season for this circuit (`r params$circuit`).
@@ -260,16 +246,14 @@ myPlot <- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/
   labs(title = paste0(params$circuit, ": seasonal mean power demand profiles by n children aged 0-12"),
        y = "Mean kW per minute",
        x = "Time of day",
-       caption = paste0("GREENGrid Grid Spy household electricity demand data",
-                        "\n", min(gsDT$r_dateTime), 
-                        " to ", max(gsDT$r_dateTime),
-                        "\nobsTime = Pacific/Auckland"))
+       caption = myCaption
+       )
 
 myPlot + 
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggsave(paste0(params$circuit, "_meankWperminBySeason_nKids0-12.png"))
+ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/results/", params$circuit, "_meankWperminBySeason_nKids0-12.png"))
 ```
 
 Figure \@ref(fig:makeKidsPlot) shows the mean kW per minute per season by presence of young children for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?

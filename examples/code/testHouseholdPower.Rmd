@@ -1,6 +1,8 @@
 ---
 params:
-  hhID: "rf_38" # <- change this to switch household. That's it :-)
+  hhID: ''
+  gsFile: ''
+  hhFile: ''
   title: 'NZ GREEN Grid project example:'
   subtitle: 'Testing power demand: '
 title: '`r params$title`'
@@ -34,26 +36,8 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 # Set start time ----
 startTime <- proc.time()
 
-
-# Load nzGREENGrid package ----
-library(GREENGridData) # local utilities
-
-GREENGridData::setup()
-
-# Packages needed in this .Rmd file ----
-rmdLibs <- c("data.table", # data munching
-             "lubridate", # date & time stuff
-             "ggplot2", # for fancy graphs
-             "readr", # for reading & parsing .csv files
-             "kableExtra" # for pretty kable
-)
-# load them
-loadLibraries(rmdLibs)
-
 # Local parameters ----
-# change this to suit your data location & to use a different household
-gsFile <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/data/", params$hhID,"_all_1min_data.csv.gz")
-hhFile <- ggrParams$hhAttributes
+
 
 # Local functions ----
 
@@ -193,21 +177,29 @@ timeBreaks <- c(hms::as.hms("04:00:00"),
                 hms::as.hms("24:00:00")
 )
 
+# set default caption
+myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https://dx.doi.org/10.5255/UKDA-SN-853334)",
+                        "\n", min(gsDT$r_dateTime), 
+                        " to ", max(gsDT$r_dateTime),
+                        "\nTime = Pacific/Auckland",
+                        "\n (c) ", lubridate::year(now())," University of Otago")
+
 myPlot <- ggplot2::ggplot(plotDT, aes(x = obsTime, y = meanW/1000, colour = circuit)) +
   geom_line() + 
   facet_grid(month  ~ year) + 
   theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
   theme(legend.position = "bottom") + 
-  labs(title = paste0("Montly mean power profiles by circuit plot: ", params$hhID),
-       y = "Mean kW", 
-       caption = paste0("gridSpy data from ", min(gsDT$r_dateTime), 
-                        " to ", max(gsDT$r_dateTime),
-                        "\nobsTime = Pacific/Auckland"))
+  labs(title = paste0("Montly mean power profiles by circuit for household: ", params$hhID),
+       y = "Mean kW per minute", 
+       caption = myCaption
+       )
 
 myPlot + 
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
+
+ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/results/", params$hhID, "_testHouseholdPower.png"))
 ```
 
 Figure \@ref(fig:plotProfiles) shows the plot for this household (`r params$hhID`). Can you see anything interesting or unusual?
