@@ -43,3 +43,12 @@ ggrParams$citation <- paste0(ggrParams$projLoc, "/includes/citationGeneric.Rmd")
 ggrParams$b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 ggrParams$b2Mb <- 1048576
 
+# http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+# with grey
+ggrParams$cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# with black
+ggrParams$cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# see also
+# https://www.r-bloggers.com/palettes-in-r/
