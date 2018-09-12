@@ -34,9 +34,9 @@ hhFile <- ggrParams$hhAttributes
 
 # NB this will fail if you do not have access to the data and/or an extract that matches 'Heat Pump'
 
-rmdFile <- paste0(ggrParams$projLoc, "/examples/code/testHouseholdPower.Rmd")
+rmdFile <- paste0(ggrParams$repoLoc, "/examples/code/testHouseholdPower.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(hhID = hhID, gsFile = gsFile, hhFile = hhFile),
-                  output_file = paste0(ggrParams$projLoc,"/examples/outputs/testHouseholdPower_", hhID, ".html")
+                  output_file = paste0(ggrParams$repoLoc,"/examples/outputs/testHouseholdPower_", hhID, ".html")
 )

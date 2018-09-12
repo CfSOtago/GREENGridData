@@ -30,7 +30,7 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo. Warnings ma
 startTime <- proc.time()
 
 # Set grid spy data paths etc from file ----
-source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
+source(paste0(ggrParams$repoLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("stringr" # for str_wrap for long labels on plots
@@ -42,7 +42,7 @@ loadLibraries(rmdLibs)
 
 b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
-plotLoc <- paste0(ggrParams$projLoc, "/docs/plots/")
+plotLoc <- paste0(ggrParams$repoLoc, "/docs/plots/")
 
 # Local functions ----
 

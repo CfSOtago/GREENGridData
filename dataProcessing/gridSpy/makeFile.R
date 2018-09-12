@@ -34,7 +34,7 @@ refreshData <- 0 # 0 = No
 localData <- 0 # local data test or not (1 = yes)?
 
 # Set grid spy data paths etc from file ----
-source(paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
+source(paste0(ggrParams$repoLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
 
 # Local functions ----
 
@@ -48,7 +48,7 @@ if(refreshData){
   # > set start time ----
   startTime <- proc.time()
   print(paste0("#-> Refreshing all data using ", gSpyParams$gSpyInPath))
-  sourceF <- paste0(ggrParams$projLoc, "/dataProcessing/gridSpy/processGridSpy1mData.R")
+  sourceF <- paste0(ggrParams$repoLoc, "/dataProcessing/gridSpy/processGridSpy1mData.R")
   print(paste0("#-> Running ", sourceF))
   source(sourceF)
   print("#-> Data refresh complete")

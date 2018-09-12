@@ -200,7 +200,7 @@ myPlot +
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/outputs/", params$hhID, "_testHouseholdPower.png"))
+ggplot2::ggsave(paste0(ggrParams$repoLoc,"/examples/outputs/", params$hhID, "_testHouseholdPower.png"))
 ```
 
 Figure \@ref(fig:plotProfiles) shows the plot for this household (`r params$hhID`). Can you see anything interesting or unusual?

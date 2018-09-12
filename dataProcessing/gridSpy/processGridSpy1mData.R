@@ -108,7 +108,7 @@ saveFinalDT <- function(hh,dt){
 # Local parameters ----
 
 # > set check plots location (github) ----
-plotLoc <- paste0(ggrParams$projLoc,"/checkPlots/") # where to save the check plots (github)
+plotLoc <- paste0(ggrParams$repoLoc,"/checkPlots/") # where to save the check plots (github)
 
 # Code ----
 

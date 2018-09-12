@@ -188,7 +188,7 @@ myPlot +
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/outputs/", params$circuit, "_meankWperminBySeason.png"))
+ggplot2::ggsave(paste0(ggrParams$repoLoc,"/examples/outputs/", params$circuit, "_meankWperminBySeason.png"))
 ```
 
 Figure \@ref(fig:makePlot) shows the overall mean kW per minute in each season for this circuit (`r params$circuit`).
@@ -255,7 +255,7 @@ myPlot +
   scale_x_time(breaks = timeBreaks) +
   geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol)
 
-ggplot2::ggsave(paste0(ggrParams$projLoc,"/examples/outputs/", params$circuit, "_meankWperminBySeason_nKids0-12.png"))
+ggplot2::ggsave(paste0(ggrParams$repoLoc,"/examples/outputs/", params$circuit, "_meankWperminBySeason_nKids0-12.png"))
 ```
 
 Figure \@ref(fig:makeKidsPlot) shows the mean kW per minute per season by presence of young children for this circuit (`r params$circuit`). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?

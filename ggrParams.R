@@ -1,11 +1,12 @@
 ggrParams <<- list() # params holder
 
 # Location of original data
-ggrParams$projLoc <- findParentDirectory("GREENGridData")
+ggrParams$repoLoc <- findParentDirectory("GREENGridData")
 ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HCS by default
 
 # Location of basic household data
-ggrParams$gsHHMasterFile <- "~/Syncplicity Folders/Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx"
+ggrParams$gsHHMasterFile <- paste0(ggrParams$dataLoc, "Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx")
+
 
 ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/appliancesSummary.xlsx")
 ggrParams$UnisonShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonShortSurvey_with_house_label.csv")
@@ -16,7 +17,7 @@ ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdA
 ggrParams$hhOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/"
 
 # Location of misc data
-ggrParams$dstNZDates <- paste0(ggrParams$projLoc, "/data/dstNZDates.csv")
+ggrParams$dstNZDates <- paste0(ggrParams$repoLoc, "/data/dstNZDates.csv")
 
 # Location of stats
 ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/checkStats/")
@@ -33,11 +34,11 @@ ggrParams$repo <- "[GREENGridData](https://github.com/CfSOtago/GREENGridData)"
 ggrParams$Authors <- "Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R.,  Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M."
 
 # Rmd includes
-ggrParams$licenseCCBY <- paste0(ggrParams$projLoc, "/includes/licenseCCBY.Rmd")
-ggrParams$supportGeneric <- paste0(ggrParams$projLoc, "/includes/supportGeneric.Rmd")
-ggrParams$sampleGeneric <- paste0(ggrParams$projLoc, "/includes/sampleGeneric.Rmd")
-ggrParams$history <- paste0(ggrParams$projLoc, "/includes/historyGeneric.Rmd")
-ggrParams$citation <- paste0(ggrParams$projLoc, "/includes/citationGeneric.Rmd")
+ggrParams$licenseCCBY <- paste0(ggrParams$repoLoc, "/includes/licenseCCBY.Rmd")
+ggrParams$supportGeneric <- paste0(ggrParams$repoLoc, "/includes/supportGeneric.Rmd")
+ggrParams$sampleGeneric <- paste0(ggrParams$repoLoc, "/includes/sampleGeneric.Rmd")
+ggrParams$history <- paste0(ggrParams$repoLoc, "/includes/historyGeneric.Rmd")
+ggrParams$citation <- paste0(ggrParams$repoLoc, "/includes/citationGeneric.Rmd")
 
 # Misc
 ggrParams$b2Kb <- 1024 #http://whatsabyte.com/P1/byteconverter.htm
