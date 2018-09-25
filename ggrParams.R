@@ -5,7 +5,7 @@ ggrParams$repoLoc <- findParentDirectory("GREENGridData")
 ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HCS by default
 
 # Location of basic household data
-ggrParams$gsHHMasterFile <- paste0(ggrParams$dataLoc, "Green Grid Project Management Folder/Gridspy/Master list of Gridspy units.xlsx")
+ggrParams$gsHHMasterFile <- paste0(ggrParams$dataLoc, "Green Grid Project Management/Gridspy/Master list of Gridspy units.xlsx")
 
 
 ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/appliancesSummary.xlsx")
