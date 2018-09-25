@@ -456,7 +456,7 @@ Yes.
 
 Is it DST?
 
-```{r dstTest, echo=TRUE}
+```{r dstTrueTest, echo=TRUE}
 lubridate::dst(dateTimeNZT2)
 ```
 
