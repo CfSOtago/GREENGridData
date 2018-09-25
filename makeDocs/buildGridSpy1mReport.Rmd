@@ -407,7 +407,7 @@ To add even more confusion it is _possible_ that attempts were made to 'correct'
  * have retained the original timestamp in the data in the `dateTime_orig` column;
  * have flagged our best guess (see [above](#getItRightFirstTime)) of the original date format in the data in the `TZ_orig` column;
  * suggest that users carefully check these columns against the `r_dateTime` column if they see strange errors around the DST breaks;
- * suggest that users learn how to use [lubridate](https://lubridate.tidyverse.org/reference/lubridate-package.html) to manipulate dates, time and time zones and thus [what lubridate did during data processing](https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309). You can also use lubridate's very useful [lubridate::dst() function](https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/dst) to check if a give dateTime is in DST or not;
+ * suggest that users learn how to use [lubridate](https://lubridate.tidyverse.org/reference/lubridate-package.html) to manipulate dates, time and time zones and thus [what lubridate did during data processing](https://github.com/CfSOtago/GREENGridData/blob/a70d9d4fc7a4ee8406cda2c8bb458bd324ff6f43/R/gridSpyData.R#L309). You can also use lubridate's very useful [lubridate::dst() function](https://www.rdocumentation.org/packages/lubridate/versions/1.7.4/topics/dst) to check if a given dateTime is in DST or not;
  * **strongly** suggest that if at all possible, users _avoid_ using data from the days when there are DTS breaks (see Table \@ref(tab:dstBreaks)).
 
 ```{r dstBreaks}
@@ -439,6 +439,28 @@ lubridate::dst(dateTimeNZT1)
 ```
 
 No.
+
+Now set a dateTime that should be DST and tell lubridate (and R) it is NZT:
+
+```{r dstTrue1, echo=TRUE}
+dateTimeNZT2 <- lubridate::ymd_hm("2014-01-28 01:50", tz = "Pacific/Auckland")
+```
+
+Did it work?
+
+```{r dstTrue2, echo=TRUE}
+dateTimeNZT2
+```
+
+Yes.
+
+Is it DST?
+
+```{r dstTest, echo=TRUE}
+lubridate::dst(dateTimeNZT2)
+```
+
+Yes
 
 Now set a dateTime that does not exist as it lies inside the DST break (see Table \@ref(tab:dstBreaks)):
 
