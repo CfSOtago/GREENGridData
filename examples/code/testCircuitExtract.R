@@ -20,7 +20,7 @@ loadLibraries(rmdLibs)
 # Local parameters ----
 
 # use circuit parameter to change the circuit used (assumes you have already extracted it)
-circuit <- "Hot Water"
+circuit <- "Lighting"
 
 # change this to suit your data location
 
