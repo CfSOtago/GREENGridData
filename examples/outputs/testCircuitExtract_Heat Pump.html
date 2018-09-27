@@ -124,7 +124,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">GREENGrid Household Electricity Demand Data Circuit Extract Test: Heat Pump</h1>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-09-10 12:27:21</em></h4>
+<h4 class="date"><em>Last run at: 2018-09-26 16:21:24</em></h4>
 
 </div>
 
@@ -170,7 +170,7 @@ $(document).ready(function () {
 <div id="history" class="section level2">
 <h2><span class="header-section-number">1.4</span> History</h2>
 <ul>
-<li><a href="https://github.com/CfSOtago/GREENGridData/commits/master/examples/testCircuitExtract.Rmd">Report history</a></li>
+<li><a href="https://github.com/CfSOtago/GREENGridData/commits/master/examples/code/testCircuitExtract.Rmd">Report history</a></li>
 </ul>
 </div>
 <div id="requirements" class="section level2">
@@ -579,7 +579,7 @@ myPlot +
 Figure 4.1: Demand profile plot
 </p>
 </div>
-<pre class="r"><code>ggplot2::ggsave(paste0(ggrParams$projLoc,&quot;/examples/outputs/&quot;, params$circuit, &quot;_meankWperminBySeason.png&quot;))</code></pre>
+<pre class="r"><code>ggplot2::ggsave(paste0(ggrParams$repoLoc,&quot;/examples/outputs/&quot;, params$circuit, &quot;_meankWperminBySeason.png&quot;))</code></pre>
 <pre><code>## Saving 7 x 5 in image</code></pre>
 <p>Figure <a href="#fig:makePlot">4.1</a> shows the overall mean kW per minute in each season for this circuit (Heat Pump).</p>
 </div>
@@ -651,7 +651,7 @@ NA
 <pre class="r"><code>system.time(plotDT &lt;- gsDT[hhDT][, .(meanW = mean(powerW)), keyby = .(season, obsTime, nChildren0_12)
              ]) # aggregate by season, time and n children aged 0 - 12</code></pre>
 <pre><code>##    user  system elapsed 
-##  23.863   4.133  29.180</code></pre>
+##  24.775   4.346  31.893</code></pre>
 <pre class="r"><code># print(&quot;data.table join on the fly (version 2):&quot;)
 # # appears to be as specified in https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html#MergeDiff
 # # but fails to find nChildren0_12
@@ -669,7 +669,7 @@ print(&quot;data.table join then aggregate:&quot;)</code></pre>
 <pre><code>## [1] &quot;data.table join then aggregate:&quot;</code></pre>
 <pre class="r"><code>system.time(plotDT &lt;- aggFunc(gsDT, hhDT))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.911   0.173   3.140</code></pre>
+##   3.135   0.454   3.670</code></pre>
 <p>Now use the aggregated <code>data.table</code> to make the plot. Note that as specified this will add a line for nChildren0_12 == NA household(s) - see Table <a href="#tab:hhTable">4.1</a>.</p>
 <pre class="r"><code>myPlot &lt;- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
                           aes(x = obsTime, y = meanW/1000, 
@@ -697,7 +697,7 @@ myPlot +
 Figure 4.2: Demand profile plot
 </p>
 </div>
-<pre class="r"><code>ggplot2::ggsave(paste0(ggrParams$projLoc,&quot;/examples/outputs/&quot;, params$circuit, &quot;_meankWperminBySeason_nKids0-12.png&quot;))</code></pre>
+<pre class="r"><code>ggplot2::ggsave(paste0(ggrParams$repoLoc,&quot;/examples/outputs/&quot;, params$circuit, &quot;_meankWperminBySeason_nKids0-12.png&quot;))</code></pre>
 <pre><code>## Saving 7 x 8 in image</code></pre>
 <pre><code>## Warning: Removed 5760 rows containing missing values (geom_path).</code></pre>
 <p>Figure <a href="#fig:makeKidsPlot">4.2</a> shows the mean kW per minute per season by presence of young children for this circuit (Heat Pump). Can you see anything interesting or unusual and might this be due to the numbers of households in each group?</p>
@@ -705,7 +705,7 @@ Figure 4.2: Demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 94.65 seconds ( 1.58 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 107.48 seconds ( 1.79 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
