@@ -20,7 +20,7 @@ rmdLibs <- c("data.table", # data munching
 GREENGridData::loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Heat Pump"
+circuitPattern <- "Hot Water"
 dateFrom <- "2015-04-01"
 dateTo <- "2016-03-31"
 
@@ -34,17 +34,19 @@ b2Mb <- 1048576
 # >> Amend paths to suit your data storage location ----
 if(localData == 1){
   # local
-  dPath <- "~/Data/NZ_GREENGrid/reshare/v1.0/" # downloaded from https://dx.doi.org/10.5255/UKDA-SN-853334
-  iPath <- paste0(dPath, "data/powerData/")
+  iPath <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/powerData/" # downloaded from https://dx.doi.org/10.5255/UKDA-SN-853334
+  oPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/dataExtracts/"
 } else {
   # HCS
   dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/gridSpy/1min/" # Otago HCS
   iPath <- paste0(dPath, "data/")
+  oPath <- paste0(dPath, "dataExtracts/")
 }
 if(Sys.info()[4] == "gridcrawler"){
   # we're on the CS RStudio server
   dPath <- path.expand("~/greenGridData/cleanData/safe/gridSpy/1min/")
   iPath <- paste0(dPath, "data/")
+  oPath <- paste0(dPath, "dataExtracts/")
 }
 
 # Code ----
@@ -61,7 +63,7 @@ print(msg)
 
 oFile <- paste0(circuitPattern, "_", dateFrom, "_", dateTo, "_observations.csv")
 
-exFile <- paste0(dPath, "dataExtracts/", oFile) # place to save them
+exFile <- paste0(oPath, oFile) # place to save them
 exFileTest <- paste0(exFile, ".gz")
 
 #>  Run the extraction ----
