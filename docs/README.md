@@ -15,7 +15,7 @@ The data is archived as:
 
  * Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [New Zealand GREEN Grid household electricity demand study 2014-2018](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
 
-You will need to register for a (free) UK Data Service account before you can download it. Despite appearances, users from outside the UK _can_ register and download the data but will need to use a [specific form to request a UK Data Service user id](https://beta.ukdataservice.ac.uk/myaccount/credentials). 
+You will need to register for a (free) UK Data Service account before you can download it. Despite appearances, users from outside the UK _can_ register and download the data but will need to use a [specific form to request a UK Data Service user id](https://beta.ukdataservice.ac.uk/myaccount/credentials). One registered you should be able to log in and download the data.
 
 Please document any errors, problems or queries by raising a [github issue](https://github.com/CfSOtago/GREENGridData/issues) and we will try to respond.
 
