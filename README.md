@@ -62,7 +62,7 @@ This will install it wherever your version of R(Studio) stores packages. It will
 
 ### Recommended approach
 
- * Install it from github, then
+ * Install it from github (so you know it works), then
  * Fork it from github, then
  * Edit it as you wish, then
  * Re-build & install it locally, then
