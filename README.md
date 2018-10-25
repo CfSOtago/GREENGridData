@@ -46,17 +46,20 @@ The original project data is stored on the restricted-access University of Otago
 ## Using the code
 This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in two ways:
 
-*Clone/fork the repo from github* - this will give you a replication of the package as a local repo which you can edit & install locally. You can then (if you wish) submit pull requests for any improvements you make. Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
+### Clone/fork the repo from github
+This will give you a replication of the package as a local repo which you can edit & re-build/re-install as often as you like. You should set this up as an [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). You can then (if you wish) submit pull requests for any improvements you make.
 
-*Install the package* - this will install it wherever your version of R(Studio) stores packages. It will also install any dependencies. However you will not (easily) be able to edit or amend the code. To do this:
+### Install the package
+This will install it wherever your version of R(Studio) stores packages. It will also install any dependencies. However you will not (easily) be able to edit or amend the code. To do this:
 
  * install the R [devtools](http://r-pkgs.had.co.nz/git.html) package: `> install.packages("devtools")`;
  * run: `> devtools::install_github("CfSOtago/GREENGridData")`
  * this should install the package and any [dependencies](http://r-pkgs.had.co.nz/description.html#dependencies) you may not have and will enable you to use the functions;
- * however we suggest you then clone/download the package if you want to play with the example as they are _not_ installed using the `> devtools::install_github("CfSOtago/GREENGridData")` process.
+ * however we suggest you then clone/download the package if you want to play with the examples as they are _not_ installed by the `> devtools::install_github("CfSOtago/GREENGridData")` process.
  
- 
- Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
+### Disclaimer
+
+Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
 
 ## Re-Use and Contribution
 
