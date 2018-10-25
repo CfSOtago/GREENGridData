@@ -35,7 +35,7 @@ hhFile <- paste0(dPath, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv")
 
 # --- Build report ----
 
-# NB this will fail if you do not have access to the data and/or an extract that matches 'Heat Pump' from https://dx.doi.org/10.5255/UKDA-SN-853334
+# NB this will fail if you do not have access to the data and/or an extract that matches <circuit> from https://dx.doi.org/10.5255/UKDA-SN-853334
 
 rmdFile <- paste0(ggrParams$repoLoc, "/examples/code/testCircuitExtract.Rmd")
 rmarkdown::render(input = rmdFile,
