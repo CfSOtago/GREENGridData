@@ -46,7 +46,7 @@ _Documentation_:
 
 _Known Problems_:
 
- * rf_15 & rf_17 grid spy files are in archive and should not be. [Details...](https://github.com/CfSOtago/GREENGridData/issues/19)
+ * rf_15 & rf_17 grid spy files are in the archive and should not be. Users should remove them. [See further details...](https://github.com/CfSOtago/GREENGridData/issues/19)
  * For others see our [issue list](https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+label%3AdataIssue)
  
 ## Code repository
