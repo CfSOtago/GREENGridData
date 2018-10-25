@@ -1,11 +1,4 @@
 # NZ GREEN Grid Household Electricity Demand Study: Data R Package
-[NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) data includes:
-
- * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
- * Occupant time-use diaries (focused on energy use)
- * Dwelling & appliance surveys
-
-NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data.
 
 ## 1 minute electricity power (W) data
 
@@ -20,7 +13,7 @@ The code here processes the original Grid Spy data files to produce the ['safe' 
  * saves meta data on each file processed
  * saves two checkPlots for each household as a very useful eye-ball of data quality and power demand profiles
 
-The code maked extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done.
+The code makes extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done.
 
 We keep a log of [issues](https://github.com/dataknut/nzGREENGridDataR/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3AgridSpy) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/dataknut/nzGREENGridDataR/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3AgridSpy).
 
