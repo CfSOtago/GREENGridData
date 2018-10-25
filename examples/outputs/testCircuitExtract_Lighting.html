@@ -124,7 +124,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">GREENGrid Household Electricity Demand Data Circuit Extract Test: Lighting</h1>
 <h4 class="author"><em>Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</em></h4>
-<h4 class="date"><em>Last run at: 2018-09-27 12:06:21</em></h4>
+<h4 class="date"><em>Last run at: 2018-10-25 17:29:59</em></h4>
 
 </div>
 
@@ -651,7 +651,7 @@ NA
 <pre class="r"><code>system.time(plotDT &lt;- gsDT[hhDT][, .(meanW = mean(powerW)), keyby = .(season, obsTime, nChildren0_12)
              ]) # aggregate by season, time and n children aged 0 - 12</code></pre>
 <pre><code>##    user  system elapsed 
-##  14.968   2.424  17.971</code></pre>
+##  17.627   2.889  21.387</code></pre>
 <pre class="r"><code># print(&quot;data.table join on the fly (version 2):&quot;)
 # # appears to be as specified in https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html#MergeDiff
 # # but fails to find nChildren0_12
@@ -669,7 +669,7 @@ print(&quot;data.table join then aggregate:&quot;)</code></pre>
 <pre><code>## [1] &quot;data.table join then aggregate:&quot;</code></pre>
 <pre class="r"><code>system.time(plotDT &lt;- aggFunc(gsDT, hhDT))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.734   0.120   4.151</code></pre>
+##   2.235   0.379   2.695</code></pre>
 <p>Now use the aggregated <code>data.table</code> to make the plot. Note that as specified this will add a line for nChildren0_12 == NA household(s) - see Table <a href="#tab:hhTable">4.1</a>.</p>
 <pre class="r"><code>myPlot &lt;- ggplot2::ggplot(plotDT[!is.na(season)], # make sure no un-set seasons/non-parsed dates
                           aes(x = obsTime, y = meanW/1000, 
@@ -703,7 +703,7 @@ Figure 4.2: Demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">5</span> Runtime</h1>
-<p>Analysis completed in 82.45 seconds ( 1.37 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 73.78 seconds ( 1.23 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">6</span> R environment</h1>
@@ -739,34 +739,33 @@ Figure 4.2: Demand profile plot
 ## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
-## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## [1] en_NZ.UTF-8/en_NZ.UTF-8/en_NZ.UTF-8/C/en_NZ.UTF-8/en_NZ.UTF-8
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dplyr_0.7.6       kableExtra_0.9.0  bookdown_0.7      rmarkdown_1.10   
-## [5] readr_1.1.1       ggplot2_3.0.0     lubridate_1.7.4   data.table_1.11.4
-## [9] GREENGridData_1.0
+## [1] kableExtra_0.9.0  bookdown_0.7      rmarkdown_1.10    readr_1.1.1      
+## [5] ggplot2_3.0.0     lubridate_1.7.4   data.table_1.11.8 GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] progress_1.2.0    tidyselect_0.2.4  xfun_0.3         
 ##  [4] reshape2_1.4.3    purrr_0.2.5       colorspace_1.3-2 
 ##  [7] htmltools_0.3.6   viridisLite_0.3.0 yaml_2.2.0       
-## [10] utf8_1.1.4        rlang_0.2.2       pillar_1.3.0     
-## [13] glue_1.3.0        withr_2.1.2       readxl_1.1.0     
-## [16] bindrcpp_0.2.2    bindr_0.1.1       plyr_1.8.4       
-## [19] stringr_1.3.1     munsell_0.5.0     gtable_0.2.0     
-## [22] cellranger_1.1.0  rvest_0.3.2       evaluate_0.11    
-## [25] labeling_0.3      knitr_1.20.13     fansi_0.3.0      
-## [28] highr_0.7         Rcpp_0.12.18      scales_1.0.0     
-## [31] backports_1.1.2   hms_0.4.2         digest_0.6.15    
-## [34] stringi_1.2.4     grid_3.5.1        rprojroot_1.3-2  
-## [37] cli_1.0.0         tools_3.5.1       magrittr_1.5     
+## [10] rlang_0.2.2       pillar_1.3.0      glue_1.3.0       
+## [13] withr_2.1.2       readxl_1.1.0      bindrcpp_0.2.2   
+## [16] bindr_0.1.1       plyr_1.8.4        stringr_1.3.1    
+## [19] munsell_0.5.0     gtable_0.2.0      cellranger_1.1.0 
+## [22] rvest_0.3.2       evaluate_0.11     labeling_0.3     
+## [25] knitr_1.20        GREENGrid_0.1.0   highr_0.7        
+## [28] Rcpp_0.12.19      openssl_1.0.2     backports_1.1.2  
+## [31] scales_1.0.0      hms_0.4.2         digest_0.6.17    
+## [34] stringi_1.2.4     dplyr_0.7.6       rprojroot_1.3-2  
+## [37] grid_3.5.1        tools_3.5.1       magrittr_1.5     
 ## [40] lazyeval_0.2.1    tibble_1.4.2      crayon_1.3.4     
 ## [43] pkgconfig_2.0.2   xml2_1.2.0        prettyunits_1.0.2
-## [46] assertthat_0.2.0  httr_1.3.1        rstudioapi_0.7   
-## [49] R6_2.2.2          compiler_3.5.1</code></pre>
+## [46] assertthat_0.2.0  httr_1.3.1        rstudioapi_0.8   
+## [49] R6_2.3.0          compiler_3.5.1</code></pre>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">

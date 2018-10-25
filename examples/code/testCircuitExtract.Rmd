@@ -37,6 +37,7 @@ startTime <- proc.time()
 
 # Local parameters ----
 
+GREENGridData::setup() # set package parameters mostly from ggrParams.R
 
 # Local functions ----
 

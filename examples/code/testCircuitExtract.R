@@ -1,9 +1,9 @@
 #--- Runs the circuit extract analysis ---#
 
+# Assumes that you have run extractCleanGridSpy1minCircuit.R first !!
+
 # Load nzGREENGrid package ----
 library(GREENGridData) # local utilities
-
-GREENGridData::setup()
 
 # Packages needed in this .Rmd file ----
 rmdLibs <- c("data.table", # data munching
@@ -22,12 +22,16 @@ loadLibraries(rmdLibs)
 # use circuit parameter to change the circuit used (assumes you have already extracted it)
 circuit <- "Lighting"
 
-# change this to suit your data location
+# change this to suit your data location - this is where extractCleanGridSpy1minCircuit.R saved your extract
+dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # Otago HCS
+oPath <- paste0(dPath, "cleanData/safe/gridSpy/1min/dataExtracts/")
 
-gsFile <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/dataExtracts/",
+gsFile <- paste0(oPath,
                 circuit, # change the circuit and you change the data used :-)
                  "_2015-04-01_2016-03-31_observations.csv.gz")
-hhFile <- ggrParams$hhAttributes
+
+# where you saved the household attributes file
+hhFile <- paste0(dPath, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv")
 
 # --- Build report ----
 
