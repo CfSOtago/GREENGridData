@@ -9,7 +9,7 @@ NB: *None* of the data is held in this repo so *none* of the code here will work
 
 ## 1 minute electricity power (W) data
 
-The code here processes the original Grid Spy data files to produce a 'safe' form. To do this it:
+The code here processes the original Grid Spy data files to produce the ['safe' form held on the UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). To do this it:
 
  * checks the available files
  * skips files which do not contain data (grid spy files are empty .xml if no data is available for a given household)
