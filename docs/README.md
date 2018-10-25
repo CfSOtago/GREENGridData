@@ -44,6 +44,11 @@ _Documentation_:
 
 > NB: Version 1 of the data package does not include any time-use diary data. 
 
+_Known Problems_:
+
+ * rf_15 & rf_17 grid spy files are in archive and should not be. [Details...](https://github.com/CfSOtago/GREENGridData/issues/19)
+ * For others see our [issue list](https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+label%3AdataIssue)
+ 
 ## Code repository
 
 NB: *None* of the data is held in this repo so *none* of the code below will work unless you also have access to the data. 

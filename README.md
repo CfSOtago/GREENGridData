@@ -51,11 +51,12 @@ This repo is intentionally structured as an R package so you can install it and 
 *Install the package* - this will install it wherever your version of R(Studio) stores packages. It will also install any dependencies. However you will not (easily) be able to edit or amend the code. To do this:
 
  * install the R [devtools](http://r-pkgs.had.co.nz/git.html) package: `> install.packages("devtools")`;
- * run either (both seem to work):
-   - `> devtools::install_github("dataknut/GREENGridData")` or
-   - `> devtools::install_github("CfSOtago/GREENGridData")`
- * this should install the package and any [dependencies](http://r-pkgs.had.co.nz/description.html#dependencies) you may not have;
- * inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
+ * run: `> devtools::install_github("CfSOtago/GREENGridData")`
+ * this should install the package and any [dependencies](http://r-pkgs.had.co.nz/description.html#dependencies) you may not have and will enable you to use the functions;
+ * however we suggest you then clone/download the package if you want to play with the example as they are _not_ installed using the `> devtools::install_github("CfSOtago/GREENGridData")` process.
+ 
+ 
+ Inevitably [#YMMV](http://en.wiktionary.org/wiki/YMMV).
 
 ## Re-Use and Contribution
 
