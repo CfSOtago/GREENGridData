@@ -1,14 +1,12 @@
 # NZ GREEN Grid Household Electricity Demand Study: Data R Package
 
-Code to process data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project.
-
 [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) Household Electricity Demand Study data includes:
 
  * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
  * Occupant time-use diaries (focused on energy use)
  * Dwelling & appliance surveys
 
-NB: *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
+This data has been cleaned and anonymised to produce the 'safe' dataset available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
 
 ----
 
@@ -20,7 +18,7 @@ The code in this repo does two things:
     - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data). As it does so it creates two check plots for each household: monthly mean power profiles & the number of observations over time. The are found in the archived dataset for error checking purposes;
     - produces original data processing reports and documentation (code will only work if you have the original data);
     - produces cleaned 'safe' data reports and documentation (code will only work if you have the original data).
- * _Provides examples of code_ to:
+ * _Analytic code examples_ to:
     - load and analyse electricity 'safe' demand data for one household
     - extract power data for circuits matching a given string (e.g. `Heat Pump`) from the 'safe' data between two dates;
     - link the household survey and extracted 'Heat Pump' data for analysis;
@@ -28,7 +26,7 @@ The code in this repo does two things:
 
 Guide to folders:
 
- * data - external data used in data cleaning and processing (*not* the research data);
+ * data - misc external data used in data cleaning and processing (*not* the research data);
  * dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
  * docs - the data archive documentation published via [githhub pages](https://cfsotago.github.io/GREENGridData/);
  * examples - R script examples to show how the clean anonymised data can be analysed;
@@ -39,7 +37,7 @@ Guide to folders:
  
 ## Data Access
 
-A link to the anonymised, archived 'safe' version of the data will appear here soon. 
+The 'safe' anonymised dataset is available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/).
 
 The original project data is stored on the restricted-access University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
 
@@ -62,7 +60,7 @@ This will install it wherever your version of R(Studio) stores packages. It will
 
 ### Recommended approach
 
- * Install it from github, then
+ * Install it from github (so you know it works), then
  * Fork it from github, then
  * Edit it as you wish, then
  * Re-build & install it locally, then
