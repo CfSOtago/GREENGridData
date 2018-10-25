@@ -34,8 +34,10 @@ b2Mb <- 1048576
 # >> Amend paths to suit your data storage location ----
 if(localData == 1){
   # local
+  # amend these paths to suit your location
+  # if the script fails it is most probably because the paths are incorrect
   iPath <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/powerData/" # downloaded from https://dx.doi.org/10.5255/UKDA-SN-853334
-  oPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/dataExtracts/"
+  oPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/dataExtracts/" # where the extract is saved. Create this before you run the script or it will fail
 } else {
   # HCS
   dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/gridSpy/1min/" # Otago HCS
