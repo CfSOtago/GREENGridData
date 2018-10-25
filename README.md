@@ -44,7 +44,10 @@ A link to the anonymised, archived 'safe' version of the data will appear here s
 The original project data is stored on the restricted-access University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
 
 ## Using the code
-This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in two ways:
+This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in three ways:
+
+### Download it
+This will just give you the code to explore & play with.
 
 ### Clone/fork the repo from github
 This will give you a replication of the package as a local repo which you can edit & re-build/re-install as often as you like. You should set this up as an [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). You can then (if you wish) submit pull requests for any improvements you make.
@@ -56,6 +59,15 @@ This will install it wherever your version of R(Studio) stores packages. It will
  * run: `> devtools::install_github("CfSOtago/GREENGridData")`
  * this should install the package and any [dependencies](http://r-pkgs.had.co.nz/description.html#dependencies) you may not have and will enable you to use the functions;
  * however we suggest you then clone/download the package if you want to play with the examples as they are _not_ installed by the `> devtools::install_github("CfSOtago/GREENGridData")` process.
+
+### Recommended approach
+
+ * Install it from github, then
+ * Fork it from github, then
+ * Edit it as you wish, then
+ * Re-build & install it locally, then
+ * Test it, then
+ * Send a pull request so we can build you awesome improvements into the code base :-)
  
 ### Disclaimer
 
