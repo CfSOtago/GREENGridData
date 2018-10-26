@@ -68,6 +68,21 @@ oFile <- paste0(circuitPattern, "_", dateFrom, "_", dateTo, "_observations.csv")
 exFile <- paste0(oPath, oFile) # place to save them
 exFileTest <- paste0(exFile, ".gz")
 
+# check paths
+if(file.exists(iPath)){
+  message("Good, path to safe data exists: ", iPath)
+} else {
+  message("Opps. path to safe data does not exist: ", iPath)
+  stop("Please check you have set the path correctly and it exists...")
+}
+
+if(file.exists(oPath)){
+  message("Good, place to save extracts exists: ", oPath)
+} else {
+  message("Opps. place to save extracts does not exist: ", oPath)
+  stop("Please check you have set the path correctly and it exists...")
+}
+
 #>  Run the extraction ----
 
 if(file.exists(exFileTest) & refresh == 0){

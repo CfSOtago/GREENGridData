@@ -30,8 +30,23 @@ gsFile <- paste0(oPath,
                 circuit, # change the circuit and you change the data used :-)
                  "_2015-04-01_2016-03-31_observations.csv.gz")
 
+# test file exists
+if(file.exists(gsFile)){
+  message("Success! Found expected pre-extracted file: ", gsFile)
+} else {
+  message("Opps. Didn't find expected pre-extracted file: ", gsFile)
+  stop("Please check you have set the paths and filename correctly...")
+}
+
 # where you saved the household attributes file
 hhFile <- paste0(dPath, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv")
+# test file exists
+if(file.exists(hhFile)){
+  message("Success! Found expected pre-extracted file: ", gsFile)
+} else {
+  message("Opps. Didn't find expected pre-extracted file: ", gsFile)
+  stop("Please check you have set the paths and filename correctly...")
+}
 
 # --- Build report ----
 
