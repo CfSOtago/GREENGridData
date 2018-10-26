@@ -1,27 +1,29 @@
 # NZ GREEN Grid Household Electricity Demand Study: Data R Package
 
-This package contains the code used to prepare a cleaned, anonymised data archive from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) household electricity demand study. This archive is available for third party research use via the UK Data Service's [ReShare](http://reshare.ukdataservice.ac.uk/) service.
+[NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) Household Electricity Demand Study data includes:
 
-[NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) household electricity demand study data includes:
-
- * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [GridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
- * Dwelling & appliance surveys
+ * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
  * Occupant time-use diaries (focused on energy use)
+ * Dwelling & appliance surveys
+
+This data has been cleaned and anonymised using the code in this [R package](https://github.com/CfSOtago/GREENGridData/) to produce the 'safe' dataset available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). *None* of the data is held in the R package so *none* of the code here will work unless you also have access to the data. 
 
 ----
-## Data archives
+## Accessing the data
 
 The data is archived as:
 
  * Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [New Zealand GREEN Grid household electricity demand study 2014-2018](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
 
-You will need to register for a (free) UK Data Service account before you can download it. Despite appearances, users from outside the UK _can_ register and download the data but will need to use a [specific form to request a UK Data Service user id](https://beta.ukdataservice.ac.uk/myaccount/credentials). One registered you should be able to log in and download the data.
+You will need to register for a (free) UK Data Service account before you can download it. Despite appearances, users from outside the UK _can_ register and download the data but will need to use a [specific form to request a UK Data Service user id](https://beta.ukdataservice.ac.uk/myaccount/credentials). Once registered you should be able to log in and download the data.
 
 Please document any errors, problems or queries by raising a [github issue](https://github.com/CfSOtago/GREENGridData/issues) and we will try to respond.
 
-### Version 1 - September 2018
+### Terms of Use
 
-_Access to the data_:
+This is _not_ open access data. It is licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
+
+### Version 1 - September 2018
 
 Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
  
@@ -31,10 +33,6 @@ Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) inclu
    - simple line charts of mean power per month per year for each circuit monitored for each household. These are a useful check;
    - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
  * PDF snapshots of the _live documentation_ found below. 
-
-_Terms of Use_:
-
-This is _not_ open access data. It is, however, licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
 
 _Documentation_:
 
@@ -49,14 +47,12 @@ _Known Problems_:
  * rf_15 & rf_17 grid spy files are in the archive and should not be. Users should remove them. [See further details...](https://github.com/CfSOtago/GREENGridData/issues/19)
  * For others see our [issue list](https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+label%3AdataIssue)
  
-## Code repository
+## Accessing the code
 
-NB: *None* of the data is held in this repo so *none* of the code below will work unless you also have access to the data. 
-
-The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can be forked, cloned or installed as an R package. Amongst other things it contains:
- * dataProcessing - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
- * docs - the data archive documentation published via the [github pages](https://cfsotago.github.io/GREENGridData/) that you are now reading;
- * examples - R script examples to show how the clean anonymised data can be analysed.
+The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can be forked, cloned or installed as an R package. Amongst other things it contains the following folders:
+ * _dataProcessing_ - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
+ * _docs_ - the data archive documentation published via the [github pages](https://cfsotago.github.io/GREENGridData/) that you are now reading;
+ * _examples_ - R/Rmd script examples to show how the clean anonymised data can be analysed.
 
 We encourage [feedback](https://github.com/CfSOtago/GREENGridData/issues) and [contributions](https://github.com/CfSOtago/GREENGridData/pulls) but inevitably #[YMMV](https://en.wiktionary.org/wiki/YMMV).
 
