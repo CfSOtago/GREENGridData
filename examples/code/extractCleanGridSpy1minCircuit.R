@@ -20,9 +20,10 @@ rmdLibs <- c("data.table", # data munching
 GREENGridData::loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Hot Water"
-dateFrom <- "2015-04-01"
-dateTo <- "2016-03-31"
+circuitPattern <- "Hot Water" # change this to change the circuit(s) extracted
+dateFrom <- "2015-04-01" # change this to change the (inclusive) UTC date to search from
+dateTo <- "2016-03-31" # change this to change the (inclusive) UTC date to search to
+# NB: searching in whole UTC dates will produce partial days in other timezones (e.g. NZ). We hate timezones.
 
 fullFb <- 0 # switch on (1) or off (0) full feedback
 localData <- 1 # test using local (1) or Otago HCS (0) data?
