@@ -20,7 +20,7 @@ loadLibraries(rmdLibs)
 # Local parameters ----
 
 # use circuit parameter to change the circuit used (assumes you have already extracted it)
-circuit <- "Lighting"
+circuit <- "Lighting" # change this to change the circuit(s) to be analysed
 
 # change this to suit your data location - this is where extractCleanGridSpy1minCircuit.R saved your extract
 dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # Otago HCS
