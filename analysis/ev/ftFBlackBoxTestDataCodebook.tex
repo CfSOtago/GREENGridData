@@ -1,0 +1,1916 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={FlipTheFleet Test Black Box Data: Codebook},
+            pdfauthor={Ben Anderson (b.anderson@soton.ac.uk, @dataknut)},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{FlipTheFleet Test Black Box Data: Codebook}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \subtitle{Exploration of test data}
+  \author{Ben Anderson
+(\href{mailto:b.anderson@soton.ac.uk}{\nolinkurl{b.anderson@soton.ac.uk}},
+\texttt{@dataknut})}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{Last run at: 2018-06-20 13:32:39}
+
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\newpage
+
+\section{Citation}\label{citation}
+
+If you wish to use any of the material from this report please cite as:
+
+\begin{itemize}
+\tightlist
+\item
+  Anderson, B. (2018) FlipTheFleet Test Black Box Data: Codebook:
+  Exploration of test data,
+  \href{http://www.otago.ac.nz/centre-sustainability/}{Centre for
+  Sustainability}, University of Otago: Dunedin.
+\end{itemize}
+
+This work is (c) 2018 the University of Southampton.
+
+\newpage
+
+\section{About}\label{about}
+
+\subsection{Circulation}\label{circulation}
+
+Report circulation:
+
+\begin{itemize}
+\tightlist
+\item
+  Restricted to:
+  \href{https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html}{NZ
+  GREEN Grid} project partners and contractors.
+\end{itemize}
+
+\subsection{Purpose}\label{purpose}
+
+This report is intended to:
+
+\begin{itemize}
+\tightlist
+\item
+  load and test preliminary `black box' EV monitoring data provided for
+  assessment purposes by \href{http://flipthefleet.org/}{FlipTheFleet}.
+\end{itemize}
+
+\subsection{Requirements:}\label{requirements}
+
+\begin{itemize}
+\tightlist
+\item
+  test dataset stored at /Volumes/hum-csafe/Research Projects/GREEN
+  Grid/\_RAW DATA/flipTheFleet/
+\end{itemize}
+
+\subsection{History}\label{history}
+
+Generally tracked via our git.soton
+\href{https://git.soton.ac.uk/ba1e12/nzGREENGrid}{repo}:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://git.soton.ac.uk/ba1e12/nzGREENGrid/commits/master}{history}
+\item
+  \href{https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues}{issues}
+\end{itemize}
+
+Specific history of this code:
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://git.soton.ac.uk/ba1e12/nzGREENGrid/tree/master/analysis/ev}
+\end{itemize}
+
+\subsection{Support}\label{support}
+
+This work was supported by:
+
+\begin{itemize}
+\tightlist
+\item
+  The \href{https://www.otago.ac.nz/}{University of Otago};
+\item
+  The \href{https://www.southampton.ac.uk/}{University of Southampton};
+\item
+  The New Zealand \href{http://www.mbie.govt.nz/}{Ministry of Business,
+  Innovation and Employment (MBIE)} through the
+  \href{https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html}{NZ
+  GREEN Grid} project;
+\item
+  \href{http://www.energy.soton.ac.uk/tag/spatialec/}{SPATIALEC} - a
+  \href{http://ec.europa.eu/research/mariecurieactions/about-msca/actions/if/index_en.htm}{Marie
+  Skłodowska-Curie Global Fellowship} based at the University of Otago's
+  \href{http://www.otago.ac.nz/centre-sustainability/staff/otago673896.html}{Centre
+  for Sustainability} (2017-2019) \& the University of Southampton's
+  Sustainable Energy Research Group (2019-202).
+\end{itemize}
+
+We do not `support' the code but if you have a problem check the
+\href{https://git.soton.ac.uk/ba1e12/nzGREENGrid/issues}{issues} on our
+\href{https://git.soton.ac.uk/ba1e12/nzGREENGrid}{repo} and if it
+doesn't already exist, open one. We might be able to fix it :-)
+
+\section{Load data files}\label{load-data-files}
+
+\subsection{EV test data}\label{ev-test-data}
+
+In this section we load and describe the data files from
+/Volumes/hum-csafe/Research Projects/GREEN Grid/\_RAW
+DATA/flipTheFleet/EVBlackBox export 2018-06-10-233146.csv. Note that we
+remove the following variables before we do so as they are potentially
+disclosive:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{Reg\ No}
+\item
+  \texttt{Latitude}
+\item
+  \texttt{Longitude}
+\item
+  \texttt{Course\ (deg)}
+\end{itemize}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_integer(),
+##   `Reg No` = col_character(),
+##   `Date (GPS)` = col_character(),
+##   `Time (GPS)` = col_time(format = ""),
+##   Latitude = col_double(),
+##   Longitude = col_double(),
+##   Altitude = col_double(),
+##   `Speed (GPS)` = col_double(),
+##   `Speed (Speedometer)` = col_double(),
+##   `Course (deg)` = col_double(),
+##   SOC = col_double(),
+##   AHr = col_double(),
+##   `Pack volts` = col_double(),
+##   `Pack amps` = col_double(),
+##   `Pack 1 temp (C)` = col_double(),
+##   `Pack 2 temp (C)` = col_double(),
+##   `Pack 3 temp (C)` = col_double(),
+##   `Pack 4 temp (C)` = col_double(),
+##   `12V battery (amps)` = col_double(),
+##   Hx = col_double(),
+##   VIN = col_character()
+##   # ... with 16 more columns
+## )
+\end{verbatim}
+
+\begin{verbatim}
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{verbatim}
+## ftfSafeDT 
+## 
+##  140  Variables      12487  Observations
+## ---------------------------------------------------------------------------
+## Time after power on (s) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0     5845        1     3778     3908    145.0    292.6 
+##      .25      .50      .75      .90      .95 
+##    784.0   2486.0   6028.5   9269.8  11088.5 
+## 
+## lowest :    30    31    32    33    34, highest: 16530 16547 16575 16592 16636
+## ---------------------------------------------------------------------------
+## Date (GPS) 
+##        n  missing distinct 
+##    11327     1160       39 
+## 
+## lowest : 01-05-2018 01-06-2018 02-05-2018 02-06-2018 03-05-2018
+## highest: 25-05-2018 28-05-2018 29-05-2018 30-05-2018 31-05-2018
+## ---------------------------------------------------------------------------
+## Time (GPS) [secs] 
+##        n  missing distinct 
+##    11327     1160     8903 
+## 
+## lowest : 00:00:36 00:00:37 00:00:38 00:01:04 00:01:16
+## highest: 23:58:54 23:59:07 23:59:35 23:59:40 23:59:51
+## ---------------------------------------------------------------------------
+## Altitude 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12475       12      988    0.999    42.41     22.6     0.00    24.50 
+##      .25      .50      .75      .90      .95 
+##    36.00    39.80    44.20    74.36    89.00 
+## 
+## lowest : -293.5   -4.3    0.0   10.7   10.8, highest:  161.9  163.8  169.6  361.6  395.1
+## ---------------------------------------------------------------------------
+## Speed (GPS) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12475       12       57    0.436    10.35    17.97     0.00     0.00 
+##      .25      .50      .75      .90      .95 
+##     0.00     0.00     0.00    53.71    79.64 
+## 
+## lowest :   0.000   1.852   3.704   5.556   7.408
+## highest:  96.304  98.156 100.008 101.860 103.712
+## ---------------------------------------------------------------------------
+## Speed (Speedometer) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0     2094    0.475    10.43    17.85     0.00     0.00 
+##      .25      .50      .75      .90      .95 
+##     0.00     0.00     0.00    52.62    72.86 
+## 
+## lowest :   0.00   2.88   2.96   2.97   3.03, highest: 100.80 101.25 101.38 101.45 102.08
+## ---------------------------------------------------------------------------
+## GIDs 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      186        1    119.4    51.14       45       55 
+##      .25      .50      .75      .90      .95 
+##       86      124      156      168      187 
+## 
+## lowest :   0  18  19  20  21, highest: 198 199 200 201 202
+## ---------------------------------------------------------------------------
+## SOC 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0    10582        1    57.55    23.85    22.29    28.61 
+##      .25      .50      .75      .90      .95 
+##    42.41    60.00    74.56    80.14    88.81 
+## 
+## lowest :  0.0000 12.9227 13.2509 13.2620 13.2688
+## highest: 95.4935 95.5220 95.5221 95.5255 95.5286
+## ---------------------------------------------------------------------------
+## AHr 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       54    0.997    46.92    2.517    47.34    47.36 
+##      .25      .50      .75      .90      .95 
+##    47.38    47.44    47.48    47.50    47.53 
+##                                                                       
+## Value        0.0  47.2  47.4  47.6  47.8 132.0 132.2 132.4 132.6 132.8
+## Frequency    232     8 10299  1600   295     7     8    23     9     6
+## Proportion 0.019 0.001 0.825 0.128 0.024 0.001 0.001 0.002 0.001 0.000
+## ---------------------------------------------------------------------------
+## Pack volts 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      745        1    421.7    108.7    360.7    365.8 
+##      .25      .50      .75      .90      .95 
+##    373.6    382.8    387.2    390.0    393.3 
+## 
+## lowest :    0.000  269.856  342.144  342.816  343.200
+## highest: 5612.448 5698.464 5735.904 5759.712 5783.520
+## ---------------------------------------------------------------------------
+## Pack amps 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0     5914        1   -5.439    8.455  -16.609   -9.750 
+##      .25      .50      .75      .90      .95 
+##   -8.906   -8.150   -0.877    2.721   13.639 
+## 
+## lowest : -32.754 -32.753 -32.717 -32.679 -32.662
+## highest:  32.642  32.722  32.725  32.745  32.747
+## ---------------------------------------------------------------------------
+## max_cp (mV) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      623        1     4904     1942     3783     3825 
+##      .25      .50      .75      .90      .95 
+##     3906     3997     4042     4072     4106 
+## 
+## lowest :  3589  3597  3599  3609  3612, highest: 65038 65039 65040 65294 65295
+## ---------------------------------------------------------------------------
+## min_cp (mV) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      505        1     3917    167.2     3740     3799 
+##      .25      .50      .75      .90      .95 
+##     3874     3975     4024     4047     4075 
+## 
+## lowest :    0   14   15   16  271, highest: 4099 4100 4101 4102 4103
+## ---------------------------------------------------------------------------
+## avg_cp (mV) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      744        1     4441     1059     3772     3815 
+##      .25      .50      .75      .90      .95 
+##     3896     3988     4033     4064     4098 
+## 
+## lowest :  2811  3564  3571  3575  3578, highest: 58463 59359 59749 59997 60245
+## ---------------------------------------------------------------------------
+## cp_diff (mV) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      289    0.993    987.9     1907       13       14 
+##      .25      .50      .75      .90      .95 
+##       16       18       23       31       39 
+## 
+## lowest :     8     9    10    11    12, highest: 65024 65025 65280 65281 65295
+## ---------------------------------------------------------------------------
+## Pack 1 temp (C) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      189        1     19.9    3.776     13.3     15.5 
+##      .25      .50      .75      .90      .95 
+##     17.6     20.2     21.8     24.5     25.4 
+## 
+## lowest :  8.7  8.9  9.1  9.2  9.5, highest: 28.0 28.1 28.2 28.3 28.4
+## ---------------------------------------------------------------------------
+## Pack 2 temp (C) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12319      168      195        1    19.03    3.803     12.5     14.6 
+##      .25      .50      .75      .90      .95 
+##     16.8     19.4     21.1     23.6     24.5 
+## 
+## lowest :  7.6  7.8  8.0  8.2  8.3, highest: 27.2 27.3 27.4 27.6 27.7
+## ---------------------------------------------------------------------------
+## Pack 3 temp (C) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12296      191      181        1    18.61    3.635     12.3     14.5 
+##      .25      .50      .75      .90      .95 
+##     16.4     19.0     20.7     22.8     23.7 
+## 
+## lowest :  7.7  8.0  8.1  8.3  8.5, highest: 25.8 25.9 26.0 26.1 26.2
+## ---------------------------------------------------------------------------
+## Pack 4 temp (C) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12296      191      171        1     17.8    3.568    11.38    13.80 
+##      .25      .50      .75      .90      .95 
+##    15.50    18.20    20.00    21.90    22.60 
+## 
+## lowest :  7.6  7.7  7.8  7.9  8.1, highest: 24.7 24.8 24.9 25.0 25.1
+## ---------------------------------------------------------------------------
+## cp_1 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      732        1     3175     1505    -4008     3633 
+##      .25      .50      .75      .90      .95 
+##     3848     3973     4032     4055     4078 
+##                                                                       
+## Value      -4100 -4000 -3900 -3800 -3700 -3600  3500  3600  3700  3800
+## Frequency    275   580   211   124    28     3     1    25   366  1515
+## Proportion 0.022 0.047 0.017 0.010 0.002 0.000 0.000 0.002 0.030 0.123
+##                                   
+## Value       3900  4000  4100  4300
+## Frequency   2340  5317  1563     1
+## Proportion 0.189 0.431 0.127 0.000
+## ---------------------------------------------------------------------------
+## cp_2 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      638        1     3585    822.4     3652     3777 
+##      .25      .50      .75      .90      .95 
+##     3877     3984     4034     4061     4083 
+##                                         
+## Value      -4000 -3500  3500  4000 25000
+## Frequency    564    24   432 11328     1
+## Proportion 0.046 0.002 0.035 0.917 0.000
+## ---------------------------------------------------------------------------
+## cp_3 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      745        1     3387     2370    -4010    -3830 
+##      .25      .50      .75      .90      .95 
+##     3841     3971     4034     4061     4089 
+##                                              
+## Value      -51000  -4000      0   4000  51000
+## Frequency       1   1411      2  10846     89
+## Proportion  0.000  0.114  0.000  0.878  0.007
+## ---------------------------------------------------------------------------
+## cp_4 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      698        1     3211     1445    -3993     3645 
+##      .25      .50      .75      .90      .95 
+##     3846     3974     4032     4057     4080 
+##                                                                       
+## Value      -4100 -4000 -3900 -3800 -3700 -3600  -500     0   500  3600
+## Frequency    179   624   195   112    12     1     1     2    89    24
+## Proportion 0.014 0.051 0.016 0.009 0.001 0.000 0.000 0.000 0.007 0.002
+##                                         
+## Value       3700  3800  3900  4000  4100
+## Frequency    376  1548  2342  5221  1623
+## Proportion 0.030 0.125 0.190 0.423 0.131
+## ---------------------------------------------------------------------------
+## cp_5 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      821        1     3226     2282    -4016    -3855 
+##      .25      .50      .75      .90      .95 
+##     3834     3965     4028     4051     4075 
+## 
+## lowest : -65295 -63247 -57615 -57102 -55055, highest:  60430  60686  60943  62991  65294
+## ---------------------------------------------------------------------------
+## cp_6 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      748        1     3657     1636    -3882     3749 
+##      .25      .50      .75      .90      .95 
+##     3864     3978     4029     4052     4079 
+## 
+## lowest : -65295 -63503 -57615 -57358 -54031, highest:  61199  63503  64527  64783  65295
+## ---------------------------------------------------------------------------
+## cp_7 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      895        1     2403     3355    -4037    -4005 
+##      .25      .50      .75      .90      .95 
+##     3743     3931     4023     4050     4073 
+## 
+## lowest : -65039 -57871 -57614 -55567 -49423, highest:  60942  61198  61455  63503  64783
+## ---------------------------------------------------------------------------
+## cp_8 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      794        1     3472     2000    -3967     3664 
+##      .25      .50      .75      .90      .95 
+##     3846     3974     4030     4053     4085 
+## 
+## lowest : -41487  -4108  -4104  -4103  -4099, highest:  61198  61455  63759  64782  65039
+## ---------------------------------------------------------------------------
+## cp_9 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      775        1     3612     1667    -3901     3745 
+##      .25      .50      .75      .90      .95 
+##     3862     3978     4030     4053     4084 
+## 
+## lowest : -65039 -63246 -61455 -56591 -55567, highest:  59918  60175  62223  63246  63503
+## ---------------------------------------------------------------------------
+## cp_10 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      676        1     3980     1149     3718     3792 
+##      .25      .50      .75      .90      .95 
+##     3884     3987     4034     4061     4093 
+## 
+## lowest : -64784 -56591 -51983 -24847  -4112, highest:  60175  61199  63502  63759  64526
+## ---------------------------------------------------------------------------
+## cp_11 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      800        1     3659     1737    -3900     3744 
+##      .25      .50      .75      .90      .95 
+##     3863     3982     4034     4057     4088 
+## 
+## lowest : -64014 -60943 -57359 -56335 -56078, highest:  60943  61967  64014  64271  65294
+## ---------------------------------------------------------------------------
+## cp_12 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12349      138      683        1     4026     1187     3726     3797 
+##      .25      .50      .75      .90      .95 
+##     3887     3983     4030     4057     4090 
+## 
+## lowest : -65039 -56847  -4108  -4107  -4104, highest:  60175  62735  63502  63759  64782
+## ---------------------------------------------------------------------------
+## cp_13 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      794        1     3632     1776    -3912     3736 
+##      .25      .50      .75      .90      .95 
+##     3859     3974     4029     4052     4083 
+## 
+## lowest : -63503 -61455 -60431 -55823 -55310, highest:  62479  63502  63759  64526  65040
+## ---------------------------------------------------------------------------
+## cp_14 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      761        1     3619     1750    -3915     3737 
+##      .25      .50      .75      .90      .95 
+##     3859     3976     4030     4056     4083 
+## 
+## lowest : -64783 -61199 -58895 -58638 -55311, highest:  59662  63503  64526  64527  64783
+## ---------------------------------------------------------------------------
+## cp_15 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      835        1     3229     2366    -4016    -3859 
+##      .25      .50      .75      .90      .95 
+##     3833     3965     4025     4048     4075 
+## 
+## lowest : -64527 -62479 -61455 -56334 -55567, highest:  59918  60942  62223  64526  64783
+## ---------------------------------------------------------------------------
+## cp_16 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      760        1     3572     1920    -3983     3706 
+##      .25      .50      .75      .90      .95 
+##     3848     3970     4025     4052     4080 
+## 
+## lowest : -64782 -61455 -44047  -4107  -4104, highest:  61454  62479  63758  63759  64783
+## ---------------------------------------------------------------------------
+## cp_17 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      728        1     3872     1364     3679     3782 
+##      .25      .50      .75      .90      .95 
+##     3878     3983     4033     4057     4089 
+## 
+## lowest : -63246 -54031 -50703 -47375 -43791, highest:  62223  63246  63503  64526  65039
+## ---------------------------------------------------------------------------
+## cp_18 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      710        1     3948     1270     3708     3786 
+##      .25      .50      .75      .90      .95 
+##     3882     3982     4032     4056     4089 
+## 
+## lowest : -50703 -47119 -43791 -11791  -4112, highest:  62223  63246  63503  64526  64783
+## ---------------------------------------------------------------------------
+## cp_19 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      730        1     3866     1371     3673     3782 
+##      .25      .50      .75      .90      .95 
+##     3878     3986     4036     4061     4092 
+## 
+## lowest : -64526 -54287 -50959 -49679 -46351, highest:  61199  63502  63759  64526  65039
+## ---------------------------------------------------------------------------
+## cp_20 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      704        1     3947     1277     3701     3785 
+##      .25      .50      .75      .90      .95 
+##     3881     3985     4034     4061     4093 
+## 
+## lowest : -46095 -42767 -24079 -13327  -4112, highest:  62478  62479  63758  63759  64783
+## ---------------------------------------------------------------------------
+## cp_21 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      660        1     4124      985     3750     3809 
+##      .25      .50      .75      .90      .95 
+##     3891     3989     4035     4061     4094 
+## 
+## lowest : -49423  -4108  -4103  -4099  -4098, highest:  62479  63246  64526  64783  65039
+## ---------------------------------------------------------------------------
+## cp_22 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      639        1     4119     1010     3750     3809 
+##      .25      .50      .75      .90      .95 
+##     3891     3988     4036     4061     4093 
+## 
+## lowest : -49423  -4103  -4102  -4099  -4098, highest:  62223  63246  63503  64526  64784
+## ---------------------------------------------------------------------------
+## cp_23 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      664        1     4117     1014     3743     3805 
+##      .25      .50      .75      .90      .95 
+##     3887     3989     4039     4065     4097 
+## 
+## lowest : -51471  -4107  -4103  -4098  -4097, highest:  63247  63503  64014  64271  65294
+## ---------------------------------------------------------------------------
+## cp_24 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      652        1     4070     1064     3738     3802 
+##      .25      .50      .75      .90      .95 
+##     3886     3988     4036     4062     4095 
+## 
+## lowest : -64527 -55567 -51983 -26127  -4112, highest:  60942  61199  63759  64526  64783
+## ---------------------------------------------------------------------------
+## cp_25 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      693        1     4082     1082     3735     3799 
+##      .25      .50      .75      .90      .95 
+##     3887     3985     4034     4058     4091 
+## 
+## lowest : -4108 -4103 -4098 -4095 -4094, highest: 61455 63759 64015 64526 64783
+## ---------------------------------------------------------------------------
+## cp_26 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      683        1     4025     1166     3723     3794 
+##      .25      .50      .75      .90      .95 
+##     3883     3984     4031     4057     4090 
+## 
+## lowest : -56591 -27151  -4108  -4104  -4103, highest:  63759  64526  64527  64783  64784
+## ---------------------------------------------------------------------------
+## cp_27 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      712        1     4019     1119     3708     3787 
+##      .25      .50      .75      .90      .95 
+##     3874     3980     4030     4057     4088 
+## 
+## lowest : -56591 -45071 -29711 -27407  -4103, highest:  60942  62479  63503  64526  65039
+## ---------------------------------------------------------------------------
+## cp_28 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      686        1     4074     1086     3714     3792 
+##      .25      .50      .75      .90      .95 
+##     3875     3981     4029     4057     4089 
+## 
+## lowest : -4103 -4099 -4098 -4094 -4093, highest: 61198 61455 63759 64782 65039
+## ---------------------------------------------------------------------------
+## cp_29 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      775        1     3785     1601    -3847     3761 
+##      .25      .50      .75      .90      .95 
+##     3869     3980     4030     4057     4089 
+## 
+## lowest : -64526 -48398  -4104  -4099  -4095, highest:  63502  64015  64526  64783  65039
+## ---------------------------------------------------------------------------
+## cp_30 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      678        1     4034     1141     3728     3796 
+##      .25      .50      .75      .90      .95 
+##     3883     3981     4030     4057     4089 
+## 
+## lowest : -64782 -47630  -4103  -4099  -4098, highest:  60175  62735  63502  63759  65039
+## ---------------------------------------------------------------------------
+## cp_31 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      716        1     4056     1201     3719     3794 
+##      .25      .50      .75      .90      .95 
+##     3882     3984     4031     4058     4090 
+## 
+## lowest : -46094  -4107  -4103  -4099  -4092, highest:  62222  62735  63502  63759  65039
+## ---------------------------------------------------------------------------
+## cp_32 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      691        1     4042     1178     3722     3793 
+##      .25      .50      .75      .90      .95 
+##     3882     3983     4030     4057     4089 
+## 
+## lowest : -49679 -46350  -4107  -4104  -4103, highest:  60175  62478  62479  63758  63759
+## ---------------------------------------------------------------------------
+## cp_33 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      685        1     4105     1118     3739     3798 
+##      .25      .50      .75      .90      .95 
+##     3883     3980     4029     4053     4089 
+## 
+## lowest : -63502 -50959 -49679 -21775  -8719, highest:  62735  62991  63502  63759  65295
+## ---------------------------------------------------------------------------
+## cp_34 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      677        1     4083     1101     3731     3797 
+##      .25      .50      .75      .90      .95 
+##     3881     3982     4029     4056     4088 
+## 
+## lowest : -63502 -59918 -50959 -43791 -21519, highest:  61455  62735  63502  63759  65039
+## ---------------------------------------------------------------------------
+## cp_35 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      706        1     4287     1512     3734     3795 
+##      .25      .50      .75      .90      .95 
+##     3882     3979     4025     4053     4090 
+## 
+## lowest : -64526 -60942 -51983 -45071 -21519, highest:  62735  63502  63759  64526  65039
+## ---------------------------------------------------------------------------
+## cp_36 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      759        1     4049     1970    -3808     3768 
+##      .25      .50      .75      .90      .95 
+##     3869     3979     4030     4057     4094 
+## 
+## lowest : -62478 -49679 -22799 -12303  -4104, highest:  62990  63758  63759  64782  64783
+## ---------------------------------------------------------------------------
+## cp_37 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      873        1     3566     2670    -4002    -3743 
+##      .25      .50      .75      .90      .95 
+##     3841     3969     4030     4056     4084 
+## 
+## lowest : -63502 -62479 -59151 -58127 -56847, highest:  63502  64014  64015  64526  65039
+## ---------------------------------------------------------------------------
+## cp_38 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      691        1     4265     1576     3729     3795 
+##      .25      .50      .75      .90      .95 
+##     3883     3979     4025     4053     4088 
+## 
+## lowest : -50703 -36367 -23567 -12047  -5903, highest:  61966  63246  63503  64526  64783
+## ---------------------------------------------------------------------------
+## cp_39 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      731        1     4238     1566     3727     3792 
+##      .25      .50      .75      .90      .95 
+##     3883     3983     4029     4057     4094 
+## 
+## lowest : -63502 -49679 -38927 -35599 -24079, highest:  62222  62479  63502  64015  65039
+## ---------------------------------------------------------------------------
+## cp_40 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      699        1     4268     1570     3730     3794 
+##      .25      .50      .75      .90      .95 
+##     3884     3980     4026     4053     4090 
+## 
+## lowest : -51983 -50959 -48655 -13583  -7439, highest:  62990  63502  63759  64782  65039
+## ---------------------------------------------------------------------------
+## cp_41 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      786        1     3977     2037    -3843     3760 
+##      .25      .50      .75      .90      .95 
+##     3869     3980     4030     4057     4094 
+## 
+## lowest : -64526 -61454 -54287 -53007 -50959, highest:  62223  62479  63502  64526  65039
+## ---------------------------------------------------------------------------
+## cp_42 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      769        1     3963     2075    -3861     3755 
+##      .25      .50      .75      .90      .95 
+##     3867     3980     4030     4057     4094 
+## 
+## lowest : -64014 -63502 -52239 -50959 -47375, highest:  61454  62734  63502  63503  64783
+## ---------------------------------------------------------------------------
+## cp_43 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      743        1     4228     1638     3717     3793 
+##      .25      .50      .75      .90      .95 
+##     3883     3987     4034     4062     4094 
+## 
+## lowest : -64782 -64270 -55823 -53519 -50703, highest:  62735  63758  64015  64782  65039
+## ---------------------------------------------------------------------------
+## cp_44 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      778        1     3972     2061    -3851     3758 
+##      .25      .50      .75      .90      .95 
+##     3866     3984     4034     4062     4095 
+## 
+## lowest : -64526 -62734 -52239 -51215 -47631, highest:  61711  62734  62735  64014  64016
+## ---------------------------------------------------------------------------
+## cp_45 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      781        1     3988     1944    -3705     3773 
+##      .25      .50      .75      .90      .95 
+##     3873     3983     4034     4058     4093 
+## 
+## lowest : -62991 -55823 -55822 -53519 -52239, highest:  62734  62990  63502  64015  64782
+## ---------------------------------------------------------------------------
+## cp_46 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      715        1     4138     1851     3678     3779 
+##      .25      .50      .75      .90      .95 
+##     3878     3984     4030     4057     4095 
+## 
+## lowest : -43791 -32015  -4109  -4108  -4104, highest:  63502  63759  64782  64783  65039
+## ---------------------------------------------------------------------------
+## cp_47 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      656        1     4385     1396     3750     3809 
+##      .25      .50      .75      .90      .95 
+##     3889     3988     4034     4061     4094 
+## 
+## lowest : -43791 -32015  -4108  -4103  -4099, highest:  62478  62479  63502  64526  65039
+## ---------------------------------------------------------------------------
+## cp_48 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      634        1     4392     1402     3750     3809 
+##      .25      .50      .75      .90      .95 
+##     3890     3989     4036     4061     4094 
+## 
+## lowest : -45071 -33295  -4107  -4103  -4102, highest:  63502  63759  64782  64783  65039
+## ---------------------------------------------------------------------------
+## cp_49 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      730        1     4034     1863     3683     3783 
+##      .25      .50      .75      .90      .95 
+##     3886     3982     4033     4056     4089 
+## 
+## lowest : -65040 -61455 -55823 -55310 -53263, highest:  63758  64014  64015  64526  65039
+## ---------------------------------------------------------------------------
+## cp_50 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      710        1     4033     1845     3684     3779 
+##      .25      .50      .75      .90      .95 
+##     3883     3980     4025     4052     4087 
+## 
+## lowest : -63759 -56847 -56846 -54543 -53263, highest:  63759  64014  64782  64783  65039
+## ---------------------------------------------------------------------------
+## cp_51 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      726        1     4046     1834     3693     3780 
+##      .25      .50      .75      .90      .95 
+##     3883     3979     4026     4053     4089 
+## 
+## lowest : -62735 -56847 -56590 -54543 -53263, highest:  64014  64015  64526  64527  65039
+## ---------------------------------------------------------------------------
+## cp_52 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      714        1     4038     1839     3686     3779 
+##      .25      .50      .75      .90      .95 
+##     3883     3979     4026     4053     4088 
+## 
+## lowest : -63759 -57871 -57614 -54287 -53007, highest:  63502  63759  64015  64526  64783
+## ---------------------------------------------------------------------------
+## cp_53 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      740        1     3937     2017    -3822     3773 
+##      .25      .50      .75      .90      .95 
+##     3882     3983     4034     4057     4093 
+## 
+## lowest : -61199 -56591 -56078 -54031 -53007, highest:  62223  63246  63503  64526  64783
+## ---------------------------------------------------------------------------
+## cp_54 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      742        1     3922     1998    -3823     3772 
+##      .25      .50      .75      .90      .95 
+##     3878     3981     4030     4057     4094 
+## 
+## lowest : -64783 -61455 -55567 -55566 -53263, highest:  62478  62479  63758  63759  64782
+## ---------------------------------------------------------------------------
+## cp_55 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      738        1     3929     1985    -3813     3773 
+##      .25      .50      .75      .90      .95 
+##     3881     3979     4030     4057     4093 
+## 
+## lowest : -65039 -61455 -55567 -55566 -53263, highest:  62478  62735  63502  63759  64782
+## ---------------------------------------------------------------------------
+## cp_56 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      742        1     3924     2031    -3833     3770 
+##      .25      .50      .75      .90      .95 
+##     3879     3980     4029     4057     4090 
+## 
+## lowest : -64784 -61199 -55566 -55311 -54543, highest:  61454  62479  62734  63503  64783
+## ---------------------------------------------------------------------------
+## cp_57 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      770        1     3891     2072    -3865     3765 
+##      .25      .50      .75      .90      .95 
+##     3878     3978     4029     4055     4089 
+## 
+## lowest : -63759 -57871 -56334 -55567 -54287, highest:  62479  63502  63759  64526  64783
+## ---------------------------------------------------------------------------
+## cp_58 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12348      139      734        1     3909     2047    -3850     3769 
+##      .25      .50      .75      .90      .95 
+##     3878     3978     4029     4057     4089 
+## 
+## lowest : -63759 -56847 -56846 -54543 -53263, highest:  62735  63502  63759  64782  65039
+## ---------------------------------------------------------------------------
+## cp_59 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      741        1     3908     2088    -3862     3766 
+##      .25      .50      .75      .90      .95 
+##     3877     3982     4033     4056     4093 
+## 
+## lowest : -63759 -57871 -56591 -56334 -54287, highest:  62479  63502  63759  64526  64783
+## ---------------------------------------------------------------------------
+## cp_60 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      799        1     3674     2503    -3969     3703 
+##      .25      .50      .75      .90      .95 
+##     3856     3974     4030     4057     4089 
+## 
+## lowest : -62479 -57871 -56591 -55566 -54287, highest:  62479  63758  63759  64782  64783
+## ---------------------------------------------------------------------------
+## cp_61 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      754        1     3895     2129    -3886     3766 
+##      .25      .50      .75      .90      .95 
+##     3877     3982     4033     4057     4092 
+## 
+## lowest : -62479 -56591 -56334 -54287 -53007, highest:  63502  63759  64526  64782  64783
+## ---------------------------------------------------------------------------
+## cp_62 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      745        1     3870     2108    -3882     3764 
+##      .25      .50      .75      .90      .95 
+##     3874     3976     4025     4052     4089 
+## 
+## lowest : -62479 -56591 -56334 -54287 -53007, highest:  63502  63759  64526  64527  64783
+## ---------------------------------------------------------------------------
+## cp_63 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      749        1     3948     2261    -3883     3763 
+##      .25      .50      .75      .90      .95 
+##     3874     3975     4025     4053     4089 
+## 
+## lowest : -65039 -62223 -57615 -57358 -55311, highest:  62223  63502  63503  64526  64783
+## ---------------------------------------------------------------------------
+## cp_64 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      743        1     3916     2261    -3883     3761 
+##      .25      .50      .75      .90      .95 
+##     3874     3975     4025     4053     4088 
+## 
+## lowest : -64015 -62735 -56847 -56846 -54543, highest:  63502  63758  63759  64783  65039
+## ---------------------------------------------------------------------------
+## cp_65 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      636        1     4408     1537     3761     3810 
+##      .25      .50      .75      .90      .95 
+##     3897     3988     4032     4062     4098 
+## 
+## lowest : -62223 -51983 -51726 -45839 -41231, highest:  63246  63502  64526  64783  65039
+## ---------------------------------------------------------------------------
+## cp_66 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      738        1     4022     2138    -3772     3776 
+##      .25      .50      .75      .90      .95 
+##     3883     3984     4031     4057     4095 
+## 
+## lowest : -65039 -64783 -61455 -55567 -55566, highest:  62479  63758  63759  64782  65038
+## ---------------------------------------------------------------------------
+## cp_67 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      637        1     4434     1588     3760     3809 
+##      .25      .50      .75      .90      .95 
+##     3897     3988     4034     4061     4099 
+## 
+## lowest : -61455 -49935 -49934 -42767 -14863, highest:  63759  64015  64782  65038  65039
+## ---------------------------------------------------------------------------
+## cp_68 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      638        1     4446     1587     3760     3810 
+##      .25      .50      .75      .90      .95 
+##     3897     3985     4034     4061     4098 
+## 
+## lowest : -61199 -51214 -45071 -15119  -4108, highest:  63504  63758  63760  64782  64783
+## ---------------------------------------------------------------------------
+## cp_69 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      660        1     4427     1628     3753     3808 
+##      .25      .50      .75      .90      .95 
+##     3892     3984     4033     4061     4094 
+## 
+## lowest : -57871 -51215 -47375 -46095 -28687, highest:  63502  63758  63759  64782  65040
+## ---------------------------------------------------------------------------
+## cp_70 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      754        1     4031     2182    -3800     3774 
+##      .25      .50      .75      .90      .95 
+##     3882     3978     4028     4056     4093 
+## 
+## lowest : -65040 -64016 -62736 -55567 -55566, highest:  63502  63758  64782  64783  65039
+## ---------------------------------------------------------------------------
+## cp_71 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      749        1     4032     2172    -3808     3772 
+##      .25      .50      .75      .90      .95 
+##     3879     3978     4028     4056     4090 
+## 
+## lowest : -57871 -57614 -55567 -54287 -50959, highest:  62479  63502  63758  64526  64783
+## ---------------------------------------------------------------------------
+## cp_72 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      754        1     4024     2183    -3806     3771 
+##      .25      .50      .75      .90      .95 
+##     3878     3979     4027     4053     4090 
+## 
+## lowest : -65040 -62479 -57871 -56591 -56590, highest:  62479  63758  64014  64782  64783
+## ---------------------------------------------------------------------------
+## cp_73 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      778        1     3986     2209    -3833     3763 
+##      .25      .50      .75      .90      .95 
+##     3872     3975     4026     4049     4087 
+## 
+## lowest : -64783 -57615 -57358 -55311 -53007, highest:  63246  63503  64526  64527  64783
+## ---------------------------------------------------------------------------
+## cp_74 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      757        1     3983     2213    -3829     3764 
+##      .25      .50      .75      .90      .95 
+##     3871     3975     4027     4050     4086 
+## 
+## lowest : -64784 -63759 -61199 -56591 -55311, highest:  63246  63503  64526  64782  64783
+## ---------------------------------------------------------------------------
+## cp_75 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      759        1     3997     2206    -3829     3763 
+##      .25      .50      .75      .90      .95 
+##     3872     3977     4027     4055     4088 
+## 
+## lowest : -65039 -62223 -56591 -56078 -53007, highest:  62223  63246  63502  64526  64783
+## ---------------------------------------------------------------------------
+## cp_76 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      762        1     3979     2226    -3833     3764 
+##      .25      .50      .75      .90      .95 
+##     3871     3976     4031     4054     4087 
+## 
+## lowest : -65039 -64015 -62735 -55567 -55566, highest:  61455  63502  63758  63759  64782
+## ---------------------------------------------------------------------------
+## cp_77 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      703        1     4345     1739     3738     3800 
+##      .25      .50      .75      .90      .95 
+##     3890     3983     4033     4064     4094 
+## 
+## lowest : -64015 -50190 -48655 -42767  -4111, highest:  62223  62478  63758  64015  65038
+## ---------------------------------------------------------------------------
+## cp_78 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      687        1     4362     1733     3739     3801 
+##      .25      .50      .75      .90      .95 
+##     3892     3986     4036     4064     4097 
+## 
+## lowest : -50190 -47887 -41999  -4115  -4110, highest:  62734  62991  63247  64271  65294
+## ---------------------------------------------------------------------------
+## cp_79 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      777        1     3932     2287    -3875     3761 
+##      .25      .50      .75      .90      .95 
+##     3875     3982     4036     4063     4096 
+## 
+## lowest : -64272 -63503 -61967 -55055 -54542, highest:  62734  63247  64014  64271  65294
+## ---------------------------------------------------------------------------
+## cp_80 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      777        1     3975     2276    -3862     3764 
+##      .25      .50      .75      .90      .95 
+##     3875     3981     4033     4059     4096 
+## 
+## lowest : -62224 -60687 -54799 -54542 -52495, highest:  64014  64015  64271  64527  65295
+## ---------------------------------------------------------------------------
+## cp_81 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      730        1     4110     2069     3662     3780 
+##      .25      .50      .75      .90      .95 
+##     3882     3983     4031     4057     4094 
+## 
+## lowest : -63247 -58639 -57359 -56846 -55055, highest:  62734  63247  64014  64272  65294
+## ---------------------------------------------------------------------------
+## cp_82 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      731        1     4118     2072     3660     3782 
+##      .25      .50      .75      .90      .95 
+##     3883     3984     4034     4061     4097 
+## 
+## lowest : -64271 -58639 -57870 -56079 -55055, highest:  63246  63247  64014  64272  65294
+## ---------------------------------------------------------------------------
+## cp_83 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      735        1     4108     2094     3655     3779 
+##      .25      .50      .75      .90      .95 
+##     3882     3983     4030     4057     4093 
+## 
+## lowest : -64527 -63247 -57103 -56590 -54799, highest:  62478  63247  63502  64782  64783
+## ---------------------------------------------------------------------------
+## cp_84 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      723        1     4121     2041     3677     3784 
+##      .25      .50      .75      .90      .95 
+##     3884     3984     4034     4062     4095 
+## 
+## lowest : -64527 -62991 -57359 -56846 -54799, highest:  62991  64014  64271  65294  65295
+## ---------------------------------------------------------------------------
+## cp_85 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      727        1     4090     2096     3580     3778 
+##      .25      .50      .75      .90      .95 
+##     3880     3977     4028     4054     4087 
+## 
+## lowest : -65039 -63759 -57871 -56591 -56334, highest:  63502  63758  63759  64527  64784
+## ---------------------------------------------------------------------------
+## cp_86 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      770        1     3954     2522    -3921     3728 
+##      .25      .50      .75      .90      .95 
+##     3864     3976     4033     4060     4089 
+## 
+## lowest : -7183 -4106 -4102 -4101 -4097, highest: 63502 63503 64526 64783 65039
+## ---------------------------------------------------------------------------
+## cp_87 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      619        1     4502     1551     3761     3810 
+##      .25      .50      .75      .90      .95 
+##     3894     3982     4032     4059     4091 
+## 
+## lowest : -8463 -4105 -4102 -4097 -4092, highest: 63758 63759 64526 64783 65039
+## ---------------------------------------------------------------------------
+## cp_88 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      791        1     3882     2485    -3912     3741 
+##      .25      .50      .75      .90      .95 
+##     3866     3977     4031     4059     4091 
+## 
+## lowest : -65295 -63759 -56847 -56846 -55567, highest:  62735  63502  63758  64782  65039
+## ---------------------------------------------------------------------------
+## cp_89 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      761        1     4040     2161    -3794     3776 
+##      .25      .50      .75      .90      .95 
+##     3884     3981     4032     4059     4092 
+## 
+## lowest : -64272 -62223 -60687 -59406 -54542, highest:  62991  64014  64271  65294  65295
+## ---------------------------------------------------------------------------
+## cp_90 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      734        1     4061     2184    -3799     3777 
+##      .25      .50      .75      .90      .95 
+##     3882     3982     4033     4056     4093 
+## 
+## lowest : -63503 -63247 -60430 -58639 -58126, highest:  62223  62734  64014  64527  65038
+## ---------------------------------------------------------------------------
+## cp_91 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      749        1     4050     2164    -3782     3776 
+##      .25      .50      .75      .90      .95 
+##     3883     3981     4032     4059     4093 
+## 
+## lowest : -63503 -61967 -59150 -57359 -56846, highest:  63246  63247  64014  64271  65294
+## ---------------------------------------------------------------------------
+## cp_92 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      635        1     4474     1648     3761     3810 
+##      .25      .50      .75      .90      .95 
+##     3896     3985     4032     4062     4098 
+## 
+## lowest : -60430 -51471 -32527 -12559  -4104, highest:  62734  64271  64272  65294  65295
+## ---------------------------------------------------------------------------
+## cp_93 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      734        1     4190     1991     3709     3787 
+##      .25      .50      .75      .90      .95 
+##     3886     3980     4028     4056     4093 
+## 
+## lowest : -63247 -62991 -57359 -56846 -54799, highest:  62991  64270  64271  65038  65039
+## ---------------------------------------------------------------------------
+## cp_94 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      718        1     4207     2019     3709     3787 
+##      .25      .50      .75      .90      .95 
+##     3886     3982     4030     4056     4094 
+## 
+## lowest : -65039 -62223 -57615 -56591 -56078, highest:  62223  63503  64526  64782  64783
+## ---------------------------------------------------------------------------
+## cp_95 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      722        1     4219     2023     3708     3786 
+##      .25      .50      .75      .90      .95 
+##     3886     3984     4032     4059     4094 
+## 
+## lowest : -63248 -61967 -56079 -55822 -53775, highest:  64014  64270  64271  65294  65295
+## ---------------------------------------------------------------------------
+## cp_96 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12347      140      764        1     4156     2319    -3788     3762 
+##      .25      .50      .75      .90      .95 
+##     3869     3979     4034     4064     4087 
+## 
+## lowest : -4066 -4061 -4059 -4055 -4053, highest: 62735 63502 63759 64782 65038
+## ---------------------------------------------------------------------------
+## 12V battery (amps) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      125    0.984    1.622    1.963   -1.586   -1.586 
+##      .25      .50      .75      .90      .95 
+##    1.113    1.359    2.094    3.078    3.812 
+## 
+## lowest : -10.910156  -7.718750  -7.226562  -6.984375  -6.492188
+## highest:  29.085938  29.574219  29.820312  39.882812  40.617188
+## ---------------------------------------------------------------------------
+## Hx 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       94    0.996    50.78    4.455    50.33    50.37 
+##      .25      .50      .75      .90      .95 
+##    50.39    50.49    50.53    50.60    50.62 
+## 
+## lowest :   0.00000  10.49805  12.99805  20.49805  22.99805
+## highest: 605.49805 610.49805 615.49805 620.49805 625.49805
+## ---------------------------------------------------------------------------
+## VIN 
+##        n  missing distinct 
+##    12324      163        2 
+##                                             
+## Value            ZE0-003619 ZE0-003619003619
+## Frequency             12323                1
+## Proportion                1                0
+## ---------------------------------------------------------------------------
+## 12V battery (volts) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       37    0.468    12.83   0.5522    12.08    12.24 
+##      .25      .50      .75      .90      .95 
+##    12.96    12.96    12.96    12.96    14.32 
+## 
+## lowest :  0.00 11.68 11.76 11.84 11.92, highest: 14.32 14.40 14.48 14.64 14.72
+## ---------------------------------------------------------------------------
+## 12V battery (dashboard) 
+##        n  missing distinct     Info     Mean      Gmd 
+##    12487        0        1        0        0        0 
+##                 
+## Value          0
+## Frequency  12487
+## Proportion     1
+## ---------------------------------------------------------------------------
+## ACC (V) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      258    0.992    12.74    1.122    11.86    12.04 
+##      .25      .50      .75      .90      .95 
+##    12.82    12.85    12.87    12.91    14.16 
+##                                                                       
+## Value        0.0  11.5  12.0  12.5  13.0  13.5  14.0  14.5  16.0  31.5
+## Frequency    232   182  1245    38 10021    25   424   280     1     1
+## Proportion 0.019 0.015 0.100 0.003 0.803 0.002 0.034 0.022 0.000 0.000
+##                                         
+## Value       34.0  35.0  60.0  63.0  64.0
+## Frequency      1     1     1     1    34
+## Proportion 0.000 0.000 0.000 0.000 0.003
+## ---------------------------------------------------------------------------
+## ODO 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0     1684    0.594    14018    20805        0        0 
+##      .25      .50      .75      .90      .95 
+##        0        0    53114    54291    54577 
+##                                               
+## Value          0 53000 53500 54000 54500 55000
+## Frequency   9247   346   772   833  1045   244
+## Proportion 0.741 0.028 0.062 0.067 0.084 0.020
+## ---------------------------------------------------------------------------
+## SOH 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       39    0.996     71.5    1.722    72.17    72.20 
+##      .25      .50      .75      .90      .95 
+##    72.22    72.31    72.38    72.41    72.45 
+##                                               
+## Value        0.0  72.0  72.2  72.4  72.6  72.8
+## Frequency    141     8  5376  6612    55   295
+## Proportion 0.011 0.001 0.431 0.530 0.004 0.024
+## ---------------------------------------------------------------------------
+## SOH (version 2) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       61    0.997    68.94    6.562    57.92    72.17 
+##      .25      .50      .75      .90      .95 
+##    72.22    72.31    72.38    72.44    72.53 
+##                                                           
+## Value        0.0  51.6  51.8  72.0  72.2  72.4  72.6  72.8
+## Frequency    568    22    35     6  4966  6217   378   295
+## Proportion 0.045 0.002 0.003 0.000 0.398 0.498 0.030 0.024
+## ---------------------------------------------------------------------------
+## ambient_temp_1 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       20     0.99    13.03    4.273        6        7 
+##      .25      .50      .75      .90      .95 
+##       11       14       16       17       18 
+##                                                                       
+## Value          0     4     5     6     7     8     9    10    11    12
+## Frequency    104   278    24   239   730   414   806   265   985  1057
+## Proportion 0.008 0.022 0.002 0.019 0.058 0.033 0.065 0.021 0.079 0.085
+##                                                                       
+## Value         13    14    15    16    17    18    19    20    21    22
+## Frequency    687  2145  1011  1231  1516   462   433    53    44     3
+## Proportion 0.055 0.172 0.081 0.099 0.121 0.037 0.035 0.004 0.004 0.000
+## ---------------------------------------------------------------------------
+## cabin_temp_1 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       37    0.567    178.6    54.27       66       70 
+##      .25      .50      .75      .90      .95 
+##      214      214      214      214      214 
+## 
+## lowest :   0  51  52  53  54, highest:  82  83  84  85 214
+## ---------------------------------------------------------------------------
+## cabin_temp_2 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       37    0.567    178.6    54.27       66       70 
+##      .25      .50      .75      .90      .95 
+##      214      214      214      214      214 
+## 
+## lowest :   0  51  52  53  54, highest:  82  83  84  85 214
+## ---------------------------------------------------------------------------
+## QC count 
+##        n  missing distinct     Info     Mean      Gmd 
+##    12487        0        9    0.911    169.5    5.754 
+##                                                                 
+## Value          0   168   169   170   171   172   173   174   175
+## Frequency    104  2055  5046     1   370   859   416   357  3279
+## Proportion 0.008 0.165 0.404 0.000 0.030 0.069 0.033 0.029 0.263
+## ---------------------------------------------------------------------------
+## L1/L2 count 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       89    0.999     1937    64.95     1913     1916 
+##      .25      .50      .75      .90      .95 
+##     1924     1950     1979     1994     1999 
+##                                                                       
+## Value          0  1910  1915  1920  1925  1930  1935  1940  1945  1950
+## Frequency    104   429  1174  1060   855   465   712   633   369   614
+## Proportion 0.008 0.034 0.094 0.085 0.068 0.037 0.057 0.051 0.030 0.049
+##                                                                       
+## Value       1955  1960  1965  1970  1975  1980  1985  1990  1995  2000
+## Frequency    320   560   586   631   773   581   741   337   792   751
+## Proportion 0.026 0.045 0.047 0.051 0.062 0.047 0.059 0.027 0.063 0.060
+## ---------------------------------------------------------------------------
+## Charger (amps) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       15    0.863    11.77     6.06     0.00     0.00 
+##      .25      .50      .75      .90      .95 
+##     0.00    15.62    15.62    15.62    15.69 
+##                                                                           
+## Value       0.0000 15.5000 15.5625 15.6250 15.6875 15.7500 15.8125 15.8750
+## Frequency     3138      19    2128    6089     835      30      33      98
+## Proportion   0.251   0.002   0.170   0.488   0.067   0.002   0.003   0.008
+##                                                                   
+## Value      15.9375 16.0000 16.0625 16.1250 16.1875 33.3750 33.4375
+## Frequency       35       6       2      17       2       8      47
+## Proportion   0.003   0.000   0.000   0.001   0.000   0.001   0.004
+## ---------------------------------------------------------------------------
+## Charger (V) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      144    0.986      153    111.9    1.055    1.055 
+##      .25      .50      .75      .90      .95 
+##    1.055  238.742  241.164  242.539  243.242 
+## 
+## lowest :   0.000000   1.054688   1.562500   2.250000   3.976562
+## highest: 248.406250 248.585938 249.093750 249.273438 249.445312
+## ---------------------------------------------------------------------------
+## h_volt_1 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0     3444        1    373.6    25.54    359.5    365.1 
+##      .25      .50      .75      .90      .95 
+##    373.3    382.4    387.0    389.4    392.2 
+##                                                                       
+## Value          0     5    60    80   170   245   335   340   345   350
+## Frequency    232     1     1     1     1     1     1     1    10    48
+## Proportion 0.019 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.001 0.004
+##                                                                       
+## Value        355   360   365   370   375   380   385   390   395   655
+## Frequency    191   398   864  1185  1458  1902  3605  1996   555    36
+## Proportion 0.015 0.032 0.069 0.095 0.117 0.152 0.289 0.160 0.044 0.003
+## ---------------------------------------------------------------------------
+## Motor temp 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       76    0.999    53.65    24.56       19       22 
+##      .25      .50      .75      .90      .95 
+##       30       64       71       77       80 
+## 
+## lowest :  0 10 11 12 13, highest: 88 89 90 91 92
+## ---------------------------------------------------------------------------
+## inverter_2 temp 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       67    0.999    48.67    23.41       15       18 
+##      .25      .50      .75      .90      .95 
+##       25       61       66       70       72 
+## 
+## lowest :  0  8  9 10 11, highest: 81 82 83 84 86
+## ---------------------------------------------------------------------------
+## inverter_4 temp 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0       65    0.999    49.87    24.15       15       19 
+##      .25      .50      .75      .90      .95 
+##       26       61       67       72       76 
+## 
+## lowest :  0  6  7  8  9, highest: 78 79 80 81 82
+## ---------------------------------------------------------------------------
+## motor_amp (1) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      551    0.491    284.2    526.4        0        0 
+##      .25      .50      .75      .90      .95 
+##        0        0        0      149     4015 
+## 
+## lowest :    0    1    2    3    4, highest: 4091 4092 4093 4094 4095
+## ---------------------------------------------------------------------------
+## motor_amp (2) 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      410    0.488    284.1    526.3        0        0 
+##      .25      .50      .75      .90      .95 
+##        0        0        0      149     4045 
+##                                                                       
+## Value          0    50   100   150   200   250   300   350   400   450
+## Frequency  10176   478   433   249   139    73    49    16    14    11
+## Proportion 0.815 0.038 0.035 0.020 0.011 0.006 0.004 0.001 0.001 0.001
+##                                               
+## Value        500   550   600  4000  4050  4100
+## Frequency     11     6     5     5   646   176
+## Proportion 0.001 0.000 0.000 0.000 0.052 0.014
+## ---------------------------------------------------------------------------
+## throttle 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      101    0.365    4.664    8.433        0        0 
+##      .25      .50      .75      .90      .95 
+##        0        0        0       21       38 
+## 
+## lowest :   0   1   2   3   4, highest: 127 128 133 146 199
+## ---------------------------------------------------------------------------
+## target_regen_braking_1 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      175    0.086    12.11    23.86        0        0 
+##      .25      .50      .75      .90      .95 
+##        0        0        0        0        0 
+## 
+## lowest :    0    2    6   10   14, highest: 1234 1242 1246 1250 1258
+## ---------------------------------------------------------------------------
+## target_regen_braking_2 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##    12487        0      354    0.163    53.24    103.3        0        0 
+##      .25      .50      .75      .90      .95 
+##        0        0        0        0      112 
+## 
+## lowest :    0    4    8   12   16, highest: 3516 3632 3792 4088 4092
+## ---------------------------------------------------------------------------
+\end{verbatim}
+
+Create some useful derived variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# create dateTime var}
+\NormalTok{ftfSafeDT <-}\StringTok{ }\NormalTok{ftfSafeDT[, rDate }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{lubridate}\OperatorTok{::}\KeywordTok{dmy}\NormalTok{(}\StringTok{`}\DataTypeTok{Date (GPS)}\StringTok{`}\NormalTok{)]}
+\NormalTok{ftfSafeDT <-}\StringTok{ }\NormalTok{ftfSafeDT[, rTime }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{hms}\OperatorTok{::}\KeywordTok{parse_hms}\NormalTok{(}\StringTok{`}\DataTypeTok{Time (GPS)}\StringTok{`}\NormalTok{)]}
+\CommentTok{#ftfSafeDT <- ftfSafeDT[, dateTime := lubridate::dmy_hms(rDate, rTime)]}
+\end{Highlighting}
+\end{Shaded}
+
+Re-describe using skim:
+
+\begin{verbatim}
+## Skim summary statistics
+##  n obs: 12487 
+##  n variables: 142 
+## 
+## -- Variable type:character ------------------------------------------------------------------------------------------------------------------
+##    variable missing complete     n min max empty n_unique
+##  Date (GPS)    1160    11327 12487  10  10     0       39
+##         VIN     163    12324 12487  10  16     0        2
+## 
+## -- Variable type:Date -----------------------------------------------------------------------------------------------------------------------
+##  variable missing complete     n        min        max     median n_unique
+##     rDate    1160    11327 12487 2018-05-01 2018-06-11 2018-05-18       39
+## 
+## -- Variable type:difftime -------------------------------------------------------------------------------------------------------------------
+##    variable missing complete     n     min        max   median n_unique
+##       rTime    1160    11327 12487 36 secs 86391 secs 03:46:32     8903
+##  Time (GPS)    1160    11327 12487 36 secs 86391 secs 03:46:32     8903
+## 
+## -- Variable type:integer --------------------------------------------------------------------------------------------------------------------
+##                 variable missing complete     n     mean       sd     p0
+##              avg_cp (mV)     138    12349 12487  4441.28  4078.58   2811
+##                     cp_1     138    12349 12487  3174.82  2372.61  -4110
+##                    cp_10     138    12349 12487  3980.26  3862.48 -64784
+##                    cp_11     138    12349 12487  3658.69  4343.36 -64014
+##                    cp_12     138    12349 12487  4026.2   4036.14 -65039
+##                    cp_13     139    12348 12487  3632.37  4378.55 -63503
+##                    cp_14     139    12348 12487  3618.7   4323.64 -64783
+##                    cp_15     139    12348 12487  3228.86  4615.84 -64527
+##                    cp_16     139    12348 12487  3572.19  4383.25 -64782
+##                    cp_17     139    12348 12487  3872.05  4087.45 -63246
+##                    cp_18     139    12348 12487  3947.86  4035.15 -50703
+##                    cp_19     139    12348 12487  3865.68  4100.5  -64526
+##                     cp_2     138    12349 12487  3584.68  1702.91  -4112
+##                    cp_20     139    12348 12487  3946.56  3997.24 -46095
+##                    cp_21     139    12348 12487  4124.23  3864.29 -49423
+##                    cp_22     139    12348 12487  4118.77  3898.07 -49423
+##                    cp_23     139    12348 12487  4116.85  3925.22 -51471
+##                    cp_24     139    12348 12487  4070.32  3975.32 -64527
+##                    cp_25     139    12348 12487  4081.52  3934.05  -4108
+##                    cp_26     139    12348 12487  4025.31  4006.23 -56591
+##                    cp_27     139    12348 12487  4018.76  3940.31 -56591
+##                    cp_28     139    12348 12487  4074.24  3940.73  -4103
+##                    cp_29     139    12348 12487  3784.94  4249.21 -64526
+##                     cp_3     138    12349 12487  3387.44  4785.94 -50785
+##                    cp_30     139    12348 12487  4033.57  3980.33 -64782
+##                    cp_31     139    12348 12487  4056.02  4060.01 -46094
+##                    cp_32     139    12348 12487  4041.84  4011.13 -49679
+##                    cp_33     139    12348 12487  4105.48  4113.93 -63502
+##                    cp_34     139    12348 12487  4082.74  4037.74 -63502
+##                    cp_35     139    12348 12487  4287.43  5046.15 -64526
+##                    cp_36     139    12348 12487  4048.54  5229.61 -62478
+##                    cp_37     139    12348 12487  3566.08  5519.64 -63502
+##                    cp_38     139    12348 12487  4264.92  5025.16 -50703
+##                    cp_39     139    12348 12487  4238.34  4953.39 -63502
+##                     cp_4     138    12349 12487  3211.25  2295.9   -4109
+##                    cp_40     139    12348 12487  4268.42  5037.83 -51983
+##                    cp_41     139    12348 12487  3976.58  5305.78 -64526
+##                    cp_42     139    12348 12487  3963.11  5247.63 -64014
+##                    cp_43     139    12348 12487  4228.08  5140.57 -64782
+##                    cp_44     139    12348 12487  3971.76  5244.99 -64526
+##                    cp_45     139    12348 12487  3988.31  5263.35 -62991
+##                    cp_46     139    12348 12487  4138.27  5173.52 -43791
+##                    cp_47     139    12348 12487  4385.31  4995.07 -43791
+##                    cp_48     139    12348 12487  4391.83  5021.27 -45071
+##                    cp_49     139    12348 12487  4034.36  5280.67 -65040
+##                     cp_5     138    12349 12487  3226.04  4428.53 -65295
+##                    cp_50     139    12348 12487  4032.65  5235.32 -63759
+##                    cp_51     139    12348 12487  4046.48  5243.5  -62735
+##                    cp_52     139    12348 12487  4037.92  5260.97 -63759
+##                    cp_53     139    12348 12487  3937.21  5293.86 -61199
+##                    cp_54     139    12348 12487  3921.96  5216.25 -64783
+##                    cp_55     139    12348 12487  3929.48  5217.77 -65039
+##                    cp_56     139    12348 12487  3923.66  5288.48 -64784
+##                    cp_57     139    12348 12487  3890.84  5311.05 -63759
+##                    cp_58     139    12348 12487  3908.59  5297.14 -63759
+##                    cp_59     140    12347 12487  3908.29  5365.19 -63759
+##                     cp_6     138    12349 12487  3656.82  4189.17 -65295
+##                    cp_60     140    12347 12487  3673.9   5537.41 -62479
+##                    cp_61     140    12347 12487  3895.22  5322.92 -62479
+##                    cp_62     140    12347 12487  3869.71  5331.51 -62479
+##                    cp_63     140    12347 12487  3948.15  5627.87 -65039
+##                    cp_64     140    12347 12487  3916.22  5645.97 -64015
+##                    cp_65     140    12347 12487  4407.79  5263.57 -62223
+##                    cp_66     140    12347 12487  4022.25  5626.02 -65039
+##                    cp_67     140    12347 12487  4433.93  5302.1  -61455
+##                    cp_68     140    12347 12487  4446.36  5313.94 -61199
+##                    cp_69     140    12347 12487  4426.85  5372.98 -57871
+##                     cp_7     138    12349 12487  2403.5   4919.04 -65039
+##                    cp_70     140    12347 12487  4031.41  5702.94 -65040
+##                    cp_71     140    12347 12487  4031.9   5654.14 -57871
+##                    cp_72     140    12347 12487  4024.1   5705.7  -65040
+##                    cp_73     140    12347 12487  3986.43  5623.12 -64783
+##                    cp_74     140    12347 12487  3982.79  5642.67 -64784
+##                    cp_75     140    12347 12487  3997.03  5605.08 -65039
+##                    cp_76     140    12347 12487  3978.52  5656.1  -65039
+##                    cp_77     140    12347 12487  4345.47  5329.77 -64015
+##                    cp_78     140    12347 12487  4362.01  5324.46 -50190
+##                    cp_79     140    12347 12487  3932.43  5722.44 -64272
+##                     cp_8     138    12349 12487  3471.66  4264.9  -41487
+##                    cp_80     140    12347 12487  3975.42  5712.44 -62224
+##                    cp_81     140    12347 12487  4109.77  5611.97 -63247
+##                    cp_82     140    12347 12487  4117.74  5640.26 -64271
+##                    cp_83     140    12347 12487  4108.14  5701.29 -64527
+##                    cp_84     140    12347 12487  4121.13  5626.82 -64527
+##                    cp_85     140    12347 12487  4089.71  5621.11 -65039
+##                    cp_86     140    12347 12487  3954.15  5748.73  -7183
+##                    cp_87     140    12347 12487  4502.24  5319.19  -8463
+##                    cp_88     140    12347 12487  3881.87  5836.04 -65295
+##                    cp_89     140    12347 12487  4040.3   5671.61 -64272
+##                     cp_9     138    12349 12487  3611.52  4168    -65039
+##                    cp_90     140    12347 12487  4060.84  5763.87 -63503
+##                    cp_91     140    12347 12487  4050.38  5679.29 -63503
+##                    cp_92     140    12347 12487  4473.62  5478.05 -60430
+##                    cp_93     140    12347 12487  4189.53  5647.91 -63247
+##                    cp_94     140    12347 12487  4206.59  5697.63 -65039
+##                    cp_95     140    12347 12487  4219.04  5721.72 -63248
+##                    cp_96     140    12347 12487  4156.42  5727.99  -4066
+##             cp_diff (mV)     138    12349 12487   987.85  6731.56      8
+##                     GIDs       0    12487 12487   119.39    44.79      0
+##          inverter_2 temp       0    12487 12487    48.67    21.73      0
+##          inverter_4 temp       0    12487 12487    49.87    22.16      0
+##              L1/L2 count       0    12487 12487  1936.73   179.81      0
+##              max_cp (mV)     138    12349 12487  4904.48  6512.37   3589
+##              min_cp (mV)     138    12349 12487  3916.63   329.91      0
+##               Motor temp       0    12487 12487    53.65    22.4       0
+##                      ODO       0    12487 12487 14017.91 23684.17      0
+##                 QC count       0    12487 12487   169.55    15.79      0
+##  Time after power on (s)       0    12487 12487  3778.31  3639.32     30
+##      p25    p50      p75  p100     hist
+##  3896    3988    4033    60245 ▇▁▁▁▁▁▁▁
+##  3848    3973    4032     4294 ▁▁▁▁▁▁▁▇
+##  3884    3987    4034    64526 ▁▁▁▁▇▁▁▁
+##  3863    3982    4034    65294 ▁▁▁▁▇▁▁▁
+##  3887    3983    4030    64782 ▁▁▁▁▇▁▁▁
+##  3859    3974    4029    65040 ▁▁▁▁▇▁▁▁
+##  3859    3975.5  4030    64783 ▁▁▁▁▇▁▁▁
+##  3833    3965    4025    64783 ▁▁▁▁▇▁▁▁
+##  3848    3970    4025    64783 ▁▁▁▁▇▁▁▁
+##  3878    3983    4033    65039 ▁▁▁▁▇▁▁▁
+##  3882    3982    4032    64783 ▁▁▁▇▁▁▁▁
+##  3878    3986    4036    65039 ▁▁▁▁▇▁▁▁
+##  3877    3984    4034    24834 ▁▁▇▁▁▁▁▁
+##  3881    3985    4034    64783 ▁▁▁▇▁▁▁▁
+##  3891    3989    4035    65039 ▁▁▁▇▁▁▁▁
+##  3891    3988    4036    64784 ▁▁▁▇▁▁▁▁
+##  3887    3989    4039    65294 ▁▁▁▇▁▁▁▁
+##  3886    3988    4036    64783 ▁▁▁▁▇▁▁▁
+##  3887    3985    4034    64783 ▇▁▁▁▁▁▁▁
+##  3883    3984    4031    64784 ▁▁▁▇▁▁▁▁
+##  3874    3980    4030    65039 ▁▁▁▇▁▁▁▁
+##  3875    3981    4029    65039 ▇▁▁▁▁▁▁▁
+##  3868.75 3980    4030    65039 ▁▁▁▁▇▁▁▁
+##  3841    3971    4034    50785 ▁▁▁▁▇▁▁▁
+##  3883    3981    4030    65039 ▁▁▁▁▇▁▁▁
+##  3882    3984    4031    65039 ▁▁▁▇▁▁▁▁
+##  3882    3983    4030    63759 ▁▁▁▇▁▁▁▁
+##  3883    3980    4029    65295 ▁▁▁▁▇▁▁▁
+##  3881    3982    4029    65039 ▁▁▁▁▇▁▁▁
+##  3882    3979    4025    65039 ▁▁▁▁▇▁▁▁
+##  3869    3979    4030    64783 ▁▁▁▁▇▁▁▁
+##  3841    3969    4030    65039 ▁▁▁▁▇▁▁▁
+##  3883    3979    4025    64783 ▁▁▁▇▁▁▁▁
+##  3883    3983    4029    65039 ▁▁▁▁▇▁▁▁
+##  3846    3974    4032     4117 ▁▁▁▁▁▁▁▇
+##  3884    3980    4026    65039 ▁▁▁▇▁▁▁▁
+##  3869    3980    4030    65039 ▁▁▁▁▇▁▁▁
+##  3866.75 3980    4030    64783 ▁▁▁▁▇▁▁▁
+##  3883    3987    4034    65039 ▁▁▁▁▇▁▁▁
+##  3866    3984    4034    64016 ▁▁▁▁▇▁▁▁
+##  3873    3983    4034    64782 ▁▁▁▁▇▁▁▁
+##  3878    3984    4030    65039 ▁▁▁▇▁▁▁▁
+##  3889    3988    4034    65039 ▁▁▁▇▁▁▁▁
+##  3890    3989    4036    65039 ▁▁▁▇▁▁▁▁
+##  3886    3982    4033    65039 ▁▁▁▁▇▁▁▁
+##  3834    3965    4028    65294 ▁▁▁▁▇▁▁▁
+##  3883    3980    4025    65039 ▁▁▁▁▇▁▁▁
+##  3883    3979    4026    65039 ▁▁▁▁▇▁▁▁
+##  3883    3979    4026.25 64783 ▁▁▁▁▇▁▁▁
+##  3882    3983    4034    64783 ▁▁▁▁▇▁▁▁
+##  3878    3981    4030    64782 ▁▁▁▁▇▁▁▁
+##  3881    3979    4030    64782 ▁▁▁▁▇▁▁▁
+##  3879    3980    4029    64783 ▁▁▁▁▇▁▁▁
+##  3878    3978    4029    64783 ▁▁▁▁▇▁▁▁
+##  3878    3978    4029    65039 ▁▁▁▁▇▁▁▁
+##  3877    3982    4033    64783 ▁▁▁▁▇▁▁▁
+##  3864    3978    4029    65295 ▁▁▁▁▇▁▁▁
+##  3856    3974    4030    64783 ▁▁▁▁▇▁▁▁
+##  3877    3982    4033    64783 ▁▁▁▁▇▁▁▁
+##  3874    3976    4025    64783 ▁▁▁▁▇▁▁▁
+##  3874    3975    4025    64783 ▁▁▁▁▇▁▁▁
+##  3874    3975    4025    65039 ▁▁▁▁▇▁▁▁
+##  3897    3988    4032    65039 ▁▁▁▁▇▁▁▁
+##  3883    3984    4031    65038 ▁▁▁▁▇▁▁▁
+##  3897    3988    4034    65039 ▁▁▁▁▇▁▁▁
+##  3897    3985    4034    64783 ▁▁▁▁▇▁▁▁
+##  3892    3984    4033    65040 ▁▁▁▁▇▁▁▁
+##  3743    3931    4023    64783 ▁▁▁▂▇▁▁▁
+##  3882    3978    4028    65039 ▁▁▁▁▇▁▁▁
+##  3879    3978    4028    64783 ▁▁▁▁▇▁▁▁
+##  3878    3979    4027    64783 ▁▁▁▁▇▁▁▁
+##  3872    3975    4026    64783 ▁▁▁▁▇▁▁▁
+##  3871    3975    4027    64783 ▁▁▁▁▇▁▁▁
+##  3872    3977    4027    64783 ▁▁▁▁▇▁▁▁
+##  3871    3976    4031    64782 ▁▁▁▁▇▁▁▁
+##  3890    3983    4033    65038 ▁▁▁▁▇▁▁▁
+##  3892    3986    4036    65294 ▁▁▁▇▁▁▁▁
+##  3875    3982    4036    65294 ▁▁▁▁▇▁▁▁
+##  3846    3974    4030    65039 ▁▁▁▇▁▁▁▁
+##  3875    3981    4033    65295 ▁▁▁▁▇▁▁▁
+##  3882.5  3983    4031    65294 ▁▁▁▁▇▁▁▁
+##  3883    3984    4034    65294 ▁▁▁▁▇▁▁▁
+##  3882    3983    4030    64783 ▁▁▁▁▇▁▁▁
+##  3884    3984    4034    65295 ▁▁▁▁▇▁▁▁
+##  3880    3977    4028    64784 ▁▁▁▁▇▁▁▁
+##  3864    3976    4033    65039 ▁▇▁▁▁▁▁▁
+##  3894    3982    4032    65039 ▁▇▁▁▁▁▁▁
+##  3866    3977    4031    65039 ▁▁▁▁▇▁▁▁
+##  3884    3981    4032.5  65295 ▁▁▁▁▇▁▁▁
+##  3862    3978    4030    63503 ▁▁▁▁▇▁▁▁
+##  3882    3982    4033    65038 ▁▁▁▁▇▁▁▁
+##  3883    3981    4032    65294 ▁▁▁▁▇▁▁▁
+##  3896    3985    4032    65295 ▁▁▁▁▇▁▁▁
+##  3886    3980    4028    65039 ▁▁▁▁▇▁▁▁
+##  3886    3982    4030    64783 ▁▁▁▁▇▁▁▁
+##  3886    3984    4032    65295 ▁▁▁▁▇▁▁▁
+##  3869    3979    4034    65038 ▇▁▁▁▁▁▁▁
+##    16      18      23    65295 ▇▁▁▁▁▁▁▁
+##    86     124     156      202 ▁▂▅▆▇▇▇▃
+##    25      61      66       86 ▁▅▅▁▁▇▇▁
+##    26      61      67       82 ▁▂▅▁▁▃▇▂
+##  1924    1950    1979     2001 ▁▁▁▁▁▁▁▇
+##  3906    3997    4042    65295 ▇▁▁▁▁▁▁▁
+##  3874    3975    4024     4103 ▁▁▁▁▁▁▁▇
+##    30      64      71       92 ▁▃▆▁▁▇▇▁
+##     0       0   53114    54902 ▇▁▁▁▁▁▁▃
+##   169     169     175      175 ▁▁▁▁▁▁▁▇
+##   784    2486    6028.5  16636 ▇▃▂▂▁▁▁▁
+## 
+## -- Variable type:numeric --------------------------------------------------------------------------------------------------------------------
+##                 variable missing complete     n   mean      sd      p0
+##       12V battery (amps)       0    12487 12487   1.62    2.48  -10.91
+##  12V battery (dashboard)       0    12487 12487   0       0       0   
+##      12V battery (volts)       0    12487 12487  12.83    1.27    0   
+##                  ACC (V)       0    12487 12487  12.74    3.29    0   
+##                      AHr       0    12487 12487  46.92    8.5     0   
+##                 Altitude      12    12475 12487  42.41   25.14 -293.5 
+##           ambient_temp_1       0    12487 12487  13.03    3.84    0   
+##             cabin_temp_1       0    12487 12487 178.58   62.88    0   
+##             cabin_temp_2       0    12487 12487 178.58   62.88    0   
+##           Charger (amps)       0    12487 12487  11.77    6.92    0   
+##              Charger (V)       0    12487 12487 153.03  114.59    0   
+##                 h_volt_1       0    12487 12487 373.58   54.57    0   
+##                       Hx       0    12487 12487  50.78   23.82    0   
+##            motor_amp (1)       0    12487 12487 284.21 1002.6     0   
+##            motor_amp (2)       0    12487 12487 284.14 1006.32    0   
+##          Pack 1 temp (C)     139    12348 12487  19.9     3.37    8.7 
+##          Pack 2 temp (C)     168    12319 12487  19.03    3.38    7.6 
+##          Pack 3 temp (C)     191    12296 12487  18.61    3.23    7.7 
+##          Pack 4 temp (C)     191    12296 12487  17.8     3.17    7.6 
+##                Pack amps       0    12487 12487  -5.44    9.21  -32.75
+##               Pack volts       0    12487 12487 421.65  391.92    0   
+##                      SOC       0    12487 12487  57.55   21.03    0   
+##                      SOH       0    12487 12487  71.5     7.64    0   
+##          SOH (version 2)       0    12487 12487  68.94   15.11    0   
+##              Speed (GPS)      12    12475 12487  10.35   24.91    0   
+##      Speed (Speedometer)       0    12487 12487  10.43   23.75    0   
+##   target_regen_braking_1       0    12487 12487  12.11   93.64    0   
+##   target_regen_braking_2       0    12487 12487  53.24  304.3     0   
+##                 throttle       0    12487 12487   4.66   13.7     0   
+##     p25    p50    p75    p100     hist
+##    1.11   1.36   2.09   40.62 ▁▇▃▁▁▁▁▁
+##    0      0      0       0    ▁▁▁▇▁▁▁▁
+##   12.96  12.96  12.96   14.72 ▁▁▁▁▁▁▁▇
+##   12.82  12.85  12.87   64    ▁▇▁▁▁▁▁▁
+##   47.38  47.44  47.48  132.74 ▁▁▇▁▁▁▁▁
+##   36     39.8   44.2   395.1  ▁▁▁▇▂▁▁▁
+##   11     14     16      22    ▁▁▂▃▃▇▅▁
+##  214    214    214     214    ▁▁▂▁▁▁▁▇
+##  214    214    214     214    ▁▁▂▁▁▁▁▇
+##    0     15.62  15.62   33.44 ▃▁▁▇▁▁▁▁
+##    1.05 238.74 241.16  249.45 ▅▁▁▁▁▁▁▇
+##  373.33 382.42 386.98  655.35 ▁▁▁▁▇▁▁▁
+##   50.39  50.49  50.53  625.5  ▇▁▁▁▁▁▁▁
+##    0      0      0    4095    ▇▁▁▁▁▁▁▁
+##    0      0      0    4095    ▇▁▁▁▁▁▁▁
+##   17.6   20.2   21.8    28.4  ▁▁▂▅▇▆▃▁
+##   16.8   19.4   21.1    27.7  ▁▂▂▅▇▆▃▁
+##   16.4   19     20.7    26.2  ▁▁▂▅▆▇▃▁
+##   15.5   18.2   20      25.1  ▁▂▂▆▇▇▅▁
+##   -8.91  -8.15  -0.88   32.75 ▁▁▇▆▂▁▁▁
+##  373.63 382.75 387.17 5783.52 ▇▁▁▁▁▁▁▁
+##   42.41  60     74.56   95.53 ▁▂▃▆▆▇▇▃
+##   72.22  72.31  72.38   72.86 ▁▁▁▁▁▁▁▇
+##   72.22  72.31  72.38   72.86 ▁▁▁▁▁▁▁▇
+##    0      0      0     103.71 ▇▁▁▁▁▁▁▁
+##    0      0      0     102.08 ▇▁▁▁▁▁▁▁
+##    0      0      0    1258    ▇▁▁▁▁▁▁▁
+##    0      0      0    4092    ▇▁▁▁▁▁▁▁
+##    0      0      0     199    ▇▁▁▁▁▁▁▁
+\end{verbatim}
+
+\section{Runtime}\label{runtime}
+
+Analysis completed in 30.81 seconds ( 0.51 minutes) using
+\href{https://cran.r-project.org/package=knitr}{knitr} in
+\href{http://www.rstudio.com}{RStudio} with R version 3.5.0 (2018-04-23)
+running on x86\_64-apple-darwin15.6.0.
+
+\section{R environment}\label{r-environment}
+
+R packages used:
+
+\begin{itemize}
+\tightlist
+\item
+  base R - for the basics (R Core Team 2016)
+\item
+  data.table - for fast (big) data handling (Dowle et al. 2015)
+\item
+  lubridate - date manipulation (Grolemund and Wickham 2011)
+\item
+  ggplot2 - for slick graphics (Wickham 2009)
+\item
+  readr - for csv reading/writing (Wickham, Hester, and Francois 2016)
+\item
+  skimr - for skim (Arino de la Rubia et al. 2017)
+\item
+  knitr - to create this document \& neat tables (Xie 2016)
+\item
+  nzGREENGrid - for local NZ GREEN Grid project utilities
+\end{itemize}
+
+Session info:
+
+\begin{verbatim}
+## R version 3.5.0 (2018-04-23)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13.5
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] bindrcpp_0.2.2    knitr_1.20        skimr_1.0.3       readr_1.1.1      
+## [5] lubridate_1.7.4   ggplot2_2.2.1     dplyr_0.7.5       data.table_1.11.4
+## [9] nzGREENGrid_0.1.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] progress_1.2.0      tidyselect_0.2.4    xfun_0.1           
+##  [4] reshape2_1.4.3      purrr_0.2.5         splines_3.5.0      
+##  [7] lattice_0.20-35     colorspace_1.3-2    htmltools_0.3.6    
+## [10] yaml_2.1.19         base64enc_0.1-3     survival_2.42-3    
+## [13] rlang_0.2.1         pillar_1.2.3        foreign_0.8-70     
+## [16] glue_1.2.0          RColorBrewer_1.1-2  bindr_0.1.1        
+## [19] plyr_1.8.4          stringr_1.3.1       munsell_0.5.0      
+## [22] gtable_0.2.0        htmlwidgets_1.2     evaluate_0.10.1    
+## [25] latticeExtra_0.6-28 htmlTable_1.12      Rcpp_0.12.17       
+## [28] acepack_1.4.1       checkmate_1.8.5     backports_1.1.2    
+## [31] scales_0.5.0        Hmisc_4.1-1         gridExtra_2.3      
+## [34] hms_0.4.2           digest_0.6.15       stringi_1.2.3      
+## [37] bookdown_0.7        grid_3.5.0          rprojroot_1.3-2    
+## [40] cli_1.0.0           tools_3.5.0         magrittr_1.5       
+## [43] lazyeval_0.2.1      tibble_1.4.2        Formula_1.2-3      
+## [46] cluster_2.0.7-1     tidyr_0.8.1         crayon_1.3.4       
+## [49] pkgconfig_2.0.1     Matrix_1.2-14       prettyunits_1.0.2  
+## [52] assertthat_0.2.0    rmarkdown_1.10      rstudioapi_0.7     
+## [55] R6_2.2.2            rpart_4.1-13        nnet_7.3-12        
+## [58] compiler_3.5.0
+\end{verbatim}
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\hypertarget{ref-skimr}{}
+Arino de la Rubia, Eduardo, Hao Zhu, Shannon Ellis, Elin Waring, and
+Michael Quinn. 2017. \emph{Skimr: Skimr}.
+\url{https://github.com/ropenscilabs/skimr}.
+
+\hypertarget{ref-data.table}{}
+Dowle, M, A Srinivasan, T Short, S Lianoglou with contributions from R
+Saporta, and E Antonyan. 2015. \emph{Data.table: Extension of
+Data.frame}. \url{https://CRAN.R-project.org/package=data.table}.
+
+\hypertarget{ref-lubridate}{}
+Grolemund, Garrett, and Hadley Wickham. 2011. ``Dates and Times Made
+Easy with lubridate.'' \emph{Journal of Statistical Software} 40 (3):
+1--25. \url{http://www.jstatsoft.org/v40/i03/}.
+
+\hypertarget{ref-baseR}{}
+R Core Team. 2016. \emph{R: A Language and Environment for Statistical
+Computing}. Vienna, Austria: R Foundation for Statistical Computing.
+\url{https://www.R-project.org/}.
+
+\hypertarget{ref-ggplot2}{}
+Wickham, Hadley. 2009. \emph{Ggplot2: Elegant Graphics for Data
+Analysis}. Springer-Verlag New York. \url{http://ggplot2.org}.
+
+\hypertarget{ref-readr}{}
+Wickham, Hadley, Jim Hester, and Romain Francois. 2016. \emph{Readr:
+Read Tabular Data}. \url{https://CRAN.R-project.org/package=readr}.
+
+\hypertarget{ref-knitr}{}
+Xie, Yihui. 2016. \emph{Knitr: A General-Purpose Package for Dynamic
+Report Generation in R}. \url{https://CRAN.R-project.org/package=knitr}.
+
+
+\end{document}

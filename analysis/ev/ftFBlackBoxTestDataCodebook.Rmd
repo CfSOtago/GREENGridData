@@ -1,0 +1,199 @@
+---
+params:
+ title: "FlipTheFleet Test Black Box Data: Codebook"
+ subtitle: "Exploration of test data"
+title: '`r params$title`'
+subtitle: '`r params$subtitle`'
+author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::word_document2:
+    toc: true
+    toc_depth: 2
+  bookdown::pdf_document2:
+    toc: true
+    toc_depth: 2
+  bookdown::html_document2:
+    toc: true
+    toc_float: TRUE
+    toc_depth: 2
+    keep_md: TRUE
+    self_contained: no
+bibliography: '`r paste0(findParentDirectory("GREENGrid"), "/bibliography.bib")`'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+#options(knitr.table.format = 'markdown') # try to fix the tables issue (seems to be pushing html into latex)
+```
+
+```{r codeSetup, include=FALSE}
+#rm(list=ls(all=TRUE)) # remove all objects from workspace
+
+# Set start time ----
+startTime <- proc.time()
+
+library(GREENGrid)
+
+# Packages needed in this .Rmd file ----
+rmdLibs <- c("data.table", # data munching
+             "dplyr", # data munching
+             "ggplot2", # for fancy graphs
+             "lubridate", # date & time processing
+             "readr", # writing to files
+             "Hmisc", # describe
+             "codebook", # codebook
+             "skimr", # for skim
+             "knitr" # for kable
+)
+# load them
+loadLibraries(rmdLibs)
+
+# run gg set up
+GREENGrid::setup() # sets a load of parameters which are then accessible via ggParams$xxx
+
+# Local paramaters
+ggParams$dataLoc <- path.expand("/Volumes/hum-csafe/Research Projects/GREEN Grid/_RAW DATA/flipTheFleet/")
+```
+
+\newpage
+
+# Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r params$title`: `r params$subtitle`, `r ggParams$pubLoc`.
+
+This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton.
+
+\newpage
+
+# About
+
+## Circulation
+
+```{r generic circulation, child=ggParams$circulationGenericRmd}
+```
+ 
+## Purpose
+
+This report is intended to: 
+
+ * load and test preliminary 'black box' EV monitoring data provided for assessment purposes by [FlipTheFleet](http://flipthefleet.org/).
+
+## Requirements:
+
+ * test dataset stored at `r ggParams$dataLoc`
+
+## History
+
+```{r child=ggParams$historyGenericRmd}
+```
+ 
+Specific history of this code:
+
+ * https://github.com/CfSOtago/GREENGrid/tree/master/analysis/ev
+
+## Support
+
+```{r child=ggParams$supportGenericRmd}
+```
+ 
+
+# Load data files
+
+## EV test data
+
+```{r set fileName}
+ggParams$ftfFile <- paste0(ggParams$dataLoc, "EVBlackBox export 2018-06-10-233146.csv")
+```
+
+In this section we load and describe the  data files from `r ggParams$ftfFile`. Note that we remove the following variables before we do so as they are potentially disclosive:
+
+ * `Reg No`
+ * `Latitude`
+ * `Longitude` 
+ * `Course (deg)` 
+
+```{r load ftf data}
+ftfDT <- data.table::as.data.table(readr::read_csv(ggParams$ftfFile))
+
+# do analysis on safe version
+ftfSafeDT <- createSafeFtF(ftfDT)
+```
+
+Create some useful derived variables.
+
+```{r process ftf data, echo = TRUE}
+# create derived 
+ftfSafeDT <- createDerivedFtF(ftfSafeDT)
+```
+
+# Codebook
+
+Describe data to create codebook:
+
+```{r hmiscCodebook, eval=TRUE}
+# fails to wrap properly even if we remove cols - how to force small font so it fits?
+# uses skim
+
+cb <- Hmisc::describe(ftfSafeDT)
+
+cb
+```
+
+
+```{r codebookCodebook, eval=FALSE}
+# fails to wrap properly even if we remove cols - how to force small font so it fits?
+# uses skim
+
+cb <- codebook::codebook_table(ftfSafeDT)
+cb <- dplyr::select(cb, -starts_with("p")) 
+cb <- dplyr::select(cb, -starts_with("comp")) 
+cb <- dplyr::select(cb, -starts_with("median")) 
+cb <- dplyr::select(cb, -starts_with("n_unique")) 
+cb <- dplyr::select(cb, -starts_with("empty"))
+cb <- dplyr::select(cb, -starts_with("units"))
+
+cb
+```
+
+```{r skimCodebook, eval=FALSE}
+# an alternative approach also fails to wrap properly - how to force small font so it fits?
+
+skimCB <- skim(ftfSafeDT)
+
+cb <- dplyr::filter(skimCB, stat != "p0" & stat != "p100")
+```
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used:
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * lubridate - date manipulation [@lubridate]
+ * ggplot2 - for slick graphics [@ggplot2]
+ * readr - for csv reading/writing [@readr]
+ * Hmisc - for describe [@Hmisc]
+ * knitr - to create this document & neat tables [@knitr]
+ * GREENGrid - for local NZ GREEN Grid project utilities
+
+Session info:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References
