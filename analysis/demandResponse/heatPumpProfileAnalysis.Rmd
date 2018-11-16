@@ -10501,7 +10501,7 @@ myPlot
 #WiEP <- 75.27774
 #SpEP <- 35.80694
 #SuEP <- 10.12392
-
+#test
 #AuNP1 <- sc1data[ GWhs1[1:12 42:48]]
 #AuNP2 <- sc1data[ c(22:32), "GWhs1"]
 #WiNP1 <- sc1data[ c(145:156, 186:192), "GWhs1"]
