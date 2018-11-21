@@ -516,14 +516,18 @@ fixCircuitLabels_rf_46 <- function(dt){
 #'
 #' \code{getCleanGsFile}
 #'
-#'  Loads a clean Grid Spy data file using \code{readr::read_csv} to enable .gz files to be autoloaded.
+#'  Loads a clean Grid Spy data file using \code{readr::read_csv}. Ths enables .gz files to be autoloaded.
 #'
-#'  We force a col_character on the dateTime_orig to prevent readr attempting to parse it (incorrectly).
-#'
+#'  We STRONLY advise that you use this function to load the cleaned Grid Spy files as it:
+#'  
+#'  - forces dateTime_orig to be col_character to prevent readr attempting to parse it (incorrectly).
+#'  - forces powerW be col_double to stop readr assuming an integer from parsing the first few lines
+#'   
 #'  We allow readr to auto-parse the r_dateTime column but note that this will set the timezone etc to the
 #'  timezone correct for the current location. This may not be what you intend.
-#'
-#'  We force col_double on powerW to stop readr assuming an integer.
+#'  
+#'  Note that you can also use this function to load extracts from the Grid Spy files. It will just
+#'  complain (throw a warning) if any of the columns it expects are missing.
 #'
 #' @param f file to load
 #'
