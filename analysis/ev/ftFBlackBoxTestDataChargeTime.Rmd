@@ -1,0 +1,340 @@
+---
+params:
+ title: "FlipTheFleet Black Box Data Tests"
+ subtitle: "Testing Time of Charging"
+title: '`r params$title`'
+subtitle: '`r params$subtitle`'
+author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::pdf_document2: default
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+bibliography: '`r path.expand("~/bibliography.bib")`'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+
+```
+
+```{r codeSetup, include=FALSE}
+#rm(list=ls(all=TRUE)) # remove all objects from workspace # <- don't do this - rmeoves params set in yaml!
+
+# Set start time ----
+startTime <- proc.time()
+
+library(GREENGrid)
+
+# Packages needed in this .Rmd file ----
+rmdLibs <- c("data.table", # data munching
+             "ggplot2", # for fancy graphs
+             "readr", # writing to files
+             "knitr" # for kable
+)
+# load them
+GREENGrid::loadLibraries(rmdLibs)
+
+# run gg set up
+GREENGrid::setup() # sets a load of parameters which are then accessible via ggParams$xxx
+
+# Local paramaters ----
+dIPath <- paste0(ggParams$dataLoc, "externalData/flipTheFleet/")
+dOPath <- paste0(ggParams$dataLoc, "cleanData/flipTheFleet/")
+
+dFile <- "EVBlackBox export 2018-06-10-233146" # edit to suit. This will also be the name of the saved 'safe' version.
+```
+
+\newpage
+
+# Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) _`r params$title`: `r params$subtitle`_, `r ggParams$pubLoc`.
+
+This work is (c) `r as.POSIXlt(Sys.time())$year + 1900` the University of Southampton. Re-use is governed by [this license](https://github.com/CfSOtago/GREENGrid/blob/master/LICENSE).
+
+\newpage
+
+# About
+
+## Circulation
+
+```{r generic circulation, child=ggParams$circulationGenericRmd}
+```
+ 
+## Purpose
+
+This report is intended to: 
+
+ * load and test preliminary '[black box](https://flipthefleet.org/ev-black-box/)' (see Figure \@ref(fig:blackBox)) EV monitoring data provided for assessment purposes by [FlipTheFleet](http://flipthefleet.org/)
+ * preliminary analysis of time of charging to understand impact on 'peak' electricity demand
+
+```{r blackBox, fig.cap="The Black Box (Source: FlipTheFleet)", fig.align="right", dpi=96}
+knitr::include_graphics("fig/bb.jpg")
+```
+
+## Requirements:
+
+ * test FlipTheFleet black box dataset stored on `r ggParams$otagoHCS` at: `r ggParams$dataLoc`
+
+## Code and report history
+
+```{r includeHistory, child=ggParams$historyGenericRmd}
+```
+ 
+Specific history of this code:
+
+ * https://git.soton.ac.uk/ba1e12/nzGREENGrid/tree/master/analysis/ev
+
+## Support
+
+```{r includeSupport, child=ggParams$supportGenericRmd}
+```
+ 
+## Notes
+
+This document was created using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`. Some of the R code has been included where used for information and reference purposes. Full code is [available](https://github.com/CfSOtago/GREENGrid/tree/master/analysis/ev) as noted above.
+
+# Load and check data
+
+## Load data
+
+```{r set fileName}
+fileToLoad <- paste0(dIPath, dFile, ".csv")
+```
+
+In this section we load and describe the data from `r ggParams$ftfFile`. First we load the data.
+
+```{r load ftf data, echo=TRUE}
+ftfDT <- data.table::as.data.table(readr::read_csv(fileToLoad))
+```
+
+That loaded `r tidyNum(nrow(ftfDT))` observations.
+
+## Create derived variables
+
+Next we create some useful derived variables. Errors may be 'odd' dates and times or even not set in the original data as we see below.
+
+```{r process ftf data, echo = TRUE}
+# create derived variables
+ftfDT <- createDerivedFtF(ftfDT)
+
+t <- ftfDT[is.na(rDate), .(nObs = .N,
+                           meanPackVolts = mean(`Pack volts`)), 
+           keyby = .(`Date (GPS)`, `Time (GPS)`)]
+
+knitr::kable(caption = "Number of obs and mean pack volts where date cannot be set by original GPS Date and Time", t)
+
+t <- ftfDT[is.na(rTime), .(nObs = .N,
+                           meanPackVolts = mean(`Pack volts`)), 
+           keyby = .(`Date (GPS)`, `Time (GPS)`)]
+
+knitr::kable(caption = "Number of obs and mean pack volts where time cannot be set by original GPS Date and Time", t)
+
+```
+
+We remove these NAs from the data 
+
+> _XX (should we - what does GPS NA mean? no signal?) XX _
+
+```{r removeNA}
+# remove NA dates
+before <- nrow(ftfDT)
+ftfDT <- ftfDT[!is.na(rDate)]
+after <- nrow(ftfDT)
+
+pcGPSNA <- round((before - after)/before*100, 2)
+```
+
+Doing so removed `r before - after` (`r pcGPSNA` %) observations.
+
+## Location inference
+
+Figure \@ref(fig:mapAllLocations) maps the location of a subset of the observations in the dataset coloured by `Speed (GPS)`. If we selected just one vehicle and zoomed our map to the location at 01:00 - 04:00 when speed is 0 then we would probably determine their home. We could also determine other places visited at other times... This indicates how [disclosive GPS Lat/Long can be](http://toddwschneider.com/posts/analyzing-1-1-billion-nyc-taxi-and-uber-trips-with-a-vengeance/) even if address data is not provided.
+
+```{r mapAllLocations, fig.cap="Map of all observations coloured by speed"}
+# draw map of all GPS locations
+
+evMap <- getEVMap(ftfDT)
+
+evMap + scale_colour_gradient(low = "blue", high = "red")
+```
+
+To avoid any risk of such disclosure we next infer a very coarse geo-location at each time point so that we can remove the potentially disclosive GPS data before moving on to the analysis. 
+
+Note that this does not necessarily render this dataset _safe_ ([anonymised](https://www.ukdataservice.ac.uk/manage-data/legal-ethical/anonymisation)) as there may well be other variables that provide sufficient information either on their own or together which would [enable identification](https://www.ukdataservice.ac.uk/manage-data/legal-ethical/anonymisation) of the car and it's owner.
+
+```{r inferLoc, fig.cap="Check inferred location", echo=TRUE}
+ftfDT <- inferLocationFtF(ftfDT)
+
+plotDT <- ftfDT[, .(nObs = .N), 
+                keyby = .(geoLoc, obsHour, rDow)]
+
+ggplot(plotDT, aes(x = obsHour, y = nObs)) + 
+  geom_col() + 
+  facet_grid(rDow ~ geoLoc)
+```
+
+Figure \@ref(fig:inferLoc) shows the results of this inference. Does it look like a reasonable guestimate of location?
+
+## Make safe dataset
+
+Next we remove the following variables as they are potentially disclosive:
+
+ * `Reg No` - this is converted to `evID` using an encryption method
+ * `Latitude`
+ * `Longitude` 
+ * `Course (deg)` 
+ 
+```{r makeSafe}
+# do analysis on safe version
+ftfSafeDT <- createSafeFtF(ftfDT)
+
+# save it for re-use ----
+safeOut <- paste0(dOPath, dFile, "_safe.csv")
+data.table::fwrite(ftfSafeDT, safeOut)
+GREENGrid::gzipFile(safeOut)
+```
+
+
+The remaining variables are described in detail in [ftFBlackBoxTestDataCodebook.docx](https://www.dropbox.com/s/bfepx3sgfxek78e/ftFBlackBoxTestDataCodebook.docx?dl=0). 
+
+## Check variables of interest for this analysis
+
+Check charger related variables. We think these are:
+
+ * `Charger (amps)`
+ * `Charger (V)`
+
+Multiplying these two will give power in W. Figures \@ref(fig:checkAmps) to \@ref(fig:checkPower) examine the distribution of amps, volts and the derived W.
+
+```{r setCaptions}
+# for plots
+figCaption <- paste0("FlipTheFleet 'Black Box' test data for 1 car for ", 
+                     uniqueN(ftfSafeDT$rDate), " days from ",
+                     min(ftfSafeDT$rDate, na.rm = TRUE), " to ", max(ftfSafeDT$rDate, na.rm = TRUE))
+```
+
+```{r checkAmps, fig.cap="Distribution of charger amp readings"}
+ggplot(ftfSafeDT, aes(x = `Charger (amps)`)) +
+  geom_histogram(binwidth = 0.1) +
+  labs(caption = figCaption)
+```
+
+```{r checkVolts, fig.cap="Distribution of charger volt readings"}
+ggplot(ftfSafeDT, aes(x = `Charger (V)`)) +
+  geom_histogram(binwidth = 5) +
+  labs(caption = figCaption)
+```
+
+```{r checkPower, fig.cap="Distribution of derived power demand"}
+
+ftfSafeDT <- ftfSafeDT[, powerW := `Charger (amps)` * `Charger (V)`]
+
+ggplot(ftfSafeDT, aes(x = powerW/1000)) +
+  geom_histogram(binwidth = 0.1) +
+  labs(x = "kW", caption = figCaption)
+```
+
+The following table sumarises these distributions.
+
+```{r summaryTable, fig.cap="Summary table"}
+t <- summary(ftfSafeDT[, c("Charger (amps)", "Charger (V)", "powerW")])
+
+knitr::kable(caption = "Summary of Charger (amps)", t)
+```
+
+_XX Is the Amp reading of 33 an outlier? If so should we ignore the ~= 8kW values? XX_
+
+# Analysis: Timing of charging
+
+We assume `powerW` is a good indicator of charging. For now we do not exclude the apparent outlier caused by the few very high Amp values (`Charger (amps)` > 30) but we flag them as potential problems.
+
+```{r flagAmpOutliers}
+ftfSafeDT <- ftfSafeDT[, ampOutlier := ifelse(`Charger (amps)` > 30, "Possible Amp data error?", "OK Amp data")]
+```
+
+Figure \@ref(fig:plotChargingTime) shows mean kW by time of day over the entire test datset of `r uniqueN(ftfSafeDT$rDate)` days from `r min(ftfSafeDT$rDate, na.rm = TRUE)` to `r max(ftfSafeDT$rDate, na.rm = TRUE)`.
+
+```{r plotChargingTime, fig.cap="Inferred charging times and power draw (all data)"}
+plotDT <- ftfSafeDT[, .(meanPowerW = mean(powerW)), keyby = .(rTime, rDow, ampOutlier,geoLoc)]
+
+myPlot <- ggplot(plotDT, aes(x = rTime, y = meanPowerW/1000, colour = ampOutlier)) +
+  geom_point() +
+  facet_grid(rDow ~ ampOutlier + geoLoc) +
+  labs(x='Time of Day', y = "Mean kW", caption = figCaption) +
+  theme(legend.position = "bottom") #  legend
+  
+  myPlot
+  
+  # myPlot + scale_x_time(breaks = c(hms::as.hms("00:00:00"), hms::as.hms("03:00:00"), hms::as.hms("06:00:00"),
+  #                         hms::as.hms("09:00:00"), hms::as.hms("12:00:00"), hms::as.hms("15:00:00"), 
+  #                         hms::as.hms("18:00:00"), hms::as.hms("21:00:00"), hms::as.hms("24:00:00")))
+```
+
+Figure \@ref(fig:plotChargingTime) seems to show that the very high Amp values occured on one Sunday and we also appear to see some night charging 'not at home' which may indicate our location inference is imperfect. We re-draw this plot (Figure \@ref(fig:plotChargingTimeClean)) excluding the Amp outliers and also excluding values of exactly 0 for clarity.
+
+```{r plotChargingTimeClean, fig.cap="Inferred charging times and power draw (outliers and exactly zero values excluded)", fig.height=6}
+myPlot <- ggplot(plotDT[ampOutlier == "OK Amp data" & !is.na(rDow) & meanPowerW != 0], aes(x = rTime, y = meanPowerW/1000)) +
+  geom_point() +
+  facet_grid(rDow ~ geoLoc) +
+  labs(x='Time of Day', y = "Mean kW", caption = figCaption) +
+  theme(legend.position = "bottom") #  legend
+  
+myPlot + scale_x_time(breaks = c(hms::as.hms("00:00:00"), hms::as.hms("06:00:00"),
+                        hms::as.hms("12:00:00"), hms::as.hms("18:00:00"), hms::as.hms("24:00:00")))
+```
+
+We can see that this car appears to be on an overnight charging timer at home although we do still see charging scattered through the rest of the day. 
+
+So where is the non-home charging happening? We need a way to infer other locations without being disclosive.
+
+# Conclusions
+
+Questions to be asked
+
+ * Data:
+    + Do the Amp & Volt distributions look right?
+    + Cause of Amp outliers?
+    + Date/Time NA (`r pcGPSNA` % of observations) are due to a lack of GPS date/time (and lat/long). Does this mean that there is no date/time in the data when GPS has no signal? Our tests suggest that other data (e.g. power etc) is logged even though there is no date/time. Do we need another source of date/time? Could we infer time from seconds since powered on (assumes GPS OK at start-up?)?
+ * Research:
+    + Do all FlipTheFleet EV owners charge like this?
+    + Where are the EVs being charged when not at home and how can we tell?
+    + Does it vary by car/tariff/commute pattern/main use?
+    + What other patterns exist and how much within-vehicle and between-vehicle variation is there?
+   
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used:
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * lubridate - date manipulation [@lubridate]
+ * ggplot2 - for slick graphics [@ggplot2]
+ * readr - for csv reading/writing [@readr]
+ * openssl - for hashing `Reg No` [@openssl]
+ * knitr - to create this document & neat tables [@knitr]
+ * GREENGrid - for local NZ GREEN Grid project utilities
+
+Session info:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References

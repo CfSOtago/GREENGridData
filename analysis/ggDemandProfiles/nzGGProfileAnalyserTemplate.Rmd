@@ -1,0 +1,546 @@
+---
+params:
+  circuitPattern: ""
+  dateFrom: ""
+  dateTo: ""
+  iFile: ""
+title: '`r paste0("NZ GREEN Grid Household Power Demand Profiles: ", params$circuitPattern, " (", params$dateFrom, " to ", params$dateTo, ")")`'
+author: 'Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)'
+date: 'Last run at: `r Sys.time()`'
+output:
+  pdf_document2:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  html_document2:
+    code_folding: hide
+    fig_caption: true
+    keep_md: true
+    number_sections: true
+    self_contained: no
+    toc: true
+    toc_float: true
+    toc_depth: 2
+bibliography: '`r paste0(findParentDirectory("GREENGrid"), "/bibliography.bib")`'
+---
+
+```{r knitrSetup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+```
+
+```{r codeSetup, include=FALSE}
+# Set start time ----
+startTime <- proc.time()
+
+library(GREENGridData) # local utilities
+
+# Set parameters etc ----
+GREENGrid::setup()
+
+# Packages needed in this .Rmd file ----
+rmdLibs <- c("data.table", # data munching
+             "dplyr", # data munching
+             "ggplot2", # for fancy graphs
+             "readr", # writing to files
+             "lubridate", # for today
+             "kableExtra" # for extra kable
+)
+# load them
+loadLibraries(rmdLibs)
+
+# Local functions ---
+labelProfilePlot <- function(plot){
+  # adds neat labels to X axis
+  plot <- plot + 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+    scale_x_time(breaks = c(hms::as.hms("00:00:00"),
+                            hms::as.hms("04:00:00"), hms::as.hms("08:00:00"), 
+                            hms::as.hms("12:00:00"), hms::as.hms("16:00:00"),
+                            hms::as.hms("20:00:00"), hms::as.hms("24:00:00")))
+
+  return(plot)
+}
+
+# Local parameters ----
+plotCaption <- paste0("Data source: ", fpath,
+                      "\n", params$circuitPattern, " (", params$dateFrom, " to ", params$dateTo, ")" )
+```
+
+\newpage
+
+# About
+
+## Report circulation:
+
+ * Restricted to: [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project partners and contractors.
+
+## License
+
+```{r ccby license, child=ggParams$licenseCCBY}
+```
+ 
+## Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r 1900 + as.POSIXlt(Sys.Date())$year`) `r paste0("NZ GREEN Grid Household Power Demand Profiles: ", params$circuitPattern, " (", params$dateFrom, " to ", params$dateTo, ")")`, University of Otago: Dunedin, NZ.
+
+This work is (c) `r lubridate::year(today())` the University of Southampton.
+
+## History
+
+Code history is generally tracked via our git.soton [repo](https://github.com/CfSOtago/GREENGrid):
+
+ * [Report history](https://github.com/CfSOtago/GREENGrid/commits/master/analysis/ggDemandProfiles)
+ 
+## Requirements:
+
+ * Cleaned and safe grid spy 1 minute data processed using the [nzGREENGridDataR package](https://github.com/CfSOtago/GREENGridData/tree/master/dataProcessing/gridSpy)
+ * `r params$circuitPattern` circuit data pre or newly extracted from the cleaned safe data using https://github.com/CfSOtago/GREENGridData/commits/master/examples/extractCleanGridSpy1minCircuits.R
+
+## Support
+
+```{r generic support, child=ggParams$supportGeneric}
+```
+ 
+\newpage
+
+# Introduction
+
+```{r generic sample, child=ggParams$sampleGeneric}
+```
+
+This report is intended to: 
+
+ * load a data file containing pre-extracted `r params$circuitPattern` circuits (via string match on their circuit label) for the period `r params$dateFrom` to `r params$dateTo` (inclusive);
+ * build and plot exploratory demand profiles for `r params$circuitPattern` circuits;
+ * save aggregated demand profiles for `r params$circuitPattern` circuits to `r paste0(outPath, "profiles/")`.
+
+# Load data files
+
+## Household attribute data
+
+In this section we load metadata from `r ggParams$hhAttributes` to link to the power data.
+
+```{r load hhAttributes}
+
+hhAttributesDT <- data.table::fread(ggParams$hhAttributes)
+
+
+setkey(hhAttributesDT, hhID)
+
+kableExtra::kable(caption = "Example household attribute data for sample", head(hhAttributesDT))
+```
+
+## Grid Spy data
+
+```{r setFile}
+iFile <- paste0(params$iFile, ".gz") # don't forget .gz!
+#iFile <- paste0(iFile, ".gz")
+```
+
+In this section we load the pre-extracted `r params$circuitPattern` data from `r dateFrom` to `r dateTo` from `r iFile`.
+
+```{r load gridSpy data}
+# Loads pre-extracted circuit data using readr as the data is .csv.gz
+gs1MinDT <- data.table::as.data.table(
+  readr::read_csv(iFile,
+                  col_types = cols(
+                        hhID = col_character(),
+                        r_dateTime = col_datetime(format = ""),
+                        circuit = col_character(),
+                        powerW = col_double() # <- crucial otherwise readr infers integers for some reason
+                      )
+                  )
+)
+```
+
+The following table shows the range of different circuit labels that have been included.
+
+```{r test circuit labels}
+t <- table(gs1MinDT$circuit)
+
+kableExtra::kable(caption = paste0("Counts of ", circuitPattern, " observations by label"), t)
+```
+
+Note that some households may have more than one `r circuitPattern` circuit as the following table indicates.
+
+```{r test household circuits}
+t <- gs1MinDT[, .(nCircuits = uniqueN(circuit)), keyby = .(hhID)]
+
+kableExtra::kable(caption = paste0("Counts of ", circuitPattern, " labels by household"), t)
+```
+
+### Re-coding re-used monitors
+
+The following table shows the grid spy monitors which were re-used together with their dates.
+
+```{r testReuse}
+t <- hhAttributesDT[!is.na(notes), .(notes = unique(notes)), keyby = .(hhID, linkID, r_stopDate)]
+
+kableExtra::kable(caption = paste0("Counts of ", circuitPattern, " labels by household"), t)
+```
+
+In order to correctly link household attribute and grid spy data we therefore need to set linkID in the `r circuitPattern` data for the appropriate dates.
+
+```{r addlinkID}
+# set merge keys
+setkey(hhAttributesDT, linkID)
+setkey(gs1MinDT, linkID)
+
+# foreach hhID in hhAttributes
+# if !is.na(stopped)
+
+```
+
+
+## Test `r circuitPattern` data
+
+Figure \@ref(fig:nObsTile) shows loaded data observation plots - just to confirm what `r circuitPattern` data we have. 
+
+```{r nObsTile, fig.cap="Number of observations per household per day"}
+
+plotDT <- gs1MinDT[, .(nObs = uniqueN(r_dateTime)), keyby = .(linkID, date = as.Date(r_dateTime))]
+setkey(plotDT, linkID)
+
+dt <- merge(plotDT, hhAttributesDT, allow.cartesian=TRUE) # not sure why we need to do this - shouldn't be duplicate hhIDs?
+
+myPlot <- ggplot2::ggplot(dt, aes( x = as.Date(date), y = linkID, 
+                               fill = nObs)) +
+  geom_tile() +
+  scale_fill_gradient(low = "red", high = "green") +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "2 months") +
+  theme(axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5,
+                                   hjust = 0.5)) + 
+  labs(caption = plotCaption,
+       x = "Date"
+  )
+
+myPlot + 
+  facet_grid(sample ~ .) +
+  annotate("rect")
+
+```
+
+Figure \@ref(fig:nObsPoint) shows the same data but as a dot plot to highlight those households and dates where we did not receive 60 * 24 = 1440 observations per day.
+
+```{r nObsPoint, fig.cap="Number of observations per household per day"}
+# point plot ----
+myPlot <- ggplot2::ggplot(dt[!is.na(nObs)], aes( x = date, 
+                               y = nObs, 
+                               colour = linkID)) +
+  geom_point() +
+  #facet_wrap(sample ~ .) +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "2 months") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, 
+                                   hjust = 0.5)) + 
+  labs(caption = plotCaption,
+       x = "Date"
+  )
+myPlot + facet_grid(sample ~ .)
+```
+
+The following table shows the min/max observations per day and min/max dates for each household. As above, we should not see:
+
+ * dates before 2014 or in to the future (indicates date conversion errors)
+ * more than 1440 observations per day (indicates potentially duplicate observations)
+ * non-integer counts of circuits as it suggests some column errors
+ 
+ We should also not see NA in any row (indicates date conversion errors). 
+ 
+ If we do see any of these then we still have data cleaning work to do!
+
+```{r summaryTable}
+# Stats table (so we can pick out the dateTime errors)
+setkey(gs1MinDT, hhID)
+mergedDT <- merge(gs1MinDT, hhAttributesDT,  allow.cartesian=TRUE)
+
+dt <- mergedDT[, .(nObs = .N,
+             minDate = min(r_dateTime, na.rm = TRUE),
+             maxDate = max(r_dateTime, na.rm = TRUE)),
+         keyby = .(hhID, sample)]
+
+kableExtra::kable(caption = paste0("Summary observation stats by hhID (sorted by date last heard from) for: ", circuitPattern), dt)
+```
+
+Finally we show the total number of households which we think we have `r circuitPattern` data for.
+
+```{r liveDataHouseholds}
+plotDT <- mergedDT[, .(nHH = uniqueN(hhID)), keyby = .(date = as.Date(r_dateTime), sample)]
+
+plotDT <- plotDT[sample == "Unison", sample := "Sample 1: Unison" ]
+plotDT <- plotDT[sample == "Powerco", sample := "Sample 2: PowerCo" ]
+
+# point plot ----
+myPlot <- ggplot2::ggplot(plotDT, aes( x = date, y = nHH, fill = sample)) +
+  geom_col() +
+  scale_x_date(date_labels = "%Y %b", date_breaks = "2 months") +
+  theme(axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust = 0.5)) + 
+  labs(caption = plotCaption,
+       x = "Date"
+  )
+myPlot
+
+```
+
+The following table summarises the `r circuitPattern` data. Any surprises?
+
+```{r summary of cols, echo = TRUE}
+t <- summary(gs1MinDT)
+kableExtra::kable(caption = paste0("Summary of ", circuitPattern, " circuits"), t)
+
+```
+
+We seem to have some negative powerW values and at least one very large power value.
+
+Nasty surprises often lurk in histograms... The following histogram shows all observations.
+
+```{r histo full}
+ggplot2::ggplot(gs1MinDT, aes(x = powerW)) +
+  geom_histogram(binwidth = 10) +
+  labs(caption = plotCaption)
+```
+
+The next shows the histogram for powerW < 1000W...
+
+```{r histo power under 1000}
+ggplot2::ggplot(gs1MinDT[powerW < 1000], aes(x = powerW)) +
+  geom_histogram(binwidth = 10) +
+  labs(caption = plotCaption)
+```
+
+> There are a lot of zeros (as we'd expect) but why are there negative values?
+
+# `r circuitPattern` profiles
+
+This section produces the profiles as one for each HH but averaged over each season. Data is kept at 1 minute intervals. Note definition of season below...
+
+```{r add season, echo = TRUE}
+# add season
+gs1MinDT <- gs1MinDT[, month := lubridate::month(r_dateTime, label = TRUE)]
+gs1MinDT <- gs1MinDT[, season := "Summer"]
+gs1MinDT <- gs1MinDT[, season := ifelse(month == "Mar" |
+                                              month == "Apr" |
+                                              month == "May", "Autumn", season)]
+gs1MinDT <- gs1MinDT[, season := ifelse(month == "Jun" |
+                                              month == "Jul" |
+                                              month == "Aug", "Winter", season)]
+gs1MinDT <- gs1MinDT[, season := ifelse(month == "Sep" |
+                                              month == "Oct" |
+                                              month == "Nov", "Spring", season)]
+```
+
+## Profile plots: means per household
+
+Figure \@ref{fig:meanHhPlot} shows the mean power for circuits containing "`r circuitPattern`" by season.
+
+```{r meanHhPlot, fig.cap="Mean power demand (W) per household", fig.height=6}
+# add onsHourMin
+gs1MinDT <- gs1MinDT[, obsHourMin := hms::as.hms(r_dateTime)]
+
+# create plot table
+plotDT <- gs1MinDT[!is.na(season), 
+                     .(meanW = mean(powerW)), keyby = .(hhID, obsHourMin, season)]
+setkey(plotDT, hhID)
+nHHs <- uniqueN(plotDT$hhID)
+myPlot <- ggplot2::ggplot(plotDT, aes(y = meanW, x = obsHourMin, colour = hhID)) +
+  geom_point() +
+  facet_grid(season ~ .) +
+  labs(caption = paste0(plotCaption,"\nn households = ", nHHs),
+       x = "Time of Day")
+labelProfilePlot(myPlot)
+
+# save the plot at high def
+plotFile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_byHouseholdSeasonalProfilePlot.pdf")
+ggplot2::ggsave(plotFile,
+                height = 10, width = 8, dpi = 400)
+print(paste0("Saving plot to ", plotFile))
+```
+
+Finally we save the seasonal per-household profiles for future re-use.
+
+```{r save household profiles}
+# save the profiles for future use ----
+ofile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_byHouseholdSeasonalProfiles.csv")
+print(paste0("Saving profile data used to build this plot to: ", ofile, "..."))
+data.table::fwrite(plotDT, ofile)
+
+cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
+try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
+print(paste0("Gzipped ", ofile))
+
+t <- summary(plotDT)
+
+kableExtra::kable(caption = paste0("Summary of household level mean profiles for ", circuitPattern),
+             t)
+```
+
+As we can see there is considerable variation between households in both the level and timing of heat pump demand.
+
+Note that the code saves a high definition version of the plot and the profiles for future re-use.
+
+## Profile plots: overall household mean
+
+This section shows a plot of mean and median profiles across all household by season. The mean profile also shows the level of variance by plotting error bars at +/- 1 s.d.
+
+Figure \@ref{fig:meanPlot} shows the mean power for circuits containing "`r circuitPattern`" by season.
+
+```{r meanPlot, fig.cap="Mean power profiles (with 95% CI)", fig.height=6}
+# create plot table
+plotDT <- gs1MinDT[!is.na(season), 
+                     .(meanW = mean(powerW),
+                       medianW = median(powerW),
+                       nObs = .N,
+                       sdW = sd(powerW)), keyby = .(obsHourMin, season)]
+
+# mean plot ----
+# basic version (mean line only)
+myPlot <- ggplot2::ggplot(plotDT, aes(y = meanW, x = obsHourMin, colour = season)) +
+  labs(caption = paste0(plotCaption,"\nn households = ", nHHs),
+       x = "Time of Day")
+
+labelProfilePlot(myPlot + geom_line())
+
+# save the plot at high def
+plotFile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_overallMeanSeasonalProfilePlot.pdf")
+ggplot2::ggsave(plotFile,
+                height = 10, width = 8, dpi = 400)
+print(paste0("Saving plot to ", plotFile))
+```
+
+Figure \@ref{fig:meanPlotSD} plot adds +/1 1 standard deviation to show the degree of variation/uncertainty.
+
+> NB: this erroneously assumes a normal distribution
+
+```{r meanPlotSD, fig.cap="Mean power profiles (with +/- 1 SD)", fig.height=6}
+
+# add error bars and so need to facet
+labelProfilePlot(myPlot + geom_errorbar(aes(ymin = meanW - sdW, ymax = meanW + sdW, 
+                                            colour = season), 
+                                        width = 0.4, alpha = 0.2) +
+                   facet_grid(season ~ .) +
+                   geom_point() +
+                   labs( caption = paste0(plotCaption,"\nn households = ", nHHs,
+                                                 "\nError bars = +/- 1 S.D."))
+                 )
+
+# save the plot at high def
+plotFile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_overallMeanSDSeasonalProfilePlot.pdf")
+ggplot2::ggsave(plotFile,
+                height = 10, width = 8, dpi = 400)
+print(paste0("Saving plot to ", plotFile))
+```
+
+Figure \@ref{fig:meanPlotCI} plot adds 95% confidence intervals to show the degree of variation/uncertainty. Due to the highly skewed nature of the power demand data, this is implemented using the ggplot2 `mean_cl_boot()` summary function. This is an implementation of [smean.cl.boot](https://www.rdocumentation.org/packages/Hmisc/versions/4.1-1/topics/smean.sd), a "basic nonparametric bootstrap for obtaining confidence limits for the population mean without assuming normality" [source](https://stackoverflow.com/questions/17414565/interpretation-of-stat-summary-mean-cl-boot-at-ggplot2).
+
+```{r meanPlotCI, fig.cap="Mean power profiles (with 95% CI)"}
+# 95% CI as a variance indicator
+# uses mean_cl_boot() so does not need to assume normality
+# slow as uses bootstrap
+
+# add error bars
+labelProfilePlot(ggplot(gs1MinDT, aes(x = obsHourMin, 
+                                      group = season,
+                                      colour = season,
+                                      y = powerW)
+                        ) + 
+                   stat_summary(fun.data = "mean_cl_boot") +
+                   labs( caption = paste0(plotCaption,"\nn households = ", nHHs,
+                                                 "\nError bars = 95% CI"))
+                 )
+
+# save the plot at high def
+plotFile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_overallMeanCISeasonalProfilePlot.pdf")
+ggplot2::ggsave(plotFile,
+                height = 10, width = 8, dpi = 400)
+print(paste0("Saving plot to ", plotFile))
+```
+
+Figure \@ref{fig:medianPlot} shows the median for the same combinations of data.
+
+```{r medianPlot, fig.cap="Median power plot"}
+# median plot ----
+myPlot <- ggplot2::ggplot(plotDT, aes(y = medianW, x = obsHourMin, colour = season)) +
+  geom_point() +
+  facet_grid(season ~ .) +
+  labs(caption = paste0(plotCaption,"\nn households = ", nHHs),
+       x = "Time of Day")
+labelProfilePlot(myPlot)
+
+# save the plot at high def
+plotFile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_overallMedianSeasonalProfilePlot.pdf")
+ggplot2::ggsave(plotFile,
+                height = 10, width = 8, dpi = 400)
+print(paste0("Saving plot to ", plotFile))
+```
+
+Finally we save the seasonal aggregates for future re-use.
+
+```{r saveSeasonalAggregates}
+# save the profiles for future use ----
+ofile <- paste0(outPath, "profiles/", circuitPattern, "_", dateFrom, "_", dateTo, "_overallSeasonalProfiles.csv")
+print(paste0("Saving profile data used to build this plot to: ", ofile, "..."))
+data.table::fwrite(plotDT, ofile)
+
+cmd <- paste0("gzip -f ", "'", path.expand(ofile), "'") # gzip it - use quotes in case of spaces in file name, expand path if needed
+try(system(cmd)) # in case it fails - if it does there will just be .csv files (not gzipped) - e.g. under windows
+print(paste0("Gzipped ", ofile))
+
+t <- summary(plotDT)
+
+kableExtra::kable(caption = paste0("Summary of overall profiles for ", circuitPattern),
+             t)
+```
+
+The difference between the mean and median plots is instructive - it suggests that the mean plots for summer are skewed by a few higher heat pump-using households.
+
+The plots could be repeated or re-facted e.g. by household size.
+
+As before, the code saves a high definition version of the plot.
+
+## Profile plots: overall household mean by household size.
+
+Figure \@ref{fig:meanPlot} shows the mean power for circuits containing "`r circuitPattern`" by season and presenceo f children. This uses the linkID to correctly link all household attribute data to the grid spy data.
+
+```{r meanPlotHHSize, fig.cap="Mean power profiles by household size", fig.height=6}
+# create plot table
+
+```
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+R packages used:
+
+ * base R - for the basics [@baseR]
+ * data.table - for fast (big) data handling [@data.table]
+ * lubridate - date manipulation [@lubridate]
+ * ggplot2 - for slick graphics [@ggplot2]
+ * readr - for csv reading/writing [@readr]
+ * dplyr - for select and contains [@dplyr]
+ * progress - for progress bars [@progress]
+ * kableExtra - to create this document & neat tables [@knitr]
+ * GREENGrid - for local NZ GREEN Grid project utilities
+
+Session info:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References
