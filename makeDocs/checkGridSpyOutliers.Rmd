@@ -219,6 +219,7 @@ ggplot(hpDT[powerW < 0], aes(x = powerW, fill = linkID)) + geom_histogram() + fa
 We therefore recommend that when analysing heat pump data:
 
  * rf_46 is removed;
+ * this value is removed: `rf_27 	2015-08-22 10:33:00 	Heat Pump$2826 	27759 `
  * _any_ day with negative power values for any household is also removed.
  
 ## Negative power: Hot Water
