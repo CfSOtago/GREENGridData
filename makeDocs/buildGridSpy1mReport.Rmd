@@ -543,6 +543,15 @@ Unfortunately this is not as straightforward as one would wish because many hous
  * [code](https://github.com/CfSOtago/GREENGridData/blob/master/examples/code/extract_per_house_totals.r): kindly provided by Jason Mair
  * circuits.csv (see package [data folder](https://github.com/CfSOtago/GREENGridData/tree/master/data))
 
+# Dealing with negative power {#negPower}
+
+There are a number of observations that have recorded negative power. There are at least two potential reasons for this:
+
+ * a Grid Spy sensor was placed on the wrong wire and/or set to the wrong phase
+ * a circuit contained a PV inverter which pushes power into the home and which is measured as -ve power (when active)
+ 
+We have conducted a [seperate analysis](checkNegativePower.html) of the incidence of negative values which makes recommendations on actions to take. 
+
 # Loading the cleaned data files {#loadClean}
 
 See the [code examples](https://github.com/CfSOtago/GREENGridData/tree/master/examples) for suggestions on how to do this.
