@@ -125,7 +125,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">NZ GREEN Grid Household Electricity Demand Study</h1>
 <h3 class="subtitle"><em>Household attributes (version 1.0)</em></h3>
 <h4 class="author"><em>Anderson, B., Eyers, D., Ford, R., Giraldo Ocampo, D., Peniamina, R., Stephenson, J., Suomalainen, K., Wilcocks, L. and Jack, M.</em></h4>
-<h4 class="date"><em>Last run at: 2018-09-26 10:04:48 (Pacific/Auckland)</em></h4>
+<h4 class="date"><em>Last run at: 2018-11-28 17:02:08 (Pacific/Auckland)</em></h4>
 
 </div>
 
@@ -4869,7 +4869,7 @@ NA
 <p>Note also that data exists in the GridSpy power demand data for whom no household data exists (e.g. rf_01 &amp; rf_02).</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:dataHeader">Table 6.1: </span>Household data: key columns
+<span id="tab:dataHeader">Table 6.1: </span>Household data: key columns (NA set to ‘.’ in string variables for clarity)
 </caption>
 <thead>
 <tr>
@@ -4885,8 +4885,29 @@ Location
 <th style="text-align:right;">
 nAdults
 </th>
+<th style="text-align:right;">
+nChildren0_12
+</th>
 <th style="text-align:left;">
 r_stopDate
+</th>
+<th style="text-align:left;">
+Electric heater
+</th>
+<th style="text-align:right;">
+Heat pump number
+</th>
+<th style="text-align:left;">
+Other Appliance
+</th>
+<th style="text-align:left;">
+PV Inverter
+</th>
+<th style="text-align:left;">
+Energy Storage
+</th>
+<th style="text-align:left;">
+Other Generation Device
 </th>
 <th style="text-align:left;">
 notes
@@ -4907,11 +4928,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -4927,11 +4969,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -4947,11 +5010,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -4967,11 +5051,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -4987,11 +5092,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5007,11 +5133,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spa
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5027,11 +5174,32 @@ New Plymouth
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5047,11 +5215,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5067,11 +5256,32 @@ New Plymouth
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5087,8 +5297,29 @@ New Plymouth
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 2015-01-15
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 <td style="text-align:left;">
 Disconnected 15/01/2015. Re-used
@@ -5107,8 +5338,29 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 2016-04-02
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 <td style="text-align:left;">
 Re-user. Then disconnected 02/04/2016
@@ -5127,11 +5379,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5147,8 +5420,29 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+3
+</td>
 <td style="text-align:left;">
 2016-03-28
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 <td style="text-align:left;">
 Unusual &amp; specialist energy tech configuration. Disconnected 28/03/2016. Re-used.
@@ -5167,8 +5461,29 @@ New Plymouth
 <td style="text-align:right;">
 NA
 </td>
+<td style="text-align:right;">
+NA
+</td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 <td style="text-align:left;">
 Re-user
@@ -5187,11 +5502,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5207,11 +5543,32 @@ New Plymouth
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+water bed 300 W element
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5227,11 +5584,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5247,11 +5625,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5267,11 +5666,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5287,11 +5707,32 @@ New Plymouth
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+spa
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5307,11 +5748,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5327,11 +5789,32 @@ New Plymouth
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5347,11 +5830,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+yes
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+sauna/spa
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5367,11 +5871,32 @@ New Plymouth
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5387,11 +5912,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+food waste disposer
+</td>
+<td style="text-align:left;">
+yes
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5407,11 +5953,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5427,11 +5994,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+spa
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5447,11 +6035,32 @@ Hawkes Bay
 <td style="text-align:right;">
 3
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5467,11 +6076,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5487,11 +6117,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+home water cooler, home ventilation system
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5507,11 +6158,32 @@ Hawkes Bay
 <td style="text-align:right;">
 3
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+food waste disposer
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5527,11 +6199,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+food waste disposal
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5547,11 +6240,32 @@ Hawkes Bay
 <td style="text-align:right;">
 1
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spa
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5567,11 +6281,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5587,8 +6322,29 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+ventilation system
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 <td style="text-align:left;">
 very large number of circuits
@@ -5607,11 +6363,32 @@ Hawkes Bay
 <td style="text-align:right;">
 3
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+food waste disposer
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5627,11 +6404,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+spa
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5647,11 +6445,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+3
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+swimming pool, food waste disposal
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5667,11 +6486,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+3
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5687,11 +6527,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
+.
+</td>
+<td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5707,11 +6568,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+2
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5727,11 +6609,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+3
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5747,11 +6650,32 @@ Hawkes Bay
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 <tr>
@@ -5767,11 +6691,32 @@ Hawkes Bay
 <td style="text-align:right;">
 3
 </td>
+<td style="text-align:right;">
+0
+</td>
 <td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
-NA
+.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+.
 </td>
 </tr>
 </tbody>
@@ -5779,7 +6724,7 @@ NA
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">7</span> Runtime</h1>
-<p>Analysis completed in 4.66 seconds ( 0.08 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 3.26 seconds ( 0.05 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.1 (2018-07-02) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">8</span> R environment</h1>
@@ -5816,34 +6761,35 @@ NA
 ## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
-## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## [1] en_NZ.UTF-8/en_NZ.UTF-8/en_NZ.UTF-8/C/en_NZ.UTF-8/en_NZ.UTF-8
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
 ##  [1] bindrcpp_0.2.2    skimr_1.0.3       readxl_1.1.0     
-##  [4] kableExtra_0.9.0  lubridate_1.7.4   readr_1.1.1      
-##  [7] ggplot2_3.0.0     data.table_1.11.4 bookdown_0.7     
-## [10] rmarkdown_1.10    GREENGridData_1.0
+##  [4] lubridate_1.7.4   readr_1.1.1       bookdown_0.7     
+##  [7] rmarkdown_1.10    ggplot2_3.1.0     data.table_1.11.8
+## [10] kableExtra_0.9.0  GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] progress_1.2.0    tidyselect_0.2.4  xfun_0.3         
+##  [1] progress_1.2.0    tidyselect_0.2.5  xfun_0.4         
 ##  [4] purrr_0.2.5       reshape2_1.4.3    colorspace_1.3-2 
 ##  [7] htmltools_0.3.6   viridisLite_0.3.0 yaml_2.2.0       
-## [10] rlang_0.2.2       pillar_1.3.0      glue_1.3.0       
-## [13] withr_2.1.2       bindr_0.1.1       plyr_1.8.4       
-## [16] stringr_1.3.1     munsell_0.5.0     gtable_0.2.0     
-## [19] cellranger_1.1.0  rvest_0.3.2       evaluate_0.11    
-## [22] labeling_0.3      knitr_1.20.13     highr_0.7        
-## [25] Rcpp_0.12.18      backports_1.1.2   scales_1.0.0     
-## [28] hms_0.4.2         digest_0.6.15     stringi_1.2.4    
-## [31] dplyr_0.7.6       grid_3.5.1        rprojroot_1.3-2  
-## [34] tools_3.5.1       magrittr_1.5      lazyeval_0.2.1   
-## [37] tibble_1.4.2      crayon_1.3.4      tidyr_0.8.1      
-## [40] pkgconfig_2.0.2   xml2_1.2.0        prettyunits_1.0.2
-## [43] assertthat_0.2.0  httr_1.3.1        rstudioapi_0.7   
-## [46] R6_2.2.2          compiler_3.5.1</code></pre>
+## [10] utf8_1.1.4        rlang_0.3.0.1     pillar_1.3.0     
+## [13] glue_1.3.0        withr_2.1.2       bindr_0.1.1      
+## [16] plyr_1.8.4        stringr_1.3.1     munsell_0.5.0    
+## [19] gtable_0.2.0      cellranger_1.1.0  rvest_0.3.2      
+## [22] evaluate_0.12     labeling_0.3      knitr_1.20       
+## [25] GREENGrid_0.1.0   fansi_0.4.0       highr_0.7        
+## [28] Rcpp_0.12.19      backports_1.1.2   scales_1.0.0     
+## [31] hms_0.4.2         digest_0.6.18     stringi_1.2.4    
+## [34] dplyr_0.7.7       grid_3.5.1        rprojroot_1.3-2  
+## [37] cli_1.0.1         tools_3.5.1       magrittr_1.5     
+## [40] lazyeval_0.2.1    tibble_1.4.2      tidyr_0.8.1      
+## [43] crayon_1.3.4      pkgconfig_2.0.2   xml2_1.2.0       
+## [46] prettyunits_1.0.2 assertthat_0.2.0  httr_1.3.1       
+## [49] rstudioapi_0.8    R6_2.3.0          compiler_3.5.1</code></pre>
 </div>
 </div>
 <div id="energy-cultures-2-long-survey-questions" class="section level1">

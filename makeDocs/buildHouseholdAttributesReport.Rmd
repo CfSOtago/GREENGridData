@@ -205,9 +205,20 @@ The following table (\@ref(tab:dataHeader)) shows the key columns of the househo
 
 Note also that data exists in the GridSpy power demand data for whom no household data exists (e.g. rf_01 & rf_02).
 
+```{r createTable, echo=FALSE, include=FALSE}
+
+dt <- hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "nChildren0_12", "r_stopDate",
+                                "Electric heater", "Heat pump number", "Other Appliance", "PV Inverter", "Energy Storage","Other Generation Device",
+                                "notes")]
+# clean up table
+for (j in names(dt)) {
+  set(dt,which(is.na(dt[[j]])),j,".")
+}
+```
+
 ```{r dataHeader}
-kableExtra::kable(caption = "Household data: key columns", 
-             hhAttributesDT[, c("hhID", "linkID", "Location", "nAdults", "r_stopDate", "notes")][order(hhID)]) %>%
+kableExtra::kable(caption = "Household data: key columns (NA set to '.' in string variables for clarity)", 
+             dt[order(hhID)]) %>%
   kable_styling()
 ```
 
