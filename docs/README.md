@@ -38,6 +38,7 @@ _Documentation_:
 
  * [Research data overview](overviewReport_v1.0.html) report;
  * [Household electricity demand data](gridSpy1mProcessingReport_v1.0.html) processing and documentation report;
+ * [Household electricity demand outlier and negative power values](gridSpy1mOutliersReport_v1.0.html) report;
  * [Household attribute data](householdAttributeProcessingReport_v1.0.html) processing and documentation report.
 
 > NB: Version 1 of the data package does not include any time-use diary data. 
