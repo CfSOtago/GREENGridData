@@ -403,7 +403,7 @@ p <- ggplot2::ggplot(plotDT, aes(x = obsHourDate)) +
   geom_line(aes(y = maxPower), colour = "blue") +
   facet_grid(circuit ~ ., scales = "free_y") +
   labs(y = "Max/min kW",
-       x= "Hour of the day")
+       x= "Half hour (unlabelled for clarity")
 
 # rotate facet grid labels for clarity
 p + theme(strip.text.y = element_text(angle = 0))
