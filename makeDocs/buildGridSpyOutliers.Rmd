@@ -1,9 +1,9 @@
 ---
 params:
-  subtitle: ""
-  title: ""
-  version: ""
-  localData: ""
+ title: ""
+ subtitle: ""
+ version: ""
+ localData: ""
 title: '`r params$title`'
 subtitle: '`r params$subtitle`'
 author: '`r ggrParams$Authors`'
@@ -33,10 +33,10 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 startTime <- proc.time()
 
 # Libraries
-library(GREENGridData)
-GREENGridData::setup()
-
-localLibs <- c("data.table", "ggplot2", "kableExtra")
+localLibs <- c("data.table", 
+               "ggplot2", 
+               "kableExtra", 
+               "lubridate")
 GREENGridData::loadLibraries(localLibs)
 # Local parameters ----
 
@@ -137,7 +137,7 @@ hhDT <- hhDT[`PV Inverter` == "yes", hasPV := "Has PV" ]
 ```
 
 
-# Check negative power
+# Check outliers
 
 We would rather not load the entire data for all households to do this so instead we start by investigating negative power in extracts for three different circuit labels:
 
@@ -170,7 +170,8 @@ As we can see from Table \@ref(tab:maxOutlier) there is only 1 value where power
 ```{r maxOutlier}
 t <- head(hpDT[powerW > 10000])
 
-kableExtra::kable(t, caption = "All Heat Pump records where power > 10kW")
+kableExtra::kable(t, caption = "All Heat Pump records where power > 10kW") %>%
+  kable_styling()
 ```
 
 
@@ -205,7 +206,8 @@ negHHsHpDT <- hpDT[, .(minPower = min(powerW),
                    ),
                keyby = .(linkID)]
 
-kableExtra::kable(negHHsHpDT[minPower < 0], caption = "Households where negative power observed")
+kableExtra::kable(negHHsHpDT[minPower < 0], caption = "Households where negative power observed") %>%
+  kable_styling()
 
 negHH <- negHHsHpDT[minPower < 0, .(linkID, minPowerHP = minPower, maxPowerHP = maxPower)]
 
@@ -218,7 +220,7 @@ ggplot(hpDT[powerW < 0], aes(x = powerW, fill = linkID)) + geom_histogram() + fa
 
 We therefore recommend that when analysing heat pump data:
 
- * rf_46 is removed;
+ * rf_46 is fixed - see Section \@ref(rf46);
  * this value is removed: `rf_27 	2015-08-22 10:33:00 	Heat Pump$2826 	27759 `
  * _any_ day with negative power values for any household is also removed.
  
@@ -272,7 +274,9 @@ negHHsHwDT <- hwDT[, .(minPower = min(powerW),
                    ),
                keyby = .(linkID)]
 
-kableExtra::kable(negHHsHwDT[minPower < 0], caption = "Households where negative power observed")
+kableExtra::kable(negHHsHwDT[minPower < 0], caption = "Households where negative power observed") %>%
+  kable_styling()
+
 dt <- negHHsHwDT[minPower < 0, .(linkID, minPowerHW = minPower, maxPowerHW = maxPower)]
 
 negHH <- merge(negHH, dt, all = TRUE)
@@ -281,9 +285,9 @@ ggplot(hwDT[powerW < 0], aes(x = powerW, fill = linkID)) + geom_histogram(binwid
   labs(caption = "Note y scale varies across panel")
 ```
 
-We therefore recommend that when analysing heat pump data:
+We therefore recommend that when analysing hot water data:
 
- * rf_46 is removed;
+ * rf_46 is fixed - see Section \@ref(rf46);
  * _any_ day with negative power values is also removed (including for rf_14).
 
 ## Lighting
@@ -297,7 +301,7 @@ summary(hwDT)
 
 ```
 
-```{r lBoxplot, fig.cap="Boxplot of Hot Water power values per household"}
+```{r lBoxplot, fig.cap="Boxplot of Lighting power values per household"}
 lBox <- ggplot2::ggplot(lDT, aes(x = linkID, y = powerW, group = linkID)) +
   geom_boxplot()
 
@@ -310,7 +314,8 @@ This is clear when we consider the distribution of power by household ID and cir
 t <- lDT[, .(minPower = min(powerW),
              maxPower = max(powerW)),
          keyby = .(linkID, circuit)]
-kableExtra::kable(t[order(-maxPower)], caption = "Power distribution by household and circuit label")
+kableExtra::kable(t[order(-maxPower)], caption = "Power distribution by household and circuit label") %>%
+  kable_styling()
 ```
 
 ```{r lNeg, fig.cap="Number of negative power observations per hour (max = 60 * 60) by household over time"}
@@ -345,7 +350,9 @@ negHHslDT <- lDT[, .(minPower = min(powerW),
                    ),
                keyby = .(linkID)]
 
-kableExtra::kable(negHHslDT[minPower < 0], caption = "Households where negative power observed")
+kableExtra::kable(negHHslDT[minPower < 0], caption = "Households where negative power observed") %>%
+  kable_styling()
+
 dt <- negHHslDT[minPower < 0, .(linkID, minPowerL = minPower, maxPowerL = maxPower)]
 
 negHH <- merge(negHH, dt, all = TRUE)
@@ -354,19 +361,68 @@ ggplot(lDT[powerW < 0], aes(x = powerW, fill = linkID)) + geom_histogram(binwidt
   labs(caption = "Note y scale varies across panel")
 ```
 
-We therefore recommend that when analysing heat pump data:
+We therefore recommend that when analysing lighting data:
 
- * rf_46 is removed
+ * rf_46 is fixed - see Section \@ref(rf46)
  
 ## Overall patterns of negative observations
 
-Table \@ref(tab:allNeg) shows that there is only one household where negative values are recorded on multiple non-PV circuits. This confirms our view that data for rf_46 should be removed from analysis completely but that other data should be removed on a day by day/household by household basis.
+Table \@ref(tab:allNeg) shows that there is only one household where negative values are recorded on multiple non-PV circuits. This confirms our view that data for rf_46 should be treated seperately (see Section \@ref(rf46)) but that other data should be removed on a day by day/household by household basis.
 
 ```{r allNeg}
-kableExtra::kable(negHH, caption = "All households where negative power observed for heat pumps, hot water or lighting")
+kableExtra::kable(negHH, caption = "All households where negative power observed for heat pumps, hot water or lighting") %>%
+  kable_styling()
 ```
 
  
+## The mysterious case of rf_46 {#rf46}
+
+The analysis above has identified this household's data as being _very_ strange. We detected a lot of negative power values over a long time but they seem to be interspersed with positive values. 
+
+We know that rf_46 did not have PV nor anything else of note. Let's take a look at rf_46 a bit more closely...
+
+```{r loadrf46}
+rf_46DT <- GREENGridData::getCleanGridSpyFile(paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/data/rf_46_all_1min_data.csv.gz")) # use this function to ensure proper number etc formats
+t <- summary(rf_46DT)
+
+kableExtra::kable(t, caption = "Summary of grid spy data for rf_46") %>%
+  kable_styling()
+```
+
+Figure \@ref(fig:plotMinMaxrf46) shows the max and min power per half-hour for each circuit. This suggests that _most_ circuits had two monitors of which only one was recording the 'power demand' we are interested in. The second monitor in each pair appears to have been measuring something which was an order of magnitude _smaller_ (see y scales) than the power demand we are interested in and which fluctuated between relatively small positive and negative values. 
+
+```{r plotMinMaxrf46, fig.cap="Max and min power in kW per hour for each circuit", fig.height=8}
+rf_46DT <- rf_46DT[, obsHourDate := lubridate::round_date(r_dateTime, unit = "hours")]
+
+plotDT <- rf_46DT[, .(minPower = min(powerW/1000),
+                      maxPower = max(powerW/1000)),
+                  keyby = .(circuit, obsHourDate)]
+
+p <- ggplot2::ggplot(plotDT, aes(x = obsHourDate)) +
+  geom_line(aes(y = minPower), colour = "red") +
+  geom_line(aes(y = maxPower), colour = "blue") +
+  facet_grid(circuit ~ ., scales = "free_y") +
+  labs(y = "Max/min kW",
+       x= "Hour of the day")
+
+# rotate facet grid labels for clarity
+p + theme(strip.text.y = element_text(angle = 0))
+```
+
+This is confirmed by \@ref(tab:minMaxTablerf46) which indicates which of each pair of circuit labels should be excluded from any analysis that uses this household.
+
+```{r minMaxTablerf46}
+t <- rf_46DT[, .(minkW = min(powerW/1000),
+                 meankW = mean(powerW/1000),
+                 maxkW = max(powerW/1000)),
+             keyby = .(circuit)]
+
+kableExtra::kable(t, 
+                  caption = "Summary of grid spy data for rf_46 by circuit",
+                  digits = 3) %>%
+  kable_styling()
+```
+
 # Runtime
 
 

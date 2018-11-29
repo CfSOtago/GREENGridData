@@ -32,10 +32,11 @@ GREENGridData::loadLibraries(localLibs)
 # Local parameters ----
 version <- "1.0"
 
+title <- paste0("NZ GREEN Grid Household Electricity Demand Study")
+
 # --- Code ---
 
 # --- Overview report ----
-title <- paste0("NZ GREEN Grid Household Electricity Demand Study")
 subtitle <- paste0("Research data overview (version ", version, ")")
 rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildOverviewReport.Rmd")
 rmarkdown::render(input = rmdFile,
@@ -66,7 +67,7 @@ rmarkdown::render(input = rmdFile,
 # --- Grid spy outliers report ----
 localData <- 0 # 1 = yes
 subtitle <- paste0("1 minute electricity power outlier report (version ", version, ")")
-rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/checkGridSpyOutliers.Rmd")
+rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildGridSpyOutliers.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(localData = localData, title = title, subtitle = subtitle, version = version),
