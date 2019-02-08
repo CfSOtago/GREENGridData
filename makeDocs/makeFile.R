@@ -2,9 +2,6 @@
 # Master (make) file for documentation
 ####
 
-# Housekeeping ----
-rm(list=ls(all=TRUE)) # remove all objects from workspace
-
 # Load nzGREENGrid package ----
 
 print(paste0("#-> Load GREENGridData package"))
@@ -16,7 +13,7 @@ print(paste0("#-> Set up GREENGridData package "))
 GREENGridData::setup()
 print(paste0("#-> Done "))
 
-# Load libraries needed across all .Rmd files ----
+# Load libraries needed across all .Rmd files ----
 localLibs <- c("rmarkdown",
                "bookdown",
                "data.table", # data munching
