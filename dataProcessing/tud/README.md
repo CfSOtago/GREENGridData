@@ -4,4 +4,4 @@
 
 Two time-use diaries were conducted, one for each of the two samples. This data has yet to be processed and released.
 
-> Track outstanding [issues](https://github.com/dataknut/nzGREENGridDataR/labels/TUD).
+> Track outstanding [issues](https://github.com/CfSOtago/GREENGridData/labels/TUD).
