@@ -56,7 +56,8 @@ keepShortCols <- c("linkID","hasShortSurvey",
               "StartDate",
               "Q4",
               "Q7",
-              #"Q20",
+              "Q20",
+              "Q49", # Light bulb types (majority)
               "Q53_1",
               "Q53_2",
               "Q53_3",
@@ -120,7 +121,7 @@ keepLongCols <- c("linkID", "hasLongSurvey",
               "Q19_15",
               "Q19_16",
               "Q19_17",
-              #"Q20",
+              "Q20",
               "Q30_1",
               "Q33_1",
               "Q40_1",
@@ -144,6 +145,7 @@ keepLongCols <- c("linkID", "hasLongSurvey",
               "Q40_20",
               "Q40_21",
               "Q40_38",
+              "Q49", # Light bulb types (majority)
               "Q53_1",
               "Q53_2",
               "Q53_3",
@@ -176,14 +178,14 @@ allHhEc2FullDT <- rbind(hhEc2ShortDT,hhEc2LongDT,hhEc2DT, fill=TRUE)
 nrow(allHhEc2FullDT)
 data.table::uniqueN(allHhEc2FullDT$linkID)
 
-# safe data ----
+#> safe data ----
 allHhEc2SafeDT <- rbind(keephhEc2LongDT,keephhEc2ShortDT,keephhEc2DT, fill=TRUE)
 
 #> check for duplicates ----
 nrow(allHhEc2SafeDT)
 data.table::uniqueN(allHhEc2SafeDT$linkID)
 
-# set date ----
+# > set date ----
 allHhEc2FullDT <- allHhEc2FullDT[, surveyStartDate := lubridate::dmy_hm(StartDate)]
 #allHhEc2FullDT$StartDate <- NULL
 setkey(allHhEc2FullDT, linkID)
@@ -192,6 +194,24 @@ allHhEc2SafeDT <- allHhEc2SafeDT[, surveyStartDate := lubridate::dmy_hm(StartDat
 #allHhEc2SafeDT$StartDate <- NULL
 setkey(allHhEc2SafeDT, linkID)
 
+# code useful variables ----
+# NB this relies extensively on https://ourarchive.otago.ac.nz/handle/10523/5634
+# some coding may be suspect since a full code-book as implemented in GREEN Grid does not seem to exist
+
+# > Q20 Main heat type ----
+# p75 table Table 3.11 shows a long list
+# if we assume the same frequency order (can we?)...
+table(allHhEc2SafeDT$Q20)
+
+allHhEc2SafeDT <- allHhEc2SafeDT[, Q20_coded := Q20]
+
+# > Q49 Majority of lighting ----
+# p88 table shows CFL, incandescent, halogen, LED (order of frequency)
+# if we assume the same frequency order (can we?)...
+table(allHhEc2SafeDT$Q49)
+#
+allHhEc2SafeDT <- allHhEc2SafeDT[, Q49_coded := Q49]
+  
 # create combined DT ----
 hhAttributesFullDT <- allHhEc2FullDT[hhMasterDT]
 hhAttributesFullDT <- hhAppliancesDT[hhAttributesFullDT] # why do we need to do this in two steps?
@@ -217,4 +237,4 @@ t <- proc.time() - startTime
 
 elapsed <- t[[3]]
 
-paste0("Analysis completed in ", round(elapsed,2), "seconds ( ", round(elapsed/60,2), " minutes)")
+paste0("Processing completed in ", round(elapsed,2), " seconds ( ", round(elapsed/60,2), " minutes)")
