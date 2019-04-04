@@ -7,7 +7,7 @@ gSpyParams$gSpyFileThreshold <- 3000 # assume any files smaller than this (bytes
 
 gSpyParams$pattern <- "*at1.csv$" # e.g. *at1.csv$ filters only 1 min data
 
-gSpyParams$dstNZDates <- paste0(findParentDirectory("GREENGridData"),"/data/dstNZDates.csv")
+gSpyParams$dstNZDates <- paste0(findParentDirectory("GREENGridData"),"/data/dstNZDates.csv") # start and of DST dates in NZ for relevant years - used to detect date processing errors
 
 # Must be run after localData is set
 
