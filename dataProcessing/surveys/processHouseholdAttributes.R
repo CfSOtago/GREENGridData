@@ -11,10 +11,10 @@ print(paste0("#-> Set up GREENGridData package "))
 GREENGridData::setup()
 print(paste0("#-> Done "))
 
-# Load libraries needed in this .r file ----
+# Load libraries needed in this .r file ----
 rmdLibs <- c("data.table", # data munching
              "ggplot2", # for fancy graphs
-             "lubridate", # date & time processing
+             "lubridate", # date & time processing
              "readr", # reading/writing csv files
              "readxl", # reading xlsx
              "skimr", # for skim

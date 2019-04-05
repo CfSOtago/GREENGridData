@@ -30,10 +30,10 @@ ggrParams$dataLoc <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # HCS by
 # Location of basic household data
 ggrParams$gsHHMasterFile <- paste0(ggrParams$dataLoc, "Green Grid Project Management/Gridspy/Master list of Gridspy units.xlsx")
 ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/appliancesSummary.xlsx")
-ggrParams$UnisonShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonShortSurvey_with_house_label.csv")
-ggrParams$UnisonLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/EC2HouseholdSurvey__UnisonLongSurvey.csv")
-ggrParams$PowercoSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/PowerCo/Household survey results 16.7.14.csv")
-ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Unison/householdSurveyData/ec2QuestionLabels.xlsx")
+ggrParams$HawkesBayShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/EC2HouseholdSurvey__HawkesBayShortSurvey_with_house_label.csv")
+ggrParams$HawkesBayLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/EC2HouseholdSurvey__HawkesBayLongSurvey.csv")
+ggrParams$TaranakiSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Taranaki/Household survey results 16.7.14.csv")
+ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/ec2QuestionLabels.xlsx")
 
 ggrParams$hhOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/"
 
