@@ -137,6 +137,7 @@ The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on househ
 
 ```{r loadSafeSurvey, include=FALSE}
 # read in data produced by processHouseholdAttributes.R
+# do not do any re-coding here - put that in the above .R script
 hhAttributesDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 ```
 
