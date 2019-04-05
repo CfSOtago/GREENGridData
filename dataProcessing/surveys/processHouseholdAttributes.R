@@ -165,7 +165,7 @@ keepLongCols <- c("linkID", "hasLongSurvey",
                   "Q58#2_1")
 keephhEc2LongDT <- hhEc2LongDT[!is.na(linkID), ..keepLongCols] # no point keeping unknown IDs
 
-# > New Plymouth sample ----
+# > Taranaki sample ----
 keephhEc2DT <- hhEc2DT[!is.na(linkID), ..keepLongCols]
 
 # Combine them all using rbind ----
