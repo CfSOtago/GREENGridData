@@ -1,0 +1,183 @@
+﻿ec2UnisonShort,ec2UnisonShort
+ResponseID,ResponseID
+ResponseSet,ResponseSet
+Name,Name
+ExternalDataReference,ExternalDataReference
+EmailAddress,EmailAddress
+IPAddress,IPAddress
+Status,Status
+StartDate,StartDate
+EndDate,EndDate
+Finished,Finished
+RespondentID,RespondentID
+HomeAddress,HomeAddress
+HomeLat,HomeLat
+HomeLng,HomeLng
+WorkAddress,WorkAddress
+WorkLat,WorkLat
+WorkLng,WorkLng
+PreSchoolAddress,PreSchoolAddress
+PreSchoolLat,PreSchoolLat
+PreSchoolLng,PreSchoolLng
+PriSchoolAddress,PriSchoolAddress
+PriSchoolLat,PriSchoolLat
+PriSchoolLng,PriSchoolLng
+IntSchoolAddress,IntSchoolAddress
+IntSchoolLat,IntSchoolLat
+IntSchoolLng,IntSchoolLng
+SecSchoolAddress,SecSchoolAddress
+SecSchoolLat,SecSchoolLat
+SecSchoolLng,SecSchoolLng
+WorkName,WorkName
+ShopName,ShopName
+PreSchoolName,PreSchoolName
+PriSchoolName,PriSchoolName
+IntSchoolName,IntSchoolName
+SecSchoolName,SecSchoolName
+WorkNameSearched,WorkNameSearched
+ShopNameSearched,ShopNameSearched
+PreSchoolNameSearched,PreSchoolNameSearched
+PriSchoolNameSearched,PriSchoolNameSearched
+IntSchoolNameSearched,IntSchoolNameSearched
+SecSchoolNameSearched,SecSchoolNameSearched
+Q1,"The Centre for Sustainability (CSAFE) at the University of Otago, /  is researching New Zealanders'..."
+Q2,"By clicking on this link, I confirm that I agree to participate in / this research."
+Q3,"Before proceeding to the survey I need to check that you would be / representative of the population. That is there aren't too many / people from one area, age or gender. Are you:"
+Q4,Your age is:
+Q113,What is the address of your house? (This information is used solely / to identify suitable subjects...
+linkID,
+Q114,What is the best way to contact you? (email address or phone / number)
+Q6,What type of dwelling do you live in?Â  (please select the /  option which applies to you)
+Q7,When was your house built?
+Q12,Do you rent or own the dwelling you live in?
+Q13,Please specify your other situation
+Q19_1,Which of the following methods do you have available for heating / your house? -Heat pump
+Q19_2,Which of the following methods do you have available for heating / your house? -Electric night-store
+Q19_3,Which of the following methods do you have available for heating / your house? -Portable electric heaters
+Q19_4,Which of the following methods do you have available for heating / your house? -Electric heaters fixed in place
+Q19_5,Which of the following methods do you have available for heating / your house? -Enclosed coal burner
+Q19_6,Which of the following methods do you have available for heating / your house? -Enclosed wood burner
+Q19_7,Which of the following methods do you have available for heating / your house? -Portable gas heater
+Q19_8,Which of the following methods do you have available for heating / your house? -Gas heaters fixed in place
+Q19_9,Which of the following methods do you have available for heating / your house? -Central heating â€“ gas (flued)
+Q19_10,Which of the following methods do you have available for heating / your house? -Central heating â€“ electric
+Q19_11,Which of the following methods do you have available for heating / your house? -DVS or other heat transfer system
+Q19_12,Which of the following methods do you have available for heating / your house? -HRV or other ventilation system
+Q19_13,Which of the following methods do you have available for heating / your house? -Underfloor electric heating
+Q19_14,Which of the following methods do you have available for heating / your house? -Underfloor gas heating
+Q19_15,Which of the following methods do you have available for heating / your house? -Open fire
+Q19_16,Which of the following methods do you have available for heating / your house? -Other
+Q19_17,Which of the following methods do you have available for heating / your house? -Central heating pellet burner
+Q20,Which of the following is your main method of heating?
+Q28_1_1,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the week (Monday- Friday)-7am-9am
+Q28_1_2,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the week (Monday- Friday)-9am-12pm
+Q28_1_3,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the week (Monday- Friday)-12pm-3pm
+Q28_1_4,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the week (Monday- Friday)-3pm-6pm
+Q28_1_5,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the week (Monday- Friday)-6pm-9pm
+Q28_1_6,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the week (Monday- Friday)-9pm-7am
+Q28_2_1,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the weekend and holidays-7am-9am
+Q28_2_2,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the weekend and holidays-9am-12pm
+Q28_2_3,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the weekend and holidays-12pm-3pm
+Q28_2_4,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the weekend and holidays-3pm-6pm
+Q28_2_5,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the weekend and holidays-6pm-9pm
+Q28_2_6,What times during the day do you typically have heating on in your / house (select as many as appropriate for both the week and the / weekend/holidays)?-During the weekend and holidays-9pm-7am
+Q29,Do you also use your heat pump for cooling?
+Q32_1,Which of the following methods do you use for heating your water?-Cylinder - Solar
+Q32_2,Which of the following methods do you use for heating your water?-Cylinder - Electric
+Q32_3,Which of the following methods do you use for heating your water?-Cylinder - Gas
+Q32_4,Which of the following methods do you use for heating your water?-Cylinder - Wood (wetback)
+Q32_5,Which of the following methods do you use for heating your water?-Cylinder - Heatpump
+Q32_6,Which of the following methods do you use for heating your water?-Instant - Gas
+Q32_7,Which of the following methods do you use for heating your water?-Combination (e.g. solar with instant gas or electric backup)
+Q32_8,Which of the following methods do you use for heating your water?-Other
+Q40_1,Please indicate which of the following appliances you own and /  use:-Dehumidifier
+Q40_2,Please indicate which of the following appliances you own and /  use:-Dishwasher
+Q40_3,Please indicate which of the following appliances you own and /  use:-Separate deep-freezer
+Q40_4,Please indicate which of the following appliances you own and /  use:-Fridge/freezer
+Q40_5,Please indicate which of the following appliances you own and /  use:-Clothes dryer
+Q40_6,Please indicate which of the following appliances you own and /  use:-Plasma screen TV
+Q40_7,Please indicate which of the following appliances you own and /  use:-LCD or LED Screen TV
+Q40_9,Please indicate which of the following appliances you own and /  use:-Video recorder or Digital recorder (hard disc)
+Q40_10,Please indicate which of the following appliances you own and /  use:-DVD/Bluray player
+Q40_11,Please indicate which of the following appliances you own and /  use:-Games console
+Q40_12,Please indicate which of the following appliances you own and /  use:-Home computer â€“ Desktop
+Q40_13,Please indicate which of the following appliances you own and /  use:-Laptop computer
+Q40_14,Please indicate which of the following appliances you own and /  use:-Heated towel rail
+Q40_15,Please indicate which of the following appliances you own and /  use:-Electric blanket
+Q40_16,Please indicate which of the following appliances you own and /  use:-Heated swimming pool
+Q40_17,Please indicate which of the following appliances you own and /  use:-Front load washing machine
+Q40_18,Please indicate which of the following appliances you own and /  use:-Top load washing machine
+Q40_19,Please indicate which of the following appliances you own and /  use:-Toaster
+Q40_20,Please indicate which of the following appliances you own and /  use:-Microwave
+Q40_21,Please indicate which of the following appliances you own and /  use:-Second fridge/garage fridge
+Q40_38,Please indicate which of the following appliances you own and /  use:-Spa pool
+Q49,What type are the majority of your light bulbs?
+Q53_1,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Electricity                                                                                                 
+Q53_2,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Gas                                                                                                           
+Q53_3,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Coal                                                                                                          
+Q53_4,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Wood                                                                                                        
+Q53_5,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Petrol
+Q53_6,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Diesel
+Q53_7,What are your households approximate monthly energy bills in the / SUMMER? (dollars)-Other
+Q54_1,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Electricity                                                                                                 
+Q54_2,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Gas                                                                                                           
+Q54_3,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Coal                                                                                                          
+Q54_4,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Wood                                                                                                        
+Q54_5,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Petrol  
+Q54_6,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Diesel
+Q54_7,What are your household approximate monthly energy bills in the / WINTER? (dollars) -Other
+Q55,What is your approximate combined household income before / tax? 
+Q56,Have you ever gone without heating/power because you felt unable to / pay for it?
+Q57,How many people live in your household?
+Q58#1_1,About you and your household members : Gender-You
+Q58#2_1,About you and your household members : Year of birth-You
+Q58#3_1,About you and your household members : Employment status-You
+Q58#4_1,About you and your household members : Highest educational qualification-You
+Q59#1_2,About you and your household members : Gender-The second member of your household
+Q59#2_2,About you and your household members : Year of birth-The second member of your household
+Q59#3_2,About you and your household members : Employment status-The second member of your household
+Q59#4_2,About you and your household members : Highest educational qualification-The second member of your household
+Q60#1_3,About you and your household members : Gender-The third member of your household
+Q60#2_3,About you and your household members : Year of birth-The third member of your household
+Q60#3_3,About you and your household members : Employment status-The third member of your household
+Q60#4_3,About you and your household members : Highest educational qualification-The third member of your household
+Q61#1_4,About you and your household members : Gender-The fourth member of your household
+Q61#2_4,About you and your household members : Year of birth-The fourth member of your household
+Q61#3_4,About you and your household members : Employment status-The fourth member of your household
+Q61#4_4,About you and your household members : Highest educational qualification-The fourth member of your household
+Q62#1_5,About you and your household members : Gender-The fifth member of your household
+Q62#2_5,About you and your household members : Year of birth-The fifth member of your household
+Q62#3_5,About you and your household members : Employment status-The fifth member of your household
+Q62#4_5,About you and your household members : Highest educational qualification-The fifth member of your household
+Q63#1_6,About you and your household members : Gender-The sixth member of your household
+Q63#2_6,About you and your household members : Year of birth-The sixth member of your household
+Q63#3_6,About you and your household members : Employment status-The sixth member of your household
+Q63#4_6,About you and your household members : Highest educational qualification-The sixth member of your household
+Q64#1_1,About you and your household members : Gender-The seventh member of your household
+Q64#2_1,About you and your household members : Year of birth-The seventh member of your household
+Q64#3_1,About you and your household members : Employment status-The seventh member of your household
+Q64#4_1,About you and your household members : Highest educational qualification-The seventh member of your household
+Q65#1_1,About you and your household members : Gender-The eighth member of your household
+Q65#2_1,About you and your household members : Year of birth-The eighth member of your household
+Q65#3_1,About you and your household members : Employment status-The eighth member of your household
+Q65#4_1,About you and your household members : Highest educational qualification-The eighth member of your household
+Q66#1_1,About you and your household members : Gender-The ninth member of your household
+Q66#2_1,About you and your household members : Year of birth-The ninth member of your household
+Q66#3_1,About you and your household members : Employment status-The ninth member of your household
+Q66#4_1,About you and your household members : Highest educational qualification-The ninth member of your household
+Q67#1_1,About you and your household members : Gender-The tenth member of your household
+Q67#2_1,About you and your household members : Year of birth-The tenth member of your household
+Q67#3_1,About you and your household members : Employment status-The tenth member of your household
+Q67#4_1,About you and your household members : Highest educational qualification-The tenth member of your household
+Q68#1_1,About you and your household members : Gender-The eleventh member of your household
+Q68#2_1,About you and your household members : Year of birth-The eleventh member of your household
+Q68#3_1,About you and your household members : Employment status-The eleventh member of your household
+Q68#4_1,About you and your household members : Highest educational qualification-The eleventh member of your household
+Q69#1_1,About you and your household members : Gender-The twelfth member of your household
+Q69#2_1,About you and your household members : Year of birth-The twelfth member of your household
+Q69#3_1,About you and your household members : Employment status-The twelfth member of your household
+Q69#4_1,About you and your household members : Highest educational qualification-The twelfth member of your household
+Q70,What is your ethnicity?
+LocationLatitude,LocationLatitude
+LocationLongitude,LocationLongitude
+LocationAccuracy,LocationAccuracy
