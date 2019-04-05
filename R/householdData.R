@@ -26,23 +26,23 @@
 #'
 getHouseholdData <- function(f) {
   #f <- ggrParams$gsHHMasterFile
-  unisonDT <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "Unison"))
+  hbDT <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "HawkesBay"))
 
   # keep safe data only
-  unisonDT <- unisonDT[, .(hhID, linkID,
+  hbDT <- hbDT[, .(hhID, linkID,
                            Location, nAdults, nChildren0_12, nTeenagers13_18, notes, stopDate)]
-  unisonDT <- unisonDT[, r_stopDate := lubridate::ymd(stopDate)]
-  unisonDT$stopDate <- NULL
-  #head(unisonDT)
+  hbDT <- hbDT[, r_stopDate := lubridate::ymd(stopDate)]
+  hbDT$stopDate <- NULL
+  #head(hbDT)
   
-  powercoDT <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "Powerco"))
-  powercoDT <- powercoDT[, .(hhID, linkID,
+  tDT <- data.table::as.data.table(readxl::read_xlsx(f, sheet = "Taranaki"))
+  tDT <- tDT[, .(hhID, linkID,
                              Location,nAdults,nChildren0_12,nTeenagers13_18,notes, stopDate)]
-  powercoDT <- powercoDT[, r_stopDate := lubridate::ymd(stopDate)]
-  powercoDT$stopDate <- NULL
-  #head(powercoDT)
+  tDT <- tDT[, r_stopDate := lubridate::ymd(stopDate)]
+  tDT$stopDate <- NULL
+  #head(tDT)
 
   # remove NA on rbind
-  dt <- rbind(unisonDT[!is.na(hhID)], powercoDT[!is.na(hhID)])
+  dt <- rbind(hbDT[!is.na(hhID)], tDT[!is.na(hhID)])
   return(dt)
 }
