@@ -142,7 +142,7 @@ hhAttributesDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttribut
 ```
 
 ```{r responseTable}
-t <- hhAttributesDT[, .(nHouseholds = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
+t <- hhAttributesDT[, .(`n Households` = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
 kableExtra::kable(t, caption = "Survey responses (NA indicates no survey)") %>%
   kable_styling()
 ```

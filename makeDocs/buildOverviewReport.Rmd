@@ -118,7 +118,7 @@ As a result of this process the sample cannot be assumed to represent the popula
 Table \@ref(tab:sampleTable) shows the number in each sample.
 
 ```{r sampleTable}
-t <- hhDT[, .(nHouseholds = .N), keyby = .(Location)]
+t <- hhDT[, .('n Households' = .N), keyby = .(Location)]
 
 kableExtra::kable(t, caption = "Sample location") %>%
   kable_styling()
@@ -128,7 +128,7 @@ Table \@ref(tab:sampleSurveys) shows the number for whom valid appliance and sur
 
 ```{r sampleSurveys}
 
-t <- hhDT[, .(nHouseholds = .N), keyby = .(Location, hasShortSurvey, hasLongSurvey, hasApplianceSummary)]
+t <- hhDT[, .(`n Households` = .N), keyby = .(Location, hasShortSurvey, hasLongSurvey, hasApplianceSummary)]
 
 kableExtra::kable(t, caption = "Sample information") %>%
   kable_styling()
