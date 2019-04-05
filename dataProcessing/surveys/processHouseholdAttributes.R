@@ -46,9 +46,9 @@ hhAppliancesDT$sample <- NULL # too detailed
 setkey(hhAppliancesDT, linkID)
 
 # Household survey data ----
-hhEc2ShortDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonShortSurveyData))
-hhEc2LongDT <- data.table::as.data.table(readr::read_csv(ggrParams$UnisonLongSurveyData))
-hhEc2DT <- data.table::as.data.table(readr::read_csv(ggrParams$PowercoSurveyData))
+hhEc2ShortDT <- data.table::as.data.table(readr::read_csv(ggrParams$HawkesBayShortSurveyData))
+hhEc2LongDT <- data.table::as.data.table(readr::read_csv(ggrParams$HawkesBayLongSurveyData))
+hhEc2DT <- data.table::as.data.table(readr::read_csv(ggrParams$TaranakiSurveyData))
 
 #> Hawkes Bay short ----
 
