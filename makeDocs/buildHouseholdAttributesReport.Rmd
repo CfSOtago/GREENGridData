@@ -136,6 +136,7 @@ kableExtra::kable(caption = "Appliances recorded", al) %>%
 The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on household energy and transport attitudes/behaviours and usages for one of the regional samples only. The long form of the survey was used for some households and the short form for others.
 
 ```{r loadSafeSurvey, include=FALSE}
+# read in data produced by processHouseholdAttributes.R
 hhAttributesDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
 ```
 
@@ -262,9 +263,9 @@ sessionInfo()
 Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [GitHub repository issue](https://github.com/CfSOtago/GREENGridData/labels/variableRequest). 
 
 ```{r loadEc2Labels}
-ec2LabsDF <- readxl::read_xlsx(ggrParams$ec2LongSurveyLabels, sheet = "ec2Long")
+ec2LabsDF <- readr::read_csv(ggrParams$ec2LongSurveyLabels)
 
-kableExtra::kable(caption = "Energy Cultures 2 Survey labels (long)", ec2LabsDF) %>%
+kableExtra::kable(caption = "GREEN Grid/Energy Cultures 2 Survey labels (long)", ec2LabsDF) %>%
   kable_styling()
 ```
 

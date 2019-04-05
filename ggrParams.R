@@ -33,7 +33,7 @@ ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttribu
 ggrParams$HawkesBayShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/EC2HouseholdSurvey__HawkesBayShortSurvey_with_house_label.csv")
 ggrParams$HawkesBayLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/EC2HouseholdSurvey__HawkesBayLongSurvey.csv")
 ggrParams$TaranakiSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Taranaki/Household survey results 16.7.14.csv")
-ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/ec2QuestionLabels.xlsx")
+ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$repoLoc, "/data/longSurveyQuestionLabels.csv")
 
 ggrParams$hhOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/"
 
