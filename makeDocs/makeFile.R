@@ -52,7 +52,7 @@ rmarkdown::render(input = rmdFile,
 )
 
 # --- Grid spy data report ----
-localData <- 0 # 1 = yes
+localData <- 0 # 1 = yes for testing
 subtitle <- paste0("1 minute electricity power (version ", version, ")")
 rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildGridSpy1mReport.Rmd")
 rmarkdown::render(input = rmdFile,
