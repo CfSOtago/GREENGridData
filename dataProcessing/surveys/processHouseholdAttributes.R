@@ -282,10 +282,12 @@ ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributesSafe.csv")
 data.table::fwrite(hhAttributesSafeDT, ofile)
 
 # save locally for future use
-tablesysName <- Sys.info()[[1]]
+sysName <- Sys.info()[[1]]
 userName <- Sys.info()[[6]]
 if(sysName == "Darwin" & userName == "ben"){
-  ofile <-"~/Data/NZ_GREENGrid/safe/survey/ggHouseholdAttributesSafe.csv"
+  ofile <-paste0("~/Data/NZ_GREENGrid/safe/survey/ggHouseholdAttributesSafe_", 
+                 Sys.Date(), 
+                 ".csv") # save with a date so we know which is which
   data.table::fwrite(hhAttributesSafeDT, ofile)
 }
 
