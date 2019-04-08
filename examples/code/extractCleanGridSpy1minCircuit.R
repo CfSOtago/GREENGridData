@@ -20,7 +20,7 @@ rmdLibs <- c("data.table", # data munching
 GREENGridData::loadLibraries(rmdLibs)
 
 #> Local parameters ----
-circuitPattern <- "Fridge" # change this to change the circuit(s) extracted
+circuitPattern <- "Freezer" # change this to change the circuit(s) extracted
 dateFrom <- "2015-04-01" # change this to change the (inclusive) UTC date to search from
 dateTo <- "2016-03-31" # change this to change the (inclusive) UTC date to search to
 # NB: searching in whole UTC dates will produce partial days in other timezones (e.g. NZ). We hate timezones.
