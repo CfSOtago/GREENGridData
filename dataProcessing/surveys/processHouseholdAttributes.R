@@ -13,12 +13,11 @@ print(paste0("#-> Done "))
 
 # Load libraries needed in this .r file ----
 rmdLibs <- c("data.table", # data munching
+             "dplyr", # recode
              "ggplot2", # for fancy graphs
              "lubridate", # date & time processing
              "readr", # reading/writing csv files
-             "readxl", # reading xlsx
-             "skimr", # for skim
-             "knitr" # for kable & captions
+             "readxl" # reading xlsx
 )
 # load them
 GREENGridData::loadLibraries(rmdLibs)
@@ -56,6 +55,23 @@ keepShortCols <- c("linkID","hasShortSurvey",
                    "StartDate",
                    "Q4",
                    "Q7",
+                   "Q19_1",
+                   "Q19_2",
+                   "Q19_3",
+                   "Q19_4",
+                   "Q19_5",
+                   "Q19_6",
+                   "Q19_7",
+                   "Q19_8",
+                   "Q19_9",
+                   "Q19_10",
+                   "Q19_10",
+                   "Q19_12",
+                   "Q19_13",
+                   "Q19_14",
+                   "Q19_15",
+                   "Q19_16",
+                   "Q19_17",
                    "Q20",
                    "Q49", # Light bulb types (majority)
                    "Q53_1",
@@ -75,6 +91,7 @@ keepShortCols <- c("linkID","hasShortSurvey",
                    "Q57",
                    "Q55",
                    "Q58#2_1")
+
 keephhEc2ShortDT <- hhEc2ShortDT[!is.na(linkID), ..keepShortCols]
 
 # > Hawkes Bay long ----
@@ -102,6 +119,7 @@ keepLongCols <- c("linkID", "hasLongSurvey",
                   "Q11_1",
                   "Q14_1",
                   "Q15_1",
+                  "Q16", # can you apply a thermostat setting? (Yes = 1)
                   "Q17_1",
                   "Q18_1",
                   "Q19_1",
@@ -163,6 +181,7 @@ keepLongCols <- c("linkID", "hasLongSurvey",
                   "Q57",
                   "Q55",
                   "Q58#2_1")
+
 keephhEc2LongDT <- hhEc2LongDT[!is.na(linkID), ..keepLongCols] # no point keeping unknown IDs
 
 # > Taranaki sample ----
@@ -171,65 +190,104 @@ keephhEc2DT <- hhEc2DT[!is.na(linkID), ..keepLongCols]
 # Combine them all using rbind ----
 # As we think the linkIDs are unique - no-one did any survey twice (although there are possible duplicates flagged in linkID)
 
-# full data
+# make full data ----
 allHhEc2FullDT <- rbind(hhEc2ShortDT,hhEc2LongDT,hhEc2DT, fill=TRUE)
+setkey(allHhEc2FullDT, linkID)
+allHhEc2FullDT <- allHhEc2FullDT[hhMasterDT]
 
 # > check for duplicates ----
-nrow(allHhEc2FullDT)
+message("N rows before duplicate check: ",nrow(allHhEc2FullDT))
 data.table::uniqueN(allHhEc2FullDT$linkID)
+message("N rows after duplicate check: ",nrow(allHhEc2FullDT))
 
-#> safe data ----
+recodeData <- function(dt){
+  # expects a DT
+  # > set date ----
+  dt <- dt[, surveyStartDate := lubridate::dmy_hm(StartDate)]
+  #dt$StartDate <- NULL
+
+  dt <- dt[, surveyStartDate := lubridate::dmy_hm(StartDate)]
+  #dt$StartDate <- NULL
+  setkey(dt, linkID)
+  
+  # code useful variables ----
+  # NB this relies extensively on https://ourarchive.otago.ac.nz/handle/10523/5634
+  # and an original EC2 questionairre print-out provided by Ben Wooliscroft
+  # As a result some coding may be suspect since a full code-book as implemented in GREEN Grid 
+  # does not seem to exist. We have had to assume the category ordering is the same
+  
+  # Q19_x heat type available ----
+  # see below or labels file
+  
+  # Q20 Main heat type ----
+  # ques re-uses the Q19 coding frame
+  dt <- dt[, Q20_coded := dplyr::recode(Q20, 
+                                        "1" = "Heat pump", 
+                                        "2" = "Electric night store", 
+                                        "3" = "Portable electric heaters", 
+                                        "4" = "Electric heaters fixed in place",
+                                        "5" = "Enclosed coal burner",
+                                        "6" = "Enclosed wood burner",
+                                        "7" = "Portable gas heater",
+                                        "8" = "Gas heaters fixed in place",
+                                        "9" = "Central heating – gas (flued)",
+                                        "10" = "Central heating – electric",
+                                        "11" = "DVS or other heat transfer system",
+                                        "12" = "HRV or other ventilation system",
+                                        "13" = "Underfloor electric heating",
+                                        "14" = "Underfloor gas heating",
+                                        "15" = "Central heating pellet burner",
+                                        "16" = "Open fire",
+                                        "17" = "Other"
+                                        )]
+  table(dt$Q20_coded, dt$Q20, useNA = "always")
+  
+  # Q49 Majority of lighting ----
+  # p88 table shows CFL, incandescent, halogen, LED (order of frequency)
+  # if we assume the same frequency order (can we?)...
+  table(dt$Q49)
+  #
+  dt <- dt[, Q49_coded := dplyr::recode(Q49, 
+                                        "1" = "Halogen", 
+                                        "2" = "LED", 
+                                        "3" = "Energy saving - cfl", 
+                                        "4" = "Incandescent")]
+  table(dt$Q49_coded, dt$Q49, useNA = "always")
+  return(dt)
+}
+
+# > recode full dt ----
+allHhEc2FullDT <- recodeData(allHhEc2FullDT) # recode the full dt
+
+# make safe data ----
 allHhEc2SafeDT <- rbind(keephhEc2LongDT,keephhEc2ShortDT,keephhEc2DT, fill=TRUE)
 
-#> check for duplicates ----
-nrow(allHhEc2SafeDT)
-data.table::uniqueN(allHhEc2SafeDT$linkID)
-
-# > set date ----
-allHhEc2FullDT <- allHhEc2FullDT[, surveyStartDate := lubridate::dmy_hm(StartDate)]
-#allHhEc2FullDT$StartDate <- NULL
-setkey(allHhEc2FullDT, linkID)
-
-allHhEc2SafeDT <- allHhEc2SafeDT[, surveyStartDate := lubridate::dmy_hm(StartDate)]
-#allHhEc2SafeDT$StartDate <- NULL
 setkey(allHhEc2SafeDT, linkID)
+allHhEc2SafeDT <- allHhEc2SafeDT[hhMasterDT]
 
-# code useful variables ----
-# NB this relies extensively on https://ourarchive.otago.ac.nz/handle/10523/5634
-# some coding may be suspect since a full code-book as implemented in GREEN Grid does not seem to exist
+allHhEc2SafeDT <- recodeData(allHhEc2SafeDT) # recode the safe dt
 
-# > Q20 Main heat type ----
-# p75 table Table 3.11 shows a long list
-# if we assume the same frequency order (can we?)...
-table(allHhEc2SafeDT$Q20)
+# create final combined DTs ----
+hhAttributesFullDT <- hhAppliancesDT[allHhEc2FullDT]
 
-allHhEc2SafeDT <- allHhEc2SafeDT[, Q20_coded := Q20]
-
-# > Q49 Majority of lighting ----
-# p88 table shows CFL, incandescent, halogen, LED (order of frequency)
-# if we assume the same frequency order (can we?)...
-table(allHhEc2SafeDT$Q49)
-#
-allHhEc2SafeDT <- allHhEc2SafeDT[, Q49_coded := Q49]
-
-# create combined DT ----
-hhAttributesFullDT <- allHhEc2FullDT[hhMasterDT]
-hhAttributesFullDT <- hhAppliancesDT[hhAttributesFullDT] # why do we need to do this in two steps?
-# if we do it all in one step we get NAs in 'hasShortSurvey' if there is no appliance data?
-
-hhAttributesSafeDT <- allHhEc2SafeDT[hhMasterDT]
-hhAttributesSafeDT <- hhAppliancesDT[hhAttributesSafeDT] # why do we need to do this in two steps?
-# if we do it all in one step we get NAs in 'hasShortSurvey' if there is no appliance data?
+hhAttributesSafeDT <- hhAppliancesDT[allHhEc2SafeDT] 
 
 # Save data ----
 # > full ----
 ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributesFull.csv")
-readr::write_csv(hhAttributesFullDT, ofile)
+data.table::fwrite(hhAttributesFullDT, ofile)
 
 # > safe ----
 ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributesSafe.csv")
-readr::write_csv(hhAttributesSafeDT, ofile)
+data.table::fwrite(hhAttributesSafeDT, ofile)
 
+# save locally for future use
+tablesysName <- Sys.info()[[1]]
+userName <- Sys.info()[[6]]
+if(sysName == "Darwin" & userName == "ben"){
+  ofile <-"~/Data/NZ_GREENGrid/safe/survey/ggHouseholdAttributesSafe.csv"
+  data.table::fwrite(hhAttributesSafeDT, ofile)
+}
 
 # Runtime ---
 

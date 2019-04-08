@@ -26,8 +26,6 @@ knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
 ```
 
 ```{r codeSetup, include=FALSE}
-#rm(list=ls(all=TRUE)) # remove all objects from workspace # <- don't do this - rmeoves params set in yaml!
-
 # Set start time ----
 startTime <- proc.time()
 
@@ -97,6 +95,8 @@ The data contains a unique household id (`linkID`) which can be used to link it 
 Table \@ref(tab:loadMasterData) shows the number of households in each area. 
 
 ```{r loadMasterData}
+# contains a list of all the household IDs and some basic meta information
+# data type: safe
 hhMasterDT <- GREENGridData::getHouseholdData(ggrParams$gsHHMasterFile) # cleans it as it loads
 setkey(hhMasterDT, linkID)
 t <- with(hhMasterDT, table(Location, useNA = "always"))
@@ -111,20 +111,26 @@ In total we have `r nrow(hhMasterDT)` households in two sample areas.
 Household appliance ownership was recorded during recruitment using a detailed survey. However this data is not readily available for all households at present. Table \@ref(tab:applianceTable) shows the number of households in each area for whom summary appliance data exists. 
 
 ```{r loadApplianceData}
+# Loads separate appliance data file that was derived from the household audits
+# data type: safe but 'sample' is over-detailed
 hhAppliancesDT <- data.table::as.data.table(readxl::read_xlsx(ggrParams$ApplianceData))
+hhAppliancesDT$sample <- NULL # too detailed
+
+hhAppliancesDT$source <- "Appliance audit"
 ```
 
 ```{r applianceTable}
-hhAppliancesDT$sample <- NULL # too detailed
+# use the master file location
 setkey(hhAppliancesDT, linkID)
 t <- with(hhAppliancesDT[hhMasterDT], table(Location, hasApplianceSummary, useNA = "always"))
 kableExtra::kable(caption = "Sample (appliance summary file, NA indicates no data)", t) %>%
   kable_styling()
 ```
 
-The appliances recorded in this summary are shown in Table \@ref(tab:applianceNames).
+The appliances recorded in this summary are shown in Table \@ref(tab:applianceNames). Note that some of this information is also recorded in the household survey data.
 
 ```{r applianceNames}
+# extract types of appliances included via the audit (some of this overlaps with the EC survey)
 xcols <- c("linkID", "hasApplianceSummary")
 al <- names(hhAppliancesDT[, -..xcols])
 kableExtra::kable(caption = "Appliances recorded", al) %>%
@@ -133,13 +139,17 @@ kableExtra::kable(caption = "Appliances recorded", al) %>%
 
 ## Household survey data
 
-The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on household energy and transport attitudes/behaviours and usages for one of the regional samples only. The long form of the survey was used for some households and the short form for others.
+The Energy Cultures 2 survey [@ec2Survey2015] was used to collect data on household energy and transport attitudes/behaviours and usages. The long form of the survey was used for some households and the short form for others.
 
 ```{r loadSafeSurvey, include=FALSE}
 # read in data produced by processHouseholdAttributes.R
 # do not do any re-coding here - put that in the above .R script
+# data type: safe
 hhAttributesDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
+hhAttributesDT$source <- "Household survey"
 ```
+
+Table \@ref(tab:responseTable) shows the number of households in each region who responded to each survey.
 
 ```{r responseTable}
 t <- hhAttributesDT[, .(`n Households` = .N), keyby = .(Location, hasLongSurvey, hasShortSurvey)]
@@ -166,6 +176,33 @@ skimr::kable(skimDF, caption = "Descriptive summary (all variables)")
 # Household attribute frequency tables
 
 This section reports tables of the key household attributes by sample location. Note that NA usually means not known.
+
+## Main heat source
+
+```{r heatSource}
+t <- with(hhAttributesDT, table(Q20_coded, Location, useNA = "always"))
+kableExtra::kable(caption = "Main heat source by location", 
+                  addmargins(t)) %>%
+  kable_styling()
+
+kableExtra::kable(caption = "Main heat source by location", 
+                  prop.table(t, margin = 2)) %>%
+  kable_styling()
+```
+
+## Majority of light bulbs
+
+```{r lightBulbs}
+t <- with(hhAttributesDT, table(Q49_coded, Location, useNA = "always"))
+kableExtra::kable(caption = "Majority of light bulbs by location", 
+                  addmargins(t)) %>%
+  kable_styling()
+
+kableExtra::kable(caption = "Majority of light bulbs by location (%)", 
+                  prop.table(t, margin = 2)) %>%
+  kable_styling()
+```
+
 
 ## Number of adults
 
@@ -261,12 +298,50 @@ sessionInfo()
 ```
 
 # Energy Cultures 2 Long Survey Questions
-Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. Only a subset of these variables are currently available in the GREEN Grid safe data package. Requests to add further variables should be made via a [GitHub repository issue](https://github.com/CfSOtago/GREENGridData/labels/variableRequest). 
+Table \@ref(tab:loadEc2Labels) lists the full Energy Cultures 2 survey [@ec2Survey2015]. As you will see only a subset of these variables are currently available in the GREEN Grid safe data package released via ReShare. Requests to add further variables should be made via a [GitHub repository issue](https://github.com/CfSOtago/GREENGridData/labels/variableRequest). 
 
 ```{r loadEc2Labels}
-ec2LabsDF <- readr::read_csv(ggrParams$ec2LongSurveyLabels)
+# When new variables are added to the reshare releases you will need to
+# update the list in the following file EVEN if you have run the
+# data processing code and added new variables.
 
-kableExtra::kable(caption = "GREEN Grid/Energy Cultures 2 Survey labels (long)", ec2LabsDF) %>%
+# this helps us to add new variables but not to release them just yet (so the documentation is correct)
+ec2LabsDT <- data.table::fread(ggrParams$ec2LongSurveyLabels)
+setkey(ec2LabsDT, question)
+
+# get the list of variables
+question <- names(hhAttributesDT[, -..xcols])
+
+qlDT <- as.data.table(question)
+qlDT <- qlDT[, inProcessedData := "Yes"]
+setkey(qlDT, question)
+
+fullQlDT <- merge(ec2LabsDT,qlDT, all = TRUE) # merge the two lists of questions as we don't have the appliance list in the survey labels
+
+fullQlDT <- fullQlDT[inProcessedData == "Yes", source := "Appliance audit"] # not really but we set all the ones in the processed dataset to this first
+fullQlDT <- fullQlDT[question == "linkID" |
+                       question == "hhID" |
+                       question == "StartDate" |
+                       question == "r_stopDate" |
+                       question == "endDate" |
+                       question == "Location" |
+                       question == "notes"|
+                       question == "hasShortSurvey"|
+                       question == "hasLongSurvey" |
+                       question == "nAdults" |
+                       question == "nChildren0_12" |
+                       question == "nTeenagers13_18" |
+                       question == "source", source := "Meta-data"] # labels meta data variables
+
+fullQlDT <- fullQlDT[question %like% "Q"|
+                       question == "surveyStartDate" , source := "Household survey"] # labels survey variables
+
+fullQlDT <- fullQlDT[inProcessedData == "Yes", `included in reshare data?` := "Yes"] # update source for the appliance variables
+
+fullQlDT <- fullQlDT[`included in reshare data?` == "", `included in reshare data?` := "No"] # comes in as empty not NA
+
+kableExtra::kable(caption = "GREEN Grid/Energy Cultures 2 Survey labels (long)", 
+                  fullQlDT[, .(question, questionLabel, source, `included in reshare data?`, `in processed data?` = inProcessedData)][order(- `included in reshare data?`, `in processed data?`, source, question)]) %>%
   kable_styling()
 ```
 

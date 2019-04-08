@@ -1,4 +1,4 @@
-﻿question,questionLabel,included in safe data?
+﻿question,questionLabel,included in reshare data?
 linkID,linkID,Yes
 StartDate,StartDate,Yes
 Q5,The region that you live in is:,
@@ -95,23 +95,23 @@ Q9,What are the external walls of your house constructed from?,
 Q12,Do you rent or own the dwelling you live in?,
 Q13,Please specify your other situation,
 Q16,Can you apply a temperature setting to your main living area (e.g. / with a thermostat for heat pump or central heating)?,
-Q19_1,Which of the following methods do you have available for heating / your house? -Heat pump,
-Q19_2,Which of the following methods do you have available for heating / your house? -Electric night-store,
-Q19_3,Which of the following methods do you have available for heating / your house? -Portable electric heaters,
-Q19_4,Which of the following methods do you have available for heating / your house? -Electric heaters fixed in place,
-Q19_5,Which of the following methods do you have available for heating / your house? -Enclosed coal burner,
-Q19_6,Which of the following methods do you have available for heating / your house? -Enclosed wood burner,
-Q19_7,Which of the following methods do you have available for heating / your house? -Portable gas heater,
-Q19_8,Which of the following methods do you have available for heating / your house? -Gas heaters fixed in place,
-Q19_9,Which of the following methods do you have available for heating / your house? -Central heating â€“ gas (flued),
-Q19_10,Which of the following methods do you have available for heating / your house? -Central heating â€“ electric,
-Q19_11,Which of the following methods do you have available for heating / your house? -DVS or other heat transfer system,
-Q19_12,Which of the following methods do you have available for heating / your house? -HRV or other ventilation system,
-Q19_13,Which of the following methods do you have available for heating / your house? -Underfloor electric heating,
-Q19_14,Which of the following methods do you have available for heating / your house? -Underfloor gas heating,
-Q19_15,Which of the following methods do you have available for heating / your house? -Open fire,
-Q19_16,Which of the following methods do you have available for heating / your house? -Other,
-Q19_17,Which of the following methods do you have available for heating / your house? -Central heating pellet burner,
+Q19_1,Which of the following methods do you have available for heating / your house? -Heat pump,Yes
+Q19_2,Which of the following methods do you have available for heating / your house? -Electric night-store,Yes
+Q19_3,Which of the following methods do you have available for heating / your house? -Portable electric heaters,Yes
+Q19_4,Which of the following methods do you have available for heating / your house? -Electric heaters fixed in place,Yes
+Q19_5,Which of the following methods do you have available for heating / your house? -Enclosed coal burner,Yes
+Q19_6,Which of the following methods do you have available for heating / your house? -Enclosed wood burner,Yes
+Q19_7,Which of the following methods do you have available for heating / your house? -Portable gas heater,Yes
+Q19_8,Which of the following methods do you have available for heating / your house? -Gas heaters fixed in place,Yes
+Q19_9,Which of the following methods do you have available for heating / your house? -Central heating â€“ gas (flued),Yes
+Q19_10,Which of the following methods do you have available for heating / your house? -Central heating â€“ electric,Yes
+Q19_11,Which of the following methods do you have available for heating / your house? -DVS or other heat transfer system,Yes
+Q19_12,Which of the following methods do you have available for heating / your house? -HRV or other ventilation system,Yes
+Q19_13,Which of the following methods do you have available for heating / your house? -Underfloor electric heating,Yes
+Q19_14,Which of the following methods do you have available for heating / your house? -Underfloor gas heating,Yes
+Q19_15,Which of the following methods do you have available for heating / your house? -Open fire,Yes
+Q19_16,Which of the following methods do you have available for heating / your house? -Other,Yes
+Q19_17,Which of the following methods do you have available for heating / your house? -Central heating pellet burner,Yes
 Q20,Which of the following is your main method of heating?,
 Q21,Do you use any heat transfer ducts to spread the heat between / rooms?,
 Q22,Have you changed your main method of heating in the past year?,
@@ -244,7 +244,7 @@ Q48_1,How often do you cook the following?-Breakfast (hot),
 Q48_2,How often do you cook the following?-Lunch (cooked),
 Q48_3,How often do you cook the following?-Dinner (cooked),
 Q48_4,How often do you cook the following?-Baking,
-Q49,What type are the majority of your light bulbs?,Yes
+Q49,What type are the majority of your light bulbs?,
 Q50,When do you use your heated towel rail?,
 Q51_1_1,When is your heated towel rail typically on (please select as many / as appropriate for both week days and weekend/holidays)?-Week days-7am-9am,
 Q51_1_2,When is your heated towel rail typically on (please select as many / as appropriate for both week days and weekend/holidays)?-Week days-9am-12pm,
