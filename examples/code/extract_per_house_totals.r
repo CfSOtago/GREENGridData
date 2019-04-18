@@ -5,10 +5,10 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 # Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz with amendments from ben.anderson@otago.ac.nz
 
 # Nores:
-#  This code uses a csv file 'circuits.csv' (in the package /data folder) which
+#  This code uses a csv file 'circuitsToSum.csv' (in the package /data folder) which
 # specifies the circuits to be used when calculating the total for each
 # house. The code below calculates
-# per-house totals, are saved in a single file for later use.
+# per-house totals, and saves them to a single file for later use.
 #
 # Note that the code attempts to check which circuits contribute to the total, but this
 # method allows for further checking by using the circuit names.
@@ -90,7 +90,7 @@ for(house_id in colnames(circuits_input)){
 	exDT <- inputDT[cond, c("linkID", "time_nz","time_utc", "powerW")]
 
 	# make long verion (easier for data analysis)
-	totDTl <- exDT[,.(sumkW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
+	totDTl <- exDT[,.(sumW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
 
 	if(is.data.table(dataL)){
 	  # if exists add new hh to it
