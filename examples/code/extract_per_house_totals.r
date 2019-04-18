@@ -50,6 +50,8 @@ end_time <- as.POSIXct("2016-04-01 00:00", tz="Pacific/Auckland")
 
 start_exec <- Sys.time()
 
+dataL <- data.table() # data bucket to collect data in
+
 for(house_id in colnames(circuits_input)){
   message("Running extraction for: ", house_id)
   message(" -> Loading data for ", house_id)
@@ -92,13 +94,8 @@ for(house_id in colnames(circuits_input)){
 	# make long verion (easier for data analysis)
 	totDTl <- exDT[,.(sumW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
 
-	if(is.data.table(dataL)){
-	  # if exists add new hh to it
-		dataL <- rbind(dataL, totDTl)
-	}else{
-	  # if not, create it
-		dataL <- totDTl
-	}
+	dataL <- rbind(dataL, totDTl)
+
 }
 
 end_exec <- Sys.time()
@@ -110,8 +107,13 @@ end_exec - start_exec
 data.table::fwrite(dataL, file=sprintf("%s/allHouseholds_totalW_long.csv", DATA_PATH)) # way faster
 
 # just for fun
-plotDT <- dataL[, .(meanW = mean(sumW)), keyby = .(linkID, time = hms::as.hms(time_nz))]
+plotDT <- dataL[, .(meanW = mean(sumW)), keyby = .(linkID, 
+                                                   time = hms::as.hms(time_utc, tz = "Pacific/Auckland"))]
 ggplot2::ggplot(plotDT, aes(x = time, y = meanW/1000, colour = linkID)) + 
   geom_line() +
   labs(x = "Time of Day",
-       y = "Mean kW")
+       y = "Mean kW",
+       caption = paste0("GREEN Grid Data",
+                        "\n NB: timezone for 'Time of Day' is set to 'Pacific/Auckland'"
+                        )
+  )
