@@ -7,8 +7,12 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 # Nores:
 #  This code uses a csv file 'circuitsToSum.csv' (in the package /data folder) which
 # specifies the circuits to be used when calculating the total for each
-# house. The code below calculates
-# per-house totals, and saves them to a single file for later use.
+# house. The code below calculates per-house totals, and saves them to a single file for later use.
+#
+# The code assumes that the circuits in circuitsToSum.csv are actually the ones to sum to get overall
+# power demand. We have checked as best we can. If you notice errors please add an issue at:
+#
+# https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+is%3Aopen+label%3AdataIssue
 #
 # Note that the code attempts to check which circuits contribute to the total, but this
 # method allows for further checking by using the circuit names.
