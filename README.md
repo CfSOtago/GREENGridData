@@ -39,7 +39,7 @@ Guide to folders:
 
 The 'safe' anonymised dataset is available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/).
 
-The original project data is held on the University of Otago's restricted-access High-Capacity Storage [HCS filestore](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
+The original project data is held on the University of Otago's restricted-access High-Capacity Storage [(HCS) filestore](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
 
 ## Using the code
 This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in three ways:
