@@ -19,10 +19,10 @@ The code in this repo does two things:
     - produces original data processing reports and documentation (code will only work if you have the original data);
     - produces cleaned 'safe' data reports and documentation (code will only work if you have the original data).
  * _Analytic code examples_ to:
-    - load and analyse electricity 'safe' demand data for one household
+    - load and analyse 'safe' electricity demand (power) data for one household
     - extract power data for circuits matching a given string (e.g. `Heat Pump`) from the 'safe' data between two dates;
     - link the household survey and extracted 'Heat Pump' data for analysis;
-    - calculate total household power demand from the relevant circuits.
+    - calculate total household power demand from the relevant circuits for each household.
 
 Guide to folders:
 
@@ -39,7 +39,7 @@ Guide to folders:
 
 The 'safe' anonymised dataset is available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/).
 
-The original project data is stored on the restricted-access University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
+The original project data is held on the University of Otago's restricted-access High-Capacity Storage [(HCS) filestore](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
 
 ## Using the code
 This repo is intentionally structured as an R package so you can install it and re-use the code. You can do this in three ways:
@@ -51,7 +51,7 @@ This will just give you the code to explore & play with.
 This will give you a replication of the package as a local repo which you can edit & re-build/re-install as often as you like. You should set this up as an [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). You can then (if you wish) submit pull requests for any improvements you make.
 
 ### Install the package
-This will install it wherever your version of R(Studio) stores packages. It will also install any dependencies. However you will not (easily) be able to edit or amend the code. To do this:
+This will install it wherever your version of R(Studio) stores packages. It will also install any dependencies. However you will not (easily) be able to edit or amend the code. To do install it:
 
  * install the R [devtools](http://r-pkgs.had.co.nz/git.html) package: `> install.packages("devtools")`;
  * run: `> devtools::install_github("CfSOtago/GREENGridData")`
@@ -60,12 +60,12 @@ This will install it wherever your version of R(Studio) stores packages. It will
 
 ### Recommended approach
 
- * Install it from github (so you know it works), then
- * Fork it from github, then
- * Edit it as you wish, then
- * Re-build & install it locally, then
- * Test it, then
- * Send a pull request so we can build you awesome improvements into the code base :-)
+ * Install it from github (so you know it works), then...
+ * Fork it from github, then...
+ * Edit it as you wish, then...
+ * Re-build & install it locally, then...
+ * Test it, then...
+ * Send a pull request so we can build your awesome improvements into the code base :-)
  
 ### Disclaimer
 
