@@ -1,6 +1,6 @@
 #--- Runs the circuit extract analysis ---#
 
-# Assumes that you have run extractCleanGridSpy1minCircuit.R first !!
+# Assumes that you have run extractCircuitFromCleanGridSpy1min.R first !!
 
 # Load nzGREENGrid package ----
 library(GREENGridData) # local utilities
@@ -20,7 +20,7 @@ loadLibraries(rmdLibs)
 # Local parameters ----
 
 # use circuit parameter to change the circuit used (assumes you have already extracted it)
-circuit <- "Lighting" # change this to change the circuit(s) to be analysed
+circuit <- "Freezer" # change this to change the circuit(s) to be analysed
 
 # change this to suit your data location - this is where extractCleanGridSpy1minCircuit.R saved your extract
 dPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/" # Otago HCS
@@ -44,7 +44,7 @@ hhFile <- paste0(dPath, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv")
 if(file.exists(hhFile)){
   message("Success! Found expected pre-extracted file: ", gsFile)
 } else {
-  message("Opps. Didn't find expected pre-extracted file: ", gsFile)
+  message("Oops. Didn't find expected pre-extracted file: ", gsFile)
   stop("Please check you have set the paths and filename correctly...")
 }
 

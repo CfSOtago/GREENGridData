@@ -1,4 +1,4 @@
-#--- Runs the circuit extract analysis ---#
+#--- Tests cleaned data for one household ---#
 
 # Load nzGREENGrid package ----
 library(GREENGridData) # local utilities
@@ -32,11 +32,11 @@ hhFile <- ggrParams$hhAttributes
 
 # --- Build report ----
 
-# NB this will fail if you do not have access to the data and/or an extract that matches 'Heat Pump'
+# NB this will fail if you do not have access to the data
 
-rmdFile <- paste0(ggrParams$repoLoc, "/examples/code/testHouseholdPower.Rmd")
+rmdFile <- paste0(ggrParams$repoLoc, "/examples/code/testHouseholdCleanGridSpy1min.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",
                   params = list(hhID = hhID, gsFile = gsFile, hhFile = hhFile),
-                  output_file = paste0(ggrParams$repoLoc,"/examples/outputs/testHouseholdPower_", hhID, ".html")
+                  output_file = paste0(ggrParams$repoLoc,"/examples/outputs/testHouseholdCleanGridSpy1min_", hhID, ".html")
 )
