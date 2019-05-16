@@ -5,7 +5,8 @@ ggrParams <<- list() # params holder
 # Parameters you may need to change ----
 
 # Location of the repo
-ggrParams$repoLoc <- GREENGrid::findParentDirectory("GREENGridData")
+library(here)
+ggrParams$repoLoc <- here::here()
 
 # Location of misc data
 ggrParams$dstNZDates <- paste0(ggrParams$repoLoc, "/data/dstNZDates.csv")
