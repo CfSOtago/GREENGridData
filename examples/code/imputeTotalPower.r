@@ -2,10 +2,12 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 
 # -- Code to correctly sum household power demand to get an overall total -- #
 # Required because some circuits are seperate from the 'Incomer' - e.g. seperately controlled hot water
-# Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz with amendments from ben.anderson@otago.ac.nz
+# Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz 
+# with amendments from ben.anderson@otago.ac.nz
+# edit history:
 
-# Nores:
-#  This code uses a csv file in the package /data folder which
+# Notes:
+# This code uses a csv file in the package /data folder which
 # specifies the circuits to be used when calculating the total for each
 # house. The code below calculates per-house totals, and saves them to a single file for later use.
 #
@@ -33,13 +35,13 @@ user <- Sys.info()[[6]]
 message("Running on ", sysname, " under user ", user)
 
 #circuitsFile <- "circuitsToSum.csv"
-#circuitsFile <- "circuitsToSum_v1.0" # JKM original
-circuitsFile <- "circuitsToSum_v1.1" # all
+circuitsFile <- "circuitsToSum_v1.0" # JKM original
+#circuitsFile <- "circuitsToSum_v1.1" # all
 
 # localise data paths
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
-  DATA_PATH <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/powerData"
+  DATA_PATH <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
   circuits_path <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
 } else {
   DATA_PATH = "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
@@ -55,9 +57,6 @@ options(scipen=999)
 # Set system timezone to UTC
 Sys.setenv(TZ='UTC')
 
-# hh attributes
-hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.zip"
-
 # Set the time period I want to get the per-house totals for ----
 start_time <- as.POSIXct("2015-04-01 00:00", tz="Pacific/Auckland")
 end_time <- as.POSIXct("2016-04-01 00:00", tz="Pacific/Auckland")
@@ -68,9 +67,10 @@ dataL <- data.table() # data bucket to collect data in
 
 # process household files ----
 processPowerFiles <- function(df){
+  message("Using data from: ", DATA_PATH)
   for(house_id in colnames(df)){
-    message("Running extraction for: ", house_id)
-    message(" -> Loading data for ", house_id)
+    #house_id <- "rf_44" # for testing
+    
     # input <- data.table::as.data.table(readr::read_csv(sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id), 
     #                                                    col_types=cols(hhID=col_character(), 
     #                                                                   linkID=col_character(), 
@@ -81,7 +81,9 @@ processPowerFiles <- function(df){
     #                                                                   powerW=col_double())
     #                                                    )
     #                                    )
-    inputDT <- fread(sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id))
+    iF <- sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id)
+    message(" -> Loading data for ", house_id, " from ", iF)
+    inputDT <- data.table::fread(iF) # load the household data
     
     message(" -> Parsing dates ", house_id)
     # input$time_utc <- parse_date_time(input$r_dateTime, orders=c('ymdHMS'))
@@ -106,11 +108,20 @@ processPowerFiles <- function(df){
     }
     
     exDT <- inputDT[cond, c("linkID", "time_nz","time_utc", "powerW")]
-    
+      
     # make long verion (easier for data analysis)
-    totDTl <- exDT[,.(sumW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
+    totDTl <- exDT[,.(powerW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
+    totDTl$circuit <- paste0("imputedTotalDemand_", circuitsFile)
+    # add the total back to the input DT and save as new file
+    outDT <- rbind(inputDT[, .(linkID, circuit, time_utc, powerW, time_nz)])
+    oF <- paste0(DATA_PATH, "/imputed/",house_id, "_all_1min_data_withImputedTotal_",
+                 circuitsFile, ".csv")
+    data.table::fwrite(outDT, oF) # save the household data
+    # gzip it
+    cmd <- paste0("gzip -f ", oF)
+    try(system(cmd))
     
-    dataL <- rbind(dataL, totDTl)
+    dataL <- rbind(dataL, totDTl) # the big data bucket of totals
   }
   
   return(dataL)
@@ -125,7 +136,7 @@ dataL <- processPowerFiles(df)
 # save out the files of all totals ----
 
 #write.table(data, file=sprintf("%s/tot.csv", DATA_PATH), sep=",", row.names=FALSE, col.names=TRUE)
-gsFile <- paste0(DATA_PATH, "/allHouseholds_totalW_long_", circuitsFile, ".csv")
+gsFile <- paste0(DATA_PATH, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv")
 data.table::fwrite(dataL, gsFile) # way faster
 
 # gzip it
