@@ -116,14 +116,15 @@ processPowerFiles <- function(df){
     outDT <- rbind(inputDT[, .(linkID, circuit, time_utc, powerW, time_nz)])
     oF <- paste0(DATA_PATH, "/imputed/",house_id, "_all_1min_data_withImputedTotal_",
                  circuitsFile, ".csv")
+    message("Saving and gzipping: ", oF)
     data.table::fwrite(outDT, oF) # save the household data
     # gzip it
     cmd <- paste0("gzip -f ", oF)
     try(system(cmd))
-    
+    message("Done")
     dataL <- rbind(dataL, totDTl) # the big data bucket of totals
   }
-  
+  message("All households processed using: ", circuitsFile)
   return(dataL)
 }
 
