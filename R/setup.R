@@ -5,9 +5,10 @@
 #'   The parameters can be over-written in scipts if needed but do so wih care!
 #'
 #' @author Ben Anderson, \email{b.anderson@@soton.ac.uk} (original)
+#' @import here
 #' @export
 #'
 setup <- function(){
-  pLoc <- findParentDirectory("GREENGridData") # R project location
+  pLoc <- here::here()  # R project location
   source(paste0(pLoc, "/ggrParams.R"))
 }
