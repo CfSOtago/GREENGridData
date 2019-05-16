@@ -1,0 +1,361 @@
+---
+params:
+  circuitsFile: '' # the version of the circuits data table we used
+  title: ''
+  subtitle: '' 
+title: '`r paste0(params$title)`'
+subtitle: '`r paste0(params$subtitle)`'
+author: "Ben Anderson (b.anderson@soton.ac.uk, `@dataknut`)"
+date: 'Last run at: `r Sys.time()`'
+output:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: yes
+    number_sections: yes
+    self_contained: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: TRUE
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+bibliography: '`r paste0(here::here(), "/bibliography.bib")`'
+---
+
+```{r knitrSetup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # by default turn off code echo
+```
+
+
+```{r codeSetup, include=FALSE}
+
+# Set start time ----
+startTime <- proc.time()
+
+# Local libraries ----
+library(dplyr)
+library(ggplot2) # plots
+library(kableExtra) # fancy kable
+library(skimr) # skim
+library(viridis) # cb friendly colours
+
+# Local parameters ----
+
+# set attributes for plot
+vLineAlpha <- 0.4
+vLineCol <- "#0072B2" # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+timeBreaks <- c(hms::as.hms("04:00:00"), 
+                hms::as.hms("08:00:00"),
+                hms::as.hms("12:00:00"),
+                hms::as.hms("16:00:00"),
+                hms::as.hms("20:00:00"),
+                hms::as.hms("24:00:00")
+)
+
+# Local functions ----
+
+seasonalProfilePlot <- function(dt, xvar, yvar){
+  # assumes dt has seasons
+  p <- ggplot2::ggplot(dt[!is.na(season)], # make sure no un-set seasons/non-parsed dates
+                       aes(x = get(xvar), 
+                           y = get(yvar),
+                           colour = linkID)) + # colours by household
+    geom_point() + 
+    scale_colour_viridis(discrete=TRUE) + # use colour-blind friendly palette
+    theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) + 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) + 
+    guides(colour = guide_legend(title = "Season: ")) +
+    theme(legend.position = "bottom")  + 
+    labs(title = paste0("Seasonal mean total power demand profiles"),
+         y = "set this yourself", 
+         x = "Time of day",
+         caption = myCaption
+    )
+  
+  p <- p + 
+    scale_x_time(breaks = timeBreaks) +
+    geom_vline(xintercept = timeBreaks, alpha = vLineAlpha, colour = vLineCol) +
+    facet_grid(season ~ .) # make seasons
+  return(p)
+}
+
+```
+
+\newpage
+
+# About
+
+## Report circulation:
+
+ * Public - this report is intended to accompany the data release.
+ 
+## License
+
+```{r ccby license, child=ggrParams$licenseCCBY}
+```
+ 
+## Citation
+
+If you wish to use any of the material from this report please cite as:
+
+ * Anderson, B. (`r lubridate::year(today())`) `r paste0(params$title,params$subtitle)`. `r ggrParams$pubLoc`.
+
+This work is (c) `r lubridate::year(today())` the University of Otago
+
+## History
+
+ * [Report history](https://github.com/CfSOtago/GREENGridData/commits/master/examples/code/imputeTotalDemandFromCleanGridSpy1min.Rmd)
+ 
+## Requirements:
+
+This report uses the safe version of the grid spy 1 minute data which has been processed using the code in https://github.com/CfSOtago/GREENGridData/tree/master/dataProcessing/gridSpy.
+
+## Support
+
+```{r generic support, child=ggrParams$supportGeneric}
+```
+ 
+\newpage
+
+# Introduction
+
+```{r generic sample, child=ggrParams$sampleGeneric}
+```
+ 
+This report provides summary analysis of the imputed total demand for each household. The imputation was done using:
+
+ * `r params$circuitsFile`
+
+# Load data
+
+```{r loadHhData}
+hhDT <- drake::readd(hhData) # bring back from wherever drake put it
+```
+
+
+```{r readdPowerData}
+powerDT <- drake::readd(powerData) # bring back from wherever drake put it
+data.table::setkey(powerDT, linkID)
+t <- head(powerDT)
+
+kableExtra::kable(t, caption = paste0("First few rows of grid spy data")) %>%
+  kable_styling()
+```
+
+Table \@ref(tab:readdPowerData) shows the first few rows of the Grid Spy 1 minute power data. Table \@ref(tab:summaryPowerData) shows a summary of the Grid Spy 1 minute power data (for more detail see Section \@ref(powerSkim)).
+
+```{r summaryPowerData}
+# create some useful derived date & time variables
+powerDT <- powerDT[, time_utc := lubridate::as_datetime(time_utc)]
+powerDT <- powerDT[, obsTimeHMS := hms::as.hms(time_utc)] # HH:MM for demand profile plots
+
+t <- summary(powerDT)
+
+kableExtra::kable(t, caption = paste0("Summary of grid spy data")) %>%
+  kable_styling()
+
+powerDT <- powerDT[, obsTimeHMSQHour := hms::trunc_hms(obsTimeHMS, 60*15)]
+```
+
+Note that:
+
+ * time_utc is the correct dateTime of each observation in UTC. You may get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
+ * there can be 0 or negative Wh observations.
+
+Table \@ref(tab:checkHouseholds) shows the summaries for each household as imputed using `r params$circuitsFile`. The number of households excluded will depend on the circuits file used:
+
+ * v1.0:
+    * no PV
+    * no -ve values (?)
+ * v1.1:
+    * no exclusions
+
+```{r checkHouseholds}
+hhID_hDT <- hhDT[, .(linkID, hasApplianceSummary, 
+                    pvInverter = `PV Inverter`, energyStorage = `Energy Storage`,
+                    otherGenDevice = `Other Generation Device`, notes)
+                 ]
+hhID_hDT$hhDataSource <- "hhDT"
+hhID_pDT <- powerDT[, .(nObs = .N, meanW = mean(sumW), minW = min(sumW), maxW = max(sumW)),
+                    keyby = .(linkID)]
+hhID_pDT$powerDataSource <- "powerDT"
+
+circuitsDFt <- dplyr::as_tibble(cbind(linkID = names(circuitsDF), 
+                                      t(circuitsDF))) # the circuits table we used in the imputation - need to tranpose so we can link to the other data by linkID
+
+circuitsDT <- data.table::as.data.table(circuitsDFt) 
+setnames(circuitsDT, c(V1 = "linkID", 
+                       V2 = "Circuit 1", 
+                       V3 = "Circuit 2", 
+                       V4 = "Circuit 3")) # rename for clarity
+setkey(circuitsDT, linkID)
+hhID_DT <- circuitsDT[hhID_hDT] # add circuits to all IDs
+hhID_DT <- hhID_pDT[hhID_DT] # add power to all IDs
+
+kableExtra::kable(hhID_DT, caption = paste0("Summary of monitored households")) %>%
+  kable_styling() # report all the households
+```
+
+# Test 0 and -ve power value incidence
+
+Figure \@ref(fig:testPowerTileObs) shows the incidence of -ve overall imputed power values by linkID (household) and date. As we can see they tend to be concentrated in a few households.
+
+```{r testPowerTileObs, fig.cap="Incidence of -ve values by household ID and date"}
+myCaption <- "GREEN Grid Data: Imputed total household power demand"
+  
+plotDT <- powerDT[sumW <= 0, .(nObs = .N), 
+                  keyby = .(Date = lubridate::as_date(time_nz), linkID)]
+
+p <- ggplot2::ggplot(plotDT, aes(x = Date, y = linkID, fill = nObs)) +
+  geom_tile() +
+  scale_fill_viridis() +
+  labs(caption = myCaption)
+
+p
+```
+
+Figure \@ref(fig:testPowerTileMean) shows the mean overall imputed power values by linkID (household) and date where power <= 0. As we can see they tend to be concentrated in a few households with one in particular (rf_26) reporting persistent -ve values.
+
+```{r testPowerTileMean, fig.cap="Mean of -ve values by household ID and date"}
+plotDT <- powerDT[sumW <= 0, .(meanWh = mean(sumW)), 
+                  keyby = .(Date = lubridate::as_date(time_nz), linkID)]
+
+p <- ggplot2::ggplot(plotDT, aes(x = Date, y = linkID, fill = meanWh)) +
+  geom_tile() +
+  scale_fill_viridis() +
+  labs(caption = myCaption)
+
+p
+```
+
+# Test power profiles
+
+Next we test the power profiles by season to see if there is a seasonal pattern to the negatuive values which might indicate unreported PV (for example).
+
+First we create a _Southern_ Hemisphere season variable. We have a function to do this in the `GREENGridData` package. We print a check table to ensure we are all happy with the coding of `season`.
+
+```{r addSeason, echo = TRUE}
+powerDT <- powerDT[, r_dateTime := time_utc] # for consistency
+powerDT <- GREENGridData::addNZSeason(powerDT)
+table(lubridate::month(powerDT$r_dateTime, label = TRUE), powerDT$season, useNA = "always")
+```
+
+
+Figure \@ref(fig:makeMeanPlot) plots overall mean power per minute by season and household id.
+
+```{r makeMeanPlot, fig.cap="Mean total demand profile plot", fig.height=10}
+# create default caption
+myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https://dx.doi.org/10.5255/UKDA-SN-853334)",
+                        "\n", min(powerDT$r_dateTime), 
+                        " to ", max(powerDT$r_dateTime),
+                        "\nTime = Pacific/Auckland",
+                        "\n (c) ", lubridate::year(Sys.Date())," University of Otago")
+
+
+plotDT <- powerDT[, .(meanW = mean(sumW)), keyby = .(season, 
+                                                obsTimeHMSQHour, 
+                                                linkID)
+             ]
+
+p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHMSQHour', 
+                         yvar = 'meanW')
+p + labs(y = "Mean W per minute")
+```
+
+Clearly the lowest mean value is still above 0 (`r round(min(plotDT$meanW),2)`W).
+
+```{r makeMinPlot, fig.cap="Minimum total demand profile plot", fig.height=10}
+plotDT <- powerDT[, .(minW = min(sumW)), keyby = .(season, 
+                                                obsTimeHMSQHour, 
+                                                linkID)
+             ]
+
+p <- seasonalProfilePlot(plotDT[minW <= 0], xvar = 'obsTimeHMSQHour', yvar = 'minW')
+p <- p + labs(y = "Min W per minute")
+p
+#plotly::ggplotly(p) # useful for debugging
+```
+
+Figure \@ref(fig:makeMinPlot) repeats this analysis but for minimum power per minute by season and household id and plots only those values that are <= 0 to clarify time of day effects on -ve values. In this case we can see that only a few households (`r uniqueN(plotDT$linkID)`) report values <= 0 and none appear to be linked to hidden PV since there is no additional -ve trend in summer. Indeed most -ve values are recorded at night.
+
+## Profiles by linked household attributes
+
+This section uses the linked household attribute data to try to determine why there might be -ve overall power values. For example they could be caused by the presence of PV.
+
+```{r aggregateData, echo=TRUE, eval=FALSE}
+print("data.table join on the fly (version 1 - slow):")
+system.time(plotDT <- powerDT[hhDT][, .(meanW = mean(powerW)), keyby = .(season, obsTimeHMS, nChildren0_12)
+             ]) # aggregate by season, time and n children aged 0 - 12
+
+# print("data.table join on the fly (version 2):")
+# # appears to be as specified in https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html#MergeDiff
+# # but fails to find nChildren0_12
+# system.time(plotDT <- powerDT[hhDT, .(meanW = mean(powerW)), keyby = .(season, obsTimeHMS, nChildren0_12)
+#              ]) # aggregate by season, time and n children aged 0 - 12
+
+aggFunc <- function(powerDT, hhDT){
+  # do it in stages instead
+  keepCols <- c("linkID", "nChildren0_12")
+  mergedDT <- powerDT[hhDT[, ..keepCols]]
+  dt <- mergedDT[, .(meanW = mean(powerW)), keyby = .(season, obsTimeHMS, nChildren0_12)]
+  return(dt)
+}
+print("data.table join then aggregate:")
+system.time(plotDT <- aggFunc(powerDT, hhDT))
+```
+
+# Statistical Annex
+
+## Power data {#powerSkim}
+
+```{r skimPowerData}
+skimr::skim(powerDT)
+```
+
+## Household data {#hhSkim}
+
+```{r skimHHData}
+skimr::skim(hhDT)
+```
+
+# Runtime
+
+
+```{r check runtime, include=FALSE}
+t <- proc.time() - startTime
+
+elapsed <- t[[3]]
+```
+
+Analysis completed in `r round(elapsed,2)` seconds ( `r round(elapsed/60,2)` minutes) using [knitr](https://cran.r-project.org/package=knitr) in [RStudio](http://www.rstudio.com) with `r R.version.string` running on `r R.version$platform`.
+
+# R environment
+
+## R packages used
+
+ * base R [@baseR]
+ * bookdown [@bookdown]
+ * ggplot2 [@ggplot2]
+ * here [@here]
+ * GREENGridData [@GREENGridData] which depends on:
+    - data.table [@data.table]
+    - dplyr [@dplyr]
+    - hms [@hms]
+    - lubridate [@lubridate]
+    - progress [@progress]
+    - readr [@readr]
+    - readxl [@readxl]
+    - reshape2 [@reshape2]
+ * kableExtra [@kableExtra]
+ * knitr [@knitr]
+ * rmarkdown [@rmarkdown]
+
+## Session info
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References

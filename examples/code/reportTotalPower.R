@@ -1,0 +1,179 @@
+print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data ---------------#"))
+
+# -- Code to correctly sum household power demand to get an overall total -- #
+# Required because some circuits are seperate from the 'Incomer' - e.g. seperately controlled hot water
+# Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz with amendments from ben.anderson@otago.ac.nz
+
+# Nores:
+#  This code uses a csv file 'circuitsToSum.csv' (in the package /data folder) which
+# specifies the circuits to be used when calculating the total for each
+# house. The code below calculates per-house totals, and saves them to a single file for later use.
+#
+# The code assumes that the circuits in circuitsToSum.csv are actually the ones to sum to get overall
+# power demand. We have checked as best we can. If you notice errors please add an issue at:
+#
+# https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+is%3Aopen+label%3AdataIssue
+#
+# Note that the code attempts to check which circuits contribute to the total, but this
+# method allows for further checking by using the circuit names.
+
+# NB: Houses which have negative values or PV are dropped XX are they?
+
+# Libraries ----
+
+library(lubridate)
+library(data.table)
+library(drake) # introduced to aid workflow - you'll see why
+library(readr) # use fread instead where possible
+library(here)
+
+# parameterise data path - edit for your set up ----
+source(paste0(here::here(), "ggrParams.R")) # has to be done here not within .Rmd. Why?
+
+sysname <- Sys.info()[[1]]
+user <- Sys.info()[[6]]
+message("Running on ", sysname, " under user ", user)
+
+#circuitsFile <- "circuitsToSum.csv"
+#circuitsFile <- "circuitsToSum_v1.0" # JKM original
+circuitsFile <- "circuitsToSum_v1.1" # all
+
+# localise data paths
+if(user == "ben" & sysname == "Darwin"){
+  # Ben's laptop
+  DATA_PATH <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/powerData"
+  circuits_path <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
+} else {
+  DATA_PATH = "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
+  circuits_path <- paste0(DATA_PATH, "/", circuitsFile, ".csv") # <- Jason
+  #circuits_path <- sprintf("%s/circuitsToSum.csv", DATA_PATH) # <- Jason
+}
+
+# set up ----
+
+# Plot full numbers, not scientific
+options(scipen=999)
+
+# Set system timezone to UTC
+Sys.setenv(TZ='UTC')
+
+# hh attributes
+hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.zip"
+
+# Set the time period I want to get the per-house totals for ----
+start_time <- as.POSIXct("2015-04-01 00:00", tz="Pacific/Auckland")
+end_time <- as.POSIXct("2016-04-01 00:00", tz="Pacific/Auckland")
+
+start_exec <- Sys.time()
+
+dataL <- data.table() # data bucket to collect data in
+
+# process household files ----
+processPowerFiles <- function(){
+  df <- drake::readd(circuitsToSum)
+  for(house_id in colnames(df)){
+    message("Running extraction for: ", house_id)
+    message(" -> Loading data for ", house_id)
+    # input <- data.table::as.data.table(readr::read_csv(sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id), 
+    #                                                    col_types=cols(hhID=col_character(), 
+    #                                                                   linkID=col_character(), 
+    #                                                                   dateTime_orig=col_character(), 
+    #                                                                   TZ_orig=col_character(), 
+    #                                                                   r_dateTime=col_character(), 
+    #                                                                   circuit = col_character(), 
+    #                                                                   powerW=col_double())
+    #                                                    )
+    #                                    )
+    inputDT <- fread(sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id))
+    
+    message(" -> Parsing dates ", house_id)
+    # input$time_utc <- parse_date_time(input$r_dateTime, orders=c('ymdHMS'))
+    inputDT <- inputDT[, time_utc := lubridate::as_datetime(r_dateTime)]
+    inputDT <- inputDT[, time_nz := lubridate::with_tz(time_utc, tzone = "Pacific/Auckland")]
+    
+    # select dates we want
+    inputDT <- inputDT[time_nz >= start_time & time_nz < end_time, ]
+    
+    # Read in the circuits and extract the circuit code number
+    circuit_list <- df[, house_id]
+    circuit_list <- sub(".*\\$", "", circuit_list)
+    circuit_list <- circuit_list[circuit_list != ""]
+    
+    
+    # Create a boolean array of rows/circuits to be extracted
+    cond <- rep(FALSE, length(inputDT$circuit))
+    
+    for(circuit in circuit_list){
+      message(" -> Checking circuit: ", circuit)
+      cond <- cond | grepl(circuit, inputDT$circuit)
+    }
+    
+    exDT <- inputDT[cond, c("linkID", "time_nz","time_utc", "powerW")]
+    
+    # make long verion (easier for data analysis)
+    totDTl <- exDT[,.(sumW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
+    
+    dataL <- rbind(dataL, totDTl)
+  }
+  # save out the files of all totals ----
+  
+  #write.table(data, file=sprintf("%s/tot.csv", DATA_PATH), sep=",", row.names=FALSE, col.names=TRUE)
+  gsFile <- paste0(DATA_PATH, "/allHouseholds_totalW_long", , ".csv")
+  data.table::fwrite(dataL, gsFile) # way faster
+  
+  # gzip it
+  cmd <- paste0("gzip -f ", gsFile)
+  try(system(cmd))
+  
+  return(dataL)
+}
+
+loadHHFile <- function(f){
+  if(file.exists(f)){
+     hhDT <- data.table::as.data.table(readr::read_csv(f)) # load hh data
+     data.table::setkey(hhDT, linkID)
+   } else {
+     print(paste0("Failed to find ", f," - is the data source available?"))
+     } 
+}
+
+# set drake plan ----
+rmdFile <- paste0(here::here(), "/examples/code/imputeTotalPower.Rmd")
+message("Checking Rmd file to run exists: ", file.exists(rmdFile))
+
+htmlFile <- paste0(here::here(), "/examples/outputs/imputeTotalPower_",circuitsFile,".html")
+title <- "GREENGrid Household Electricity Demand Data Test"
+subtitle <- paste0('Imputed total power demand using: ', circuitsFile)
+knitParams <- list(
+  circuitsFile = circuitsFile,
+  title = title,
+  subtitle = subtitle
+)
+
+plan <- drake::drake_plan(
+  circuitsToSum = read.csv(circuits_path, header = TRUE), # this should force a re-build if we change the circuit file
+  powerData = processPowerFiles(),
+  hhData = loadHHFile(f = hhFile),
+  report = rmarkdown::render(
+    knitr_in(rmdFile),
+    params = knitParams,
+    output_file = file_out(htmlFile),
+    quiet = TRUE # change to TRUE for peace & quiet
+  )
+)
+
+
+# test the plan ----
+plan
+
+config <- drake_config(plan)
+vis_drake_graph(config)
+
+# do the plan ----
+make(plan)
+
+
+end_exec <- Sys.time()
+end_exec - start_exec
+
+
