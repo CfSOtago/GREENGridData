@@ -12,7 +12,7 @@ library(readr) # use fread instead where possible
 library(here)
 
 # parameterise data path - edit for your set up ----
-source(paste0(here::here(), "ggrParams.R")) # has to be done here not within .Rmd. Why?
+source(paste0(here::here(), "/ggrParams.R")) # has to be done here not within .Rmd. Why?
 
 sysname <- Sys.info()[[1]]
 user <- Sys.info()[[6]]
@@ -25,11 +25,11 @@ circuitsFile <- "circuitsToSum_v1.0" # JKM original
 # localise data paths
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
-  dPath <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/powerData"
-  dFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv")
+  dPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
+  dataFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv.gz")
 } else {
   dPath <- "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
-  dFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv")
+  dataFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv.gz")
 }
 
 # set up ----
@@ -46,7 +46,7 @@ loadFile <- function(f){
      dt <- data.table::as.data.table(readr::read_csv(f)) # load hh data
      data.table::setkey(dt, linkID)
    } else {
-     print(paste0("Failed to find ", f," - is the data source available?"))
+     message("Failed to find ", f," - is the data source available?")
    } 
   return(dt)
 }
@@ -67,12 +67,12 @@ knitParams <- list(
 plan <- drake::drake_plan(
   powerData = loadFile(dataFile),
   hhData = loadFile(hhFile),
-  report = rmarkdown::render(
-    knitr_in(rmdFile),
-    params = knitParams,
-    output_file = file_out(htmlFile),
-    quiet = TRUE # change to TRUE for peace & quiet
-  )
+  # report = rmarkdown::render(
+  #   knitr_in(rmdFile),
+  #   params = knitParams,
+  #   output_file = file_out(htmlFile),
+  #   quiet = TRUE # change to TRUE for peace & quiet
+  # )
 )
 
 
