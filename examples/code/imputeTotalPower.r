@@ -35,8 +35,8 @@ user <- Sys.info()[[6]]
 message("Running on ", sysname, " under user ", user)
 
 #circuitsFile <- "circuitsToSum.csv"
-#circuitsFile <- "circuitsToSum_v1.0" # JKM original
-circuitsFile <- "circuitsToSum_v1.1" # all
+circuitsFile <- "circuitsToSum_v1.0" # JKM original
+#circuitsFile <- "circuitsToSum_v1.1" # all
 
 # localise data paths
 if(user == "ben" & sysname == "Darwin"){
@@ -87,8 +87,8 @@ processPowerFiles <- function(df){
     
     message(" -> Parsing dates ", house_id)
     # input$time_utc <- parse_date_time(input$r_dateTime, orders=c('ymdHMS'))
-    inputDT <- inputDT[, time_utc := lubridate::as_datetime(r_dateTime)]
-    inputDT <- inputDT[, time_nz := lubridate::with_tz(time_utc, tzone = "Pacific/Auckland")]
+    inputDT <- inputDT[, dateTime_utc := lubridate::as_datetime(r_dateTime)]
+    inputDT <- inputDT[, time_nz := lubridate::with_tz(dateTime_utc, tzone = "Pacific/Auckland")]
     
     # select dates we want
     inputDT <- inputDT[time_nz >= start_time & time_nz < end_time, ]
@@ -107,13 +107,14 @@ processPowerFiles <- function(df){
       cond <- cond | grepl(circuit, inputDT$circuit)
     }
     
-    exDT <- inputDT[cond, c("linkID", "time_nz","time_utc", "powerW")]
+    exDT <- inputDT[cond, c("linkID", "time_nz","dateTime_utc", "powerW")]
       
     # make long verion (easier for data analysis)
-    totDTl <- exDT[,.(powerW = sum(powerW)), keyby = .(time_nz, time_utc,linkID)]
+    totDTl <- exDT[,.(powerW = sum(powerW)), keyby = .(dateTime_utc,linkID)]
     totDTl$circuit <- paste0("imputedTotalDemand_", circuitsFile)
     # add the total back to the input DT and save as new file
-    outDT <- rbind(inputDT[, .(linkID, circuit, time_utc, powerW, time_nz)])
+    inputDT$time_nz <- NULL # not needed
+    outDT <- rbind(inputDT[, .(linkID, circuit, dateTime_utc, powerW)]) # add total to input
     oF <- paste0(DATA_PATH, "/imputed/",house_id, "_all_1min_data_withImputedTotal_",
                  circuitsFile, ".csv")
     message("Saving and gzipping: ", oF)
@@ -122,7 +123,10 @@ processPowerFiles <- function(df){
     cmd <- paste0("gzip -f ", oF)
     try(system(cmd))
     message("Done")
-    dataL <- rbind(dataL, totDTl) # the big data bucket of totals
+    # remove redundant vars to save mem
+    dt <- totDTl[, .(linkID, dateTime_utc, powerW)]
+    setnames(dt, "powerW", "imputedTotalW")
+    dataL <- rbind(dataL, dt) # the big data bucket of totals
   }
   message("All households processed using: ", circuitsFile)
   return(dataL)
