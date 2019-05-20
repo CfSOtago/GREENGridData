@@ -1,7 +1,8 @@
 print(paste0("#--------------- Reporting NZ GREEN Grid Grid Household Total Power Data ---------------#"))
 
 # Reports the results of running the imputeTotalPower.r script.
-# Uses the 'all households' file
+# Uses the pre-processed 'all households' file
+# Runs parameterised reportTotalPower.Rmd to build report
 
 # Libraries ----
 
@@ -26,6 +27,7 @@ circuitsFile <- "circuitsToSum_v1.0" # JKM original
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
   dPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
+  circuitsPath <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
   dataFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv.gz")
 } else {
   dPath <- "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
@@ -67,12 +69,13 @@ knitParams <- list(
 plan <- drake::drake_plan(
   powerData = loadFile(dataFile),
   hhData = loadFile(hhFile),
-  # report = rmarkdown::render(
-  #   knitr_in(rmdFile),
-  #   params = knitParams,
-  #   output_file = file_out(htmlFile),
-  #   quiet = TRUE # change to TRUE for peace & quiet
-  # )
+  circuits = data.table::fread(circuitsPath),
+  report = rmarkdown::render(
+    knitr_in(rmdFile),
+    params = knitParams,
+    output_file = file_out(htmlFile),
+    quiet = TRUE # change to TRUE for peace & quiet
+  )
 )
 
 
