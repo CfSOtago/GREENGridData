@@ -134,7 +134,7 @@ This report provides summary analysis of the imputed total demand for each house
 hhDT <- drake::readd(hhData) # bring back from wherever drake put it
 ```
 
-```{r readdCirctuits}
+```{r readdCircuits}
 circuitsDT <- drake::readd(circuits) # bring back from wherever drake put it
 ```
 
