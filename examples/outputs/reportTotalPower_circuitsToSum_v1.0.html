@@ -1629,7 +1629,7 @@ div.tocify {
 <h1 class="title toc-ignore">GREENGrid Household Electricity Demand Data Test</h1>
 <h3 class="subtitle">Imputed total power demand using: circuitsToSum_v1.0</h3>
 <h4 class="author">Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk" class="email">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</h4>
-<h4 class="date">Last run at: 2019-05-17 02:55:34</h4>
+<h4 class="date">Last run at: 2019-05-20 04:50:33</h4>
 
 </div>
 
@@ -4135,7 +4135,15 @@ Figure 5.2: Minimum total demand profile plot
 <h1><span class="header-section-number">6</span> Implications</h1>
 <p>When using the ‘total demand’ derived data we suggest:</p>
 <ul>
-<li>excluding</li>
+<li>v1.0:
+<ul>
+<li>excluding household (link) IDs: 25,26,43</li>
+<li>excluding other -ve values on a per-value basis</li>
+</ul></li>
+<li>v1.1:
+<ul>
+<li>?</li>
+</ul></li>
 </ul>
 </div>
 <div id="statistical-annex" class="section level1">
@@ -4146,11 +4154,11 @@ Figure 5.2: Minimum total demand profile plot
 ##  n obs: 15163214 
 ##  n variables: 8 
 ## 
-## ── Variable type:character ──────────────────────────────────────────────────────────────────────────
+## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete        n min max empty n_unique
 ##    linkID       0 15163214 15163214   5   6     0       33
 ## 
-## ── Variable type:difftime ───────────────────────────────────────────────────────────────────────────
+## ── Variable type:difftime ────────────────────────────────────────────────────────────────────────────────────
 ##         variable missing complete        n    min        max     median
 ##       obsTimeHMS       0 15163214 15163214 0 secs 86340 secs 43140 secs
 ##  obsTimeHMSQHour       0 15163214 15163214 0 secs 85500 secs 42300 secs
@@ -4158,19 +4166,19 @@ Figure 5.2: Minimum total demand profile plot
 ##      1440
 ##        96
 ## 
-## ── Variable type:factor ─────────────────────────────────────────────────────────────────────────────
+## ── Variable type:factor ──────────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete        n n_unique
 ##    season       0 15163214 15163214        4
 ##                                              top_counts ordered
 ##  Win: 4109165, Aut: 3850193, Spr: 3826021, Sum: 3377835   FALSE
 ## 
-## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────
+## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────
 ##       variable missing complete        n  mean      sd       p0    p25
 ##  imputedTotalW       0 15163214 15163214 942.3 1182.83 -1084.72 211.25
 ##     p50     p75     p100     hist
 ##  425.93 1172.62 13999.81 ▇▂▁▁▁▁▁▁
 ## 
-## ── Variable type:POSIXct ────────────────────────────────────────────────────────────────────────────
+## ── Variable type:POSIXct ─────────────────────────────────────────────────────────────────────────────────────
 ##      variable missing complete        n        min        max     median
 ##   dateTime_nz       0 15163214 15163214 2015-04-01 2016-03-31 2015-09-18
 ##  dateTime_utc       0 15163214 15163214 2015-03-31 2016-03-31 2015-09-17
@@ -4186,7 +4194,7 @@ Figure 5.2: Minimum total demand profile plot
 ##  n obs: 44 
 ##  n variables: 110 
 ## 
-## ── Variable type:character ──────────────────────────────────────────────────────────────────────────
+## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────
 ##             variable missing complete  n min max empty n_unique
 ##        Clothes Dryer      23       21 44   3   3     0        1
 ##           Dishwasher      15       29 44   3   3     0        1
@@ -4211,11 +4219,11 @@ Figure 5.2: Minimum total demand profile plot
 ##            StartDate       2       42 44  16  16     0       42
 ##      Washing Machine      13       31 44   3   3     0        1
 ## 
-## ── Variable type:Date ───────────────────────────────────────────────────────────────────────────────
+## ── Variable type:Date ────────────────────────────────────────────────────────────────────────────────────────
 ##    variable missing complete  n        min        max     median n_unique
 ##  r_stopDate      41        3 44 2015-01-15 2016-04-02 2016-03-28        3
 ## 
-## ── Variable type:logical ────────────────────────────────────────────────────────────────────────────
+## ── Variable type:logical ─────────────────────────────────────────────────────────────────────────────────────
 ##                 variable missing complete  n mean count
 ##  Other Generation Device      44        0 44  NaN    44
 ##                   Q19_10      44        0 44  NaN    44
@@ -4225,7 +4233,7 @@ Figure 5.2: Minimum total demand profile plot
 ##                    Q19_5      44        0 44  NaN    44
 ##                    Q19_9      44        0 44  NaN    44
 ## 
-## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────
+## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────
 ##          variable missing complete  n    mean     sd p0    p25   p50
 ##  Heat pump number      19       25 44   1.16    0.55  1   1      1  
 ##           nAdults       1       43 44   1.93    0.51  1   2      2  
@@ -4387,7 +4395,7 @@ Figure 5.2: Minimum total demand profile plot
 ##   49      64 ▆▇▃▅▇▂▁▂
 ##    3       4 ▇▁▅▁▁▃▁▂
 ## 
-## ── Variable type:POSIXct ────────────────────────────────────────────────────────────────────────────
+## ── Variable type:POSIXct ─────────────────────────────────────────────────────────────────────────────────────
 ##         variable missing complete  n        min        max     median
 ##  surveyStartDate       2       42 44 2014-05-14 2015-02-10 2014-06-19
 ##  n_unique
@@ -4396,7 +4404,7 @@ Figure 5.2: Minimum total demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">8</span> Runtime</h1>
-<p>Analysis completed in 104.03 seconds ( 1.73 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.2 (2018-12-20) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 90.54 seconds ( 1.51 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.2 (2018-12-20) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">9</span> R environment</h1>
