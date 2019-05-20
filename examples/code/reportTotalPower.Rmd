@@ -130,10 +130,13 @@ This report provides summary analysis of the imputed total demand for each house
 
 # Load data
 
-```{r loadHhData}
+```{r readdHhData}
 hhDT <- drake::readd(hhData) # bring back from wherever drake put it
 ```
 
+```{r readdCirctuits}
+circuitsDT <- drake::readd(circuits) # bring back from wherever drake put it
+```
 
 ```{r readdPowerData}
 powerDT <- drake::readd(powerData) # bring back from wherever drake put it
@@ -148,8 +151,9 @@ Table \@ref(tab:readdPowerData) shows the first few rows of the Grid Spy 1 minut
 
 ```{r summaryPowerData}
 # create some useful derived date & time variables
-powerDT <- powerDT[, time_utc := lubridate::as_datetime(time_utc)]
-powerDT <- powerDT[, obsTimeHMS := hms::as.hms(time_utc)] # HH:MM for demand profile plots
+powerDT <- powerDT[, dateTime_utc := lubridate::as_datetime(dateTime_utc)]
+powerDT <- powerDT[, dateTime_nz := lubridate::with_tz(dateTime_utc, tzone = "Pacific/Auckland")]
+powerDT <- powerDT[, obsTimeHMS := hms::as.hms(dateTime_utc, tz = "Pacific/Auckland")] # HH:MM for demand profile plots
 
 t <- summary(powerDT)
 
@@ -161,7 +165,7 @@ powerDT <- powerDT[, obsTimeHMSQHour := hms::trunc_hms(obsTimeHMS, 60*15)]
 
 Note that:
 
- * time_utc is the correct dateTime of each observation in UTC. You may get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
+ * dateTime_utc is the correct dateTime of each observation in UTC. You may get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
  * there can be 0 or negative Wh observations.
 
 Table \@ref(tab:checkHouseholds) shows the summaries for each household as imputed using `r params$circuitsFile`. The number of households excluded will depend on the circuits file used:
@@ -178,14 +182,14 @@ hhID_hDT <- hhDT[, .(linkID, hasApplianceSummary,
                     otherGenDevice = `Other Generation Device`, notes)
                  ]
 hhID_hDT$hhDataSource <- "hhDT"
-hhID_pDT <- powerDT[, .(nObs = .N, meanW = mean(sumW), minW = min(sumW), maxW = max(sumW)),
+hhID_pDT <- powerDT[, .(nObs = .N, meanW = mean(imputedTotalW), minW = min(imputedTotalW), maxW = max(imputedTotalW)),
                     keyby = .(linkID)]
 hhID_pDT$powerDataSource <- "powerDT"
 
-circuitsDFt <- dplyr::as_tibble(cbind(linkID = names(circuitsDF), 
-                                      t(circuitsDF))) # the circuits table we used in the imputation - need to tranpose so we can link to the other data by linkID
 
-circuitsDT <- data.table::as.data.table(circuitsDFt) 
+circuitsDF <- dplyr::as_tibble(cbind(linkID = names(circuitsDT), 
+                                      t(circuitsDT))) # the circuits table we used in the imputation - need to tranpose so we can link to the other data by linkID
+circuitsDT <- data.table::as.data.table(circuitsDF) # back to dt
 setnames(circuitsDT, c(V1 = "linkID", 
                        V2 = "Circuit 1", 
                        V3 = "Circuit 2", 
@@ -202,25 +206,39 @@ kableExtra::kable(hhID_DT, caption = paste0("Summary of monitored households")) 
 
 Figure \@ref(fig:testPowerTileObs) shows the incidence of -ve overall imputed power values by linkID (household) and date. As we can see they tend to be concentrated in a few households.
 
-```{r testPowerTileObs, fig.cap="Incidence of -ve values by household ID and date"}
+```{r testPowerTileObs, fig.cap="Incidence of -ve values by household ID, date and presence of PV (if known)", fig.height = 8}
 myCaption <- "GREEN Grid Data: Imputed total household power demand"
   
-plotDT <- powerDT[sumW <= 0, .(nObs = .N), 
-                  keyby = .(Date = lubridate::as_date(time_nz), linkID)]
+plotDT <- powerDT[imputedTotalW <= 0, .(nObs = .N), 
+                  keyby = .(Date = lubridate::as_date(dateTime_nz), linkID)]
+setkey(plotDT, linkID)
+plotDT <- plotDT[hhID_DT]
 
 p <- ggplot2::ggplot(plotDT, aes(x = Date, y = linkID, fill = nObs)) +
   geom_tile() +
   scale_fill_viridis() +
   labs(caption = myCaption)
 
+plotDT <- plotDT[is.na(pvInverter), pvInverter := "No or unkown"]
+
 p
+
+t <- plotDT[, .(nObs = sum(nObs, na.rm = TRUE)), keyby = .(pvInverter)]
+
+kableExtra::kable(t, caption = "Number of observations of 0 or -ve total W by presence of PV") %>%
+  kable_styling()
 ```
+Table \@ref(tab:testPowerTileObs) (-ve and 0 observations by PV inverter presence) shows whether or not this is likely to be a PV related problem.
 
 Figure \@ref(fig:testPowerTileMean) shows the mean overall imputed power values by linkID (household) and date where power <= 0. As we can see they tend to be concentrated in a few households with one in particular (rf_26) reporting persistent -ve values.
 
-```{r testPowerTileMean, fig.cap="Mean of -ve values by household ID and date"}
-plotDT <- powerDT[sumW <= 0, .(meanWh = mean(sumW)), 
-                  keyby = .(Date = lubridate::as_date(time_nz), linkID)]
+```{r testPowerTileMean, fig.height = 8, fig.cap="Mean of -ve values by household ID and date and presence of PV (if known)"}
+plotDT <- powerDT[imputedTotalW <= 0, .(meanWh = mean(imputedTotalW)), 
+                  keyby = .(Date = lubridate::as_date(dateTime_nz), linkID)]
+setkey(plotDT, linkID)
+plotDT <- plotDT[hhID_DT]
+
+plotDT <- plotDT[is.na(pvInverter), pvInverter := "No or unkwown"]
 
 p <- ggplot2::ggplot(plotDT, aes(x = Date, y = linkID, fill = meanWh)) +
   geom_tile() +
@@ -230,6 +248,8 @@ p <- ggplot2::ggplot(plotDT, aes(x = Date, y = linkID, fill = meanWh)) +
 p
 ```
 
+Seems to be no relationship with PV...
+
 # Test power profiles
 
 Next we test the power profiles by season to see if there is a seasonal pattern to the negatuive values which might indicate unreported PV (for example).
@@ -237,7 +257,7 @@ Next we test the power profiles by season to see if there is a seasonal pattern 
 First we create a _Southern_ Hemisphere season variable. We have a function to do this in the `GREENGridData` package. We print a check table to ensure we are all happy with the coding of `season`.
 
 ```{r addSeason, echo = TRUE}
-powerDT <- powerDT[, r_dateTime := time_utc] # for consistency
+powerDT <- powerDT[, r_dateTime := dateTime_utc] # for consistency
 powerDT <- GREENGridData::addNZSeason(powerDT)
 table(lubridate::month(powerDT$r_dateTime, label = TRUE), powerDT$season, useNA = "always")
 ```
@@ -254,7 +274,7 @@ myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https
                         "\n (c) ", lubridate::year(Sys.Date())," University of Otago")
 
 
-plotDT <- powerDT[, .(meanW = mean(sumW)), keyby = .(season, 
+plotDT <- powerDT[, .(meanW = mean(imputedTotalW)), keyby = .(season, 
                                                 obsTimeHMSQHour, 
                                                 linkID)
              ]
@@ -267,7 +287,7 @@ p + labs(y = "Mean W per minute")
 Clearly the lowest mean value is still above 0 (`r round(min(plotDT$meanW),2)`W).
 
 ```{r makeMinPlot, fig.cap="Minimum total demand profile plot", fig.height=10}
-plotDT <- powerDT[, .(minW = min(sumW)), keyby = .(season, 
+plotDT <- powerDT[, .(minW = min(imputedTotalW)), keyby = .(season, 
                                                 obsTimeHMSQHour, 
                                                 linkID)
              ]
@@ -278,34 +298,18 @@ p
 #plotly::ggplotly(p) # useful for debugging
 ```
 
-Figure \@ref(fig:makeMinPlot) repeats this analysis but for minimum power per minute by season and household id and plots only those values that are <= 0 to clarify time of day effects on -ve values. In this case we can see that only a few households (`r uniqueN(plotDT$linkID)`) report values <= 0 and none appear to be linked to hidden PV since there is no additional -ve trend in summer. Indeed most -ve values are recorded at night.
+Figure \@ref(fig:makeMinPlot) repeats this analysis but for minimum power per minute by season and household id and plots only those values that are <= 0 to clarify time of day effects on -ve values. In this case we can see that only a few households (`r uniqueN(plotDT$linkID)`) report values <= 0 and none appear to be linked to hidden PV since there is no additional -ve trend in summer. Indeed there seems little pattern to the recording of -ve values.
 
-## Profiles by linked household attributes
+# Implications
 
-This section uses the linked household attribute data to try to determine why there might be -ve overall power values. For example they could be caused by the presence of PV.
+When using the 'total demand' derived data we suggest:
 
-```{r aggregateData, echo=TRUE, eval=FALSE}
-print("data.table join on the fly (version 1 - slow):")
-system.time(plotDT <- powerDT[hhDT][, .(meanW = mean(powerW)), keyby = .(season, obsTimeHMS, nChildren0_12)
-             ]) # aggregate by season, time and n children aged 0 - 12
-
-# print("data.table join on the fly (version 2):")
-# # appears to be as specified in https://cran.r-project.org/web/packages/data.table/vignettes/datatable-faq.html#MergeDiff
-# # but fails to find nChildren0_12
-# system.time(plotDT <- powerDT[hhDT, .(meanW = mean(powerW)), keyby = .(season, obsTimeHMS, nChildren0_12)
-#              ]) # aggregate by season, time and n children aged 0 - 12
-
-aggFunc <- function(powerDT, hhDT){
-  # do it in stages instead
-  keepCols <- c("linkID", "nChildren0_12")
-  mergedDT <- powerDT[hhDT[, ..keepCols]]
-  dt <- mergedDT[, .(meanW = mean(powerW)), keyby = .(season, obsTimeHMS, nChildren0_12)]
-  return(dt)
-}
-print("data.table join then aggregate:")
-system.time(plotDT <- aggFunc(powerDT, hhDT))
-```
-
+ * v1.0:
+   * excluding household (link) IDs: 25,26,43
+   * excluding other -ve values on a per-value basis
+ * v1.1:
+   * ?
+   
 # Statistical Annex
 
 ## Power data {#powerSkim}
