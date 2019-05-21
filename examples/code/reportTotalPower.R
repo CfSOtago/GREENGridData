@@ -20,8 +20,8 @@ user <- Sys.info()[[6]]
 message("Running on ", sysname, " under user ", user)
 
 #circuitsFile <- "circuitsToSum.csv"
-#circuitsFile <- "circuitsToSum_v1.0" # JKM original
-circuitsFile <- "circuitsToSum_v1.1" # all
+circuitsFile <- "circuitsToSum_v1.0" # JKM original
+#circuitsFile <- "circuitsToSum_v1.1" # all
 
 # localise data paths
 if(user == "ben" & sysname == "Darwin"){
