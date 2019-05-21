@@ -168,7 +168,10 @@ Note that:
  * dateTime_utc is the correct dateTime of each observation in UTC. You may get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
  * there can be 0 or negative Wh observations.
 
-Table \@ref(tab:checkHouseholds) shows the summaries for each household as imputed using `r params$circuitsFile`. The number of households excluded will depend on the circuits file used:
+Table \@ref(tab:checkHouseholds) shows the summaries for each household as imputed using `r params$circuitsFile`. Note that the presence of a PV inverter may only be known from the appliance summary and/or the household data.
+
+
+The number of households excluded will depend on the circuits file used:
 
  * v1.0:
     * no PV
@@ -180,25 +183,35 @@ Table \@ref(tab:checkHouseholds) shows the summaries for each household as imput
 hhID_hDT <- hhDT[, .(linkID, hasApplianceSummary, 
                     pvInverter = `PV Inverter`, energyStorage = `Energy Storage`,
                     otherGenDevice = `Other Generation Device`, notes)
-                 ]
-hhID_hDT$hhDataSource <- "hhDT"
+                 ] # all linkIDs in the household data
+hhID_hDT$hasHhData <- "Yes"
 hhID_pDT <- powerDT[, .(nObs = .N, meanW = mean(imputedTotalW), minW = min(imputedTotalW), maxW = max(imputedTotalW)),
-                    keyby = .(linkID)]
-hhID_pDT$powerDataSource <- "powerDT"
-
-
+                    keyby = .(linkID)] # all linkIDs in the power data
+hhID_pDT$powerDataSource <- "Has power data"
+# NB - there may be some linkIDs with no power data but household data & vice versa
+hhID_DT <- merge(hhID_hDT, hhID_pDT, by = "linkID", all = TRUE)
+  
 circuitsDF <- dplyr::as_tibble(cbind(linkID = names(circuitsDT), 
                                       t(circuitsDT))) # the circuits table we used in the imputation - need to tranpose so we can link to the other data by linkID
-circuitsDT <- data.table::as.data.table(circuitsDF) # back to dt
-setnames(circuitsDT, c(V1 = "linkID", 
+circuitsLongDT <- data.table::as.data.table(circuitsDF) # back to dt
+setnames(circuitsLongDT, c(V1 = "linkID", 
                        V2 = "Circuit 1", 
                        V3 = "Circuit 2", 
                        V4 = "Circuit 3")) # rename for clarity
-setkey(circuitsDT, linkID)
-hhID_DT <- circuitsDT[hhID_hDT] # add circuits to all IDs
-hhID_DT <- hhID_pDT[hhID_DT] # add power to all IDs
+setkey(circuitsLongDT, linkID)
+hhID_DT <- circuitsLongDT[hhID_DT] # add circuits to all IDs
 
-kableExtra::kable(hhID_DT, caption = paste0("Summary of monitored households")) %>%
+hhID_DT <- hhID_DT[is.na(hasApplianceSummary), hasApplianceSummary := "No"]
+hhID_DT <- hhID_DT[hasApplianceSummary == "No" & is.na(pvInverter), pvInverter := "Not known"]
+hhID_DT <- hhID_DT[hasApplianceSummary == "Yes" & is.na(pvInverter), pvInverter := "No"] # we know they do not
+hhID_DT <- hhID_DT[hasApplianceSummary == "No" & is.na(energyStorage), energyStorage := "Not known"]
+hhID_DT <- hhID_DT[hasApplianceSummary == "Yes" & is.na(energyStorage), energyStorage := "No"] # we know they do not
+hhID_DT <- hhID_DT[is.na(notes) , notes := ""]
+hhID_DT <- hhID_DT[is.na(hasHhData) , hasHhData := "No"]
+
+kableExtra::kable(hhID_DT[, .(linkID, hasHhData, hasApplianceSummary, pvInverter, energyStorage,
+                              notes, nObs, minW, maxW,
+                              `Circuit 1`,`Circuit 2`,`Circuit 3`)], caption = paste0("Summary of monitored households (NA indicates data not included in ", circuitsFile ,")")) %>%
   kable_styling() # report all the households
 ```
 
@@ -223,14 +236,25 @@ plotDT <- plotDT[is.na(pvInverter), pvInverter := "No or unkown"]
 
 p
 
-t <- plotDT[, .(nObs = sum(nObs, na.rm = TRUE)), keyby = .(pvInverter)]
+t <- plotDT[, .(nObs = sum(nObs, na.rm = TRUE),
+                nHouseholds = uniqueN(linkID)), keyby = .(pvInverter)]
 
 kableExtra::kable(t, caption = "Number of observations of 0 or -ve total W by presence of PV") %>%
   kable_styling()
 ```
-Table \@ref(tab:testPowerTileObs) (-ve and 0 observations by PV inverter presence) shows whether or not this is likely to be a PV related problem.
 
-Figure \@ref(fig:testPowerTileMean) shows the mean overall imputed power values by linkID (household) and date where power <= 0. As we can see they tend to be concentrated in a few households with one in particular (rf_26) reporting persistent -ve values.
+Table \@ref(tab:testPowerTileObs) (-ve and 0 observations by PV inverter presence) shows whether or not this is likely to be a PV related problem in the dataset defined by . This is confirmed by Table @\ref(tab:testPV) which shows the summary data from Table \@ref(tab:testPowerTileObs) but for just those we know to have PV inverters. If this version of the circuits file has excluded them then the power data will be all NA.
+
+```{r testPV}
+kableExtra::kable(hhID_DT[pvInverter == "yes", .(linkID, pvInverter, energyStorage,
+                              notes, nObs, minW, maxW,
+                              `Circuit 1`,`Circuit 2`,`Circuit 3`)], caption = paste0("Summary of monitored households (NA indicates data not included in ", circuitsFile ,")")) %>%
+  kable_styling() # report all the households
+```
+
+
+
+Figure \@ref(fig:testPowerTileMean) shows the mean overall imputed power values by linkID (household) and date where power <= 0. As we can see they tend to be concentrated in a few households with some reporting persistent -ve values even though they do not appear to have PV.
 
 ```{r testPowerTileMean, fig.height = 8, fig.cap="Mean of -ve values by household ID and date and presence of PV (if known)"}
 plotDT <- powerDT[imputedTotalW <= 0, .(meanWh = mean(imputedTotalW)), 
@@ -247,8 +271,6 @@ p <- ggplot2::ggplot(plotDT, aes(x = Date, y = linkID, fill = meanWh)) +
 
 p
 ```
-
-Seems to be no relationship with PV...
 
 # Test power profiles
 
@@ -278,38 +300,54 @@ plotDT <- powerDT[, .(meanW = mean(imputedTotalW)), keyby = .(season,
                                                 obsTimeHMSQHour, 
                                                 linkID)
              ]
+setkey(plotDT, linkID)
+setkey(hhID_DT, linkID)
+plotDT <- hhID_DT[, .(linkID, pvInverter)][plotDT]
 
 p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHMSQHour', 
                          yvar = 'meanW')
-p + labs(y = "Mean W per minute")
+p + labs(y = "Mean W per minute") + facet_wrap(. ~ pvInverter)
 ```
 
-Clearly the lowest mean value is still above 0 (`r round(min(plotDT$meanW),2)`W).
+If a household has PV this should be clearly visible as a -ve curve centered on ~ 12:00 - 13:00.
 
 ```{r makeMinPlot, fig.cap="Minimum total demand profile plot", fig.height=10}
-plotDT <- powerDT[, .(minW = min(imputedTotalW)), keyby = .(season, 
+plotDT <- powerDT[imputedTotalW <= 0, .(minW = min(imputedTotalW)), keyby = .(season, 
                                                 obsTimeHMSQHour, 
                                                 linkID)
              ]
 
-p <- seasonalProfilePlot(plotDT[minW <= 0], xvar = 'obsTimeHMSQHour', yvar = 'minW')
-p <- p + labs(y = "Min W per minute")
-p
-#plotly::ggplotly(p) # useful for debugging
+setkey(plotDT, linkID)
+setkey(hhID_DT, linkID)
+plotDT <- hhID_DT[, .(linkID, pvInverter)][plotDT]
+
+p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHMSQHour', 
+                         yvar = 'minW')
+p <- p + labs(y = "Min W per minute") + facet_wrap(. ~ pvInverter)
+
+p # ggplot
+
+p <- p + labs(caption = "Interactive plotly version")
+
+#plotly::ggplotly(p) # useful for debugging - breaks under drake (why?)
 ```
 
-Figure \@ref(fig:makeMinPlot) repeats this analysis but for minimum power per minute by season and household id and plots only those values that are <= 0 to clarify time of day effects on -ve values. In this case we can see that only a few households (`r uniqueN(plotDT$linkID)`) report values <= 0 and none appear to be linked to hidden PV since there is no additional -ve trend in summer. Indeed there seems little pattern to the recording of -ve values.
+Figure \@ref(fig:makeMinPlot) repeats this analysis but for minimum power per minute by season and household id and plots only those values that are <= 0 to clarify time of day effects on -ve values.
 
 # Implications
 
-When using the 'total demand' derived data we suggest:
+When using the 'total demand' derived data we suggest data users:
 
  * v1.0:
-   * excluding household (link) IDs: 25,26,43
-   * excluding other -ve values on a per-value basis
+   * excluding household (link) IDs: 25,26,43;
+   * excluding other -ve values on a per-value basis;
  * v1.1:
-   * ?
-   
+   * excluding household (link) IDs: 14,25,26,43;
+   * excluding other -ve values on a per-value basis;
+   * only including households known to have PV if analysis of demand during non-daylight hours is being undertaken (c.f. Figures \@ref(fig:makeMMeanPlot) and \@ref(fig:makeMinPlot)).
+  
+In _all_ cases we recommend that users check the data carefully before anlaysis and _document_ anY filtering they apply!
+
 # Statistical Annex
 
 ## Power data {#powerSkim}
