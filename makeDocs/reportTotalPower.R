@@ -54,10 +54,10 @@ loadFile <- function(f){
 }
 
 # set drake plan ----
-rmdFile <- paste0(here::here(), "/examples/code/reportTotalPower.Rmd")
+rmdFile <- paste0(here::here(), "/makeDocs/reportTotalPower.Rmd")
 message("Checking Rmd file to run exists: ", file.exists(rmdFile))
 
-htmlFile <- paste0(here::here(), "/examples/outputs/reportTotalPower_",circuitsFile,".html")
+htmlFile <- paste0(here::here(), "/docs/reportTotalPower_",circuitsFile,".html")
 title <- "GREENGrid Household Electricity Demand Data Test"
 subtitle <- paste0('Imputed total power demand using: ', circuitsFile)
 knitParams <- list(

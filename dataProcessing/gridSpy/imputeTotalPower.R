@@ -1,15 +1,19 @@
 print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data ---------------#"))
 
-# -- Code to correctly sum household power demand to get an overall total -- #
+# -- Code to correctly sum (as far as possible) household power demand to get an overall total -- #
 # Required because some circuits are seperate from the 'Incomer' - e.g. seperately controlled hot water
 # Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz 
 # with amendments from ben.anderson@otago.ac.nz
 # edit history:
 
 # Notes:
-# This code uses a csv file in the package /data folder which
+# This code requires:
+# - a csv file in the package /data folder which
 # specifies the circuits to be used when calculating the total for each
-# house. The code below calculates per-house totals, and saves them to a single file for later use.
+# house. 
+# - the cleaned safe household level data from http://reshare.ukdataservice.ac.uk/853334/
+
+# The code below calculates per-house totals, and saves them to a single file for later use.
 #
 # The code assumes that the circuits in the circuits file are actually the ones to sum to get overall
 # power demand. We have checked as best we can. If you notice errors please add an issue at:
@@ -34,10 +38,11 @@ sysname <- Sys.info()[[1]]
 user <- Sys.info()[[6]]
 message("Running on ", sysname, " under user ", user)
 
+# Select your circuits-to-sum file
 #circuitsFile <- "circuitsToSum_v1.0" # JKM original
 circuitsFile <- "circuitsToSum_v1.1" # all
 
-# localise data paths
+# localise data paths - aedit for your context
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
   DATA_PATH <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
@@ -96,8 +101,7 @@ processPowerFiles <- function(df){
     circuit_list <- df[, house_id]
     circuit_list <- sub(".*\\$", "", circuit_list)
     circuit_list <- circuit_list[circuit_list != ""]
-    
-    
+  
     # Create a boolean array of rows/circuits to be extracted
     cond <- rep(FALSE, length(inputDT$circuit))
     
@@ -150,6 +154,7 @@ try(system(cmd))
 
 message("Done")
 
+# how long did it take?
 end_exec <- Sys.time()
 end_exec - start_exec
 

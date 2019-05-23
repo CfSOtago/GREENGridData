@@ -68,8 +68,6 @@ overflow: auto;
 margin-left: 2%;
 position: fixed;
 border: 1px solid #ccc;
-webkit-border-radius: 6px;
-moz-border-radius: 6px;
 border-radius: 6px;
 }
 
@@ -97,9 +95,14 @@ font-size: 12px;
 .tocify-subheader .tocify-subheader {
 text-indent: 30px;
 }
-
 .tocify-subheader .tocify-subheader .tocify-subheader {
 text-indent: 40px;
+}
+.tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader {
+text-indent: 50px;
+}
+.tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader {
+text-indent: 60px;
 }
 
 .tocify .tocify-item > a, .tocify .nav-list .nav-header {
@@ -503,13 +506,13 @@ float: none;
 
           item.append($("<a/>", {
 
-            "text": self.text()
+            "html": self.html()
 
           }));
 
         } else {
 
-          item.text(self.text());
+          item.html(self.html());
 
         }
 
@@ -1581,8 +1584,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -1629,7 +1630,7 @@ div.tocify {
 <h1 class="title toc-ignore">GREENGrid Household Electricity Demand Data Test</h1>
 <h3 class="subtitle">Imputed total power demand using: circuitsToSum_v1.0</h3>
 <h4 class="author">Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk" class="email">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</h4>
-<h4 class="date">Last run at: 2019-05-21 18:11:07</h4>
+<h4 class="date">Last run at: 2019-05-23 21:39:14</h4>
 
 </div>
 
@@ -1957,6 +1958,8 @@ NA
 <li>no exclusions</li>
 </ul></li>
 </ul>
+<pre><code>## Warning: `as_tibble.matrix()` requires a matrix with column names or a `.name_repair` argument. Using compatibility `.name_repair`.
+## This warning is displayed once per session.</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:checkHouseholds">Table 3.3: </span>Summary of monitored households (NA indicates data not included in circuitsToSum_v1.0)
@@ -3898,11 +3901,11 @@ Figure 5.2: Minimum total demand profile plot
 ##  n obs: 15163214 
 ##  n variables: 8 
 ## 
-## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:character ─────────────────────────────────────────────────────────────
 ##  variable missing complete        n min max empty n_unique
 ##    linkID       0 15163214 15163214   5   6     0       33
 ## 
-## ── Variable type:difftime ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:difftime ──────────────────────────────────────────────────────────────
 ##         variable missing complete        n    min        max     median
 ##       obsTimeHMS       0 15163214 15163214 0 secs 86340 secs 43140 secs
 ##  obsTimeHMSQHour       0 15163214 15163214 0 secs 85500 secs 42300 secs
@@ -3910,19 +3913,19 @@ Figure 5.2: Minimum total demand profile plot
 ##      1440
 ##        96
 ## 
-## ── Variable type:factor ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:factor ────────────────────────────────────────────────────────────────
 ##  variable missing complete        n n_unique
 ##    season       0 15163214 15163214        4
 ##                                              top_counts ordered
 ##  Win: 4109165, Aut: 3850193, Spr: 3826021, Sum: 3377835   FALSE
 ## 
-## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:numeric ───────────────────────────────────────────────────────────────
 ##       variable missing complete        n  mean      sd       p0    p25
 ##  imputedTotalW       0 15163214 15163214 942.3 1182.83 -1084.72 211.25
 ##     p50     p75     p100     hist
 ##  425.93 1172.62 13999.81 ▇▂▁▁▁▁▁▁
 ## 
-## ── Variable type:POSIXct ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:POSIXct ───────────────────────────────────────────────────────────────
 ##      variable missing complete        n        min        max     median
 ##   dateTime_nz       0 15163214 15163214 2015-04-01 2016-03-31 2015-09-18
 ##  dateTime_utc       0 15163214 15163214 2015-03-31 2016-03-31 2015-09-17
@@ -3938,7 +3941,7 @@ Figure 5.2: Minimum total demand profile plot
 ##  n obs: 44 
 ##  n variables: 110 
 ## 
-## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:character ─────────────────────────────────────────────────────────────
 ##             variable missing complete  n min max empty n_unique
 ##        Clothes Dryer      23       21 44   3   3     0        1
 ##           Dishwasher      15       29 44   3   3     0        1
@@ -3963,11 +3966,11 @@ Figure 5.2: Minimum total demand profile plot
 ##            StartDate       2       42 44  16  16     0       42
 ##      Washing Machine      13       31 44   3   3     0        1
 ## 
-## ── Variable type:Date ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:Date ──────────────────────────────────────────────────────────────────
 ##    variable missing complete  n        min        max     median n_unique
 ##  r_stopDate      41        3 44 2015-01-15 2016-04-02 2016-03-28        3
 ## 
-## ── Variable type:logical ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:logical ───────────────────────────────────────────────────────────────
 ##                 variable missing complete  n mean count
 ##  Other Generation Device      44        0 44  NaN    44
 ##                   Q19_10      44        0 44  NaN    44
@@ -3977,7 +3980,7 @@ Figure 5.2: Minimum total demand profile plot
 ##                    Q19_5      44        0 44  NaN    44
 ##                    Q19_9      44        0 44  NaN    44
 ## 
-## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:numeric ───────────────────────────────────────────────────────────────
 ##          variable missing complete  n    mean     sd p0    p25   p50
 ##  Heat pump number      19       25 44   1.16    0.55  1   1      1  
 ##           nAdults       1       43 44   1.93    0.51  1   2      2  
@@ -4139,7 +4142,7 @@ Figure 5.2: Minimum total demand profile plot
 ##   49      64 ▆▇▃▅▇▂▁▂
 ##    3       4 ▇▁▅▁▁▃▁▂
 ## 
-## ── Variable type:POSIXct ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:POSIXct ───────────────────────────────────────────────────────────────
 ##         variable missing complete  n        min        max     median
 ##  surveyStartDate       2       42 44 2014-05-14 2015-02-10 2014-06-19
 ##  n_unique
@@ -4148,7 +4151,7 @@ Figure 5.2: Minimum total demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">8</span> Runtime</h1>
-<p>Analysis completed in 108.68 seconds ( 1.81 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.2 (2018-12-20) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 96.13 seconds ( 1.6 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.2 (2018-12-20) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">9</span> R environment</h1>
@@ -4193,34 +4196,34 @@ Figure 5.2: Minimum total demand profile plot
 ## 
 ## other attached packages:
 ##  [1] viridis_0.5.1     viridisLite_0.3.0 skimr_1.0.5      
-##  [4] kableExtra_1.1.0  ggplot2_3.1.1     dplyr_0.8.0.1    
-##  [7] tidyselect_0.2.5  here_0.1          readr_1.3.1      
-## [10] drake_7.2.0       data.table_1.12.2 lubridate_1.7.4  
+##  [4] dplyr_0.8.0.1     tidyselect_0.2.5  drake_7.2.0      
+##  [7] stringr_1.4.0     shiny_1.3.2       kableExtra_1.1.0 
+## [10] lubridate_1.7.4   readr_1.3.1       ggplot2_3.1.1    
+## [13] data.table_1.12.2 bookdown_0.10     rmarkdown_1.13   
+## [16] here_0.1          GREENGridData_1.0
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.1        tidyr_0.8.3       prettyunits_1.0.2
 ##  [4] visNetwork_2.0.6  assertthat_0.2.1  zeallot_0.1.0    
-##  [7] rprojroot_1.3-2   digest_0.6.18     packrat_0.5.0    
+##  [7] rprojroot_1.3-2   digest_0.6.19     packrat_0.5.0    
 ## [10] utf8_1.1.4        mime_0.6          R6_2.4.0         
 ## [13] cellranger_1.1.0  plyr_1.8.4        backports_1.1.4  
 ## [16] evaluate_0.13     httr_1.4.0        highr_0.8        
 ## [19] pillar_1.4.0      rlang_0.3.4       progress_1.2.1   
 ## [22] lazyeval_0.2.2    readxl_1.3.1      rstudioapi_0.10  
-## [25] rmarkdown_1.12    labeling_0.3      webshot_0.5.1    
-## [28] stringr_1.4.0     htmlwidgets_1.3   igraph_1.2.4.1   
-## [31] munsell_0.5.0     httpuv_1.5.1      compiler_3.5.2   
-## [34] xfun_0.6          pkgconfig_2.0.2   htmltools_0.3.6  
-## [37] tibble_2.1.1      gridExtra_2.3     bookdown_0.10    
-## [40] fansi_0.4.0       later_0.8.0       crayon_1.3.4     
-## [43] withr_2.1.2       grid_3.5.2        xtable_1.8-4     
-## [46] GREENGridData_1.0 jsonlite_1.6      gtable_0.3.0     
-## [49] magrittr_1.5      storr_1.2.1       scales_1.0.0     
-## [52] cli_1.1.0         stringi_1.4.3     reshape2_1.4.3   
-## [55] promises_1.0.1    xml2_1.2.0        vctrs_0.1.0      
-## [58] tools_3.5.2       glue_1.3.1        purrr_0.3.2      
-## [61] hms_0.4.2         yaml_2.2.0        colorspace_1.4-1 
-## [64] base64url_1.4     rvest_0.3.3       plotly_4.9.0     
-## [67] knitr_1.22</code></pre>
+## [25] labeling_0.3      webshot_0.5.1     htmlwidgets_1.3  
+## [28] igraph_1.2.4.1    munsell_0.5.0     compiler_3.5.2   
+## [31] httpuv_1.5.1      xfun_0.7          pkgconfig_2.0.2  
+## [34] htmltools_0.3.6   gridExtra_2.3     tibble_2.1.1     
+## [37] fansi_0.4.0       crayon_1.3.4      withr_2.1.2      
+## [40] later_0.8.0       grid_3.5.2        jsonlite_1.6     
+## [43] xtable_1.8-4      gtable_0.3.0      magrittr_1.5     
+## [46] storr_1.2.1       scales_1.0.0      cli_1.1.0        
+## [49] stringi_1.4.3     reshape2_1.4.3    promises_1.0.1   
+## [52] xml2_1.2.0        vctrs_0.1.0       tools_3.5.2      
+## [55] glue_1.3.1        purrr_0.3.2       hms_0.4.2        
+## [58] yaml_2.2.0        colorspace_1.4-1  base64url_1.4    
+## [61] rvest_0.3.3       knitr_1.23</code></pre>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
