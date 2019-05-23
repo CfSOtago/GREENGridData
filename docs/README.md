@@ -1,5 +1,8 @@
 # NZ GREEN Grid Household Electricity Demand Study: Data R Package
 
+<img src="Heat_Pump_meankWperminBySeason.png" alt="Heat Pumps"
+	title="Heat Pump season demand" style="float:right;width:250px;"/>
+	
 The Renewable Energy and the Smart Grid [(NZ GREEN Grid)](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project's Household Electricity Demand Study data includes:
 
  * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
