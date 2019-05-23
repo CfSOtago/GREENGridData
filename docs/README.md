@@ -8,8 +8,7 @@ The Renewable Energy and the Smart Grid [(NZ GREEN Grid)](https://www.otago.ac.n
 
 This data has been cleaned and anonymised using the code in this [R package](https://github.com/CfSOtago/GREENGridData/) to produce the 'safe' dataset available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). *None* of the data is held in the R package so *none* of the code here will work unless you also have access to the data. 
 
-----
-## Accessing the data
+# Accessing the data
 
 The data is archived as:
 
@@ -19,11 +18,11 @@ You will need to register for a (free) UK Data Service account before you can do
 
 Please document any errors, problems or queries by raising a [github issue](https://github.com/CfSOtago/GREENGridData/issues) and we will try to respond.
 
-### Terms of Use
+# Terms of Use
 
 This is _not_ open access data. It is licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
 
-### Version 1 - September 2018
+# Version 1 - September 2018
 
 Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
  
@@ -34,24 +33,24 @@ Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) inclu
    - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
  * PDF snapshots of the _live documentation_ found below. 
 
-_Documentation_:
+## Documentation
 
  * [Research data overview](overviewReport_v1.0.html) report;
+ * [Household attribute data](householdAttributeProcessingReport_v1.0.html) processing and documentation report;
  * [Household electricity demand data](gridSpy1mProcessingReport_v1.0.html) processing and documentation report;
  * [Household electricity demand outlier and negative power values](gridSpy1mOutliersReport_v1.0.html) report;
  * Imputing total household demand:
       * Based on [circuitsToSumv1.0.csv](reportTotalPower_circuitsToSum_v1.0.html)
       * Based on [circuitsToSumv1.1.csv](reportTotalPower_circuitsToSum_v1.1.html)
- * [Household attribute data](householdAttributeProcessingReport_v1.0.html) processing and documentation report.
 
 > NB: Version 1 of the data package does not include any time-use diary data. 
 
-_Known Problems_:
+## Known Problems
 
  * rf_15 & rf_17 grid spy files are in the archive but should not be. Users should remove them. [See further details...](https://github.com/CfSOtago/GREENGridData/issues/19)
  * For others see our [issue list](https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+label%3AdataIssue)
  
-## Accessing the code
+# Accessing the code
 
 The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can be forked, cloned or installed as an R package. Amongst other things it contains the following folders:
  * _dataProcessing_ - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
@@ -60,7 +59,7 @@ The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can b
 
 We encourage [feedback](https://github.com/CfSOtago/GREENGridData/issues) and [contributions](https://github.com/CfSOtago/GREENGridData/pulls) but inevitably #[YMMV](https://en.wiktionary.org/wiki/YMMV).
 
-## Publications to date
+# Publications to date
 
  * Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [_New Zealand grid household electricity demand study 2014-2018_](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
  * Jack, Michael & Suomalainen, Kiti (2018). [Potential future changes to residential electricity load profiles – findings from the GridSpy dataset](http://hdl.handle.net/10523/8074). NZ GREEN Grid Technical Report, University of Otago.
