@@ -1,6 +1,6 @@
 # NZ GREEN Grid Household Electricity Demand Study: Data R Package
 
-## 1 minute electricity power (W) data
+## processGridSpy1mData.R
 
 The code here processes the original Grid Spy data files to produce the ['safe' form held on the UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). To do this it:
 
@@ -14,5 +14,10 @@ The code here processes the original Grid Spy data files to produce the ['safe' 
  * saves two checkPlots for each household as a very useful eye-ball of data quality and power demand profiles
 
 The code makes extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done. If you want to use the data processing code in this directory, the makeFile.R runs everything.
+
+# imputeTotalPower.R
+This script imputes the total power demand per household for each 1 minute period. It uses one of two circuits-to-sum files from the /data folder to do so. Reports on the results of doing so can be found at https://cfsotago.github.io/GREENGridData/. 
+
+# Issues
 
 We keep a log of [issues](https://github.com/CfSOtago/GREENGridData/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3AgridSpy) - if you detect a new problem with the data (or code) please open a new [issue](https://github.com/CfSOtago/GREENGridData/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3AgridSpy).
