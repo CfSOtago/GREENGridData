@@ -16,6 +16,7 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: TRUE
+    self_contained: TRUE
   bookdown::pdf_document2:
     fig_caption: yes
     number_sections: yes
@@ -538,19 +539,24 @@ If the above plot and table flag errors then further re-naming of the circuit la
 
 # Calculating total household power demand {#totPower}
 
-Unfortunately this is not as straightforward as one would wish because many households have seperately controlled (and thus monitored) hot water circuits which do not feed from the 'Incomer'. We have provided some example code to attempt to correctly sum the relevant circuits in each house. This make use of a circuits.csv file which specifies the circuits to use in each case:
+Unfortunately this is not as straightforward as one would wish because many households have seperately controlled (and thus monitored) hot water circuits which do not feed from the 'Incomer'. We have provided some example code to attempt to correctly impute the sum of the relevant circuits in each house. This make use of a circuits-to-sum file which specifies the circuits to use in each case:
 
- * [code](https://github.com/CfSOtago/GREENGridData/blob/master/examples/code/extract_per_house_totals.r): kindly provided by Jason Mair
- * circuits.csv (see package [data folder](https://github.com/CfSOtago/GREENGridData/tree/master/data))
+ * [code](https://github.com/CfSOtago/GREENGridData/blob/master/dataProcessing/gridSpy): adapted from an original kindly provided by Jason Mair
+ * circuits-to-sum (see package [data folder](https://github.com/CfSOtago/GREENGridData/tree/master/data))
+ * Processing reports:
+   * Based on [circuitsToSumv1.0.csv](reportTotalPower_circuitsToSum_v1.0.html)
+   * Based on [circuitsToSumv1.1.csv](reportTotalPower_circuitsToSum_v1.1.html)
 
-# Dealing with negative power {#negPower}
+`#YMMV`
+
+# Dealing with circuit level outliers and negative power {#outliers}
 
 There are a number of observations that have recorded negative power. There are at least two potential reasons for this:
 
  * a Grid Spy sensor was placed on the wrong wire and/or set to the wrong phase
  * a circuit contained a PV inverter which pushes power into the home and which is measured as -ve power (when active)
  
-We have conducted a [seperate analysis](checkNegativePower.html) of the incidence of negative values which makes recommendations on actions to take. 
+We have conducted a [seperate analysis](gridSpy1mOutliersReport_v1.0.html) of the incidence of negative values and outliers at the circuit level which makes recommendations on actions to take. 
 
 # Loading the cleaned data files {#loadClean}
 
