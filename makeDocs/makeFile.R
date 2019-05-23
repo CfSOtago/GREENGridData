@@ -62,9 +62,9 @@ rmarkdown::render(input = rmdFile,
                   output_file = paste0(ggrParams$repoLoc,"/docs/gridSpy1mProcessingReport_v", version, ".html")
 )
 
-# --- Grid spy outliers report ----
+# --- Grid spy circuit level outliers report ----
 localData <- 0 # 1 = yes
-subtitle <- paste0("1 minute electricity power outlier report (version ", version, ")")
+subtitle <- paste0("1 minute circuit level electricity power outlier report (version ", version, ")")
 rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildGridSpyOutliers.Rmd")
 rmarkdown::render(input = rmdFile,
                   output_format = "html_document2",

@@ -86,14 +86,14 @@ plotLoc <- paste0(ggrParams$repoLoc, "/docs/plots/") # where to put the plots
 ```{r generic sample, child=ggrParams$sampleGeneric}
 ```
  
-This report provides an analysis of negative power values to be found in the GREEN Grid project [@stephenson_smart_2017] research data.
+This report provides an analysis of circuit level negative and outlier power values to be found in the GREEN Grid project [@stephenson_smart_2017] research data.
 
-There are a number of observations that have recorded negative power. There are at least two potential reasons for this:
+There are a number of observations that have recorded either very large or negative power. There are at least two potential reasons for this:
 
  * a Grid Spy sensor was placed on the wrong wire and/or set to the wrong phase
  * a circuit contained a PV inverter which pushes power into the home and which is measured as -ve power (when active)
  
-The following analysis of the incidence of negative values makes recommendations on actions to take. 
+The following analysis of the incidence of outliers and negative values makes recommendations on actions to take. 
 
 ```{r loadSafeHouseholdData, include=FALSE}
 hhDT <- data.table::as.data.table(readr::read_csv(ggrParams$hhAttributes))
