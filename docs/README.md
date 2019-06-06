@@ -1,5 +1,3 @@
-# NZ GREEN Grid Household Electricity Demand Study: Data R Package
-	
 The Renewable Energy and the Smart Grid [(NZ GREEN Grid)](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project's Household Electricity Demand Study data includes:
 
  * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power);<img src="Heat_Pump_meankWperminBySeason.png" alt="Heat Pumps" title="Heat Pump season demand" style="float:right;width:250px;"/>
@@ -18,11 +16,11 @@ You will need to register for a (free) UK Data Service account before you can do
 
 Please document any errors, problems or queries by raising a [github issue](https://github.com/CfSOtago/GREENGridData/issues) and we will try to respond.
 
-# Terms of Use
+## Terms of Use
 
 This is _not_ open access data. It is licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
 
-# Version 1 - September 2018
+## Version 1 - September 2018
 
 Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) includes:
  
@@ -33,7 +31,7 @@ Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) inclu
    - tile plots (heat maps/carpet plots) of the number of observations per hour per day. Also a useful check...
  * PDF snapshots of the _live documentation_ found below. 
 
-## Documentation
+### Documentation
 
  * [Research data overview](overviewReport_v1.0.html) report;
  * [Household attribute data](householdAttributeProcessingReport_v1.0.html) processing and documentation report;
@@ -45,7 +43,7 @@ Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) inclu
 
 > NB: Version 1 of the data package does not include any time-use diary data. 
 
-## Known Problems
+### Known Problems
 
  * rf_15 & rf_17 grid spy files are in the archive but should not be. Users should remove them. [See further details...](https://github.com/CfSOtago/GREENGridData/issues/19)
  * For others see our [issue list](https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+label%3AdataIssue)
