@@ -25,17 +25,26 @@ print(paste0("#-> Set up GREENGridData package "))
 GREENGridData::setup()
 print(paste0("#-> Done "))
 
-# Load libraries needed in this .r file ----
-localLibs <- c("rmarkdown", "bookdown")
-GREENGridData::loadLibraries(localLibs)
-
-
 # Set local (this script) parameters ----
 refreshData <- 1 # 0 = No
-localData <- 0 # local data test or not (1 = yes)?
+localData <- 1 # local data test or not (1 = yes)?
 
-# Set grid spy data paths etc from file ----
+# > Which households? ----
+households <- "all" # all the ones we have
+#households <- c("rf_01", "rf_46") # just the ones we specify here - NB this will over-write the summary stats
+
+# > Set grid spy data paths etc from file ----
 source(paste0(ggrParams$repoLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
+
+# > Get DST labels ----
+dstDT <- data.table::fread(gSpyParams$dstNZDates)
+
+# Load libraries needed in this .r file ----
+localLibs <- c("drake", 
+               "rmarkdown", 
+               "bookdown")
+
+GREENGridData::loadLibraries(localLibs)
 
 # Local functions ----
 

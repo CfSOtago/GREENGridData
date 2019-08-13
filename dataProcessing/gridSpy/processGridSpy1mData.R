@@ -11,6 +11,11 @@ localLibs <- c("data.table",
 
 GREENGridData::loadLibraries(localLibs)
 
+# Local parameters ----
+
+# > set check plots location (github) ----
+plotLoc <- paste0(ggrParams$repoLoc,"/checkPlots/") # where to save the check plots (github)
+
 # Local functions ----
 makePowerPlot  <- function(hh,dt){
   # make plot of power by month, year & circuit
@@ -105,10 +110,6 @@ saveFinalDT <- function(hh,dt){
   print(paste0("#--> ",hh, ": Done"))
 }
 
-# Local parameters ----
-
-# > set check plots location (github) ----
-plotLoc <- paste0(ggrParams$repoLoc,"/checkPlots/") # where to save the check plots (github)
 
 # Code ----
 
@@ -134,7 +135,6 @@ if(testFile){
 }
 if(!testFile | gSpyParams$refreshFileList) {
       print(paste0("#-> Refreshing file list"))
-  # gSpyParams$gSpyInPath <- path.expand("~/Data/NZ_GREENGrid/gridspy/1min_orig/")
       fListAllDT <- GREENGridData::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
                                                      gSpyParams$pattern, # what to look for
                                                      gSpyParams$gSpyFileThreshold # file size threshold
@@ -150,27 +150,38 @@ if(!testFile | gSpyParams$refreshFileList) {
 print(paste0("#-> Overall we have ", nrow(fListAllDT), " files from ",
              uniqueN(fListAllDT$hhID), " households."))
 
-# > Get data files where we think there is data ----
-fListToLoadDT <- fListAllDT[!(dateColName %like% "ignore")] # based on fsize check
+# > set household id filter ----
+if(households == "all"){ # set in makeFile.R
+  hhIDs <- unique(fListAllDT$hhID) # list of all household ids we found
+} else {
+  hhIDs <- households # the selection we set as a filter
+}
 
+# > Set the files we really want ----
+# data files where we think there is data 
+fListToLoadDT <- fListAllDT[!(dateColName %like% "ignore")] # based on fsize check
+# for the households we want
+fListToLoadDT <- fListToLoadDT[hhID %in% hhIDs] # based on filter
 
 # See what the date formats look like now
 t <- fListToLoadDT[, .(nFiles = .N,
-                         minDate = min(dateExample), # may not make much sense
-                         maxDate = max(dateExample)),
-                     keyby = .(dateColName, dateFormat)]
+                       minDate = min(dateExample), # may not make much sense
+                       maxDate = max(dateExample)),
+                   keyby = .(dateColName, dateFormat)]
 
-print("#-> Test inferred date formats")
+message("#-> Test inferred date formats for the selected households:")
+message(list(hhIDs))
 t
 
 pcFiles <- round(100*(nrow(fListToLoadDT)/nrow(fListAllDT)))
 
 print(paste0("#-> Loading the ", nrow(fListToLoadDT),
              " files (", pcFiles, " % of all ",
-             nrow(fListAllDT), " files) which we think have data (from ",
-             uniqueN(fListToLoadDT$hhID), " of ",uniqueN(fListAllDT$hhID), " households)"))
+             nrow(fListAllDT), " files) where we think have data for the ",
+             uniqueN(fListToLoadDT$hhID), " selected households (out of ",
+             uniqueN(fListAllDT$hhID), " found)"))
 
-hhIDs <- unique(fListToLoadDT$hhID) # list of household ids
+statDT <- data.table::data.table() # summary stats collector
 
 # hhIDs
 for(hh in hhIDs){ # X >> start of per household loop ----
@@ -179,7 +190,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   startTime <- proc.time()
   # > Process files ----
   fileList <- fListToLoadDT[hhID == hh, fullPath] # files for this household
-  print(paste0("#---------------------------- Begin ",hh,"----------------------------#"))
+  print(paste0("#---------------------------- Begin ",hh," ----------------------------#"))
   nFiles <- length(fileList)
   print(paste0("#--> ", hh, ": Loading ", nFiles, " files..."))
   dt <- processHhGridSpyData(hh, fileList) # returns final data table for testing if required
@@ -221,7 +232,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
       makeObsPlot(hh,dta)
       saveFinalDT(hh,dta)
     } else {
-      print(paste0("#--> ",hh, ": no data rows for rf_15a"))
+      print(paste0("#--> ",hh, ": no data rows for rf_15a - not saved"))
     }
     hh <- "rf_15b"
     dtb <- dt[linkID == hh]
@@ -231,7 +242,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
       makeObsPlot(hh,dtb)
       saveFinalDT(hh,dtb)
     } else {
-      print(paste0("#--> ",hh, ": no data rows for rf_15b"))
+      print(paste0("#--> ",hh, ": no data rows for rf_15b - not saved"))
     }
   } else if(hh == "rf_17"){
     print(paste0("#--> ",hh, ": Fixing rf_17 re-use"))
@@ -246,7 +257,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
       makeObsPlot(hh,dta)
       saveFinalDT(hh,dta)
     } else {
-      print(paste0("#--> ",hh, ": no data rows for rf_17a"))
+      print(paste0("#--> ",hh, ": no data rows for rf_17a - not saved"))
     }
     hh <- "rf_17b"
     dtb <- dt[linkID == hh]
@@ -256,7 +267,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
       makeObsPlot(hh,dtb)
       saveFinalDT(hh,dtb)
     } else {
-      print(paste0("#--> ",hh, ": no data rows for rf_17b"))
+      print(paste0("#--> ",hh, ": no data rows for rf_17b - not saved"))
     }
   } else {
     # no problems so set newID to hhID
@@ -268,7 +279,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
   }
 
   # > Set household level stats by date ----
-  statDT <- dt[, .(nObs = .N,
+  tdt <- dt[, .(nObs = .N,
                    meanPower = mean(powerW),
                    sdPowerW = sd(powerW),
                    minPowerW = min(powerW),
@@ -277,11 +288,12 @@ for(hh in hhIDs){ # X >> start of per household loop ----
                    nCircuits = uniqueN(circuit)), # the actual number of columns in the whole household file with "$" in them in case of rbind "errors" caused by files with different column names
                keyby = .(linkID, date = lubridate::date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
 
-  # > Add fStats to end of stats file stats collector
-  ofile <- gSpyParams$hhStatsByDate
-  print(paste0("#--> ",hh, ": Adding hh stats by date list stats to ", ofile))
-  data.table::fwrite(statDT, ofile, append=TRUE) # this will only write out column names once when file is created see ?fwrite
-
+  statDT <- rbind(statDT, tdt)
 } # << X end per household loop ----
+
+# > Add fStats to end of stats file stats collector
+ofile <- gSpyParams$hhStatsByDate
+print(paste0("#--> Writing hh stats by date list stats to ", ofile))
+data.table::fwrite(statDT, ofile, append=TRUE) # this will only write out column names once when file is created see ?fwrite
 
 # End
