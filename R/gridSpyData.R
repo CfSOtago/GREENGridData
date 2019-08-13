@@ -454,18 +454,14 @@ fixCircuitLabels_rf_24 <- function(dt){
 #'
 #' \code{fixCircuitLabels_rf_46} is used to fix circuit labels.
 #'
-#'     Inspection of the raw data shows that rf_46 has 3 different versions of the circuit labels:
-#'     1: Heat Pumps (2x) & Power$4232, Heat Pumps (2x) & Power$4399, Hot Water - Controlled$4231, Hot Water - Controlled$4400, Incomer - Uncontrolled$4230, Incomer - Uncontrolled$4401, Incomer Voltage$4405, Kitchen & Bedrooms$4229, Kitchen & Bedrooms$4402, Laundry & Bedrooms$4228, Laundry & Bedrooms$4403, Lighting$4233, Lighting$4404
-#'     2: Heat Pumps (2x) & Power1$4232, Heat Pumps (2x) & Power2$4399, Hot Water - Controlled1$4231, Hot Water - Controlled2$4400, Incomer - Uncontrolled1$4230, Incomer - Uncontrolled2$4401, Incomer Voltage$4405, Kitchen & Bedrooms1$4229, Kitchen & Bedrooms2$4402, Laundry & Bedrooms1$4228, Laundry & Bedrooms2$4403, Lighting1$4233, Lighting2$4404
-#'     3: Heat Pumps (2x) & Power_Imag$4399, Heat Pumps (2x) & Power$4232, Hot Water - Controlled_Imag$4400, Hot Water - Controlled$4231, Incomer - Uncontrolled_Imag$4401, Incomer - Uncontrolled$4230, Incomer Voltage$4405, Kitchen & Bedrooms_Imag$4402, Kitchen & Bedrooms$4229, Laundry & Bedrooms_Imag$4403, Laundry & Bedrooms$4228, Lighting_Imag$4404, Lighting$4233
-#'
+#'     Inspection of the raw data shows that rf_46 has several different label sets.
+#'     
 #'     rf_46 was not re-used and the similarity of the label-sets seems to indicate typos.
 #'
-#'     We might also wonder if rf_46 really did have 13 circuits monitored as some of the labels seem to duplicate within label-sets but
-#'     inspection of the data suggests there are different (non-zero) W values for similarly labelled circuits at a given
-#'     dateTime.
+#'     It appears that power, imaginary power and voltage were all meansured in this household. But the labels are
+#'     confused. See https://github.com/CfSOtago/GREENGridData/issues/1#issuecomment-520690467 
 #'
-#'     This function fixes the labels to just the first label-set.
+#'     This function does nothing (yet). For now it just passes the circuit labels back into the 'clean' data.
 #'
 #' @param dt wide-form (original) datat table to fix & return
 #'
