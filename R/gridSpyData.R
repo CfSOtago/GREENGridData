@@ -484,11 +484,11 @@ fixCircuitLabels_rf_46 <- function(dt){
                     "Incomer - Uncontrolled1$4230", "Incomer - Uncontrolled2$4401",
                     "Incomer Voltage$4405", "Kitchen & Bedrooms1$4229",
                     "Kitchen & Bedrooms2$4402","Laundry & Bedrooms1$4228",
-                    "Laundry & Bedrooms2$4403", "Lighting1$4233", "Lighting2$4404"), # <- new names - are these duplicates too??
+                    "Laundry & Bedrooms2$4403", "Lighting1$4233", "Lighting2$4404"), 
              c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399", "Hot Water - Controlled$4231",
                "Hot Water - Controlled$4400", "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401",
                "Incomer Voltage$4405", "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402",
-               "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403", "Lighting$4233", "Lighting$4404"))
+               "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403", "Lighting$4233", "Lighting$4404")) # <- new names - are these duplicates too??
   }
   # check if we have the third form of labels - they have 'Power_Imag$4399' in one col label
   checkCols3 <- ncol(dplyr::select(dt,dplyr::contains("Power_Imag$4399")))
@@ -710,11 +710,20 @@ loadCleanGridSpyData <- function(fPath, dateFrom, dateTo) {
   # file load loop ----
   for(f in filesToLoad){# should use lapply but...
     print(paste0("# Loading ", f))
-    df <- readr::read_csv(f) # decodes .gz on the fly, requires readr
-    dt <- as.data.table(df)
+    df <- readr::read_csv(f, col_types = cols(
+      hhID = col_character(),
+      linkID = col_character(),
+      dateTime_orig = col_character(), # force to stay character as visual check if you need it
+      TZ_orig = col_character(), # this is the visual check if you ever need it
+      r_dateTime = col_datetime(), # parse to date time which _might_ be your local tzone. Check
+      circuit = col_character(),
+      powerW = col_double())
+      ) # decodes .gz on the fly, requires readr, auto-parses dateTimes, correctly parses powerW
+    dt <- data.table::as.data.table(df)
+    dt[,r_dateTime := lubridate::with_tz(r_dateTime, tzone = "Pacific/Auckland")] # make sure this is set to NZ time otherwise all sorts of confusion will arise
     # filter on dates (inclusive)
-    filteredDT <- dt[as.Date(r_dateTime) >= dateFrom & # filter by dateFrom
-                       as.Date(r_dateTime) <= dateTo] # filter by dateTo
+    filteredDT <- dt[as.Date(r_dateTime) >= dateFrom & # filter by dateFrom inclusive
+                       as.Date(r_dateTime) <= dateTo] # filter by dateTo inclusive
     print(paste0("# Found: ", tidyNum(nrow(filteredDT)),
                  " between ", dateFrom, " and ", dateTo,
                  " out of ", tidyNum(nrow(dt))))
