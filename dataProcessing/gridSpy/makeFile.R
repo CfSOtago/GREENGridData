@@ -5,6 +5,7 @@
 # Only run this if you have substantial new data as it takes a while.
 
 # Best run using Rscript to avoid RStudio lock-up: http://www.cureffi.org/2014/01/15/running-r-batch-mode-linux/
+# -> Rscript makeFile.R
 
 ####
 
@@ -31,7 +32,7 @@ GREENGridData::loadLibraries(localLibs)
 
 # Set local (this script) parameters ----
 refreshData <- 1 # 0 = No
-localData <- 1 # local data test or not (1 = yes)?
+localData <- 0 # local data test or not (1 = yes)?
 
 # Set grid spy data paths etc from file ----
 source(paste0(ggrParams$repoLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
