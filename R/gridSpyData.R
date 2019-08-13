@@ -474,41 +474,41 @@ fixCircuitLabels_rf_24 <- function(dt){
 #'
 fixCircuitLabels_rf_46 <- function(dt){
   if(gSpyParams$fullFb){print("Checking circuit labels for rf_46")}
-  # check if we have the second form of labels - they have 'Power1$4232' in one col label
-  checkCols2 <- ncol(dplyr::select(dt,dplyr::contains("Power1$4232")))
-  if(checkCols2 == 1){
-    # we got label set 2
-    if(gSpyParams$fullFb){print(paste0("Found circuit labels set 2 in ", f))}
-    setnames(dt, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399", # <- old names
-                    "Hot Water - Controlled1$4231", "Hot Water - Controlled2$4400",
-                    "Incomer - Uncontrolled1$4230", "Incomer - Uncontrolled2$4401",
-                    "Incomer Voltage$4405", "Kitchen & Bedrooms1$4229",
-                    "Kitchen & Bedrooms2$4402","Laundry & Bedrooms1$4228",
-                    "Laundry & Bedrooms2$4403", "Lighting1$4233", "Lighting2$4404"), # <- new names - are these duplicates too??
-             c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399", "Hot Water - Controlled$4231",
-               "Hot Water - Controlled$4400", "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401",
-               "Incomer Voltage$4405", "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402",
-               "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403", "Lighting$4233", "Lighting$4404"))
-  }
-  # check if we have the third form of labels - they have 'Power_Imag$4399' in one col label
-  checkCols3 <- ncol(dplyr::select(dt,dplyr::contains("Power_Imag$4399")))
-  if(checkCols3 == 1){
-    # we got label set 3
-    if(gSpyParams$fullFb){print(paste0("Found circuit labels set 3 in ", f))}
-    # be careful to get this order correct so that it matches the label 1 order
-    setnames(dt, c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power_Imag$4399",
-                   "Hot Water - Controlled$4231", "Hot Water - Controlled_Imag$4400",
-                   "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled_Imag$4401", "Incomer Voltage$4405",
-                   "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms_Imag$4402",
-                   "Laundry & Bedrooms$4228", "Laundry & Bedrooms_Imag$4403",
-                   "Lighting$4233", "Lighting_Imag$4404"),
-             c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399",
-               "Hot Water - Controlled$4231", "Hot Water - Controlled$4400",
-               "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401", "Incomer Voltage$4405",
-               "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402",
-               "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403",
-               "Lighting$4233", "Lighting$4404"))
-  }
+  # # check if we have the second form of labels - they have 'Power1$4232' in one col label
+  # checkCols2 <- ncol(dplyr::select(dt,dplyr::contains("Power1$4232")))
+  # if(checkCols2 == 1){
+  #   # we got label set 2
+  #   if(gSpyParams$fullFb){print(paste0("Found circuit labels set 2 in ", f))}
+  #   setnames(dt, c("Heat Pumps (2x) & Power1$4232", "Heat Pumps (2x) & Power2$4399", # <- old names
+  #                   "Hot Water - Controlled1$4231", "Hot Water - Controlled2$4400",
+  #                   "Incomer - Uncontrolled1$4230", "Incomer - Uncontrolled2$4401",
+  #                   "Incomer Voltage$4405", "Kitchen & Bedrooms1$4229",
+  #                   "Kitchen & Bedrooms2$4402","Laundry & Bedrooms1$4228",
+  #                   "Laundry & Bedrooms2$4403", "Lighting1$4233", "Lighting2$4404"), # <- new names - are these duplicates too??
+  #            c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399", "Hot Water - Controlled$4231",
+  #              "Hot Water - Controlled$4400", "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401",
+  #              "Incomer Voltage$4405", "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402",
+  #              "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403", "Lighting$4233", "Lighting$4404"))
+  # }
+  # # check if we have the third form of labels - they have 'Power_Imag$4399' in one col label
+  # checkCols3 <- ncol(dplyr::select(dt,dplyr::contains("Power_Imag$4399")))
+  # if(checkCols3 == 1){
+  #   # we got label set 3
+  #   if(gSpyParams$fullFb){print(paste0("Found circuit labels set 3 in ", f))}
+  #   # be careful to get this order correct so that it matches the label 1 order
+  #   setnames(dt, c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power_Imag$4399",
+  #                  "Hot Water - Controlled$4231", "Hot Water - Controlled_Imag$4400",
+  #                  "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled_Imag$4401", "Incomer Voltage$4405",
+  #                  "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms_Imag$4402",
+  #                  "Laundry & Bedrooms$4228", "Laundry & Bedrooms_Imag$4403",
+  #                  "Lighting$4233", "Lighting_Imag$4404"),
+  #            c("Heat Pumps (2x) & Power$4232", "Heat Pumps (2x) & Power$4399",
+  #              "Hot Water - Controlled$4231", "Hot Water - Controlled$4400",
+  #              "Incomer - Uncontrolled$4230", "Incomer - Uncontrolled$4401", "Incomer Voltage$4405",
+  #              "Kitchen & Bedrooms$4229", "Kitchen & Bedrooms$4402",
+  #              "Laundry & Bedrooms$4228", "Laundry & Bedrooms$4403",
+  #              "Lighting$4233", "Lighting$4404"))
+  # }
   return(dt)
 }
 
