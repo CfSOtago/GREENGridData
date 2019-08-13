@@ -684,7 +684,7 @@ extractCleanGridSpyCircuit <- function(fPath, exFile, circuitPattern, dateFrom, 
 #' @export
 #'
 #'
-loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
+loadCleanGridSpyData <- function(fPath, dateFrom, dateTo) {
   # check files to load
   fPattern <- "*.csv.gz"
   print(paste0("Looking for data using pattern = ", fPattern, " in ", fPath, " - could take a while..."))
@@ -698,7 +698,6 @@ loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
 
   filesToLoad <- fListDT[, fullPath]
 
-  print(paste0("# Looking for circuits matching: ", circuitPattern))
   print(paste0("# Filtering on date range: ", dateFrom, " - ", dateTo))
 
   # loop over files in list and rbind them
@@ -711,10 +710,7 @@ loadCleanGridSpyData <- function(iFile, fPath, dateFrom, dateTo) {
   # file load loop ----
   for(f in filesToLoad){# should use lapply but...
     print(paste0("# Loading ", f))
-    df <- readr::read_csv(f,
-                          progress = FALSE,
-                          col_types = list(col_character(), col_datetime(), col_character(), col_double())
-    ) # decodes .gz on the fly, requires readr
+    df <- readr::read_csv(f) # decodes .gz on the fly, requires readr
     dt <- as.data.table(df)
     # filter on dates (inclusive)
     filteredDT <- dt[as.Date(r_dateTime) >= dateFrom & # filter by dateFrom
