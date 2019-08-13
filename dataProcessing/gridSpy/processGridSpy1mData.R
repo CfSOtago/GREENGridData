@@ -41,7 +41,7 @@ makePowerPlot  <- function(hh,dt){
     theme(strip.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
     theme(legend.position = "bottom") +
-    labs(title = paste0("Montly mean power profiles by circuit plot: ", hh),
+    labs(title = paste0("Monthly mean power profiles by circuit plot: ", hh),
          y = "Mean kW",
          caption = paste0("GridSpy data from ", min(dt$r_dateTime),
                           " to ", max(dt$r_dateTime),
