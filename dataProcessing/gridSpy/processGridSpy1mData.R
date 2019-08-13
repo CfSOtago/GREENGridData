@@ -134,6 +134,7 @@ if(testFile){
 }
 if(!testFile | gSpyParams$refreshFileList) {
       print(paste0("#-> Refreshing file list"))
+  # gSpyParams$gSpyInPath <- path.expand("~/Data/NZ_GREENGrid/gridspy/1min_orig/")
       fListAllDT <- GREENGridData::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
                                                      gSpyParams$pattern, # what to look for
                                                      gSpyParams$gSpyFileThreshold # file size threshold
@@ -169,9 +170,11 @@ print(paste0("#-> Loading the ", nrow(fListToLoadDT),
              nrow(fListAllDT), " files) which we think have data (from ",
              uniqueN(fListToLoadDT$hhID), " of ",uniqueN(fListAllDT$hhID), " households)"))
 
-hhIDs <- unique(fListToLoadDT$hhID) # list of household ids
+hhIDs <- unique(fListToLoadDT$hhID) # list of household ids
 
+# hhIDs
 for(hh in hhIDs){ # X >> start of per household loop ----
+  # for testing hh <- "rf_46"
   # > Set start time ----
   startTime <- proc.time()
   # > Process files ----
@@ -198,9 +201,11 @@ for(hh in hhIDs){ # X >> start of per household loop ----
 
   print(paste0("#--> ",hh, ": running basic tests"))
   # > Fix the re-used rf_XX before we test or save anything ----
+  # Can't do this in the processHhGridSpyData function as that assumes hhID is in filename
+  # We need to split these files (here)
   if(hh == "rf_15"){
     print(paste0("#--> ",hh, ": Fixing rf_15 re-use"))
-    # rf_15a up to 2015-01-15 then rf_15b to 2016-04-02 # see https://cfsotago.github.io/GREENGridData/
+    # rf_15a up to 2015-01-15 then rf_15b to 2016-04-02 # see https://cfsotago.github.io/GREENGridData/
     hh <- "rf_15a"
     dt <- dt[, linkID := hh] # set default
     # GS master file notes disconnected 2015-01-15 but in fact there is no data before this date so

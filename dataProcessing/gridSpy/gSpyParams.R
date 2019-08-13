@@ -13,8 +13,8 @@ gSpyParams$dstNZDates <- paste0(findParentDirectory("GREENGridData"),"/data/dstN
 
 if(localData){
   # Local test
-  gSpyParams$gSpyInPath <- "~/Data/NZGreenGrid/gridspy/1min_orig/" # location of data (BA laptop)
-  gSpyParams$gSpyOutPath <- "~/Data/NZGreenGrid/safe/gridSpy/1min/" # place to save them (BA laptop)
+  gSpyParams$gSpyInPath <- "~/Data/NZ_GREENGrid/gridspy/1min_orig/" # location of data (BA laptop)
+  gSpyParams$gSpyOutPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/" # place to save them (BA laptop)
   msg1 <- paste0("#--- Test run using reduced data from ", 
                  gSpyParams$gSpyInPath, " and saving to ",
                  gSpyParams$gSpyOutPath)
