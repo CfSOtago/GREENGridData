@@ -388,7 +388,7 @@ processHhGridSpyData <- function(hh, fileList){
 
     # >> save file stats ----
     #print("Saving file stats")
-    ofile <- gSpyParams$fLoadedStats
+    ofile <- paste0(gSpyParams$fLoadedStats, gSpyParams$suffix, ".csv")
     #print(paste0("Saving ", ofile, "..."))
     data.table::fwrite(data.table::as.data.table(fileStat), # convert to DT for writing out
                        ofile,
