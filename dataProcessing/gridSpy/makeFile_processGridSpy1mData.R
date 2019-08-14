@@ -30,8 +30,8 @@ refreshData <- 1 # 0 = No
 localData <- 1 # local data test or not (1 = yes)?
 
 # > Which households? ----
-#households <- "all" # all the ones we have
-households <- c("rf_01", "rf_46") # just the ones we specify here - NB this will over-write the summary stats
+households <- "all" # all the ones we have
+#households <- c("rf_01", "rf_46") # just the ones we specify here - NB this will over-write the summary stats
 
 # > Set grid spy data paths etc from file ----
 source(paste0(ggrParams$repoLoc, "/dataProcessing/gridSpy/gSpyParams.R"))
@@ -86,26 +86,25 @@ processHouseholds <- function(){
 
 print(msg1)
 
-#> drake plan ----
-plan <- drake::drake_plan(
-  drakeFileList = refreshFiles(),
-)
-
-#> test it ----
-plan
-
-config <- drake_config(plan)
-vis_drake_graph(config)
-
 #> do it ----
 # if drake
 if(haveDrake){
-  message("Have drake - refreshing file list if drake thinks we need to")
+  message("#-> Have drake - refreshing file list if drake thinks we need to")
+  #> drake plan ----
+  plan <- drake::drake_plan(
+    drakeFileList = refreshFiles()
+  )
+  
+  #> test it ----
+  plan
+  
+  config <- drake_config(plan)
+  vis_drake_graph(config)
   make(plan)
   fListAllDT <- drake::readd(drakeFileList) # get filelist back
 } else {
   # no drake
-  mesage("No drake - refreshing file list")
+  message("#-> No drake - refreshing file list")
   fListAllDT <- refreshFiles()
 }
 
