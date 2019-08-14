@@ -4,7 +4,7 @@
 \alias{loadCleanGridSpyData}
 \title{Loads cleaned grid spy power data for all households between two dates into a single data.table}
 \usage{
-loadCleanGridSpyData(iFile, fPath, dateFrom, dateTo)
+loadCleanGridSpyData(fPath, dateFrom, dateTo)
 }
 \arguments{
 \item{fPath}{location of files to load}
