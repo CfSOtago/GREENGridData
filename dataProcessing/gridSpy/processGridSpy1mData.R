@@ -4,12 +4,9 @@
 # expects to be called from makeFile which will have set parameters used
 
 # Local packages (needed in this script) ----
-localLibs <- c("data.table",
-               "lubridate",
-               "hms",
-               "ggplot2")
+libs <- c("ggplot2")
 
-GREENGridData::loadLibraries(localLibs)
+GREENGridData::loadLibraries(libs)
 
 # Local parameters ----
 
@@ -17,7 +14,34 @@ GREENGridData::loadLibraries(localLibs)
 plotLoc <- paste0(ggrParams$repoLoc,"/checkPlots/") # where to save the check plots (github)
 
 # Local functions ----
-makePowerPlot  <- function(hh,dt){
+makeSummaryPlots <- function(hh,dt){
+  # make 2 plots:
+  # nObs by circuit label by date
+  # mean value of whatever the circuits were measuring by circuit label by date
+  # helps to debug
+  plotDT <- dt[, .(nObs = .N, meanValue = mean(powerW)), 
+               keyby = .(circuit, date = lubridate::date(r_dateTime))]
+  
+  myCaption <- paste0(hh, ": circuit labels (all data received)\n")
+  
+  p <- ggplot2::ggplot(plotDT, aes(x = date, y = circuit, alpha = nObs)) +
+    geom_tile() +
+    theme(legend.position="bottom") +
+    labs(caption = paste0(myCaption, "Number of observations per day")) +
+    scale_alpha_continuous(name = "N observations") +
+    theme(legend.position="bottom")
+  ofile <- paste0(gSpyParams$checkPlots, hh, "_circuitLabels_nObsByDate.png")
+  ggplot2::ggsave(ofile, height = 10)
+  
+  p <- ggplot2::ggplot(plotDT, aes(x = date, y = circuit, fill = meanValue)) +
+    geom_tile() +
+    theme(legend.position="bottom") +
+    labs(caption = paste0(myCaption, "Mean value (usually, but not always, power)")) +
+    scale_fill_continuous(low = "green", high = "red", name = "Mean value") +
+    theme(legend.position="bottom")
+  ofile <- paste0(gSpyParams$checkPlots, hh, "_circuitLabels_meanValueByDate.png")
+  ggplot2::ggsave(ofile, height = 10)
+
   # make plot of power by month, year & circuit
   # These will show us when the household was consuming electricity
   # - do they look OK?
@@ -53,9 +77,7 @@ makePowerPlot  <- function(hh,dt){
 
   ofile <- paste0(gSpyParams$checkPlots, hh, "_monthlyPowerPlot.png")
   ggplot2::ggsave(ofile, height = 10)
-}
 
-makeObsPlot  <- function(hh,dt){
   # plots n obs per hour & date
   # This will tell us when we have too few or too many observations
   # We should have too many once a year when the DST change occurs and we 'gain' an hour (we have 02:00 - 03:00 twice)
@@ -118,39 +140,8 @@ saveFinalDT <- function(hh,dt){
 try(file.remove(gSpyParams$hhStatsByDate)) # otherwise the append within the get data function will keep adding
 try(file.remove(gSpyParams$fLoadedStats)) # otherwise the append within the get data function will keep adding
 
-# > Get DST labels ----
-dstDT <- data.table::fread(gSpyParams$dstNZDates)
-
-# > Get file list ----
-testFile <- file.exists(gSpyParams$fListAll) # does it exist?
-
-if(testFile){
-  mTime <- file.mtime(gSpyParams$fListAll)
-  mDate <- as.Date(file.mtime(gSpyParams$fListAll))
-  if(mDate == today() & !gSpyParams$refreshFileList){
-    # Already ran today but
-    print(paste0("#-> Re-using saved file list"))
-    fListAllDT <- data.table::fread(gSpyParams$fListAll)
-  }
-}
-if(!testFile | gSpyParams$refreshFileList) {
-      print(paste0("#-> Refreshing file list"))
-      fListAllDT <- GREENGridData::getGridSpyFileList(gSpyParams$gSpyInPath, # where to look
-                                                     gSpyParams$pattern, # what to look for
-                                                     gSpyParams$gSpyFileThreshold # file size threshold
-      )
-      # > Fix ambiguous dates in meta data derived from file listing
-      fListAllDT <- GREENGridData::fixAmbiguousDates(fListAllDT)
-      # > Save the full list listing
-      ofile <- gSpyParams$fListAll #  set in global
-      print(paste0("#-> Saving full list of 1 minute data files with metadata to ", ofile))
-      data.table::fwrite(fListAllDT, ofile)
-  }
-
-print(paste0("#-> Overall we have ", nrow(fListAllDT), " files from ",
-             uniqueN(fListAllDT$hhID), " households."))
-
 # > set household id filter ----
+
 if(households == "all"){ # set in makeFile.R
   hhIDs <- unique(fListAllDT$hhID) # list of all household ids we found
 } else {
@@ -171,7 +162,7 @@ t <- fListToLoadDT[, .(nFiles = .N,
 
 message("#-> Test inferred date formats for the selected households:")
 message(list(hhIDs))
-t
+print(t)
 
 pcFiles <- round(100*(nrow(fListToLoadDT)/nrow(fListAllDT)))
 
@@ -185,7 +176,6 @@ statDT <- data.table::data.table() # summary stats collector
 
 # hhIDs
 for(hh in hhIDs){ # X >> start of per household loop ----
-  # for testing hh <- "rf_46"
   # > Set start time ----
   startTime <- proc.time()
   # > Process files ----
@@ -228,8 +218,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     dta <- dt[linkID == hh]
     if(nrow(dta) > 0){
       # there is data
-      makePowerPlot(hh,dta)
-      makeObsPlot(hh,dta)
+      makeSummaryPlots(hh,dta)
       saveFinalDT(hh,dta)
     } else {
       print(paste0("#--> ",hh, ": no data rows for rf_15a - not saved"))
@@ -238,8 +227,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     dtb <- dt[linkID == hh]
     if(nrow(dtb) > 0){
       # there is data
-      makePowerPlot(hh,dtb)
-      makeObsPlot(hh,dtb)
+      makeSummaryPlots(hh,dtb)
       saveFinalDT(hh,dtb)
     } else {
       print(paste0("#--> ",hh, ": no data rows for rf_15b - not saved"))
@@ -253,8 +241,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     dta <- dt[linkID == hh]
     if(nrow(dta) > 0){
       # there is data
-      makePowerPlot(hh,dta)
-      makeObsPlot(hh,dta)
+      makeSummaryPlots(hh,dta)
       saveFinalDT(hh,dta)
     } else {
       print(paste0("#--> ",hh, ": no data rows for rf_17a - not saved"))
@@ -263,18 +250,16 @@ for(hh in hhIDs){ # X >> start of per household loop ----
     dtb <- dt[linkID == hh]
     if(nrow(dtb) > 0){
       # there is data
-      makePowerPlot(hh,dtb)
-      makeObsPlot(hh,dtb)
+      makeSummaryPlots(hh,dtb)
       saveFinalDT(hh,dtb)
     } else {
       print(paste0("#--> ",hh, ": no data rows for rf_17b - not saved"))
     }
   } else {
     # no problems so set newID to hhID
-    print(paste0("#--> ",hh, ": No re-use to fix"))
+    print(paste0("#--> ",hh, ": Not re-used so no re-use to fix"))
     dt <- dt[, linkID := hhID]
-    makePowerPlot(hh,dt)
-    makeObsPlot(hh,dt)
+    makeSummaryPlots(hh,dt)
     saveFinalDT(hh,dt)
   }
 
@@ -289,6 +274,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
                keyby = .(linkID, date = lubridate::date(r_dateTime))] # can't do sensible summary stats on W as some circuits are sub-sets of others!
 
   statDT <- rbind(statDT, tdt)
+  
 } # << X end per household loop ----
 
 # > Add fStats to end of stats file stats collector
