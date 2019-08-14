@@ -137,15 +137,19 @@ saveFinalDT <- function(hh,dt){
 
 # > Housekeeping ----
 
-try(file.remove(gSpyParams$hhStatsByDate)) # otherwise the append within the get data function will keep adding
-try(file.remove(gSpyParams$fLoadedStats)) # otherwise the append within the get data function will keep adding
+try(file.remove(paste0(gSpyParams$hhStatsByDate, 
+                       suffix, ".csv"))) # otherwise the append within the get data function will keep adding
+try(file.remove(paste0(gSpyParams$fLoadedStats, 
+                       suffix, ".csv"))) # otherwise the append within the get data function will keep adding
 
 # > set household id filter ----
 
 if(households == "all"){ # set in makeFile.R
   hhIDs <- unique(fListAllDT$hhID) # list of all household ids we found
+  gSpyParams$suffix <- "_all"
 } else {
   hhIDs <- households # the selection we set as a filter
+  gSpyParams$suffix <- "_selection"
 }
 
 # > Set the files we really want ----
@@ -278,7 +282,7 @@ for(hh in hhIDs){ # X >> start of per household loop ----
 } # << X end per household loop ----
 
 # > Add fStats to end of stats file stats collector
-ofile <- gSpyParams$hhStatsByDate
+ofile <- paste0(gSpyParams$hhStatsByDate, gSpyParams$suffix, ".csv")
 print(paste0("#--> Writing hh stats by date list stats to ", ofile))
 data.table::fwrite(statDT, ofile, append=TRUE) # this will only write out column names once when file is created see ?fwrite
 

@@ -40,6 +40,5 @@ if(Sys.info()[4] == "gridcrawler"){
 gSpyParams$checkPlots <- paste0(gSpyParams$gSpyOutPath,"checkPlots/") # place to store the final hh summary stats
 
 # > set summary stats location (not github) ----
-gSpyParams$fListAll <- paste0(gSpyParams$gSpyOutPath,"checkStats/fListAllDT.csv") # place to store the interim file list with initial meta-data
-gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath,"checkStats/fLoadedStats.csv") # place to store the final loaded file list with all meta-data
-gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath,"checkStats/hhStatsByDate.csv") # place to store the final hh summary stats
+gSpyParams$fLoadedStats <- paste0(gSpyParams$gSpyOutPath,"checkStats/fLoadedStats") # place to store the final loaded file list with all meta-data
+gSpyParams$hhStatsByDate <- paste0(gSpyParams$gSpyOutPath,"checkStats/hhStatsByDate") # place to store the final hh summary stats
