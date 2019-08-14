@@ -2,7 +2,7 @@
 
 ## Data processing
 
-Code to process the original raw data from the [NZ GREEN Grid](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project to produce the [final clean version](http://reshare.ukdataservice.ac.uk/853334/) held by the UK Data Service. 
+Code to process the original raw data from the [Renewable Energy and the Smart Grid (GREEN Grid)](https://www.otago.ac.nz/centre-sustainability/research/energy/otago050285.html) project Household Electricity Demand Study to produce the [final clean version](http://reshare.ukdataservice.ac.uk/853334/) held by the UK Data Service. 
 
 NB: 
 

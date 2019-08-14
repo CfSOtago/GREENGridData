@@ -2,7 +2,9 @@
 
 ## processGridSpy1mData.R
 
-The code here processes the original Grid Spy data files to produce the ['safe' form held on the UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). To do this it:
+(called from makeFile_processGridSpy1mData.R)
+
+This code processes the original Grid Spy data files to produce the ['safe' form held on the UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). To do this it:
 
  * checks the available files
  * skips files which do not contain data (grid spy files are empty .xml if no data is available for a given household)
@@ -11,12 +13,14 @@ The code here processes the original Grid Spy data files to produce the ['safe' 
  * cleans the data
  * saves the data for each household to 1 file
  * saves meta data on each file processed
- * saves two checkPlots for each household as a very useful eye-ball of data quality and power demand profiles
+ * saves several checkPlots for each household as a very useful eye-ball of data quality, circuit labels and power demand profiles
 
-The code makes extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done. If you want to use the data processing code in this directory, the makeFile.R runs everything.
+The code makes extensive use of package functions. You will need to look at the [package function code](../../R/) to understand what has been done. You will _not_ be able to run this code without access to the original Grid Spy data held on University of Otago's restricted-access High-Capacity Storage [(HCS) filestore](https://www.otago.ac.nz/its/services/hosting/otago068353.html).
 
 # imputeTotalPower.R
-This script imputes the total power demand per household for each 1 minute period. It uses one of two circuits-to-sum files from the /data folder to do so. Reports on the results of doing so can be found at https://cfsotago.github.io/GREENGridData/. 
+This script imputes the total power demand per household for each 1 minute period and creates a new data file with the total appended to the cleaned data. This data is _not_ in the [reshare archive held on the UK Data Service](http://reshare.ukdataservice.ac.uk/853334/) as you can create it easily from the archived data using this code.
+
+It uses a circuits-to-sum definition file from the /data folder to do so. Reports on the results of doing so can be found at https://cfsotago.github.io/GREENGridData/. 
 
 # Issues
 
