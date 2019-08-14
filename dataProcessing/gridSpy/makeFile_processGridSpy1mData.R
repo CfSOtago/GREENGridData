@@ -104,7 +104,7 @@ if(haveDrake){
   fListAllDT <- drake::readd(drakeFileList) # get filelist back
 } else {
   # no drake
-  message("#-> No drake - refreshing file list")
+  message("#-> No drake - refreshing file list as we have to")
   fListAllDT <- refreshFiles()
 }
 
