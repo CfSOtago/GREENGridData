@@ -99,12 +99,12 @@ processPowerFiles <- function(df){
     #                                    )
     iF <- sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id)
     message(" -> Loading data for ", house_id, " from ", iF)
-    inputDT <- data.table::as.data.table(readr::read_csv(iF)) # load the household data
+    inputDT <- data.table::fread(iF) # load the household data
     message("N rows: ", nrow(inputDT))
     message(" -> Parsing dates ", house_id)
     
-    inputDT <- inputDT[, dateTime_nz := lubridate::with_tz(r_dateTime, # stored as UTC 
-                                                       tzone = "Pacific/Auckland")] # so we can extract within NZ dateTime
+    inputDT <- inputDT[, dateTime_nz := lubridate::as_datetime(r_dateTime, # stored as UTC 
+                                                       tz = "Pacific/Auckland")] # so we can extract within NZ dateTime
     
     # select dates we want
     inputDT <- inputDT[dateTime_nz >= start_time & dateTime_nz < end_time, ]
