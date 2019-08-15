@@ -20,24 +20,23 @@ user <- Sys.info()[[6]]
 message("Running on ", sysname, " under user ", user)
 
 #circuitsFile <- "circuitsToSum.csv"
-circuitsFile <- "circuitsToSum_v1.0" # JKM original
-#circuitsFile <- "circuitsToSum_v1.1" # all
+#circuitsFile <- "circuitsToSum_v1.0" # JKM original
+circuitsFile <- "circuitsToSum_v1.1" # all
 
 # localise data paths
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
   dPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
   circuitsPath <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
-  dataFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv.gz")
+  dataFile <- paste0(dPath, "/imputed/all_1min_data_withImputedTotal_", circuitsFile, ".csv.gz")
+  # hh attributes
+  hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.zip"
 } else {
   dPath <- "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
   dataFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv.gz")
 }
 
 # set up ----
-
-# hh attributes
-hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.zip"
 
 start_exec <- Sys.time()
 
