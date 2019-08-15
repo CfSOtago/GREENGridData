@@ -344,9 +344,9 @@ When using the 'total demand' derived data we suggest data users:
  * v1.1:
    * excluding household (link) IDs: 14,25,26,43;
    * excluding other -ve values on a per-value basis;
-   * only including households known to have PV if analysis of demand during non-daylight hours is being undertaken (c.f. Figures \@ref(fig:makeMMeanPlot) and \@ref(fig:makeMinPlot)).
+   * only including households known to have PV if analysis of demand during non-daylight hours is being undertaken (c.f. Figures \@ref(fig:makeMeanPlot) and \@ref(fig:makeMinPlot)).
   
-In _all_ cases we recommend that users check the data carefully before anlaysis and _document_ anY filtering they apply!
+In _all_ cases we recommend that users check the data carefully before anlaysis and _document_ any filtering they apply!
 
 # Statistical Annex
 
