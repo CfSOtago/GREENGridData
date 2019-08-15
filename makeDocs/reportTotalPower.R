@@ -44,7 +44,11 @@ dataL <- data.table() # data bucket to collect data in
 
 loadFile <- function(f){
   if(file.exists(f)){
-     dt <- data.table::as.data.table(readr::read_csv(f)) # load hh data
+     dt <- data.table::fread(f) # load hh data - fread is VERY fast but doe not auto-parse (which is helpful for the dateTimes)
+     dt <- dt[, r_dateTime_nz := lubridate::as_datetime(r_dateTime, # stored as UTC
+                                                        tz = "Pacific/Auckland")] # so we can extract within NZ dateTime
+     # remove rf_46 if it exists
+     #dt <- dt[!(linkID %like% "rf_46")]
      data.table::setkey(dt, linkID)
    } else {
      message("Failed to find ", f," - is the data source available?")
@@ -65,16 +69,20 @@ knitParams <- list(
   subtitle = subtitle
 )
 
-plan <- drake::drake_plan(
-  powerData = loadFile(dataFile),
-  hhData = loadFile(hhFile),
-  circuits = data.table::fread(circuitsPath),
-  report = rmarkdown::render(
+doReport <- function(){
+  rmarkdown::render(
     knitr_in(rmdFile),
     params = knitParams,
     output_file = file_out(htmlFile),
     quiet = FALSE # change to TRUE for peace & quiet
   )
+}
+
+plan <- drake::drake_plan(
+  powerData = loadFile(dataFile),
+  hhData = loadFile(hhFile),
+  circuits = data.table::fread(circuitsPath),
+  #report = doReport()
 )
 
 

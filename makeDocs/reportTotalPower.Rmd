@@ -126,6 +126,7 @@ This report uses the safe version of the grid spy 1 minute data which has been p
  
 This report provides summary analysis of the imputed total demand for each household. The imputation was done using:
 
+ * https://github.com/CfSOtago/GREENGridData/blob/master/dataProcessing/gridSpy/imputeTotalPower.R
  * `r params$circuitsFile`
 
 # Load data
@@ -151,9 +152,7 @@ Table \@ref(tab:readdPowerData) shows the first few rows of the Grid Spy 1 minut
 
 ```{r summaryPowerData}
 # create some useful derived date & time variables
-powerDT <- powerDT[, dateTime_utc := lubridate::as_datetime(dateTime_utc)]
-powerDT <- powerDT[, dateTime_nz := lubridate::with_tz(dateTime_utc, tzone = "Pacific/Auckland")]
-powerDT <- powerDT[, obsTimeHMS := hms::as.hms(dateTime_utc, tz = "Pacific/Auckland")] # HH:MM for demand profile plots
+powerDT <- powerDT[, obsTimeHMS := hms::as.hms(r_dateTime)] # HH:MM for demand profile plots
 
 t <- summary(powerDT)
 
@@ -165,7 +164,8 @@ powerDT <- powerDT[, obsTimeHMSQHour := hms::trunc_hms(obsTimeHMS, 60*15)]
 
 Note that:
 
- * dateTime_utc is the correct dateTime of each observation in UTC. You may get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
+ * r_dateTime_orig is the correct dateTime of each observation in original recorded time
+ * r_dateTime is stored as UTC and so you may get strange results until you use [lubridate](https://lubridate.tidyverse.org/) to tell R to use tz = "Pacific/Auckland" with this variable;
  * there can be 0 or negative Wh observations.
 
 Table \@ref(tab:checkHouseholds) shows the summaries for each household as imputed using `r params$circuitsFile`. Note that the presence of a PV inverter may only be known from the appliance summary and/or the household data.
@@ -223,7 +223,7 @@ Figure \@ref(fig:testPowerTileObs) shows the incidence of -ve overall imputed po
 myCaption <- "GREEN Grid Data: Imputed total household power demand"
   
 plotDT <- powerDT[imputedTotalW <= 0, .(nObs = .N), 
-                  keyby = .(Date = lubridate::as_date(dateTime_nz), linkID)]
+                  keyby = .(Date = lubridate::as_date(r_dateTime), linkID)]
 setkey(plotDT, linkID)
 plotDT <- plotDT[hhID_DT]
 
@@ -258,7 +258,7 @@ Figure \@ref(fig:testPowerTileMean) shows the mean overall imputed power values 
 
 ```{r testPowerTileMean, fig.height = 8, fig.cap="Mean of -ve values by household ID and date and presence of PV (if known)"}
 plotDT <- powerDT[imputedTotalW <= 0, .(meanWh = mean(imputedTotalW)), 
-                  keyby = .(Date = lubridate::as_date(dateTime_nz), linkID)]
+                  keyby = .(Date = lubridate::as_date(r_dateTime), linkID)]
 setkey(plotDT, linkID)
 plotDT <- plotDT[hhID_DT]
 
@@ -279,7 +279,6 @@ Next we test the power profiles by season to see if there is a seasonal pattern 
 First we create a _Southern_ Hemisphere season variable. We have a function to do this in the `GREENGridData` package. We print a check table to ensure we are all happy with the coding of `season`.
 
 ```{r addSeason, echo = TRUE}
-powerDT <- powerDT[, r_dateTime := dateTime_utc] # for consistency
 powerDT <- GREENGridData::addNZSeason(powerDT)
 table(lubridate::month(powerDT$r_dateTime, label = TRUE), powerDT$season, useNA = "always")
 ```
