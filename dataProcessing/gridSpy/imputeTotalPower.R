@@ -13,7 +13,7 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 # house. 
 # - the cleaned safe household level data from http://reshare.ukdataservice.ac.uk/853334/
 
-# The code below calculates per-house totals, and saves them to a single file for later use.
+# The code below calculates per-house per-minute totals, and adds them to each household file as a new 'circuit type' for later use.
 #
 # The code assumes that the circuits in the circuits file are actually the ones to sum to get overall
 # power demand. We have checked as best we can. If you notice errors please add an issue at:
@@ -79,7 +79,7 @@ start_exec <- Sys.time()
 message("Loading circuits from: ", circuits_path)
 circuitsDF <- read.csv(circuits_path, header = TRUE) # if we switch to readr::read_csv the processing code breaks
 
-dataL <- data.table() # data bucket to collect data in
+dataL <- data.table() # data bucket to collect per-household per-minute imputed load
 
 # process household files ----
 processPowerFiles <- function(df){
@@ -143,14 +143,21 @@ processPowerFiles <- function(df){
     # gzip it
     cmd <- paste0("gzip -f ", oF)
     try(system(cmd)) # produces a warning on CS RStudio server but still works
+    dataL <- rbind(totDTl, dataL)
     message("Done")
   }
   message("All households processed using: ", circuitsFile)
+  ofile <- paste0(DATA_PATH, "/imputed/all_1min_data_withImputedTotal_",
+                  circuitsFile, ".csv") # use the circuitsFile name so we know the definition of which circuits we summed
+  message("Saving and gzipping: ", ofile)
+  data.table::fwrite(dataL, ofile) # save the household data - use fwrite as it is FAST
+  # gzip it
+  cmd <- paste0("gzip -f ", ofile)
+  try(system(cmd)) # produces a warning on CS RStudio server but still works
+  message("Saving single file of imputed load only to: ", ofile)
 }
 
 processPowerFiles(circuitsDF)
-
-message("Done")
 
 # how long did it take?
 end_exec <- Sys.time()
