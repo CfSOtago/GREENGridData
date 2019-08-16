@@ -9,7 +9,6 @@ print(paste0("#--------------- Reporting NZ GREEN Grid Grid Household Total Powe
 library(lubridate)
 library(data.table)
 library(drake) # introduced to aid workflow - you'll see why
-library(readr) # use fread instead where possible
 library(here)
 
 # parameterise data path - edit for your set up ----
@@ -30,7 +29,7 @@ if(user == "ben" & sysname == "Darwin"){
   circuitsPath <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
   dataFile <- paste0(dPath, "/imputed/all_1min_data_withImputedTotal_", circuitsFile, ".csv.gz")
   # hh attributes
-  hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.zip"
+  hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.gz"
 } else {
   dPath <- "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
   dataFile <- paste0(dPath, "/imputed/allHouseholds_totalW_long_", circuitsFile, ".csv.gz")
@@ -43,9 +42,9 @@ start_exec <- Sys.time()
 dataL <- data.table() # data bucket to collect data in
 
 loadFile <- function(f){
+  # loads any file we throw at it using data.table::fread
   if(file.exists(f)){
-     dt <- data.table::as.data.table(readr::read_csv(f)) # load hh data
-     data.table::setkey(dt, linkID)
+     dt <- data.table::fread(f) # load hh data - fread is VERY fast but does not auto-parse (which is helpful for the dateTimes)
    } else {
      message("Failed to find ", f," - is the data source available?")
    } 
@@ -65,16 +64,20 @@ knitParams <- list(
   subtitle = subtitle
 )
 
+doReport <- function(){
+  rmarkdown::render(
+    knitr_in(rmdFile),
+    params = knitParams,
+    output_file = file_out(htmlFile),
+    quiet = TRUE # change to TRUE for peace & quiet
+  )
+}
+
 plan <- drake::drake_plan(
   powerData = loadFile(dataFile),
   hhData = loadFile(hhFile),
   circuits = data.table::fread(circuitsPath),
-  report = rmarkdown::render(
-    knitr_in(rmdFile),
-    params = knitParams,
-    output_file = file_out(htmlFile),
-    quiet = FALSE # change to TRUE for peace & quiet
-  )
+  report = doReport()
 )
 
 
