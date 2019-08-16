@@ -133,6 +133,7 @@ This report provides summary analysis of the imputed total demand for each house
 
 ```{r readdHhData}
 hhDT <- drake::readd(hhData) # bring back from wherever drake put it
+setkey(hhDT, linkID)
 ```
 
 ```{r readdCircuits}
@@ -141,7 +142,9 @@ circuitsDT <- drake::readd(circuits) # bring back from wherever drake put it
 
 ```{r readdPowerData}
 powerDT <- drake::readd(powerData) # bring back from wherever drake put it
-data.table::setkey(powerDT, linkID)
+powerDT <- powerDT[, r_dateTime_nz := lubridate::as_datetime(r_dateTime, # stored as UTC
+                                                        tz = "Pacific/Auckland")] # so we can extract within NZ dateTime
+setkey(powerDT, linkID, r_dateTime)
 t <- head(powerDT)
 
 kableExtra::kable(t, caption = paste0("First few rows of grid spy data")) %>%
@@ -185,7 +188,7 @@ hhID_hDT <- hhDT[, .(linkID, hasApplianceSummary,
                     otherGenDevice = `Other Generation Device`, notes)
                  ] # all linkIDs in the household data
 hhID_hDT$hasHhData <- "Yes"
-hhID_pDT <- powerDT[, .(nObs = .N, meanW = mean(imputedTotalW), minW = min(imputedTotalW), maxW = max(imputedTotalW)),
+hhID_pDT <- powerDT[, .(nObs = .N, meanW = mean(powerW), minW = min(powerW), maxW = max(powerW)),
                     keyby = .(linkID)] # all linkIDs in the power data
 hhID_pDT$powerDataSource <- "Has power data"
 # NB - there may be some linkIDs with no power data but household data & vice versa
@@ -222,7 +225,7 @@ Figure \@ref(fig:testPowerTileObs) shows the incidence of -ve overall imputed po
 ```{r testPowerTileObs, fig.cap="Incidence of -ve values by household ID, date and presence of PV (if known)", fig.height = 8}
 myCaption <- "GREEN Grid Data: Imputed total household power demand"
   
-plotDT <- powerDT[imputedTotalW <= 0, .(nObs = .N), 
+plotDT <- powerDT[powerW <= 0, .(nObs = .N), 
                   keyby = .(Date = lubridate::as_date(r_dateTime), linkID)]
 setkey(plotDT, linkID)
 plotDT <- plotDT[hhID_DT]
@@ -257,7 +260,7 @@ kableExtra::kable(hhID_DT[pvInverter == "yes", .(linkID, pvInverter, energyStora
 Figure \@ref(fig:testPowerTileMean) shows the mean overall imputed power values by linkID (household) and date where power <= 0. As we can see they tend to be concentrated in a few households with some reporting persistent -ve values even though they do not appear to have PV.
 
 ```{r testPowerTileMean, fig.height = 8, fig.cap="Mean of -ve values by household ID and date and presence of PV (if known)"}
-plotDT <- powerDT[imputedTotalW <= 0, .(meanWh = mean(imputedTotalW)), 
+plotDT <- powerDT[powerW <= 0, .(meanWh = mean(powerW)), 
                   keyby = .(Date = lubridate::as_date(r_dateTime), linkID)]
 setkey(plotDT, linkID)
 plotDT <- plotDT[hhID_DT]
@@ -295,7 +298,7 @@ myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https
                         "\n (c) ", lubridate::year(Sys.Date())," University of Otago")
 
 
-plotDT <- powerDT[, .(meanW = mean(imputedTotalW)), keyby = .(season, 
+plotDT <- powerDT[, .(meanW = mean(powerW)), keyby = .(season, 
                                                 obsTimeHMSQHour, 
                                                 linkID)
              ]
@@ -311,7 +314,7 @@ p + labs(y = "Mean W per minute") + facet_wrap(. ~ pvInverter)
 If a household has PV this should be clearly visible as a -ve curve centered on ~ 12:00 - 13:00.
 
 ```{r makeMinPlot, fig.cap="Minimum total demand profile plot", fig.height=10}
-plotDT <- powerDT[imputedTotalW <= 0, .(minW = min(imputedTotalW)), keyby = .(season, 
+plotDT <- powerDT[powerW <= 0, .(minW = min(powerW)), keyby = .(season, 
                                                 obsTimeHMSQHour, 
                                                 linkID)
              ]
@@ -344,8 +347,10 @@ When using the 'total demand' derived data we suggest data users:
    * excluding household (link) IDs: 14,25,26,43;
    * excluding other -ve values on a per-value basis;
    * only including households known to have PV if analysis of demand during non-daylight hours is being undertaken (c.f. Figures \@ref(fig:makeMeanPlot) and \@ref(fig:makeMinPlot)).
-  
-In _all_ cases we recommend that users check the data carefully before anlaysis and _document_ any filtering they apply!
+
+Seperately, for reasons explained [elsewhere](https://github.com/CfSOtago/GREENGridData/issues/1) _we recommend removing rf_46 from the data_ prior to analysis.
+
+In _all_ cases we recommend that users check the data carefully before analysis and _document_ any filtering they apply!
 
 # Statistical Annex
 
