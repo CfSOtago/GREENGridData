@@ -1630,7 +1630,7 @@ div.tocify {
 <h1 class="title toc-ignore">GREENGrid Household Electricity Demand Data Test</h1>
 <h3 class="subtitle">Imputed total power demand using: circuitsToSum_v1.1</h3>
 <h4 class="author">Ben Anderson (<a href="mailto:b.anderson@soton.ac.uk" class="email">b.anderson@soton.ac.uk</a>, <code>@dataknut</code>)</h4>
-<h4 class="date">Last run at: 2019-08-16 15:39:02</h4>
+<h4 class="date">Last run at: 2019-08-16 16:46:42</h4>
 
 </div>
 
@@ -1669,7 +1669,7 @@ div.tocify {
 <h2><span class="header-section-number">1.3</span> Citation</h2>
 <p>If you wish to use any of the material from this report please cite as:</p>
 <ul>
-<li>Anderson, B. (2019) GREENGrid Household Electricity Demand Data TestImputed total power demand using: circuitsToSum_v1.1. <a href="http://www.otago.ac.nz/centre-sustainability/">Centre for Sustainability</a>, University of Otago: Dunedin.</li>
+<li>Anderson, B. (2019) <em>GREENGrid Household Electricity Demand Data Test: Imputed total power demand using: circuitsToSum_v1.1</em>. <a href="http://www.otago.ac.nz/centre-sustainability/">Centre for Sustainability</a>, University of Otago: Dunedin.</li>
 </ul>
 <p>This work is (c) 2019 the University of Otago</p>
 </div>
@@ -2171,8 +2171,6 @@ NA
 <li>no exclusions</li>
 </ul></li>
 </ul>
-<pre><code>## Warning: `as_tibble.matrix()` requires a matrix with column names or a `.name_repair` argument. Using compatibility `.name_repair`.
-## This warning is displayed once per session.</code></pre>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:checkHouseholds">Table 3.3: </span>Summary of monitored households (NA indicates data not included in circuitsToSum_v1.1)
@@ -4112,50 +4110,8 @@ Figure 4.2: Mean of -ve values by household ID and date and presence of PV (if k
 <h1><span class="header-section-number">5</span> Test power profiles</h1>
 <p>Next we test the power profiles by season to see if there is a seasonal pattern to the negatuive values which might indicate unreported PV (for example).</p>
 <p>First we create a <em>Southern</em> Hemisphere season variable. We have a function to do this in the <code>GREENGridData</code> package. We print a check table to ensure we are all happy with the coding of <code>season</code>.</p>
-<pre class="r"><code>powerDT &lt;- GREENGridData::addNZSeason(powerDT)</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::last' by 'dplyr::last' when
-## loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::first' by 'dplyr::first'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::between' by
-## 'dplyr::between' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::month' by
-## 'lubridate::month' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::hour' by 'lubridate::hour'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'dplyr::intersect' by
-## 'lubridate::intersect' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::quarter' by
-## 'lubridate::quarter' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::week' by 'lubridate::week'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::year' by 'lubridate::year'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'here::here' by 'lubridate::here' when
-## loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'dplyr::union' by 'lubridate::union'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'hms::hms' by 'lubridate::hms' when
-## loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::wday' by 'lubridate::wday'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::second' by
-## 'lubridate::second' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'dplyr::setdiff' by 'lubridate::setdiff'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::minute' by
-## 'lubridate::minute' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::mday' by 'lubridate::mday'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::yday' by 'lubridate::yday'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::isoweek' by
-## 'lubridate::isoweek' when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::melt' by 'reshape2::melt'
-## when loading 'GREENGridData'</code></pre>
-<pre><code>## Warning: replacing previous import 'data.table::dcast' by 'reshape2::dcast'
-## when loading 'GREENGridData'</code></pre>
-<pre class="r"><code>table(lubridate::month(powerDT$r_dateTime, label = TRUE), powerDT$season, useNA = &quot;always&quot;)</code></pre>
+<pre class="r"><code>powerDT &lt;- GREENGridData::addNZSeason(powerDT)
+table(lubridate::month(powerDT$r_dateTime, label = TRUE), powerDT$season, useNA = &quot;always&quot;)</code></pre>
 <pre><code>##       
 ##         Spring  Summer  Autumn  Winter    &lt;NA&gt;
 ##   Jan        0 4126543       0       0       0
@@ -4459,7 +4415,7 @@ Figure 5.2: Minimum total demand profile plot
 </div>
 <div id="runtime" class="section level1">
 <h1><span class="header-section-number">8</span> Runtime</h1>
-<p>Analysis completed in 1004.15 seconds ( 16.74 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.2 (2018-12-20) running on x86_64-apple-darwin15.6.0.</p>
+<p>Analysis completed in 942.64 seconds ( 15.71 minutes) using <a href="https://cran.r-project.org/package=knitr">knitr</a> in <a href="http://www.rstudio.com">RStudio</a> with R version 3.5.2 (2018-12-20) running on x86_64-apple-darwin15.6.0.</p>
 </div>
 <div id="r-environment" class="section level1">
 <h1><span class="header-section-number">9</span> R environment</h1>

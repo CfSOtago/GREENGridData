@@ -100,7 +100,7 @@ seasonalProfilePlot <- function(dt, xvar, yvar){
 
 If you wish to use any of the material from this report please cite as:
 
- * Anderson, B. (`r lubridate::year(today())`) `r paste0(params$title,params$subtitle)`. `r ggrParams$pubLoc`.
+ * Anderson, B. (`r lubridate::year(today())`) _`r paste0(params$title,": ", params$subtitle)`_. `r ggrParams$pubLoc`.
 
 This work is (c) `r lubridate::year(today())` the University of Otago
 
