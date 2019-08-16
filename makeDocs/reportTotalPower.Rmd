@@ -142,10 +142,14 @@ circuitsDT <- drake::readd(circuits) # bring back from wherever drake put it
 
 ```{r readdPowerData}
 powerDT <- drake::readd(powerData) # bring back from wherever drake put it
+#  create some useful derived date & time variables
 powerDT <- powerDT[, r_dateTime_nz := lubridate::as_datetime(r_dateTime, # stored as UTC
                                                         tz = "Pacific/Auckland")] # so we can extract within NZ dateTime
 setkey(powerDT, linkID, r_dateTime)
-t <- head(powerDT)
+t <- head(powerDT) # get head here
+
+powerDT <- powerDT[, obsTimeHMS := hms::as.hms(r_dateTime_nz)] # HH:MM for demand profile plots
+powerDT <- powerDT[, obsTimeHalfHour := hms::trunc_hms(obsTimeHMS, 60*30)]
 
 kableExtra::kable(t, caption = paste0("First few rows of grid spy data")) %>%
   kable_styling()
@@ -154,15 +158,10 @@ kableExtra::kable(t, caption = paste0("First few rows of grid spy data")) %>%
 Table \@ref(tab:readdPowerData) shows the first few rows of the Grid Spy 1 minute power data. Table \@ref(tab:summaryPowerData) shows a summary of the Grid Spy 1 minute power data (for more detail see Section \@ref(powerSkim)).
 
 ```{r summaryPowerData}
-# create some useful derived date & time variables
-powerDT <- powerDT[, obsTimeHMS := hms::as.hms(r_dateTime)] # HH:MM for demand profile plots
-
 t <- summary(powerDT)
 
 kableExtra::kable(t, caption = paste0("Summary of grid spy data")) %>%
   kable_styling()
-
-powerDT <- powerDT[, obsTimeHMSQHour := hms::trunc_hms(obsTimeHMS, 60*15)]
 ```
 
 Note that:
@@ -299,14 +298,14 @@ myCaption <- paste0("GREENGrid Grid Spy household electricity demand data (https
 
 
 plotDT <- powerDT[, .(meanW = mean(powerW)), keyby = .(season, 
-                                                obsTimeHMSQHour, 
+                                                obsTimeHalfHour, 
                                                 linkID)
              ]
 setkey(plotDT, linkID)
 setkey(hhID_DT, linkID)
 plotDT <- hhID_DT[, .(linkID, pvInverter)][plotDT]
 
-p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHMSQHour', 
+p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHalfHour', 
                          yvar = 'meanW')
 p + labs(y = "Mean W per minute") + facet_wrap(. ~ pvInverter)
 ```
@@ -315,7 +314,7 @@ If a household has PV this should be clearly visible as a -ve curve centered on 
 
 ```{r makeMinPlot, fig.cap="Minimum total demand profile plot", fig.height=10}
 plotDT <- powerDT[powerW <= 0, .(minW = min(powerW)), keyby = .(season, 
-                                                obsTimeHMSQHour, 
+                                                obsTimeHalfHour, 
                                                 linkID)
              ]
 
@@ -323,7 +322,7 @@ setkey(plotDT, linkID)
 setkey(hhID_DT, linkID)
 plotDT <- hhID_DT[, .(linkID, pvInverter)][plotDT]
 
-p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHMSQHour', 
+p <- seasonalProfilePlot(plotDT, xvar = 'obsTimeHalfHour', 
                          yvar = 'minW')
 p <- p + labs(y = "Min W per minute") + facet_wrap(. ~ pvInverter)
 

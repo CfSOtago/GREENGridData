@@ -69,7 +69,7 @@ doReport <- function(){
     knitr_in(rmdFile),
     params = knitParams,
     output_file = file_out(htmlFile),
-    quiet = FALSE # change to TRUE for peace & quiet
+    quiet = TRUE # change to TRUE for peace & quiet
   )
 }
 
