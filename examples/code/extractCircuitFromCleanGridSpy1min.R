@@ -73,7 +73,7 @@ exFileTest <- paste0(exFile, ".gz")
 if(file.exists(iPath)){
   message("Good, path to safe data exists: ", iPath)
 } else {
-  message("Opps. path to safe data does not exist: ", iPath)
+  message("Oops. path to safe data does not exist: ", iPath)
   stop("Please check you have set the path correctly and it exists...")
 }
 
