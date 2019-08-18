@@ -80,7 +80,7 @@ if(file.exists(iPath)){
 if(file.exists(oPath)){
   message("Good, place to save extracts exists: ", oPath)
 } else {
-  message("Opps. place to save extracts does not exist: ", oPath)
+  message("Oops. place to save extracts does not exist: ", oPath)
   stop("Please check you have set the path correctly and it exists...")
 }
 
