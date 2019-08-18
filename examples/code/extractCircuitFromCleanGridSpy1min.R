@@ -27,7 +27,7 @@ dateTo <- "2016-03-31" # change this to change the (inclusive) UTC date to searc
 
 fullFb <- 0 # switch on (1) or off (0) full feedback
 localData <- 0 # test using local (1) or Otago HCS (0) data?
-refresh <- 1 # refresh data even if it seems to already exsit
+refresh <- 1 # refresh data even if it seems to already exist
 
 b2Kb <- 1024 # http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
