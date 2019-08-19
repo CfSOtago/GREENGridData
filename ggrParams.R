@@ -43,7 +43,7 @@ ggrParams$statsLoc <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/che
 
 # Location of safe data
 ggrParams$gsSafe <- paste0(ggrParams$dataLoc, "cleanData/safe/gridSpy/1min/data/")
-ggrParams$hhAttributes <- paste0(ggrParams$dataLoc, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv")
+ggrParams$hhAttributes <- paste0(ggrParams$dataLoc, "cleanData/safe/survey/ggHouseholdAttributesSafe.csv.gz") # NB gzipped
 
 ggrParams$otagoHCS <- "the University of Otago's High-Capacity Central File Storage [HCS](https://www.otago.ac.nz/its/services/hosting/otago068353.html)"
 ggrParams$repo <- "[GREENGridData](https://github.com/CfSOtago/GREENGridData)"
