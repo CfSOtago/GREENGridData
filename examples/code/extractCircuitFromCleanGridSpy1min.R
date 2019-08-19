@@ -26,7 +26,7 @@ dateTo <- "2016-03-31" # change this to change the (inclusive) UTC date to searc
 # NB: searching in whole UTC dates will produce partial days in other timezones (e.g. NZ). We hate timezones.
 
 fullFb <- 0 # switch on (1) or off (0) full feedback
-localData <- 0 # test using local (1) or Otago HCS (0) data?
+localData <- 1 # test using local (1) or Otago HCS (0) data? See below for coding
 refresh <- 1 # refresh data even if it seems to already exsit
 
 b2Kb <- 1024 # http://whatsabyte.com/P1/byteconverter.htm
