@@ -233,7 +233,7 @@ kableExtra::kable(caption = "Number of children in household by location", t) %>
 The `notes` column may have been set for any number of reasons and measn the monitoring data for a given household should be used with caution.
 
 ```{r outliers}
-t <- with(hhAttributesDT, table(notes, Location, useNA = "always"))
+t <- hhAttributesDT[!is.na(notes), .(linkID, notes, Location)]
 kableExtra::kable(caption = "Notes by location", t) %>%
   kable_styling()
 ```
