@@ -230,7 +230,7 @@ kableExtra::kable(caption = "Number of children in household by location", t) %>
 
 ## Notes variable
 
-The `notes` column may have been set for any number of reasons and measn the monitoring data for a given household should be used with caution.
+The `notes` column may have been set for any number of reasons and means the monitoring data for a given household should be used with caution.
 
 ```{r outliers}
 t <- hhAttributesDT[!is.na(notes), .(linkID, notes, Location)]

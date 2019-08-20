@@ -26,8 +26,9 @@ dateTo <- "2016-03-31" # change this to change the (inclusive) UTC date to searc
 # NB: searching in whole UTC dates will produce partial days in other timezones (e.g. NZ). We hate timezones.
 
 fullFb <- 0 # switch on (1) or off (0) full feedback
+
 localData <- 1 # test using local (1) or Otago HCS (0) data? See below for coding
-refresh <- 1 # refresh data even if it seems to already exsit
+refresh <- 1 # refresh data even if it seems to already exist
 
 b2Kb <- 1024 # http://whatsabyte.com/P1/byteconverter.htm
 b2Mb <- 1048576
@@ -73,14 +74,14 @@ exFileTest <- paste0(exFile, ".gz")
 if(file.exists(iPath)){
   message("Good, path to safe data exists: ", iPath)
 } else {
-  message("Opps. path to safe data does not exist: ", iPath)
+  message("Oops. path to safe data does not exist: ", iPath)
   stop("Please check you have set the path correctly and it exists...")
 }
 
 if(file.exists(oPath)){
   message("Good, place to save extracts exists: ", oPath)
 } else {
-  message("Opps. place to save extracts does not exist: ", oPath)
+  message("Oops. place to save extracts does not exist: ", oPath)
   stop("Please check you have set the path correctly and it exists...")
 }
 
