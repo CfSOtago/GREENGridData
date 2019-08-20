@@ -277,9 +277,12 @@ hhAttributesSafeDT <- hhAppliancesDT[allHhEc2SafeDT]
 ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributesFull.csv")
 data.table::fwrite(hhAttributesFullDT, ofile)
 
+GREENGridData::gzipIt(ofile)
+
 # > safe ----
 ofile <- paste0(ggrParams$hhOutPath, "ggHouseholdAttributesSafe.csv")
 data.table::fwrite(hhAttributesSafeDT, ofile)
+GREENGridData::gzipIt(ofile)
 
 # save locally for future use
 sysName <- Sys.info()[[1]]
@@ -289,6 +292,7 @@ if(sysName == "Darwin" & userName == "ben"){
                  Sys.Date(), 
                  ".csv") # save with a date so we know which is which
   data.table::fwrite(hhAttributesSafeDT, ofile)
+  GREENGridData::gzipIt(ofile)
 }
 
 # Runtime ---
