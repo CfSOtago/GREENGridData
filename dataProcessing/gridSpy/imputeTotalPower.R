@@ -42,7 +42,7 @@ user <- Sys.info()[[7]]
 #circuitsFile <- "circuitsToSum_v1.0" # JKM original
 circuitsFile <- "circuitsToSum_v1.1" # all
 
-# localise data paths - aedit for your context
+# localise data paths - edit for your context
 DATA_PATH = "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
 circuits_path <- paste0(DATA_PATH, "/", circuitsFile, ".csv") # <- Jason
 #circuits_path <- sprintf("%s/circuitsToSum.csv", DATA_PATH) # <- Jason
