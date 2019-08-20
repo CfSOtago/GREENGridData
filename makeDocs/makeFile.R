@@ -38,7 +38,6 @@ doOverviewReport < function(){
   subtitle <- paste0("Research data overview (version ", version, ")")
   rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildOverviewReport.Rmd")
   rmarkdown::render(input = rmdFile,
-                    output_format = "html_document2",
                     params = list(title = title, subtitle = subtitle, version = version),
                     output_file = paste0(ggrParams$repoLoc,"/docs/overviewReport_v", version, ".html")
   )
@@ -63,7 +62,6 @@ doGridSpyreport <- function(){
   subtitle <- paste0("1 minute electricity power (version ", version, ")")
   rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildGridSpy1mReport.Rmd")
   rmarkdown::render(input = rmdFile,
-                    output_format = "html_document2",
                     params = list(localData = localData, title = title, subtitle = subtitle, version = version),
                     output_file = paste0(ggrParams$repoLoc,"/docs/gridSpy1mProcessingReport_v", version, ".html")
   )
@@ -76,7 +74,6 @@ doGridSpyOutliersReport <- function(){
   subtitle <- paste0("1 minute circuit level electricity power outlier report (version ", version, ")")
   rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildGridSpyOutliers.Rmd")
   rmarkdown::render(input = rmdFile,
-                    output_format = "html_document2",
                     params = list(localData = localData, title = title, subtitle = subtitle, version = version),
                     output_file = paste0(ggrParams$repoLoc,"/docs/gridSpy1mOutliersReport_v", version, ".html")
   )
@@ -92,6 +89,6 @@ doGridSpyHouseholdLoadReport <- function(){
 
 doSurveyReport()
 #doGridSpyreport()
-#doGridSpyOutliersReport()
-#doGridSpyHouseholdLoadReport()
+doGridSpyOutliersReport()
+doGridSpyHouseholdLoadReport()
 
