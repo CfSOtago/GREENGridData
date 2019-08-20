@@ -377,6 +377,8 @@ kableExtra::kable(negHH, caption = "All households where negative power observed
  
 ## The mysterious case of rf_46 {#rf46}
 
+> 19th August 2019: updated - see https://github.com/CfSOtago/GREENGridData/issues/1
+
 The analysis above has identified this household's data as being _very_ strange. We detected a lot of negative power values over a long time but they seem to be interspersed with positive values. 
 
 We know that rf_46 did not have PV nor anything else of note. Let's take a look at rf_46 a bit more closely...
@@ -422,6 +424,8 @@ kableExtra::kable(t,
                   digits = 3) %>%
   kable_styling()
 ```
+
+> 19th August 2019: updated - see https://github.com/CfSOtago/GREENGridData/issues/1 - we recommend _not_ using rf_46 data in any analysis at the present time.
 
 # Runtime
 
