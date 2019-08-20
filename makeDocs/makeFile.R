@@ -87,6 +87,7 @@ doGridSpyHouseholdLoadReport <- function(){
 
 # --- TUD data report ----
 
+doOverviewReport()
 doSurveyReport()
 #doGridSpyreport()
 doGridSpyOutliersReport()
