@@ -34,7 +34,7 @@ title <- paste0("NZ GREEN Grid Household Electricity Demand Study")
 # --- Code ---
 
 # --- Overview report ----
-doOverviewReport < function(){
+doOverviewReport <- function(){
   subtitle <- paste0("Research data overview (version ", version, ")")
   rmdFile <- paste0(ggrParams$repoLoc, "/makeDocs/buildOverviewReport.Rmd")
   rmarkdown::render(input = rmdFile,
