@@ -96,8 +96,10 @@ timesDT # which half-hours are they?
 
 setkey(timesDT, rDateTime_NZ) # note the name of this column does not need to be 
 # identical to the one in mergedDT as setkey just matches on the key you've set
+# the clue's in the name...
 
 # we need to create a half-hour column in ssPowerDT (since it is 1 minute level)
+# which we can match our timeDT half hours to
 mergedDT[, rDateTimeHalfHour_NZ := lubridate::floor_date(rDateTime_NZ, unit = "30 mins")] # we love lubridate
 setkey(mergedDT, rDateTimeHalfHour_NZ)
 
