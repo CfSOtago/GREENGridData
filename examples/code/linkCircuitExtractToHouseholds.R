@@ -22,22 +22,22 @@ hhFile <- paste0(dPath, "survey/ggHouseholdAttributesSafe.csv.gz")
 
 # test file exists
 if(file.exists(gsFile)){
-  message("Success! Found expected pre-extracted file: ", gsFile)
+  message("Success! Found expected pre-extracted power data file: ", gsFile)
   message("Loading it...")
   powerDT <- data.table::fread(gsFile)
   powerDT[, rDateTime_NZ := lubridate::as_datetime(r_dateTime, # stored as UTC
                                                 tz = "Pacific/Auckland")] # so we can extract within NZ dateTim
 } else {
-  message("Oops. Didn't find expected pre-extracted file: ", gsFile)
+  message("Oops. Didn't find expected pre-extracted power data file: ", gsFile)
   stop("Please check you have set the paths and filename correctly...")
 }
 
 if(file.exists(hhFile)){
-  message("Success! Found expected pre-extracted file: ", gsFile)
+  message("Success! Found expected household survey file: ", hhFile)
   message("Loading it...")
   hhDT <- data.table::fread(hhFile)
 } else {
-  message("Oops. Didn't find expected pre-extracted file: ", gsFile)
+  message("Oops. Didn't find expected household survey file: ", hhFile)
   stop("Please check you have set the paths and filename correctly...")
 }
 
