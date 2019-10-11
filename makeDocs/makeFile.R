@@ -90,6 +90,6 @@ doGridSpyHouseholdLoadReport <- function(){
 doOverviewReport()
 doSurveyReport()
 #doGridSpyreport()
-doGridSpyOutliersReport()
-doGridSpyHouseholdLoadReport()
+#doGridSpyOutliersReport()
+#doGridSpyHouseholdLoadReport()
 
