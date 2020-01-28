@@ -12,13 +12,15 @@ The data is archived as:
 
  * Anderson, Ben and Eyers, David and Ford, Rebecca and Giraldo Ocampo, Diana and Peniamina, Rana and Stephenson, Janet and Suomalainen, Kiti and Wilcocks, Lara and Jack, Michael (2018). [New Zealand GREEN Grid household electricity demand study 2014-2018](https://dx.doi.org/10.5255/UKDA-SN-853334). [Data Collection]. Colchester, Essex: UK Data Service. DOI: [10.5255/UKDA-SN-853334](https://dx.doi.org/10.5255/UKDA-SN-853334)
 
-You will need to register for a (free) UK Data Service account before you can download it. Despite appearances, users from outside the UK _can_ register and download the data but will need to use a [specific form to request a UK Data Service user id](https://beta.ukdataservice.ac.uk/myaccount/credentials). Once registered you should be able to log in and download the data.
+You will need to register for a (free) UK Data Service account before you can download the data. Staff at UK universities should be able to use their institutional login to do so. Users from outside the UK will need to use a [specific form to request a UK Data Service user id](https://beta.ukdataservice.ac.uk/myaccount/credentials). Once registered & logged in you should be able to download the data.
 
 Please document any errors, problems or queries by raising a [github issue](https://github.com/CfSOtago/GREENGridData/issues) and we will try to respond.
 
 ## Terms of Use
 
 This is _not_ open access data. It is licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
+
+We also encourage you to log your (intended) data usage via https://github.com/CfSOtago/GREENGridData/issues/38. This is not a requirement of re-use but it helps us to justify both continuing to improve the data and also releasing future datasets.
 
 ## Version 1 - September 2018
 
@@ -56,6 +58,8 @@ The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can b
  * _examples_ - R/Rmd script examples to show how the clean anonymised data can be analysed.
 
 We encourage [feedback](https://github.com/CfSOtago/GREENGridData/issues) and [contributions](https://github.com/CfSOtago/GREENGridData/pulls) but inevitably #[YMMV](https://en.wiktionary.org/wiki/YMMV).
+
+We also encourage you to log your (intended) data usage via https://github.com/CfSOtago/GREENGridData/issues/38.
 
 # Publications to date
 
