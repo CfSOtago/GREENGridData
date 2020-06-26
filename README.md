@@ -14,11 +14,11 @@ This data has been cleaned and anonymised to produce the 'safe' dataset availabl
 
 The code in this repo does two things:
 
- * _Data processing and reporting_:
+ * _Original Data: Cleaning, processing and reporting_:
     - processes the original data to a 'safe' form for archiving and third party re-use (code will only work if you have the original data). As it does so it creates two check plots for each household: monthly mean power profiles & the number of observations over time. The are found in the archived dataset for error checking purposes;
     - produces original data processing reports and documentation (code will only work if you have the original data);
     - produces cleaned 'safe' data reports and documentation (code will only work if you have the original data).
- * _Analytic code examples_ to:
+ * _Released 'safe' data: Analytic code examples_ to:
     - load and analyse 'safe' electricity demand (power) data for one household
     - extract power data for circuits matching a given string (e.g. `Heat Pump`) from the 'safe' data between two dates;
     - link the household survey and extracted 'Heat Pump' data for analysis;
