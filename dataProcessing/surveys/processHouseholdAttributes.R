@@ -55,6 +55,7 @@ keepShortCols <- c("linkID","hasShortSurvey",
                    "StartDate",
                    "Q4",
                    "Q7",
+                   "Q12", # rent/own
                    "Q19_1",
                    "Q19_2",
                    "Q19_3",
@@ -100,6 +101,7 @@ keepLongCols <- c("linkID", "hasLongSurvey",
                   "Q4",
                   "Q5",
                   "Q7",
+                  "Q12", # rent/own
                   "Q10#1_1_1_TEXT",
                   "Q10#1_1_2_TEXT",
                   "Q10#1_2_1_TEXT",
@@ -216,6 +218,17 @@ recodeData <- function(dt){
   # As a result some coding may be suspect since a full code-book as implemented in GREEN Grid 
   # does not seem to exist. We have had to assume the category ordering is the same
   
+  # Q12 tenure ----
+  dt <- dt[, Q12_coded := dplyr::recode(Q12,
+                                  "1" = "Rent (private owner)", 
+                                  "2" = "Rent from Housing NZ", 
+                                  "3" = "Rent from Local Council", 
+                                  "4" = "Own debt-free",
+                                  "5" = "Own, with mortgage(s) on it",
+                                  "6" = "Other"
+                                  )
+           ]
+                                        
   # Q19_x heat type available ----
   # see below or labels file
   
