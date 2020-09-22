@@ -7,4 +7,10 @@
 
 ## Data
 
-This folder contains additional data used in the data processing. It does _not_ (and never will) contain the project research data.
+This folder contains additional data used in the data processing:
+
+ * lists of circuits to sum to get the total power demand for each household
+ * short and long household survey question labels. The survey is identical to that used in https://ourarchive.otago.ac.nz/handle/10523/5634
+ * NZ DST break dates
+
+It does _not_ (and never will) contain the project research data.

@@ -15,7 +15,7 @@ loadLibraries(rmdLibs)
 # Local parameters ----
 
 # change this to suit your data location - this is where extractCleanGridSpy1minCircuit.R saved your extract
-dPath <- path.expand("~/Data/NZ_GREENGrid/safe/")
+dPath <- path.expand("~/SERG_data/NZ_GREENGrid/safe/")
                      
 gsFile <- paste0(dPath, "gridSpy/1min/dataExtracts/Heat Pump_2015-04-01_2016-03-31_observations.csv.gz")
 hhFile <- paste0(dPath, "survey/ggHouseholdAttributesSafe.csv.gz")
