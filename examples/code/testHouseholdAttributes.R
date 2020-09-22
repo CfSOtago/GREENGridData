@@ -11,7 +11,8 @@ hhDT[, .(winterElecCost = mean(winterElecCost, na.rm = TRUE),
          winterCoalCost = mean(winterCoalCost, na.rm = TRUE),
          winterWoodCost = mean(winterCoalCost, na.rm = TRUE)), keyby = .(Q7lab)]
 
-hhDT[!is.na(winterElecCost), .(winterElecCost = mean(winterElecCost, na.rm = TRUE),
+hhDT[!is.na(winterElecCost), .(winterElecCostMean = mean(winterElecCost, na.rm = TRUE),
+                               winterElecCostSD = sd(winterElecCost, na.rm = TRUE),
                                n = uniqueN(linkID)), keyby = .(Q7lab)]
 
 library(ggplot2)
