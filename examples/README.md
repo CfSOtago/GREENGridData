@@ -12,11 +12,11 @@ The code in this folder provides example R/Rmd code for simple extraction and an
 
 Code examples include:
 
- * _testHouseholdCleanGridSpy1min.R_ - R script which runs the .Rmd file of the same name with parameters to load a given household's Grid Spy data file and creates a mean power (W) profile plot for all circuits by year and month - very useful for data checking. It also shows how to link the Grid Spy data to the households attribute data;
- * _extractCircuitFromCleanGridSpy1min.R_ - searches across the safe Grid Spy data for a given string in the circuit labels between two dates (inclusive). It saves the results as a .csv.gz file. Has been tested for 'Heat Pump' and 'Hot Water'. This code is best run from the command line e.g. using `> Rscript extractCleanGridSpy1minCircuit.R` (more info on [Rscript](https://www.rdocumentation.org/packages/utils/versions/3.5.1/topics/Rscript));
- * _testCircuitExtract.R_ - R script which runs the .Rmd file of the same name with parameters to use pre-extracted `circuit` circuit data (created using the above `extractCleanGridSpy1minCircuit.R` script) and the household attribute data to conduct basic analysis of electricity demand.
- * _codeHouseholdAttributes.R_ - coding of household (category) variables
- * _testHouseholdAttributes.R_ - test analysis of household (category) variables
+ * **testHouseholdCleanGridSpy1min.R** - R script which runs the .Rmd file of the same name with parameters to load a given household's Grid Spy data file and creates a mean power (W) profile plot for all circuits by year and month - very useful for data checking. It also shows how to link the Grid Spy data to the households attribute data;
+ * **extractCircuitFromCleanGridSpy1min.R** - searches across the safe Grid Spy data for a given string in the circuit labels between two dates (inclusive). It saves the results as a .csv.gz file. Has been tested for 'Heat Pump' and 'Hot Water'. This code is best run from the command line e.g. using `> Rscript extractCleanGridSpy1minCircuit.R` (more info on [Rscript](https://www.rdocumentation.org/packages/utils/versions/3.5.1/topics/Rscript));
+ * **testCircuitExtract.R** - R script which runs the .Rmd file of the same name with parameters to use pre-extracted `circuit` circuit data (created using the above `extractCleanGridSpy1minCircuit.R` script) and the household attribute data to conduct basic analysis of electricity demand.
+ * **codeHouseholdAttributes.R** - coding of household (category) variables
+ * **testHouseholdAttributes.R** - test analysis of household (category) variables
 
 There are also some .Rmd examples which test the results of the data extraction and processing.
 
