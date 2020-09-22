@@ -54,7 +54,7 @@ hhEc2DT <- data.table::as.data.table(readr::read_csv(ggrParams$TaranakiSurveyDat
 keepShortCols <- c("linkID","hasShortSurvey",
                    "StartDate",
                    "Q4",
-                   "Q7",
+                   "Q7", # when built
                    "Q12", # rent/own
                    "Q19_1",
                    "Q19_2",
