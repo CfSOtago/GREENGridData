@@ -50,12 +50,12 @@ circuits_path <- paste0(DATA_PATH, "/", circuitsFile, ".csv") # <- Jason
 if(user == "dataknut" & sysname == "Linux"){
   # CS RStudio server
   DATA_PATH <- "~/greenGridData/cleanData/safe/gridSpy/1min/data"
-  circuits_path <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
+  circuits_path <- paste0(here::here(), "/publicData/", circuitsFile, ".csv") # in the package data folder
 }
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
   DATA_PATH <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
-  circuits_path <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
+  circuits_path <- paste0(here::here(), "/publicData/", circuitsFile, ".csv") # in the package data folder
 }
 
 message("Running on ", sysname, " under user ", user)

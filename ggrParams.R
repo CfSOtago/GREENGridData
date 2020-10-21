@@ -9,7 +9,7 @@ library(here)
 ggrParams$repoLoc <- here::here()
 
 # Location of misc data
-ggrParams$dstNZDates <- paste0(ggrParams$repoLoc, "/data/dstNZDates.csv")
+ggrParams$dstNZDates <- paste0(ggrParams$repoLoc, "/publicData/dstNZDates.csv")
 
 # Vars for Rmd
 ggrParams$pubLoc <- "[Centre for Sustainability](http://www.otago.ac.nz/centre-sustainability/), University of Otago: Dunedin"
@@ -34,7 +34,7 @@ ggrParams$ApplianceData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttribu
 ggrParams$HawkesBayShortSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/EC2HouseholdSurvey__HawkesBayShortSurvey_with_house_label.csv")
 ggrParams$HawkesBayLongSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/HawkesBay/householdSurveyData/EC2HouseholdSurvey__HawkesBayLongSurvey.csv")
 ggrParams$TaranakiSurveyData <- paste0(ggrParams$dataLoc, "_RAW DATA/householdAttributes/Taranaki/Household survey results 16.7.14.csv")
-ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$repoLoc, "/data/longSurveyQuestionLabels.csv")
+ggrParams$ec2LongSurveyLabels <- paste0(ggrParams$repoLoc, "/publicData/longSurveyQuestionLabels.csv")
 
 ggrParams$hhOutPath <- "/Volumes/hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/"
 

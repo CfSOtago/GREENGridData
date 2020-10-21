@@ -26,7 +26,7 @@ circuitsFile <- "circuitsToSum_v1.1" # all
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
   dPath <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
-  circuitsPath <- paste0(here::here(), "/data/", circuitsFile, ".csv") # in the package data folder
+  circuitsPath <- paste0(here::here(), "/publicData/", circuitsFile, ".csv") # in the package data folder
   dataFile <- paste0(dPath, "/imputed/all_1min_data_withImputedTotal_", circuitsFile, ".csv.gz")
   # hh attributes
   hhFile <- "~/Data/NZ_GREENGrid/reshare/v1.0/data/ggHouseholdAttributesSafe.csv.gz"
