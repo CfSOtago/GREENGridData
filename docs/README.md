@@ -2,7 +2,7 @@ The Renewable Energy and the Smart Grid [(NZ GREEN Grid)](https://www.otago.ac.n
 
  * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power);<img src="Heat_Pump_meankWperminBySeason.png" alt="Heat Pumps" title="Heat Pump season demand" style="float:right;width:250px;"/>
  * Occupant time-use diaries (focused on energy use);
- * Occupant, dwelling & appliance surveys. The survey used was identical to that used in [https://ourarchive.otago.ac.nz/handle/10523/5634](https://ourarchive.otago.ac.nz/handle/10523/5634). The pdf of the survey is also [available](EC2HouseholdSurveyAsUsedInGG.pdf) and should be read alongside the labels in [publicData](https://github.com/CfSOtago/GREENGridData/tree/master/publicData) when using the household attribute data file.
+ * Occupant, dwelling & appliance surveys. The survey used was identical to that used in [https://ourarchive.otago.ac.nz/handle/10523/5634](https://ourarchive.otago.ac.nz/handle/10523/5634). The pdf of the survey is also [available](EC2HouseholdSurveyAsUsedInGG.pdf) and should be read alongside the labels in [publicData](https://github.com/CfSOtago/GREENGridData/tree/master/publicData) when using the household attribute data file. The question numbers match...
 
 This data has been cleaned and anonymised using the code in this [R package](https://github.com/CfSOtago/GREENGridData/) to produce the 'safe' dataset available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). *None* of the data is held in the R package so *none* of the code here will work unless you also have access to the data. 
 
