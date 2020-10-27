@@ -4,7 +4,7 @@ The [Renewable Energy and the Smart Grid (GREEN Grid)](https://www.otago.ac.nz/c
 
  * 1 minute electricity power (W) data for c 40 households in NZ monitored from early 2014 using [gridSpy](https://gridspy.com/) monitors on each power circuit (and the incoming power)
  * Occupant time-use diaries (focused on energy use)
- * Dwelling & appliance surveys
+ * Surveys of the dwelling, the occupants and their appliances. This used a version of the Energy Cultures survey which is available in the /docs folder.
 
 This data has been cleaned and anonymised to produce the 'safe' dataset available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
 
