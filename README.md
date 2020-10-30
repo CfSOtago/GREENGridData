@@ -8,6 +8,8 @@ The [Renewable Energy and the Smart Grid (GREEN Grid)](https://www.otago.ac.nz/c
 
 This data has been cleaned and anonymised to produce the 'safe' dataset available from the [UK Data Service](http://reshare.ukdataservice.ac.uk/853334/). *None* of the data is held in this repo so *none* of the code here will work unless you also have access to the data. 
 
+----
+
 > See our [github pages site](https://cfsotago.github.io/GREENGridData/) for full data documentation.
 
 ----
