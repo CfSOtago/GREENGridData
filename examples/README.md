@@ -5,7 +5,7 @@
 The code in this folder provides example R/Rmd code for simple extraction and analysis of the cleaned [safe project data](http://reshare.ukdataservice.ac.uk/853334/). To use the code you will need to:
 
  * [register](https://beta.ukdataservice.ac.uk/myaccount/credentials) to use and download the [data](http://reshare.ukdataservice.ac.uk/853334/);
- * install and also download the [cleaned data package](https://github.com/CfSOtago/GREENGridData);
+ * install the [GREEN Grid R data package](https://github.com/CfSOtago/GREENGridData);
  * adjust the file paths to suit your local setup before running the code. 
  
  The code makes extensive use of package functions so make sure you install it first. You may need to look at the [package function code](../R/) to understand what these do.
