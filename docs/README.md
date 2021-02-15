@@ -39,9 +39,9 @@ Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) inclu
  * [Household attribute data](householdAttributeProcessingReport_v1.0.html) processing and documentation report;
  * [Household electricity demand data](gridSpy1mProcessingReport_v1.0.html) processing and documentation report;
  * [Household electricity demand outlier and negative power values](gridSpy1mOutliersReport_v1.0.html) report;
- * Imputing total household demand:
-      * Based on [circuitsToSumv1.0.csv](reportTotalPower_circuitsToSum_v1.0.html)
-      * Based on [circuitsToSumv1.1.csv](reportTotalPower_circuitsToSum_v1.1.html)
+ * How to impute total household demand from the measured circuits (***don't just sum them all!***):
+      * Based on [circuitsToSumv1.0.csv](reportTotalPower_circuitsToSum_v1.0.html) (deprecated)
+      * Based on [circuitsToSumv1.1.csv](reportTotalPower_circuitsToSum_v1.1.html) - see [table of circuits to sum in each dwelling](/CfSOtago/GREENGridData/blob/master/publicData/circuitsToSum_v1.1.csv).
 
 > NB: Version 1 of the data package does not include any time-use diary data. 
 
