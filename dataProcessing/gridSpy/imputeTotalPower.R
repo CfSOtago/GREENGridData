@@ -1,7 +1,7 @@
 print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data ---------------#"))
 
 # -- Code to correctly sum (as far as possible) household power demand to get an overall total -- #
-# Required because some circuits are seperate from the 'Incomer' - e.g. seperately controlled hot water
+# Required because some circuits are seperate from the 'Incomer' - e.g. separately controlled hot water
 # Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz 
 # with amendments from ben.anderson@otago.ac.nz
 # edit history:
