@@ -54,13 +54,15 @@ if(user == "dataknut" & sysname == "Linux"){
 }
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
-  DATA_PATH <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
+  DATA_PATH <- "~/Dropbox/data/NZ_GREENGrid/ukds/data/powerData"
   circuits_path <- paste0(here::here(), "/publicData/", circuitsFile, ".csv") # in the package data folder
 }
 
 message("Running on ", sysname, " under user ", user)
-message("Loading data from ", DATA_PATH)
-message("Using ", circuitsFile)
+message("Will load data from ", DATA_PATH)
+file.exists(DATA_PATH)
+message("Using ", circuitsFile, " from ", circuits_path)
+file.exists(circuits_path)
 
 # set up ----
 
@@ -80,6 +82,10 @@ message("Loading circuits from: ", circuits_path)
 circuitsDF <- read.csv(circuits_path, header = TRUE) # if we switch to readr::read_csv the processing code breaks
 
 dataL <- data.table() # data bucket to collect per-household per-minute imputed load
+
+if(!dir.exists(paste0(DATA_PATH, "/imputed"))){
+  dir.create(paste0(DATA_PATH, "/imputed")) # where to put the results
+}
 
 # process household files ----
 processPowerFiles <- function(df){
