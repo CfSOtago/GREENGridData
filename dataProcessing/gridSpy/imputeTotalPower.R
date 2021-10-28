@@ -105,6 +105,7 @@ processPowerFiles <- function(df){
     #                                    )
     iF <- sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id)
     message(" -> Loading data for ", house_id, " from ", iF)
+    # load the data ----
     inputDT <- data.table::fread(iF) # load the household data
     message("N rows: ", nrow(inputDT))
     message(" -> Parsing dates ", house_id)
@@ -128,7 +129,7 @@ processPowerFiles <- function(df){
       message(" -> Checking circuit: ", circuit)
       cond <- cond | grepl(circuit, inputDT$circuit)
     }
-    
+    # sum the relevant circuits ----
     circuitsToSumDT <- inputDT[cond, 
                                c("hhID","linkID", "dateTime_orig","TZ_orig","r_dateTime", "powerW")] # uses cond to pull out just the circuits we're going to add up
       
@@ -140,6 +141,9 @@ processPowerFiles <- function(df){
     inputDT$dateTime_nz <- NULL # not needed
     setcolorder(inputDT, c("hhID", "linkID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")) # make sure they match
     setcolorder(totDTl, c("hhID", "linkID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")) # make sure they match
+    
+    # save out the original file with the imputed power added ----
+    
     # outDT <- rbind(inputDT,
     #                totDTl) # add total to input
     # oF <- paste0(DATA_PATH, "/imputed/",house_id, "_all_1min_data_withImputedTotal_",
@@ -151,18 +155,19 @@ processPowerFiles <- function(df){
     message("Saving and gzipping: ", oF)
     data.table::fwrite(totDTl, oF) # save the household data - use fwrite as it is FAST
     
-    # gzip it
+    # try to gzip it
     cmd <- paste0("gzip -f ", oF)
     try(system(cmd)) # produces a warning on CS RStudio server but still works
     dataL <- rbind(totDTl, dataL)
     message("Done")
   }
   message("All households processed using: ", circuitsFile)
+  # save out just the imputed total power but for all households in one file (very large!) ----
   ofile <- paste0(DATA_PATH, "/imputed/all_1min_data_ImputedTotal_",
                   circuitsFile, ".csv") # use the circuitsFile name so we know the definition of which circuits we summed
   message("Saving and gzipping: ", ofile)
   data.table::fwrite(dataL, ofile) # save the household data - use fwrite as it is FAST
-  # gzip it
+  # try to gzip it
   cmd <- paste0("gzip -f ", ofile)
   try(system(cmd)) # produces a warning on CS RStudio server but still works
   message("Saving single file of imputed load only to: ", ofile)
