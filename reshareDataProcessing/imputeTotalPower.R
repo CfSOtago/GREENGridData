@@ -38,11 +38,11 @@ sysname <- Sys.info()[[1]]
 login <- Sys.info()[[6]]
 user <- Sys.info()[[7]]
 
-# Select your circuits-to-sum file
+# Choose your circuits-to-sum file
 #circuitsFile <- "circuitsToSum_v1.0" # JKM original
-circuitsFile <- "circuitsToSum_v1.1" # all
+circuitsFile <- "circuitsToSum_v1.1" # all - updated
 
-# localise data paths - edit for your context
+# localise data paths - edit for your context ----
 DATA_PATH = "/Users/jkmair/GreenGrid/data/clean_raw" # <- Jason
 circuits_path <- paste0(DATA_PATH, "/", circuitsFile, ".csv") # <- Jason
 #circuits_path <- sprintf("%s/circuitsToSum.csv", DATA_PATH) # <- Jason
@@ -57,6 +57,10 @@ if(user == "ben" & sysname == "Darwin"){
   DATA_PATH <- "~/Dropbox/data/NZ_GREENGrid/ukds/data/powerData"
   circuits_path <- paste0(here::here(), "/publicData/", circuitsFile, ".csv") # in the package data folder
 }
+
+# or set a default data path here ----
+#DATA_PATH = "/path/to/the/power/data/" 
+#circuits_path <- paste0("/path/to/the/circuits/file/", circuitsFile, ".csv") 
 
 message("Running on ", sysname, " under user ", user)
 message("Will load data from ", DATA_PATH)
