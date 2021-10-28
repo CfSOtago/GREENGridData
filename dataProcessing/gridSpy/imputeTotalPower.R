@@ -3,12 +3,12 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 # -- Code to correctly sum (as far as possible) household power demand to get an overall total -- #
 # Required because some circuits are seperate from the 'Incomer' - e.g. separately controlled hot water
 # Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz 
-# with amendments from ben.anderson@otago.ac.nz
+# with amendments from ben.anderson@otago.ac.nz/b.anderson@soton.ac.uk
 # edit history:
 
 # Notes:
 # This code requires:
-# - a csv file in the package /data folder which
+# - a csv file in the package /publicData folder which
 # specifies the circuits to be used when calculating the total for each
 # house. 
 # - the cleaned safe household level data from http://reshare.ukdataservice.ac.uk/853334/
@@ -54,13 +54,15 @@ if(user == "dataknut" & sysname == "Linux"){
 }
 if(user == "ben" & sysname == "Darwin"){
   # Ben's laptop
-  DATA_PATH <- "~/Data/NZ_GREENGrid/safe/gridSpy/1min/data"
+  DATA_PATH <- "~/Dropbox/data/NZ_GREENGrid/ukds/data/powerData"
   circuits_path <- paste0(here::here(), "/publicData/", circuitsFile, ".csv") # in the package data folder
 }
 
 message("Running on ", sysname, " under user ", user)
-message("Loading data from ", DATA_PATH)
-message("Using ", circuitsFile)
+message("Will load data from ", DATA_PATH)
+file.exists(DATA_PATH)
+message("Using ", circuitsFile, " from ", circuits_path)
+file.exists(circuits_path)
 
 # set up ----
 
@@ -81,6 +83,10 @@ circuitsDF <- read.csv(circuits_path, header = TRUE) # if we switch to readr::re
 
 dataL <- data.table() # data bucket to collect per-household per-minute imputed load
 
+if(!dir.exists(paste0(DATA_PATH, "/imputed"))){
+  dir.create(paste0(DATA_PATH, "/imputed")) # where to put the results
+}
+
 # process household files ----
 processPowerFiles <- function(df){
   message("Using data from: ", DATA_PATH)
@@ -99,6 +105,7 @@ processPowerFiles <- function(df){
     #                                    )
     iF <- sprintf("%s/%s_all_1min_data.csv.gz", DATA_PATH, house_id)
     message(" -> Loading data for ", house_id, " from ", iF)
+    # load the data ----
     inputDT <- data.table::fread(iF) # load the household data
     message("N rows: ", nrow(inputDT))
     message(" -> Parsing dates ", house_id)
@@ -122,11 +129,11 @@ processPowerFiles <- function(df){
       message(" -> Checking circuit: ", circuit)
       cond <- cond | grepl(circuit, inputDT$circuit)
     }
-    
+    # sum the relevant circuits ----
     circuitsToSumDT <- inputDT[cond, 
                                c("hhID","linkID", "dateTime_orig","TZ_orig","r_dateTime", "powerW")] # uses cond to pull out just the circuits we're going to add up
       
-    # make long verion (easier for data analysis)
+    # make long version (easier for data analysis)
     totDTl <- circuitsToSumDT[,.(powerW = sum(powerW)), 
                               keyby = .(hhID,linkID,dateTime_orig,TZ_orig,r_dateTime)] # so it has the same format as the original
     totDTl$circuit <- paste0("imputedTotalDemand_", circuitsFile) # add a label so we know what it is
@@ -134,27 +141,39 @@ processPowerFiles <- function(df){
     inputDT$dateTime_nz <- NULL # not needed
     setcolorder(inputDT, c("hhID", "linkID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")) # make sure they match
     setcolorder(totDTl, c("hhID", "linkID", "dateTime_orig", "TZ_orig", "r_dateTime", "circuit", "powerW")) # make sure they match
-    outDT <- rbind(inputDT,
-                   totDTl) # add total to input
-    oF <- paste0(DATA_PATH, "/imputed/",house_id, "_all_1min_data_withImputedTotal_",
-                 circuitsFile, ".csv") # use the circuitsFile name so we know the definition of which circuits we summed
+    
+    # save out the original file with the imputed power added ----
+    
+    # outDT <- rbind(inputDT,
+    #                totDTl) # add total to input
+    # oF <- paste0(DATA_PATH, "/imputed/",house_id, "_all_1min_data_withImputedTotal_",
+    #              circuitsFile, ".csv") # use the circuitsFile name so we know the definition of which circuits we summed
+    
+    # changed code to only save the imputed total (to save storage space)
+    oF <- paste0(DATA_PATH, "/imputed/",house_id, "_1min_data_ImputedTotal_",
+                  circuitsFile, ".csv") # use the circuitsFile name so we know the definition of which circuits we summed
     message("Saving and gzipping: ", oF)
-    data.table::fwrite(outDT, oF) # save the household data - use fwrite as it is FAST
-    # gzip it
+    data.table::fwrite(totDTl, oF) # save the household data - use fwrite as it is FAST
+    
+    # try to gzip it
     cmd <- paste0("gzip -f ", oF)
     try(system(cmd)) # produces a warning on CS RStudio server but still works
     dataL <- rbind(totDTl, dataL)
     message("Done")
   }
   message("All households processed using: ", circuitsFile)
-  ofile <- paste0(DATA_PATH, "/imputed/all_1min_data_withImputedTotal_",
+  # save out just the imputed total power but for all households in one file (very large!) ----
+  ofile <- paste0(DATA_PATH, "/imputed/all_1min_data_ImputedTotal_",
                   circuitsFile, ".csv") # use the circuitsFile name so we know the definition of which circuits we summed
   message("Saving and gzipping: ", ofile)
   data.table::fwrite(dataL, ofile) # save the household data - use fwrite as it is FAST
-  # gzip it
+  # try to gzip it
   cmd <- paste0("gzip -f ", ofile)
   try(system(cmd)) # produces a warning on CS RStudio server but still works
   message("Saving single file of imputed load only to: ", ofile)
+  
+  message("Summary of ", ofile)
+  summary(dataL)
 }
 
 processPowerFiles(circuitsDF)
