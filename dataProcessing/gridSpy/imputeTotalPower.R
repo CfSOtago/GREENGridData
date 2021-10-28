@@ -3,12 +3,12 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 # -- Code to correctly sum (as far as possible) household power demand to get an overall total -- #
 # Required because some circuits are seperate from the 'Incomer' - e.g. separately controlled hot water
 # Code (c) 2018 Jason Mair - jkmair@cs.otago.ac.nz 
-# with amendments from ben.anderson@otago.ac.nz
+# with amendments from ben.anderson@otago.ac.nz/b.anderson@soton.ac.uk
 # edit history:
 
 # Notes:
 # This code requires:
-# - a csv file in the package /data folder which
+# - a csv file in the package /publicData folder which
 # specifies the circuits to be used when calculating the total for each
 # house. 
 # - the cleaned safe household level data from http://reshare.ukdataservice.ac.uk/853334/
@@ -171,6 +171,9 @@ processPowerFiles <- function(df){
   cmd <- paste0("gzip -f ", ofile)
   try(system(cmd)) # produces a warning on CS RStudio server but still works
   message("Saving single file of imputed load only to: ", ofile)
+  
+  message("Summary of ", ofile)
+  summary(dataL)
 }
 
 processPowerFiles(circuitsDF)
