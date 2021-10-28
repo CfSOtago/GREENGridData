@@ -13,7 +13,8 @@ print(paste0("#--------------- Processing NZ GREEN Grid Grid Power Data --------
 # house. 
 # - the cleaned safe household level data from http://reshare.ukdataservice.ac.uk/853334/
 
-# The code below calculates per-house per-minute totals, and adds them to each household file as a new 'circuit type' for later use.
+# The code below calculates per-house per-minute totals, and saves a new household file with just the imputed power data.
+# It also creates a single VERY large file with all imputed power at 1 minute intervals for all households.
 #
 # The code assumes that the circuits in the circuits file are actually the ones to sum to get overall
 # power demand. We have checked as best we can. If you notice errors please add an issue at:
