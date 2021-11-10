@@ -17,6 +17,7 @@ library(hms) # for hour:min:sec time processing
 library(lubridate) # for all other date & time processing
 library(ggplot2) # for plots
 
+
 # Local parameters ----
 
 # use hhID parameter to change the household used (assumes you have access to the data from https://dx.doi.org/10.5255/UKDA-SN-853334)
