@@ -1,4 +1,4 @@
-#--- Loads a circuit extract and links the household datausing linkID ---#
+#--- Loads a household power data file and links the household data using hhID ---#
 
 # Assumes that you have run extractCircuitFromCleanGridSpy1min.R first !!
 

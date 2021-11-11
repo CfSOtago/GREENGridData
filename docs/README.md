@@ -50,12 +50,12 @@ Version 1 of the [data archive](https://dx.doi.org/10.5255/UKDA-SN-853334) inclu
  * rf_15 & rf_17 grid spy files are in the archive but should not be. Users should remove them. [See further details...](https://github.com/CfSOtago/GREENGridData/issues/19)
  * For others see our [issue list](https://github.com/CfSOtago/GREENGridData/issues?q=is%3Aissue+label%3AdataIssue)
  
-# Accessing the code
+# Accessing and using the R code
 
 The [GREEN Grid Data R Package](https://github.com/CfSOtago/GREENGridData) can be forked, cloned or installed as an R package. Amongst other things it contains the following folders:
- * _dataProcessing_ - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
- * _docs_ - the data archive documentation published via the [github pages](https://cfsotago.github.io/GREENGridData/) that you are now reading;
- * _examples_ - R/Rmd script examples to show how the clean anonymised data can be analysed.
+  * [_reshareDataProcessing_](https://github.com/CfSOtago/GREENGridData/tree/master/reshareDataProcessing) - R/Rmd script examples to show how the clean anonymised data can be analysed.
+  * _originalDataProcessing_ - R scripts to process data and generate data quality reports. These will not run without access to the original study data but you can review them to understand why the anonymised data looks the way it does;
+  * _docs_ - the data archive documentation published via the [github pages](https://cfsotago.github.io/GREENGridData/) that you are now reading. These were created sing the code in the _originalDataProcessing_ folder.
 
 We encourage [feedback](https://github.com/CfSOtago/GREENGridData/issues) and [contributions](https://github.com/CfSOtago/GREENGridData/pulls) but inevitably #[YMMV](https://en.wiktionary.org/wiki/YMMV).
 
