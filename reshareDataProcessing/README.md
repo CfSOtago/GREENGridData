@@ -19,8 +19,12 @@ This script imputes the total power demand per household for each 1 minute perio
 
 The code uses a circuits-to-sum definition file from the [/publicData](https://github.com/dataknut/GREENGridData/tree/master/publicData) folder to do so. Reports on the results of doing so can be found at https://cfsotago.github.io/GREENGridData/. 
 
+### settingTimezones1minPower.R
+
+Gives examples of how to set timezones when analysing the data in a timezone other than "Pacific/Auckland".
+
 ### testHousehold1minPower.R
-R script which runs the .Rmd file of the same name with parameters to load a given household's Grid Spy data file and creates a mean power (W) profile plot for all circuits by year and month - very useful for data checking. It also shows how to link the Grid Spy data to the households attribute data.
+R script which runs the .Rmd file of the same name with parameters to load a given household's Grid Spy data file and creates a mean power (W) profile plot for all circuits by year and month - very useful for data checking. It also shows how to link the Grid Spy data to the household's attribute data.
 
 ### extractCircuitFrom1minPower.R
 
