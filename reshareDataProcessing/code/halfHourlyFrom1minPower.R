@@ -6,6 +6,7 @@
 # (some of) the households and save the data as a new file
 
 # Packages we will need - you may need to install them
+
 # Use require so the code fails if these can't be loaded
 require(data.table) # for loading data very fast
 require(lubridate) # for all other date & time processing
@@ -75,13 +76,14 @@ data.table::fwrite(file = outF, # where to save it
 
 makeHalfHourlyPower <- function(f){
   hhID <- strsplit(f, "_")[[1]][2] # get the linkID/hhID from the filename
-  df <- paste0(dataPath,
-                       f) 
+
   # check for presence of 15 and 17 - these should not be there as
   # the data files have been split into 15a, 17a & 17b
   if(hhID == "15" | hhID == "17"){
     message("Skipping: ", hhID, " (invalid data file, shouldn't be here - see https://github.com/CfSOtago/GREENGridData/issues/19)")
   } else {
+    df <- paste0(dataPath,
+                 f) 
     # repeat above code
     message("Loading: ", hhID)
     powerData <- data.table::fread(df)
