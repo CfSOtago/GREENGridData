@@ -116,3 +116,16 @@ for(f in files){
   message("Processing: ", f)
   makeHalfHourlyPower(f)
 }
+
+# check the last half hourly data file - does it look OK?
+
+# Note especially any potential errors where there are less than or more
+# than 30 observations per half-hour. You may need to examine these (there shold not be many)
+summary(halfHourlyPowerData)
+
+# visual check
+hist(halfHourlyPowerData$nObs)
+
+head(halfHourlyPowerData[nObs < 30]) # where observations are missing
+
+head(halfHourlyPowerData[nObs > 30]) # where there are too many
