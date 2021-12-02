@@ -1,7 +1,7 @@
 # Test household attributes ----
 library(here)
 # Load data & code ----
-source(here::here("examples", "code", "codeHouseholdAttributes.R"))
+source(here::here("reshareDataProcessing", "code", "codeHouseholdAttributes.R"))
 
 # Estimated energy costs in winter by age of dwelling ----
 
@@ -26,7 +26,7 @@ ggplot2::ggplot(hhDT, aes(fill = Q7lab,
   guides(alpha=FALSE)
   
 ggplot2::ggsave(filename = "winterElecByDwellingAge.jpg",
-                path = here::here("examples", "outputs"),
+                path = here::here("reshareDataProcessing", "outputs"),
                 width = 4
                 )
 
@@ -43,6 +43,6 @@ ggplot2::ggplot(hhDT, aes(fill = Q7lab,
   guides(alpha=FALSE)
 
 ggplot2::ggsave(filename = "winterGasByDwellingAge.jpg",
-                path = here::here("examples", "outputs"),
+                path = here::here("reshareDataProcessing", "outputs"),
                 width = 4
 )
