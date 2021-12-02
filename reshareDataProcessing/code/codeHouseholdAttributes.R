@@ -13,9 +13,9 @@ loadLibraries(rmdLibs)
 # Local parameters ----
 
 # change this to suit your data location - this is where extractCleanGridSpy1minCircuit.R saved your extract
-dPath <- path.expand("~/SERG_data/NZ_GREENGrid/safe/")
+dPath <- path.expand("~/Dropbox/data/NZ_GREENGrid/ukds/data/")
                      
-hhFile <- paste0(dPath, "survey/ggHouseholdAttributesSafe.csv.gz")
+hhFile <- paste0(dPath, "ggHouseholdAttributesSafe.csv")
 
 if(file.exists(hhFile)){
   message("Success! Found expected household survey file: ", hhFile)
