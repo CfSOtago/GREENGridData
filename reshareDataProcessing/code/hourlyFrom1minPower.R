@@ -1,4 +1,4 @@
-#--- Shows how to aggregate to half-hours ---#
+#--- Shows how to aggregate to hours ---#
 
 # The raw data is 1 observation per minute
 # Many people like to work with half-hours instead
