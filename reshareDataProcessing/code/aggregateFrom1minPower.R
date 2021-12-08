@@ -37,7 +37,7 @@ makeHalfHourly <- function(dt){
                              circuit, # per circuit
                              linkID)] # keep as a column
   # file to save it in
-  outF <- paste0(dataPath,"halfHourly/rf_",hhID, "_halfHourlyPower.csv")
+  outF <- paste0(dataPath,"halfHourly/",hhID, "_halfHourlyPower.csv")
   if(!dir.exists(paste0(dataPath,"halfHourly/"))){
     dir.create(paste0(dataPath,"halfHourly/"))
   }
@@ -60,7 +60,7 @@ makeHourly <- function(dt){
   if(!dir.exists(paste0(dataPath,"hourly/"))){
     dir.create(paste0(dataPath,"hourly/"))
   }
-  outF <- paste0(dataPath,"hourly/rf_",hhID, "_hourlyPower.csv")
+  outF <- paste0(dataPath,"hourly/",hhID, "_hourlyPower.csv")
   data.table::fwrite(file = outF, # where to save it
                      hD) # we should probably compress it too
   message("Saved hourly to ", outF)
@@ -68,6 +68,7 @@ makeHourly <- function(dt){
 
 makeDaily <- function(dt){
   # assumes dt is the powerData in 1 min intervals
+  dt[, r_date := lubridate::as_date(r_dateTime)] # hour
   dD <- dt[, .(meanPowerW = mean(powerW), # calculate mean power in W
                       sd = sd(powerW), # calculate standard deviation in W
                       nObs = .N), # count the number of observations - check you get what you expect!
@@ -78,7 +79,7 @@ makeDaily <- function(dt){
   if(!dir.exists(paste0(dataPath,"daily/"))){
     dir.create(paste0(dataPath,"daily/"))
   }
-  outF <- paste0(dataPath,"daily/rf_",hhID, "_dailyPower.csv")
+  outF <- paste0(dataPath,"daily/",hhID, "_dailyPower.csv")
   data.table::fwrite(file = outF, # where to save it
                      dD)
   message("Saved daily to ", outF)
@@ -113,7 +114,7 @@ aggregatePower <- function(f){
     
     # add new aggregation functions here
     
-    message("Finished processing: ", hhID)
+    message("Finished processing: ", hhID,"\n")
   }
 }
 
