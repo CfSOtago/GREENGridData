@@ -6,10 +6,14 @@
 
 library(data.table)
 
+# data path
 dp <- path.expand("~/Dropbox/data/NZ_GREENGrid/")
 
+# Full original saved household attributes file - archived to Otago secure HCS server
+# at HCS:: /hum-csafe/Research Projects/GREEN Grid/cleanData/safe/survey/ggHouseholdAttributesFull.csv.gz)
 fullDT <- data.table::fread(paste0(dp, "ggHouseholdAttributesFull.csv.gz"))
 
+# dataset from UKDS reshare archive
 safeOriginalDT <- data.table::fread(paste0(dp, "ukds/data/ggHouseholdAttributesSafe.csv"))
   
 # checks
@@ -40,13 +44,13 @@ keepCols <- c("linkID", # for matching
               "Q146" # PV if cost lower
               )
 
-varsToAddDT <- fullDT[, ..keepCols]
+varsToAddDT <- fullDT[, ..keepCols] # keep the columns we specified
 
-setkey(varsToAddDT, linkID)
+setkey(varsToAddDT, linkID) # set keys for matching
 setkey(safeOriginalDT,linkID)
 
-newSafeDT <- safeOriginalDT[varsToAddDT]
-skimr::skim(newSafeDT)
+newSafeDT <- safeOriginalDT[varsToAddDT] # merge/match by linkID to add the variables to the correct household
+skimr::skim(newSafeDT) # check
 # adds new vars to the end
 
 
@@ -57,6 +61,6 @@ newSafeDF <- as.data.frame(newSafeDT)
 newSafeDF <- newSafeDF[,order(colnames(newSafeDT))]
 
 of <- paste0(dp, "ggHouseholdAttributesSafe", version, ".csv")
-data.table::fwrite(newSafeDT, file = of)
+data.table::fwrite(newSafeDT, file = of) # save the new file
 
-dkUtils::gzipIt(of)
+dkUtils::gzipIt(of) # gzip it
