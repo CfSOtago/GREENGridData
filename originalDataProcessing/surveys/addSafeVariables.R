@@ -7,6 +7,7 @@
 library(data.table)
 library(dplyr)
 
+
 # data path
 dp <- path.expand("~/Dropbox/data/NZ_GREENGrid/")
 
@@ -24,6 +25,10 @@ table(fullDT$hasLongSurvey)
 
 version <- "_1.1" # version number
 # incr version number when a new var is added
+
+my_log <- paste0(dp, "ggHouseholdAttributesSafe", version, "_skim.txt")
+sink(my_log, append = FALSE, # new one each time
+     type = "output") # Writing console output to log file
 
 # note that some of the questions from the long survey may not have been asked of all households
 # e.g. only 29 households were asked the long survey contaiing all the questions
@@ -46,7 +51,7 @@ singles <- c("linkID", # for matching
               "Q146" # PV if cost lower
               )
 
-varsToKeep <- c(keepCols, set1, set2)
+varsToKeep <- c(patterns, singles)
 
 varsToAddDT <- fullDT[, ..varsToKeep] # keep the columns we specified
 # remove accidental duplicates
@@ -58,7 +63,6 @@ setkey(varsToAddDT, linkID) # set keys for matching
 setkey(safeOriginalDT,linkID)
 
 newSafeDT <- safeOriginalDT[varsToAddDT] # merge/match by linkID to add the variables to the correct household
-skimr::skim(newSafeDT) # check
 # adds new vars to the end
 
 
@@ -72,3 +76,7 @@ of <- paste0(dp, "ggHouseholdAttributesSafe", version, ".csv")
 data.table::fwrite(newSafeDT, file = of) # save the new file
 
 dkUtils::gzipIt(of) # gzip it
+
+skimr::skim(newSafeDT) # check
+
+closeAllConnections() # Close connection to log file
