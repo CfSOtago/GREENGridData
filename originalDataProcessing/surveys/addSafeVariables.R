@@ -5,6 +5,7 @@
 # saves new safe file
 
 library(data.table)
+library(dplyr)
 
 # data path
 dp <- path.expand("~/Dropbox/data/NZ_GREENGrid/")
@@ -30,21 +31,28 @@ version <- "_1.1" # version number
 
 # add new vars here
 # we need a wildcard method
+
+set1 <- names(dplyr::select(fullDT,starts_with("Q3"))) # hot water
+set2 <- names(dplyr::select(fullDT,starts_with("Q75"))) # hot water
+
 keepCols <- c("linkID", # for matching 
-              "Q32_1", # Hot water
-              "Q32_2", 
-              "Q32_3",
-              "Q32_4",
-              "Q32_5",
-              "Q32_6",
-              "Q32_7",
-              "Q32_8",
+              "Q57",
+              "Q73_9",
+              "Q76_x11",
+              "Q96_5",
+              "Q97",
               "Q144", # PV attitudes
               "Q145", # PV in future
               "Q146" # PV if cost lower
               )
 
-varsToAddDT <- fullDT[, ..keepCols] # keep the columns we specified
+varsToKeep <- c(keepCols, set1, set2)
+
+varsToAddDT <- fullDT[, ..varsToKeep] # keep the columns we specified
+# remove accidental duplicates
+varsToAddDT$Q30_1 <- NULL
+varsToAddDT$Q33_1 <- NULL
+varsToAddDT$Q57 <- NULL
 
 setkey(varsToAddDT, linkID) # set keys for matching
 setkey(safeOriginalDT,linkID)
