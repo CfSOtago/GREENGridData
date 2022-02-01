@@ -79,4 +79,10 @@ dkUtils::gzipIt(of) # gzip it
 
 skimr::skim(newSafeDT) # check
 
+message("Location:")
+table(newSafeDT$Location)
+
+message("Notes:")
+table(newSafeDT$notes)
+
 closeAllConnections() # Close connection to log file
