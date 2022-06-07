@@ -20,7 +20,7 @@ Please document any errors, problems or queries by raising a [github issue](http
 
 This is _not_ open access data. It is licensed as _Safeguarded_ data under the [UK Data Archive End User Licence conditions](http://reshare.ukdataservice.ac.uk/legal/#Safeguarded). You will need to agree to these T&Cs before downloading the data.
 
-We also encourage you to log your (intended) data usage via https://github.com/CfSOtago/GREENGridData/issues/38. This is not a requirement of re-use but it helps us to justify both continuing to improve the data and also releasing future datasets.
+We also encourage you to log your (intended) data usage via [https://github.com/CfSOtago/GREENGridData/issues/38](https://github.com/CfSOtago/GREENGridData/issues/38). This is not a requirement of re-use but it helps us to justify both continuing to improve the data and also releasing future datasets.
 
 ## Version 1 - September 2018
 
